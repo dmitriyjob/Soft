@@ -125,7 +125,7 @@
 
         .program-head {
             display: grid;
-            grid-template-columns: auto 1fr auto auto;
+            grid-template-columns: auto 1fr auto;
             align-items: center;
             gap: 15px;
             padding: 19px 22px;
@@ -155,16 +155,6 @@
             margin: 0;
             color: var(--muted);
             font-size: 12px;
-        }
-
-        .status {
-            padding: 6px 10px;
-            color: var(--green);
-            border: 1px solid #d9efe2;
-            border-radius: 999px;
-            background: var(--green-soft);
-            font-size: 12px;
-            font-weight: 750;
         }
 
         .collapse-button {
@@ -533,7 +523,6 @@
             .hero { padding: 33px 10px 25px; }
             .program { border-radius: 20px; }
             .program-head { grid-template-columns: auto 1fr auto; padding: 15px; }
-            .status { display: none; }
             .collapse-button span { display: none; }
             .collapse-button { width: 40px; height: 40px; justify-content: center; padding: 0; }
             .program-content { grid-template-columns: 1fr; }
@@ -593,7 +582,6 @@
                     <h2 id="libreofficeTitle">LibreOffice</h2>
                     <p>Документы, таблицы и презентации</p>
                 </div>
-                <span class="status">Доступно</span>
                 <button class="collapse-button" type="button" aria-expanded="true" aria-controls="libreofficeContent">
                     <span>Свернуть</span>
                     <svg aria-hidden="true" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="m7 14 5-5 5 5"/></svg>
@@ -619,7 +607,13 @@
                 <span class="os-icon" aria-hidden="true">
                   <svg viewBox="0 0 24 24" fill="currentColor"><path d="M16.8 12.7c0-2.6 2.1-3.8 2.2-3.9a4.8 4.8 0 0 0-3.8-2.1c-1.6-.2-3.1.9-3.9.9-.8 0-2-.9-3.3-.9-1.7 0-3.3 1-4.2 2.5-1.8 3.1-.5 7.7 1.3 10.2.9 1.2 1.9 2.6 3.3 2.5 1.3-.1 1.8-.8 3.4-.8s2 .8 3.4.8c1.4 0 2.3-1.2 3.1-2.5a11 11 0 0 0 1.4-2.8c-.1 0-2.9-1.1-2.9-3.9ZM14.1 5c.7-.9 1.2-2.1 1.1-3.3-1.1 0-2.4.7-3.2 1.6-.7.8-1.3 2-1.1 3.2 1.2.1 2.5-.6 3.2-1.5Z"/></svg>
                 </span>
-                            <span><span class="os-name">macOS</span><span class="os-note">Apple Silicon (M1 и новее)</span></span>
+                            <span><span class="os-name">macOS Apple Silicon</span><span class="os-note">M1, M2, M3, M4 и новее</span></span>
+                            <span class="check" aria-hidden="true"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="3"><path d="m6 12 4 4 8-9"/></svg></span>
+                        </button>
+
+                        <button class="system-card" type="button" role="radio" aria-checked="false" data-system="macosIntel">
+                            <span class="os-icon" aria-hidden="true"><svg viewBox="0 0 24 24" fill="currentColor"><path d="M16.8 12.7c0-2.6 2.1-3.8 2.2-3.9a4.8 4.8 0 0 0-3.8-2.1c-1.6-.2-3.1.9-3.9.9-.8 0-2-.9-3.3-.9-1.7 0-3.3 1-4.2 2.5-1.8 3.1-.5 7.7 1.3 10.2.9 1.2 1.9 2.6 3.3 2.5 1.3-.1 1.8-.8 3.4-.8s2 .8 3.4.8c1.4 0 2.3-1.2 3.1-2.5a11 11 0 0 0 1.4-2.8c-.1 0-2.9-1.1-2.9-3.9ZM14.1 5c.7-.9 1.2-2.1 1.1-3.3-1.1 0-2.4.7-3.2 1.6-.7.8-1.3 2-1.1 3.2 1.2.1 2.5-.6 3.2-1.5Z"/></svg></span>
+                            <span><span class="os-name">macOS Intel</span><span class="os-note">Mac с процессором Intel</span></span>
                             <span class="check" aria-hidden="true"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="3"><path d="m6 12 4 4 8-9"/></svg></span>
                         </button>
                     </div>
@@ -674,7 +668,6 @@
                     <h2 id="pycharmTitle">PyCharm</h2>
                     <p>Среда разработки для Python</p>
                 </div>
-                <span class="status">Доступно</span>
                 <button class="collapse-button" type="button" aria-expanded="true" aria-controls="pycharmContent">
                     <span>Свернуть</span>
                     <svg aria-hidden="true" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="m7 14 5-5 5 5"/></svg>
@@ -694,7 +687,12 @@
                         </button>
                         <button class="system-card is-active" type="button" role="radio" aria-checked="true" data-system="macos">
                             <span class="os-icon" aria-hidden="true"><svg viewBox="0 0 24 24" fill="currentColor"><path d="M16.8 12.7c0-2.6 2.1-3.8 2.2-3.9a4.8 4.8 0 0 0-3.8-2.1c-1.6-.2-3.1.9-3.9.9-.8 0-2-.9-3.3-.9-1.7 0-3.3 1-4.2 2.5-1.8 3.1-.5 7.7 1.3 10.2.9 1.2 1.9 2.6 3.3 2.5 1.3-.1 1.8-.8 3.4-.8s2 .8 3.4.8c1.4 0 2.3-1.2 3.1-2.5a11 11 0 0 0 1.4-2.8c-.1 0-2.9-1.1-2.9-3.9ZM14.1 5c.7-.9 1.2-2.1 1.1-3.3-1.1 0-2.4.7-3.2 1.6-.7.8-1.3 2-1.1 3.2 1.2.1 2.5-.6 3.2-1.5Z"/></svg></span>
-                            <span><span class="os-name">macOS</span><span class="os-note">Apple Silicon (M1 и новее)</span></span>
+                            <span><span class="os-name">macOS Apple Silicon</span><span class="os-note">M1, M2, M3, M4 и новее</span></span>
+                            <span class="check" aria-hidden="true"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="3"><path d="m6 12 4 4 8-9"/></svg></span>
+                        </button>
+                        <button class="system-card" type="button" role="radio" aria-checked="false" data-system="macosIntel">
+                            <span class="os-icon" aria-hidden="true"><svg viewBox="0 0 24 24" fill="currentColor"><path d="M16.8 12.7c0-2.6 2.1-3.8 2.2-3.9a4.8 4.8 0 0 0-3.8-2.1c-1.6-.2-3.1.9-3.9.9-.8 0-2-.9-3.3-.9-1.7 0-3.3 1-4.2 2.5-1.8 3.1-.5 7.7 1.3 10.2.9 1.2 1.9 2.6 3.3 2.5 1.3-.1 1.8-.8 3.4-.8s2 .8 3.4.8c1.4 0 2.3-1.2 3.1-2.5a11 11 0 0 0 1.4-2.8c-.1 0-2.9-1.1-2.9-3.9ZM14.1 5c.7-.9 1.2-2.1 1.1-3.3-1.1 0-2.4.7-3.2 1.6-.7.8-1.3 2-1.1 3.2 1.2.1 2.5-.6 3.2-1.5Z"/></svg></span>
+                            <span><span class="os-name">macOS Intel</span><span class="os-note">Mac с процессором Intel</span></span>
                             <span class="check" aria-hidden="true"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="3"><path d="m6 12 4 4 8-9"/></svg></span>
                         </button>
                     </div>
@@ -743,12 +741,20 @@
             name: 'LibreOffice', mark: 'L', logoClass: '',
             systems: {
                 macos: {
-                    title: 'Скачать LibreOffice для macOS', file: 'LibreOffice_26.8.0_MacOS_aarch64.dmg',
+                    title: 'Скачать LibreOffice для macOS Apple Silicon', file: 'LibreOffice_26.8.0_MacOS_aarch64.dmg',
                     downloadUrl: 'https://download.documentfoundation.org/libreoffice/stable/26.8.0/mac/aarch64/LibreOffice_26.8.0_MacOS_aarch64.dmg',
                     copy: 'Скачайте образ программы и перенесите LibreOffice в «Программы».',
                     tip: 'Если macOS заблокирует запуск, откройте «Системные настройки» → «Конфиденциальность и безопасность».',
                     steps: [['Откройте файл .dmg', 'Он появится в папке «Загрузки».'], ['Перенесите LibreOffice', 'Перетащите ярлык в папку Applications («Программы»).'], ['Откройте «Программы»', 'Найдите LibreOffice и запустите двойным нажатием.'], ['Подтвердите запуск', 'При первом открытии macOS попросит подтверждение.']],
                     screens: [['Файл скачан', 'download'], ['Перетащите LibreOffice в «Программы»', 'drag'], ['Подтвердите первое открытие', 'confirm'], ['LibreOffice готов к работе', 'officeLaunch']]
+                },
+                macosIntel: {
+                    title: 'Скачать LibreOffice для macOS Intel', file: 'LibreOffice_26.8.0_MacOS_x86-64.dmg',
+                    downloadUrl: 'https://download.documentfoundation.org/libreoffice/stable/26.8.0/mac/x86_64/LibreOffice_26.8.0_MacOS_x86-64.dmg',
+                    copy: 'Скачайте версию для процессора Intel и перенесите LibreOffice в «Программы».',
+                    tip: 'Эта версия предназначена только для компьютеров Mac с процессором Intel.',
+                    steps: [['Откройте файл .dmg', 'Он появится в папке «Загрузки».'], ['Перенесите LibreOffice', 'Перетащите ярлык в папку Applications («Программы»).'], ['Откройте «Программы»', 'Найдите LibreOffice и запустите двойным нажатием.'], ['Подтвердите запуск', 'При первом открытии macOS попросит подтверждение.']],
+                    screens: [['Файл для Intel скачан', 'download'], ['Перетащите LibreOffice в «Программы»', 'drag'], ['Подтвердите первое открытие', 'confirm'], ['LibreOffice готов к работе', 'officeLaunch']]
                 },
                 windows: {
                     title: 'Скачать LibreOffice для Windows', file: 'LibreOffice_26.8.0_Win_x86-64.msi',
@@ -764,12 +770,20 @@
             name: 'PyCharm', mark: 'PC', logoClass: 'pycharm',
             systems: {
                 macos: {
-                    title: 'Скачать PyCharm для macOS', file: 'pycharm-2026.2.1-aarch64.dmg',
+                    title: 'Скачать PyCharm для macOS Apple Silicon', file: 'pycharm-2026.2.1-aarch64.dmg',
                     downloadUrl: 'https://download.jetbrains.com/python/pycharm-2026.2.1-aarch64.dmg',
                     copy: 'Скачайте образ PyCharm и перенесите приложение в папку «Программы».',
                     tip: 'При первом запуске можно выбрать бесплатный режим и начать работу без оформления подписки.',
                     steps: [['Откройте файл .dmg', 'Файл появится в папке «Загрузки».'], ['Перенесите PyCharm', 'Перетащите значок PyCharm в папку Applications («Программы»).'], ['Запустите PyCharm', 'Откройте программу через папку «Программы».'], ['Завершите первый запуск', 'Подтвердите условия и нажмите «New Project».']],
                     screens: [['Файл скачан', 'download'], ['Перетащите PyCharm в «Программы»', 'drag'], ['Подтвердите первое открытие', 'confirm'], ['Создайте первый проект', 'ideLaunch']]
+                },
+                macosIntel: {
+                    title: 'Скачать PyCharm для macOS Intel', file: 'pycharm-2026.2.1.dmg',
+                    downloadUrl: 'https://download.jetbrains.com/python/pycharm-2026.2.1.dmg',
+                    copy: 'Скачайте версию PyCharm для процессора Intel и перенесите приложение в «Программы».',
+                    tip: 'Эта версия предназначена только для компьютеров Mac с процессором Intel.',
+                    steps: [['Откройте файл .dmg', 'Файл появится в папке «Загрузки».'], ['Перенесите PyCharm', 'Перетащите значок PyCharm в папку Applications («Программы»).'], ['Запустите PyCharm', 'Откройте программу через папку «Программы».'], ['Завершите первый запуск', 'Подтвердите условия и нажмите «New Project».']],
+                    screens: [['Файл для Intel скачан', 'download'], ['Перетащите PyCharm в «Программы»', 'drag'], ['Подтвердите первое открытие', 'confirm'], ['Создайте первый проект', 'ideLaunch']]
                 },
                 windows: {
                     title: 'Скачать PyCharm для Windows', file: 'pycharm-2026.2.1.exe',
