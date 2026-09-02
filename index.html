@@ -426,6 +426,16 @@
             box-shadow: 0 12px 30px rgba(35, 49, 80, 0.1);
         }
 
+        .screen.real-screen { min-height: 0; background: #fff; }
+        .screen-real-image {
+            display: block;
+            width: 100%;
+            height: auto;
+            max-height: 620px;
+            object-fit: contain;
+            background: #fff;
+        }
+
         .screen-bar {
             display: flex;
             align-items: center;
@@ -738,7 +748,7 @@
 <script>
     const programs = {
         libreoffice: {
-            name: 'LibreOffice', mark: 'L', logoClass: '',
+            name: 'LibreOffice', mark: 'L', logoClass: '', dragImage: 'assets/libreoffice-dmg-install.jpeg',
             systems: {
                 macos: {
                     title: 'Скачать LibreOffice для macOS Apple Silicon', file: 'LibreOffice_26.8.0_MacOS_aarch64.dmg',
@@ -767,7 +777,7 @@
             }
         },
         pycharm: {
-            name: 'PyCharm', mark: 'PC', logoClass: 'pycharm',
+            name: 'PyCharm', mark: 'PC', logoClass: 'pycharm', dragImage: 'assets/pycharm-dmg-install.png',
             systems: {
                 macos: {
                     title: 'Скачать PyCharm для macOS Apple Silicon', file: 'pycharm-2026.2.1-aarch64.dmg',
@@ -802,9 +812,11 @@
     }
 
     function screenMarkup(kind, file, program) {
+        if (kind === 'drag') {
+            return `<div class="screen real-screen"><img class="screen-real-image" src="${program.dragImage}" alt="Окно установки ${program.name}: перетащите приложение в папку Applications" loading="lazy"></div>`;
+        }
         const content = {
             download: `<div class="mock-window"><div class="download-row">${logo(program)}<div><strong>Загрузка завершена</strong><p>${file}</p></div><span class="download-check">✓</span></div></div>`,
-            drag: `<div class="mock-window"><strong>Установка ${program.name}</strong><p>Перетащите приложение в папку «Программы»</p><div class="drag-area">${logo(program, 'drag-icon')}<span class="drag-arrow">→</span><span class="drag-icon folder-icon">▰</span></div></div>`,
             confirm: `<div class="mock-window">${logo(program)}<strong>Открыть приложение ${program.name}?</strong><p>Приложение было загружено из интернета и готово к первому запуску.</p><div class="mock-actions"><span class="mock-button secondary">Отмена</span><span class="mock-button">Открыть</span></div></div>`,
             welcome: `<div class="mock-window">${logo(program)}<strong>Добро пожаловать в мастер установки ${program.name}</strong><p>Мастер установит программу на ваш компьютер.</p><div class="mock-actions"><span class="mock-button secondary">Отмена</span><span class="mock-button">Далее</span></div></div>`,
             progress: `<div class="mock-window">${logo(program)}<strong>Установка ${program.name}</strong><p>Подождите, пока мастер установит программу.</p><div class="mock-progress"></div><p>Копирование новых файлов…</p></div>`,
