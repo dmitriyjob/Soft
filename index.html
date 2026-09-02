@@ -1,0 +1,653 @@
+<!doctype html>
+<html lang="ru">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta name="theme-color" content="#f3f6ff">
+    <meta name="description" content="Загрузка программ для учебных занятий — просто и по шагам.">
+    <title>Программы для занятий</title>
+    <style>
+        :root {
+            --ink: #172038;
+            --muted: #6f7789;
+            --line: #e3e8f1;
+            --blue: #315ecb;
+            --blue-dark: #244ba9;
+            --blue-soft: #edf3ff;
+            --green: #2d875d;
+            --green-soft: #eaf7ef;
+            --surface: rgba(255, 255, 255, 0.88);
+            --shadow: 0 18px 60px rgba(56, 72, 112, 0.11);
+        }
+
+        * { box-sizing: border-box; }
+
+        html { scroll-behavior: smooth; }
+
+        body {
+            margin: 0;
+            min-width: 320px;
+            min-height: 100vh;
+            color: var(--ink);
+            font-family: Inter, ui-sans-serif, -apple-system, BlinkMacSystemFont, "Segoe UI", sans-serif;
+            background:
+                    radial-gradient(circle at 9% 5%, rgba(255, 221, 197, 0.48), transparent 28%),
+                    radial-gradient(circle at 92% 15%, rgba(201, 220, 255, 0.74), transparent 32%),
+                    linear-gradient(145deg, #fffaf7 0%, #f6f8ff 46%, #edf3ff 100%);
+        }
+
+        button, a { -webkit-tap-highlight-color: transparent; }
+
+        button { font: inherit; }
+
+        .page-shell {
+            width: min(1180px, calc(100% - 40px));
+            margin: 0 auto;
+            padding: 24px 0 48px;
+        }
+
+        .topbar {
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+            min-height: 42px;
+        }
+
+        .brand {
+            display: inline-flex;
+            align-items: center;
+            gap: 11px;
+            color: var(--ink);
+            text-decoration: none;
+            font-weight: 760;
+            letter-spacing: -0.02em;
+        }
+
+        .brand-mark {
+            display: grid;
+            width: 34px;
+            height: 34px;
+            place-items: center;
+            color: white;
+            font-size: 13px;
+            font-weight: 800;
+            border: 3px solid rgba(255, 255, 255, 0.88);
+            border-radius: 50%;
+            background: #253e75;
+            box-shadow: 0 0 0 1px rgba(40, 59, 103, 0.16), 0 4px 10px rgba(38, 56, 96, 0.18);
+        }
+
+        .help-link {
+            display: inline-flex;
+            align-items: center;
+            gap: 6px;
+            padding: 8px 2px;
+            color: var(--blue-dark);
+            border: 0;
+            border-bottom: 1px dashed rgba(49, 94, 203, 0.42);
+            background: none;
+            cursor: pointer;
+            font-size: 14px;
+            font-weight: 650;
+        }
+
+        .help-link svg { width: 16px; height: 16px; }
+
+        .hero {
+            padding: 46px 16px 33px;
+            text-align: center;
+        }
+
+        .eyebrow {
+            display: inline-flex;
+            align-items: center;
+            gap: 7px;
+            margin-bottom: 13px;
+            color: var(--blue-dark);
+            font-size: 12px;
+            font-weight: 800;
+            letter-spacing: 0.12em;
+            text-transform: uppercase;
+        }
+
+        .eyebrow::before {
+            width: 7px;
+            height: 7px;
+            border-radius: 50%;
+            background: #6a8ee2;
+            content: "";
+            box-shadow: 0 0 0 5px rgba(106, 142, 226, 0.12);
+        }
+
+        h1 {
+            margin: 0;
+            font-size: clamp(32px, 5vw, 54px);
+            line-height: 1.06;
+            letter-spacing: -0.045em;
+        }
+
+        .hero p {
+            max-width: 610px;
+            margin: 15px auto 0;
+            color: var(--muted);
+            font-size: 16px;
+            line-height: 1.65;
+        }
+
+        .program {
+            overflow: hidden;
+            border: 1px solid rgba(220, 226, 239, 0.9);
+            border-radius: 24px;
+            background: var(--surface);
+            box-shadow: var(--shadow);
+            backdrop-filter: blur(18px);
+        }
+
+        .program-head {
+            display: grid;
+            grid-template-columns: auto 1fr auto auto;
+            align-items: center;
+            gap: 15px;
+            padding: 19px 22px;
+            border-bottom: 1px solid var(--line);
+        }
+
+        .file-icon {
+            display: grid;
+            width: 46px;
+            height: 46px;
+            place-items: center;
+            color: #515b6f;
+            border: 1px solid #dce1ea;
+            border-radius: 13px;
+            background: #f7f8fb;
+        }
+
+        .file-icon svg { width: 24px; height: 24px; }
+
+        .program-title h2 {
+            margin: 0 0 4px;
+            font-size: 18px;
+            letter-spacing: -0.02em;
+        }
+
+        .program-title p {
+            margin: 0;
+            color: var(--muted);
+            font-size: 12px;
+        }
+
+        .status {
+            padding: 6px 10px;
+            color: var(--green);
+            border: 1px solid #d9efe2;
+            border-radius: 999px;
+            background: var(--green-soft);
+            font-size: 12px;
+            font-weight: 750;
+        }
+
+        .collapse-button {
+            display: inline-flex;
+            align-items: center;
+            gap: 8px;
+            padding: 10px 14px;
+            color: var(--blue-dark);
+            border: 1px solid #d6e0f7;
+            border-radius: 11px;
+            background: #f8faff;
+            cursor: pointer;
+            font-weight: 720;
+        }
+
+        .collapse-button svg {
+            width: 16px;
+            height: 16px;
+            transition: transform 180ms ease;
+        }
+
+        .program.is-collapsed .collapse-button svg { transform: rotate(180deg); }
+
+        .program-content {
+            display: grid;
+            grid-template-columns: 330px minmax(0, 1fr);
+            min-height: 510px;
+        }
+
+        .program.is-collapsed .program-content { display: none; }
+
+        .system-panel, .setup-panel { padding: 30px; }
+
+        .system-panel {
+            border-right: 1px solid var(--line);
+            background: rgba(248, 250, 254, 0.62);
+        }
+
+        .step-label {
+            display: inline-block;
+            margin-bottom: 11px;
+            color: var(--blue);
+            font-size: 11px;
+            font-weight: 850;
+            letter-spacing: 0.1em;
+            text-transform: uppercase;
+        }
+
+        h3 {
+            margin: 0;
+            font-size: 22px;
+            line-height: 1.2;
+            letter-spacing: -0.03em;
+        }
+
+        .section-copy {
+            margin: 10px 0 22px;
+            color: var(--muted);
+            font-size: 13px;
+            line-height: 1.55;
+        }
+
+        .system-list { display: grid; gap: 12px; }
+
+        .system-card {
+            position: relative;
+            display: grid;
+            grid-template-columns: 40px 1fr 22px;
+            align-items: center;
+            width: 100%;
+            min-height: 82px;
+            gap: 11px;
+            padding: 13px 14px;
+            color: var(--ink);
+            text-align: left;
+            border: 1px solid transparent;
+            border-radius: 15px;
+            background: #fff;
+            cursor: pointer;
+            box-shadow: 0 5px 17px rgba(43, 57, 91, 0.045);
+            transition: border-color 160ms ease, background 160ms ease, box-shadow 160ms ease, transform 160ms ease;
+        }
+
+        .system-card:hover { transform: translateY(-1px); }
+
+        .system-card.is-active {
+            border-color: #5b81db;
+            background: #f4f7ff;
+            box-shadow: 0 0 0 3px rgba(72, 112, 204, 0.1);
+        }
+
+        .os-icon {
+            display: grid;
+            width: 38px;
+            height: 38px;
+            place-items: center;
+            color: #576276;
+            border-radius: 11px;
+            background: #f3f5f8;
+        }
+
+        .system-card.is-active .os-icon { color: #1b57bd; background: #e5edff; }
+        .os-icon svg { width: 22px; height: 22px; }
+
+        .os-name { display: block; margin-bottom: 4px; font-size: 15px; font-weight: 780; }
+        .os-note { display: block; color: var(--muted); font-size: 10px; line-height: 1.35; }
+
+        .check {
+            display: grid;
+            width: 22px;
+            height: 22px;
+            place-items: center;
+            color: transparent;
+            border-radius: 50%;
+        }
+
+        .system-card.is-active .check { color: white; background: var(--blue); }
+        .check svg { width: 14px; height: 14px; }
+
+        .setup-panel { min-width: 0; }
+
+        .download-box {
+            display: grid;
+            grid-template-columns: auto 1fr auto;
+            align-items: center;
+            gap: 15px;
+            margin: 22px 0 26px;
+            padding: 15px;
+            border: 1px solid #e0e5ee;
+            border-radius: 16px;
+            background: #fbfcff;
+        }
+
+        .download-file-icon {
+            display: grid;
+            width: 42px;
+            height: 42px;
+            place-items: center;
+            color: var(--blue-dark);
+            border-radius: 12px;
+            background: var(--blue-soft);
+        }
+
+        .download-file-icon svg { width: 20px; height: 20px; }
+
+        .download-info strong { display: block; margin-bottom: 4px; font-size: 14px; }
+        .download-info span { display: block; overflow-wrap: anywhere; color: var(--muted); font-size: 11px; }
+
+        .download-button {
+            display: inline-flex;
+            align-items: center;
+            justify-content: center;
+            gap: 8px;
+            min-height: 42px;
+            padding: 0 16px;
+            color: #fff;
+            border: 1px solid var(--blue);
+            border-radius: 11px;
+            background: var(--blue);
+            text-decoration: none;
+            font-size: 13px;
+            font-weight: 780;
+            box-shadow: 0 8px 18px rgba(49, 94, 203, 0.2);
+            transition: background 160ms ease, transform 160ms ease;
+        }
+
+        .download-button:hover { background: var(--blue-dark); transform: translateY(-1px); }
+        .download-button svg { width: 16px; height: 16px; }
+
+        .instructions {
+            padding-top: 23px;
+            border-top: 1px solid var(--line);
+        }
+
+        .instructions-heading {
+            display: flex;
+            align-items: baseline;
+            gap: 8px;
+            margin-bottom: 18px;
+        }
+
+        .instructions-heading strong { color: var(--blue-dark); font-size: 14px; }
+        .instructions-heading span { color: var(--muted); font-size: 11px; }
+        .instruction-list { display: grid; gap: 18px; margin: 0; padding: 0; list-style: none; }
+
+        .instruction {
+            display: grid;
+            grid-template-columns: 28px 1fr;
+            gap: 13px;
+            align-items: start;
+        }
+
+        .number {
+            display: grid;
+            width: 28px;
+            height: 28px;
+            place-items: center;
+            color: var(--blue-dark);
+            border: 1px solid #cbd7ef;
+            border-radius: 50%;
+            background: #f7f9ff;
+            font-size: 12px;
+            font-weight: 800;
+        }
+
+        .instruction strong { display: block; margin: 2px 0 5px; font-size: 13px; }
+        .instruction p { margin: 0; color: var(--muted); font-size: 11px; line-height: 1.55; }
+
+        .tip {
+            display: flex;
+            gap: 10px;
+            margin-top: 24px;
+            padding: 13px 15px;
+            color: #4d5970;
+            border-radius: 13px;
+            background: #fff8e8;
+            font-size: 11px;
+            line-height: 1.5;
+        }
+
+        .tip svg { flex: 0 0 auto; width: 17px; height: 17px; color: #b07818; }
+
+        dialog {
+            width: min(460px, calc(100% - 32px));
+            padding: 0;
+            color: var(--ink);
+            border: 1px solid #e2e6ef;
+            border-radius: 20px;
+            background: #fff;
+            box-shadow: 0 24px 80px rgba(29, 41, 74, 0.25);
+        }
+
+        dialog::backdrop { background: rgba(26, 34, 56, 0.35); backdrop-filter: blur(4px); }
+        .dialog-body { padding: 26px; }
+        .dialog-top { display: flex; align-items: center; justify-content: space-between; gap: 16px; }
+        .dialog-top h2 { margin: 0; font-size: 21px; }
+        .dialog-body p { color: var(--muted); font-size: 14px; line-height: 1.6; }
+        .dialog-body a { color: var(--blue-dark); font-weight: 700; }
+        .close-button {
+            display: grid;
+            width: 34px;
+            height: 34px;
+            place-items: center;
+            color: #536077;
+            border: 0;
+            border-radius: 10px;
+            background: #f1f3f7;
+            cursor: pointer;
+        }
+        .close-button svg { width: 17px; height: 17px; }
+
+        :focus-visible { outline: 3px solid rgba(49, 94, 203, 0.34); outline-offset: 3px; }
+
+        @media (max-width: 780px) {
+            .page-shell { width: min(100% - 24px, 620px); padding-top: 14px; }
+            .hero { padding: 33px 10px 25px; }
+            .program { border-radius: 20px; }
+            .program-head { grid-template-columns: auto 1fr auto; padding: 15px; }
+            .status { display: none; }
+            .collapse-button span { display: none; }
+            .collapse-button { width: 40px; height: 40px; justify-content: center; padding: 0; }
+            .program-content { grid-template-columns: 1fr; }
+            .system-panel { border-right: 0; border-bottom: 1px solid var(--line); }
+            .system-panel, .setup-panel { padding: 24px; }
+            .system-list { grid-template-columns: repeat(2, minmax(0, 1fr)); }
+            .system-card { grid-template-columns: 34px 1fr 20px; padding: 11px; }
+        }
+
+        @media (max-width: 520px) {
+            .brand-name { font-size: 14px; }
+            .help-link span { display: none; }
+            .hero p { font-size: 14px; }
+            .eyebrow { font-size: 10px; }
+            .file-icon { display: none; }
+            .program-head { grid-template-columns: 1fr auto; }
+            .system-panel, .setup-panel { padding: 20px 16px; }
+            .system-list { grid-template-columns: 1fr; }
+            .download-box { grid-template-columns: auto 1fr; }
+            .download-button { grid-column: 1 / -1; width: 100%; }
+            h3 { font-size: 20px; }
+        }
+
+        @media (prefers-reduced-motion: reduce) {
+            *, *::before, *::after { scroll-behavior: auto !important; transition: none !important; }
+        }
+    </style>
+</head>
+<body>
+<div class="page-shell">
+    <header class="topbar">
+        <a class="brand" href="#" aria-label="ion-inf — на главную">
+            <span class="brand-mark" aria-hidden="true">i</span>
+            <span class="brand-name">ion-inf</span>
+        </a>
+        <button class="help-link" id="helpButton" type="button">
+            <span>Нужна помощь?</span>
+            <svg aria-hidden="true" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><circle cx="12" cy="12" r="9"/><path d="M9.7 9a2.4 2.4 0 0 1 4.6 1c0 1.8-2.3 2-2.3 3.5"/><path d="M12 17h.01"/></svg>
+        </button>
+    </header>
+
+    <main>
+        <section class="hero" aria-labelledby="pageTitle">
+            <span class="eyebrow">Всё для учёбы</span>
+            <h1 id="pageTitle">Программы для занятий</h1>
+            <p>Скачайте нужную программу и установите её по простой пошаговой инструкции.</p>
+        </section>
+
+        <section class="program" id="programCard" aria-labelledby="programTitle">
+            <div class="program-head">
+                <div class="file-icon" aria-hidden="true">
+                    <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.7"><path d="M6 2.8h8l4 4V21H6z"/><path d="M14 2.8V7h4"/></svg>
+                </div>
+                <div class="program-title">
+                    <h2 id="programTitle">LibreOffice</h2>
+                    <p>Документы, таблицы и презентации</p>
+                </div>
+                <span class="status">Доступно</span>
+                <button class="collapse-button" id="collapseButton" type="button" aria-expanded="true" aria-controls="programContent">
+                    <span>Свернуть</span>
+                    <svg aria-hidden="true" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="m7 14 5-5 5 5"/></svg>
+                </button>
+            </div>
+
+            <div class="program-content" id="programContent">
+                <aside class="system-panel" aria-labelledby="systemTitle">
+                    <span class="step-label">Шаг 1</span>
+                    <h3 id="systemTitle">Выберите систему</h3>
+                    <p class="section-copy">Укажите операционную систему вашего компьютера.</p>
+
+                    <div class="system-list" role="radiogroup" aria-label="Операционная система">
+                        <button class="system-card" type="button" role="radio" aria-checked="false" data-system="windows">
+                <span class="os-icon" aria-hidden="true">
+                  <svg viewBox="0 0 24 24" fill="currentColor"><path d="M3 4.6 10.6 3v8.3H3zm8.6-1.8L21 1v10.3h-9.4zM3 12.3h7.6V21L3 19.5zm8.6 0H21V23l-9.4-1.8z"/></svg>
+                </span>
+                            <span><span class="os-name">Windows</span><span class="os-note">Windows 10 или новее</span></span>
+                            <span class="check" aria-hidden="true"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="3"><path d="m6 12 4 4 8-9"/></svg></span>
+                        </button>
+
+                        <button class="system-card is-active" type="button" role="radio" aria-checked="true" data-system="macos">
+                <span class="os-icon" aria-hidden="true">
+                  <svg viewBox="0 0 24 24" fill="currentColor"><path d="M16.8 12.7c0-2.6 2.1-3.8 2.2-3.9a4.8 4.8 0 0 0-3.8-2.1c-1.6-.2-3.1.9-3.9.9-.8 0-2-.9-3.3-.9-1.7 0-3.3 1-4.2 2.5-1.8 3.1-.5 7.7 1.3 10.2.9 1.2 1.9 2.6 3.3 2.5 1.3-.1 1.8-.8 3.4-.8s2 .8 3.4.8c1.4 0 2.3-1.2 3.1-2.5a11 11 0 0 0 1.4-2.8c-.1 0-2.9-1.1-2.9-3.9ZM14.1 5c.7-.9 1.2-2.1 1.1-3.3-1.1 0-2.4.7-3.2 1.6-.7.8-1.3 2-1.1 3.2 1.2.1 2.5-.6 3.2-1.5Z"/></svg>
+                </span>
+                            <span><span class="os-name">macOS</span><span class="os-note">Intel или Apple Silicon</span></span>
+                            <span class="check" aria-hidden="true"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="3"><path d="m6 12 4 4 8-9"/></svg></span>
+                        </button>
+                    </div>
+                </aside>
+
+                <section class="setup-panel" aria-labelledby="setupTitle">
+                    <span class="step-label">Шаг 2</span>
+                    <h3 id="setupTitle">Установите программу</h3>
+                    <p class="section-copy" id="setupCopy">Скачайте образ программы и перенесите LibreOffice в «Программы».</p>
+
+                    <div class="download-box">
+              <span class="download-file-icon" aria-hidden="true">
+                <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M12 3v12m0 0 4-4m-4 4-4-4"/><path d="M4 20h16"/></svg>
+              </span>
+                        <div class="download-info">
+                            <strong id="downloadTitle">Скачать LibreOffice для macOS</strong>
+                            <span id="fileName">LibreOffice_24.8.2_MacOS_aarch64.dmg</span>
+                        </div>
+                        <a class="download-button" id="downloadButton" href="https://www.libreoffice.org/download/download-libreoffice/" target="_blank" rel="noopener noreferrer">
+                            <svg aria-hidden="true" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M12 3v11m0 0 4-4m-4 4-4-4"/><path d="M5 20h14"/></svg>
+                            Скачать
+                        </a>
+                    </div>
+
+                    <div class="instructions">
+                        <div class="instructions-heading"><strong>Инструкция</strong><span id="stepCount">4 шага</span></div>
+                        <ol class="instruction-list" id="instructionList"></ol>
+                        <div class="tip">
+                            <svg aria-hidden="true" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M9 18h6"/><path d="M10 22h4"/><path d="M8.2 14.5A7 7 0 1 1 15.8 14.5c-.8.6-.8 1.5-.8 1.5H9s0-.9-.8-1.5Z"/></svg>
+                            <span id="tipText">Если macOS заблокирует запуск, откройте «Системные настройки» → «Конфиденциальность и безопасность».</span>
+                        </div>
+                    </div>
+                </section>
+            </div>
+        </section>
+    </main>
+</div>
+
+<dialog id="helpDialog" aria-labelledby="helpTitle">
+    <div class="dialog-body">
+        <div class="dialog-top">
+            <h2 id="helpTitle">Помощь с установкой</h2>
+            <button class="close-button" id="closeDialog" type="button" aria-label="Закрыть">
+                <svg aria-hidden="true" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="m6 6 12 12M18 6 6 18"/></svg>
+            </button>
+        </div>
+        <p>Если программа не скачивается или не запускается, обратитесь к преподавателю. Укажите вашу операционную систему и на каком шаге возникла проблема.</p>
+        <p>Также можно открыть <a href="https://www.libreoffice.org/get-help/install-howto/" target="_blank" rel="noopener noreferrer">официальную инструкцию LibreOffice</a>.</p>
+    </div>
+</dialog>
+
+<script>
+    const systems = {
+        macos: {
+            title: 'Скачать LibreOffice для macOS',
+            file: 'LibreOffice_24.8.2_MacOS_aarch64.dmg',
+            copy: 'Скачайте образ программы и перенесите LibreOffice в «Программы».',
+            tip: 'Если macOS заблокирует запуск, откройте «Системные настройки» → «Конфиденциальность и безопасность».',
+            steps: [
+                ['Откройте файл .dmg', 'Он появится в папке «Загрузки».'],
+                ['Перенесите LibreOffice', 'Перетащите ярлык в папку Applications («Программы»).'],
+                ['Откройте «Программы»', 'Найдите LibreOffice и запустите двойным нажатием.'],
+                ['Подтвердите запуск', 'При первом открытии macOS попросит подтверждение.']
+            ]
+        },
+        windows: {
+            title: 'Скачать LibreOffice для Windows',
+            file: 'LibreOffice_24.8.2_Win_x86-64.msi',
+            copy: 'Скачайте установщик и следуйте подсказкам мастера установки.',
+            tip: 'Если Windows покажет запрос контроля учётных записей, нажмите «Да», чтобы разрешить установку.',
+            steps: [
+                ['Откройте файл .msi', 'Он появится в папке «Загрузки».'],
+                ['Запустите установку', 'В окне мастера нажмите «Далее».'],
+                ['Выберите обычную установку', 'Оставьте рекомендуемые параметры и нажмите «Установить».'],
+                ['Откройте LibreOffice', 'Найдите программу через меню «Пуск».']
+            ]
+        }
+    };
+
+    const cards = [...document.querySelectorAll('.system-card')];
+    const instructionList = document.querySelector('#instructionList');
+
+    function renderSystem(systemName) {
+        const system = systems[systemName];
+        cards.forEach((card) => {
+            const selected = card.dataset.system === systemName;
+            card.classList.toggle('is-active', selected);
+            card.setAttribute('aria-checked', String(selected));
+        });
+        document.querySelector('#downloadTitle').textContent = system.title;
+        document.querySelector('#fileName').textContent = system.file;
+        document.querySelector('#setupCopy').textContent = system.copy;
+        document.querySelector('#tipText').textContent = system.tip;
+        document.querySelector('#stepCount').textContent = `${system.steps.length} шага`;
+        instructionList.replaceChildren(...system.steps.map(([title, text], index) => {
+            const item = document.createElement('li');
+            item.className = 'instruction';
+            item.innerHTML = `<span class="number">${index + 1}</span><div><strong>${title}</strong><p>${text}</p></div>`;
+            return item;
+        }));
+    }
+
+    cards.forEach((card) => card.addEventListener('click', () => renderSystem(card.dataset.system)));
+
+    const programCard = document.querySelector('#programCard');
+    const collapseButton = document.querySelector('#collapseButton');
+    collapseButton.addEventListener('click', () => {
+        const collapsed = programCard.classList.toggle('is-collapsed');
+        collapseButton.setAttribute('aria-expanded', String(!collapsed));
+        collapseButton.querySelector('span').textContent = collapsed ? 'Развернуть' : 'Свернуть';
+    });
+
+    const helpDialog = document.querySelector('#helpDialog');
+    document.querySelector('#helpButton').addEventListener('click', () => helpDialog.showModal());
+    document.querySelector('#closeDialog').addEventListener('click', () => helpDialog.close());
+    helpDialog.addEventListener('click', (event) => {
+        if (event.target === helpDialog) helpDialog.close();
+    });
+
+    renderSystem('macos');
+</script>
+</body>
+</html>
