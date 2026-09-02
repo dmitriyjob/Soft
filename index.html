@@ -49,32 +49,8 @@
         .topbar {
             display: flex;
             align-items: center;
-            justify-content: space-between;
+            justify-content: flex-end;
             min-height: 42px;
-        }
-
-        .brand {
-            display: inline-flex;
-            align-items: center;
-            gap: 11px;
-            color: var(--ink);
-            text-decoration: none;
-            font-weight: 760;
-            letter-spacing: -0.02em;
-        }
-
-        .brand-mark {
-            display: grid;
-            width: 34px;
-            height: 34px;
-            place-items: center;
-            color: white;
-            font-size: 13px;
-            font-weight: 800;
-            border: 3px solid rgba(255, 255, 255, 0.88);
-            border-radius: 50%;
-            background: #253e75;
-            box-shadow: 0 0 0 1px rgba(40, 59, 103, 0.16), 0 4px 10px rgba(38, 56, 96, 0.18);
         }
 
         .help-link {
@@ -407,6 +383,116 @@
 
         .tip svg { flex: 0 0 auto; width: 17px; height: 17px; color: #b07818; }
 
+        .screenshots {
+            margin-top: 30px;
+            padding-top: 26px;
+            border-top: 1px solid var(--line);
+        }
+
+        .screenshots-head {
+            display: flex;
+            align-items: end;
+            justify-content: space-between;
+            gap: 20px;
+            margin-bottom: 18px;
+        }
+
+        .screenshots-head h4 { margin: 0 0 5px; font-size: 17px; }
+        .screenshots-head p { margin: 0; color: var(--muted); font-size: 11px; line-height: 1.5; }
+        .scroll-hint { flex: 0 0 auto; color: var(--blue-dark); font-size: 11px; font-weight: 750; }
+        .screenshot-list { display: grid; gap: 22px; }
+
+        .screenshot-step { margin: 0; }
+        .screenshot-step figcaption {
+            display: grid;
+            grid-template-columns: 30px 1fr;
+            gap: 10px;
+            align-items: center;
+            margin-bottom: 10px;
+            font-size: 12px;
+            font-weight: 750;
+        }
+
+        .shot-number {
+            display: grid;
+            width: 28px;
+            height: 28px;
+            place-items: center;
+            color: white;
+            border-radius: 9px;
+            background: var(--blue);
+        }
+
+        .screen {
+            overflow: hidden;
+            min-height: 260px;
+            border: 1px solid #d7dce6;
+            border-radius: 14px;
+            background: #eef1f6;
+            box-shadow: 0 12px 30px rgba(35, 49, 80, 0.1);
+        }
+
+        .screen-bar {
+            display: flex;
+            align-items: center;
+            gap: 6px;
+            height: 34px;
+            padding: 0 12px;
+            color: #727b8e;
+            border-bottom: 1px solid #d8dde6;
+            background: #f8f9fb;
+            font-size: 9px;
+        }
+
+        .screen-dot { width: 8px; height: 8px; border-radius: 50%; background: #c7ccd5; }
+        .screen-title { margin-left: 5px; }
+        .screen-body { display: grid; min-height: 226px; place-items: center; padding: 22px; }
+        .mock-window {
+            width: min(420px, 94%);
+            padding: 24px;
+            border: 1px solid #d7dce4;
+            border-radius: 10px;
+            background: white;
+            box-shadow: 0 12px 35px rgba(31, 42, 66, 0.16);
+            text-align: center;
+        }
+
+        .mock-logo {
+            display: grid;
+            width: 48px;
+            height: 48px;
+            margin: 0 auto 14px;
+            place-items: center;
+            color: white;
+            border-radius: 12px;
+            background: #18a05e;
+            font-size: 22px;
+            font-weight: 850;
+        }
+
+        .mock-window strong { display: block; font-size: 14px; }
+        .mock-window p { margin: 8px auto 18px; color: #778093; font-size: 10px; line-height: 1.5; }
+        .mock-actions { display: flex; justify-content: center; gap: 8px; }
+        .mock-button { padding: 8px 18px; color: #fff; border-radius: 7px; background: #2468d8; font-size: 9px; font-weight: 750; }
+        .mock-button.secondary { color: #555f71; border: 1px solid #d7dce5; background: #f6f7f9; }
+        .mock-progress { height: 7px; margin: 17px 0; overflow: hidden; border-radius: 9px; background: #e9edf2; }
+        .mock-progress::before { display: block; width: 72%; height: 100%; border-radius: inherit; background: #2f70dc; content: ""; }
+
+        .download-row { display: flex; align-items: center; gap: 12px; text-align: left; }
+        .download-row .mock-logo { flex: 0 0 auto; width: 42px; height: 42px; margin: 0; font-size: 18px; }
+        .download-row div { flex: 1; min-width: 0; }
+        .download-row p { margin: 4px 0 0; overflow-wrap: anywhere; }
+        .download-check { color: var(--green); font-size: 20px; font-weight: 800; }
+
+        .drag-area { display: flex; align-items: center; justify-content: center; gap: 26px; padding: 8px 0; }
+        .drag-icon { display: grid; width: 68px; height: 68px; place-items: center; color: white; border-radius: 15px; background: #18a05e; font-size: 28px; font-weight: 850; }
+        .folder-icon { color: #3469aa; background: #cde4ff; }
+        .drag-arrow { color: #8a93a4; font-size: 28px; }
+        .mock-app { width: min(470px, 96%); text-align: left; }
+        .app-toolbar { display: flex; gap: 5px; margin: 14px 0; }
+        .app-toolbar i { width: 24px; height: 20px; border-radius: 4px; background: #e5e9ef; }
+        .app-page { height: 110px; border: 1px solid #e0e4ea; background: linear-gradient(90deg, #fff 70%, #f5f7fa 70%); }
+
         dialog {
             width: min(460px, calc(100% - 32px));
             padding: 0;
@@ -454,7 +540,6 @@
         }
 
         @media (max-width: 520px) {
-            .brand-name { font-size: 14px; }
             .help-link span { display: none; }
             .hero p { font-size: 14px; }
             .eyebrow { font-size: 10px; }
@@ -464,6 +549,13 @@
             .system-list { grid-template-columns: 1fr; }
             .download-box { grid-template-columns: auto 1fr; }
             .download-button { grid-column: 1 / -1; width: 100%; }
+            .screenshots-head { align-items: start; }
+            .scroll-hint { display: none; }
+            .screen { min-height: 230px; }
+            .screen-body { min-height: 196px; padding: 14px; }
+            .mock-window { padding: 18px 14px; }
+            .drag-area { gap: 12px; }
+            .drag-icon { width: 55px; height: 55px; font-size: 22px; }
             h3 { font-size: 20px; }
         }
 
@@ -475,10 +567,6 @@
 <body>
 <div class="page-shell">
     <header class="topbar">
-        <a class="brand" href="#" aria-label="ion-inf — на главную">
-            <span class="brand-mark" aria-hidden="true">i</span>
-            <span class="brand-name">ion-inf</span>
-        </a>
         <button class="help-link" id="helpButton" type="button">
             <span>Нужна помощь?</span>
             <svg aria-hidden="true" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><circle cx="12" cy="12" r="9"/><path d="M9.7 9a2.4 2.4 0 0 1 4.6 1c0 1.8-2.3 2-2.3 3.5"/><path d="M12 17h.01"/></svg>
@@ -527,7 +615,7 @@
                 <span class="os-icon" aria-hidden="true">
                   <svg viewBox="0 0 24 24" fill="currentColor"><path d="M16.8 12.7c0-2.6 2.1-3.8 2.2-3.9a4.8 4.8 0 0 0-3.8-2.1c-1.6-.2-3.1.9-3.9.9-.8 0-2-.9-3.3-.9-1.7 0-3.3 1-4.2 2.5-1.8 3.1-.5 7.7 1.3 10.2.9 1.2 1.9 2.6 3.3 2.5 1.3-.1 1.8-.8 3.4-.8s2 .8 3.4.8c1.4 0 2.3-1.2 3.1-2.5a11 11 0 0 0 1.4-2.8c-.1 0-2.9-1.1-2.9-3.9ZM14.1 5c.7-.9 1.2-2.1 1.1-3.3-1.1 0-2.4.7-3.2 1.6-.7.8-1.3 2-1.1 3.2 1.2.1 2.5-.6 3.2-1.5Z"/></svg>
                 </span>
-                            <span><span class="os-name">macOS</span><span class="os-note">Intel или Apple Silicon</span></span>
+                            <span><span class="os-name">macOS</span><span class="os-note">Apple Silicon (M1 и новее)</span></span>
                             <span class="check" aria-hidden="true"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="3"><path d="m6 12 4 4 8-9"/></svg></span>
                         </button>
                     </div>
@@ -544,9 +632,9 @@
               </span>
                         <div class="download-info">
                             <strong id="downloadTitle">Скачать LibreOffice для macOS</strong>
-                            <span id="fileName">LibreOffice_24.8.2_MacOS_aarch64.dmg</span>
+                            <span id="fileName">LibreOffice_26.8.0_MacOS_aarch64.dmg</span>
                         </div>
-                        <a class="download-button" id="downloadButton" href="https://www.libreoffice.org/download/download-libreoffice/" target="_blank" rel="noopener noreferrer">
+                        <a class="download-button" id="downloadButton" href="#" download>
                             <svg aria-hidden="true" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M12 3v11m0 0 4-4m-4 4-4-4"/><path d="M5 20h14"/></svg>
                             Скачать
                         </a>
@@ -559,6 +647,17 @@
                             <svg aria-hidden="true" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M9 18h6"/><path d="M10 22h4"/><path d="M8.2 14.5A7 7 0 1 1 15.8 14.5c-.8.6-.8 1.5-.8 1.5H9s0-.9-.8-1.5Z"/></svg>
                             <span id="tipText">Если macOS заблокирует запуск, откройте «Системные настройки» → «Конфиденциальность и безопасность».</span>
                         </div>
+                    </div>
+
+                    <div class="screenshots" aria-labelledby="screenshotsTitle">
+                        <div class="screenshots-head">
+                            <div>
+                                <h4 id="screenshotsTitle">Установка на экране</h4>
+                                <p>Листайте страницу вниз и повторяйте действия по порядку.</p>
+                            </div>
+                            <span class="scroll-hint" aria-hidden="true">Прокрутите вниз ↓</span>
+                        </div>
+                        <div class="screenshot-list" id="screenshotList"></div>
                     </div>
                 </section>
             </div>
@@ -583,7 +682,8 @@
     const systems = {
         macos: {
             title: 'Скачать LibreOffice для macOS',
-            file: 'LibreOffice_24.8.2_MacOS_aarch64.dmg',
+            file: 'LibreOffice_26.8.0_MacOS_aarch64.dmg',
+            downloadUrl: 'https://download.documentfoundation.org/libreoffice/stable/26.8.0/mac/aarch64/LibreOffice_26.8.0_MacOS_aarch64.dmg',
             copy: 'Скачайте образ программы и перенесите LibreOffice в «Программы».',
             tip: 'Если macOS заблокирует запуск, откройте «Системные настройки» → «Конфиденциальность и безопасность».',
             steps: [
@@ -591,11 +691,18 @@
                 ['Перенесите LibreOffice', 'Перетащите ярлык в папку Applications («Программы»).'],
                 ['Откройте «Программы»', 'Найдите LibreOffice и запустите двойным нажатием.'],
                 ['Подтвердите запуск', 'При первом открытии macOS попросит подтверждение.']
+            ],
+            screens: [
+                ['Файл скачан', 'download'],
+                ['Перетащите LibreOffice в «Программы»', 'drag'],
+                ['Подтвердите первое открытие', 'confirm'],
+                ['LibreOffice готов к работе', 'launch']
             ]
         },
         windows: {
             title: 'Скачать LibreOffice для Windows',
-            file: 'LibreOffice_24.8.2_Win_x86-64.msi',
+            file: 'LibreOffice_26.8.0_Win_x86-64.msi',
+            downloadUrl: 'https://download.documentfoundation.org/libreoffice/stable/26.8.0/win/x86_64/LibreOffice_26.8.0_Win_x86-64.msi',
             copy: 'Скачайте установщик и следуйте подсказкам мастера установки.',
             tip: 'Если Windows покажет запрос контроля учётных записей, нажмите «Да», чтобы разрешить установку.',
             steps: [
@@ -603,12 +710,31 @@
                 ['Запустите установку', 'В окне мастера нажмите «Далее».'],
                 ['Выберите обычную установку', 'Оставьте рекомендуемые параметры и нажмите «Установить».'],
                 ['Откройте LibreOffice', 'Найдите программу через меню «Пуск».']
+            ],
+            screens: [
+                ['Файл скачан', 'download'],
+                ['Запустите мастер установки', 'welcome'],
+                ['Дождитесь завершения установки', 'progress'],
+                ['LibreOffice готов к работе', 'launch']
             ]
         }
     };
 
     const cards = [...document.querySelectorAll('.system-card')];
     const instructionList = document.querySelector('#instructionList');
+    const screenshotList = document.querySelector('#screenshotList');
+
+    function screenMarkup(kind, file) {
+        const content = {
+            download: `<div class="mock-window"><div class="download-row"><span class="mock-logo">L</span><div><strong>Загрузка завершена</strong><p>${file}</p></div><span class="download-check">✓</span></div></div>`,
+            drag: `<div class="mock-window"><strong>Установка LibreOffice</strong><p>Перетащите приложение в папку «Программы»</p><div class="drag-area"><span class="drag-icon">L</span><span class="drag-arrow">→</span><span class="drag-icon folder-icon">▰</span></div></div>`,
+            confirm: `<div class="mock-window"><span class="mock-logo">L</span><strong>Открыть приложение LibreOffice?</strong><p>Приложение было загружено из интернета. macOS проверила его и готова открыть.</p><div class="mock-actions"><span class="mock-button secondary">Отмена</span><span class="mock-button">Открыть</span></div></div>`,
+            welcome: `<div class="mock-window"><span class="mock-logo">L</span><strong>Добро пожаловать в мастер установки LibreOffice</strong><p>Мастер установит LibreOffice на ваш компьютер.</p><div class="mock-actions"><span class="mock-button secondary">Отмена</span><span class="mock-button">Далее</span></div></div>`,
+            progress: `<div class="mock-window"><span class="mock-logo">L</span><strong>Установка LibreOffice</strong><p>Подождите, пока мастер установит программу.</p><div class="mock-progress"></div><p>Копирование новых файлов…</p></div>`,
+            launch: `<div class="mock-window mock-app"><strong>LibreOffice Writer</strong><div class="app-toolbar"><i></i><i></i><i></i><i></i><i></i></div><div class="app-page"></div></div>`
+        };
+        return `<div class="screen" role="img" aria-label="${kind === 'launch' ? 'Первый запуск LibreOffice' : 'Экран шага установки'}"><div class="screen-bar"><span class="screen-dot"></span><span class="screen-dot"></span><span class="screen-dot"></span><span class="screen-title">${kind === 'download' ? 'Загрузки' : 'LibreOffice'}</span></div><div class="screen-body">${content[kind]}</div></div>`;
+    }
 
     function renderSystem(systemName) {
         const system = systems[systemName];
@@ -621,12 +747,21 @@
         document.querySelector('#fileName').textContent = system.file;
         document.querySelector('#setupCopy').textContent = system.copy;
         document.querySelector('#tipText').textContent = system.tip;
+        const downloadButton = document.querySelector('#downloadButton');
+        downloadButton.href = system.downloadUrl;
+        downloadButton.setAttribute('download', system.file);
         document.querySelector('#stepCount').textContent = `${system.steps.length} шага`;
         instructionList.replaceChildren(...system.steps.map(([title, text], index) => {
             const item = document.createElement('li');
             item.className = 'instruction';
             item.innerHTML = `<span class="number">${index + 1}</span><div><strong>${title}</strong><p>${text}</p></div>`;
             return item;
+        }));
+        screenshotList.replaceChildren(...system.screens.map(([caption, kind], index) => {
+            const figure = document.createElement('figure');
+            figure.className = 'screenshot-step';
+            figure.innerHTML = `<figcaption><span class="shot-number">${index + 1}</span><span>${caption}</span></figcaption>${screenMarkup(kind, system.file)}`;
+            return figure;
         }));
     }
 
