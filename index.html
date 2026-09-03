@@ -362,6 +362,7 @@
 
         .instruction strong { display: block; margin: 2px 0 5px; font-size: 13px; }
         .instruction p { margin: 0; color: var(--muted); font-size: 11px; line-height: 1.55; }
+        .instruction p a { color: var(--blue-dark); font-weight: 750; }
 
         .tip {
             display: flex;
@@ -798,10 +799,30 @@
                 windows: {
                     title: 'Скачать PyCharm для Windows', file: 'pycharm-2026.2.1.exe',
                     downloadUrl: 'https://download.jetbrains.com/python/pycharm-2026.2.1.exe',
-                    copy: 'Скачайте установщик PyCharm и следуйте подсказкам мастера.',
-                    tip: 'На экране параметров отметьте создание ярлыка, чтобы PyCharm было проще найти после установки.',
-                    steps: [['Откройте файл .exe', 'Файл появится в папке «Загрузки».'], ['Разрешите установку', 'Если Windows покажет запрос, нажмите «Да».'], ['Выберите параметры', 'Создайте ярлык и нажмите «Install».'], ['Запустите PyCharm', 'Откройте программу и нажмите «New Project».']],
-                    screens: [['Файл скачан', 'download'], ['Запустите мастер установки', 'welcome'], ['Выберите параметры установки', 'options'], ['Создайте первый проект', 'ideLaunch']]
+                    copy: 'Сначала установите Python с официального сайта, затем скачайте и установите PyCharm.',
+                    tip: 'При установке Python обязательно отметьте «Add python.exe to PATH», чтобы PyCharm смог найти интерпретатор.',
+                    steps: [
+                        ['Скачайте Python', 'Откройте <a href="https://www.python.org/downloads/windows/" target="_blank" rel="noopener noreferrer">официальный сайт Python</a> и выберите установщик для Windows.'],
+                        ['Запустите установщик Python', 'Отметьте «Add python.exe to PATH» и выберите «Customize installation».'],
+                        ['Оставьте дополнительные компоненты', 'Проверьте выбранные компоненты и нажмите «Next».'],
+                        ['Установите Python', 'Отметьте добавление Python в переменные среды, выберите папку и нажмите «Install».'],
+                        ['Скачайте PyCharm', 'Нажмите кнопку «Скачать» выше, чтобы получить установщик PyCharm для Windows.'],
+                        ['Выберите папку установки', 'Оставьте предложенный путь или укажите другой, затем нажмите «Next».'],
+                        ['Выберите папку меню «Пуск»', 'Оставьте JetBrains и продолжите установку.'],
+                        ['Настройте параметры PyCharm', 'Создайте ярлык, добавьте bin в PATH и связь с файлами .py.'],
+                        ['Завершите установку', 'При необходимости отметьте «Run PyCharm» и нажмите «Finish».']
+                    ],
+                    screens: [
+                        ['Скачайте Python с официального сайта', 'realImage', 'assets/windows-pycharm-install/01-python-download.jpeg'],
+                        ['Добавьте Python в PATH и настройте установку', 'realImage', 'assets/windows-pycharm-install/02-python-installer.jpeg'],
+                        ['Проверьте дополнительные компоненты', 'realImage', 'assets/windows-pycharm-install/03-python-features.jpeg'],
+                        ['Выберите параметры и установите Python', 'realImage', 'assets/windows-pycharm-install/04-python-options.jpeg'],
+                        ['Скачайте PyCharm для Windows', 'realImage', 'assets/windows-pycharm-install/05-pycharm-download.jpeg'],
+                        ['Выберите папку установки PyCharm', 'realImage', 'assets/windows-pycharm-install/06-pycharm-location.jpeg'],
+                        ['Выберите папку в меню «Пуск»', 'realImage', 'assets/windows-pycharm-install/07-pycharm-start-menu.jpeg'],
+                        ['Отметьте нужные параметры PyCharm', 'realImage', 'assets/windows-pycharm-install/08-pycharm-options.jpeg'],
+                        ['Завершите установку PyCharm', 'realImage', 'assets/windows-pycharm-install/09-pycharm-finish.jpeg']
+                    ]
                 }
             }
         }
@@ -811,9 +832,12 @@
         return `<span class="${className} ${program.logoClass}">${program.mark}</span>`;
     }
 
-    function screenMarkup(kind, file, program) {
+    function screenMarkup(kind, file, program, imagePath, caption) {
         if (kind === 'drag') {
             return `<div class="screen real-screen"><img class="screen-real-image" src="${program.dragImage}" alt="Окно установки ${program.name}: перетащите приложение в папку Applications" loading="lazy"></div>`;
+        }
+        if (kind === 'realImage') {
+            return `<div class="screen real-screen"><img class="screen-real-image" src="${imagePath}" alt="${caption}" loading="lazy"></div>`;
         }
         const content = {
             download: `<div class="mock-window"><div class="download-row">${logo(program)}<div><strong>Загрузка завершена</strong><p>${file}</p></div><span class="download-check">✓</span></div></div>`,
@@ -843,17 +867,18 @@
         const downloadButton = programElement.querySelector('.download-button');
         downloadButton.href = system.downloadUrl;
         downloadButton.setAttribute('download', system.file);
-        programElement.querySelector('.step-count').textContent = `${system.steps.length} шага`;
+        const stepWord = system.steps.length === 1 ? 'шаг' : system.steps.length < 5 ? 'шага' : 'шагов';
+        programElement.querySelector('.step-count').textContent = `${system.steps.length} ${stepWord}`;
         programElement.querySelector('.instruction-list').replaceChildren(...system.steps.map(([title, text], index) => {
             const item = document.createElement('li');
             item.className = 'instruction';
             item.innerHTML = `<span class="number">${index + 1}</span><div><strong>${title}</strong><p>${text}</p></div>`;
             return item;
         }));
-        programElement.querySelector('.screenshot-list').replaceChildren(...system.screens.map(([caption, kind], index) => {
+        programElement.querySelector('.screenshot-list').replaceChildren(...system.screens.map(([caption, kind, imagePath], index) => {
             const figure = document.createElement('figure');
             figure.className = 'screenshot-step';
-            figure.innerHTML = `<figcaption><span class="shot-number">${index + 1}</span><span>${caption}</span></figcaption>${screenMarkup(kind, system.file, program)}`;
+            figure.innerHTML = `<figcaption><span class="shot-number">${index + 1}</span><span>${caption}</span></figcaption>${screenMarkup(kind, system.file, program, imagePath, caption)}`;
             return figure;
         }));
     }
