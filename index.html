@@ -120,8 +120,8 @@
         }
 
         .program + .program { margin-top: 28px; }
-        .program[data-program="pycharm"] .file-icon { overflow: hidden; border-color: #e1e5ec; background: #fff; }
-        .program-icon-image { display: block; width: 50px; height: 50px; object-fit: contain; }
+        .program[data-program="pycharm"] .file-icon { overflow: visible; border: 0; background: transparent; }
+        .program-icon-image { display: block; width: 52px; height: 52px; object-fit: contain; }
         .mock-logo.pycharm, .drag-icon.pycharm { background: linear-gradient(135deg, #ff2f96, #ff7a00 48%, #6547f5); }
 
         .program-head {
@@ -494,8 +494,7 @@
             .help-link span { display: none; }
             .hero p { font-size: 14px; }
             .eyebrow { font-size: 10px; }
-            .file-icon { display: none; }
-            .program-head { grid-template-columns: 1fr auto; }
+            .program-head { grid-template-columns: auto minmax(0, 1fr) auto; gap: 10px; }
             .system-panel, .setup-panel { padding: 20px 16px; }
             .system-list { grid-template-columns: 1fr; }
             .download-box { grid-template-columns: auto 1fr; }
