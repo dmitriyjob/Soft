@@ -120,7 +120,8 @@
         }
 
         .program + .program { margin-top: 28px; }
-        .program[data-program="pycharm"] .file-icon { color: #fff; border-color: transparent; background: linear-gradient(135deg, #ff2f96, #ff7a00 48%, #6547f5); }
+        .program[data-program="pycharm"] .file-icon { overflow: hidden; border-color: #e1e5ec; background: #fff; }
+        .program-icon-image { display: block; width: auto; height: 62px; transform: translateX(-5px); }
         .mock-logo.pycharm, .drag-icon.pycharm { background: linear-gradient(135deg, #ff2f96, #ff7a00 48%, #6547f5); }
 
         .program-head {
@@ -584,7 +585,7 @@
             <p>Скачайте нужную программу и установите её по простой пошаговой инструкции.</p>
         </section>
 
-        <section class="program" data-program="libreoffice" aria-labelledby="libreofficeTitle">
+        <section class="program is-collapsed" data-program="libreoffice" aria-labelledby="libreofficeTitle">
             <div class="program-head">
                 <div class="file-icon" aria-hidden="true">
                     <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.7"><path d="M6 2.8h8l4 4V21H6z"/><path d="M14 2.8V7h4"/></svg>
@@ -593,8 +594,8 @@
                     <h2 id="libreofficeTitle">LibreOffice</h2>
                     <p>Документы, таблицы и презентации</p>
                 </div>
-                <button class="collapse-button" type="button" aria-expanded="true" aria-controls="libreofficeContent">
-                    <span>Свернуть</span>
+                <button class="collapse-button" type="button" aria-expanded="false" aria-controls="libreofficeContent">
+                    <span>Развернуть</span>
                     <svg aria-hidden="true" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="m7 14 5-5 5 5"/></svg>
                 </button>
             </div>
@@ -672,15 +673,15 @@
             </div>
         </section>
 
-        <section class="program" data-program="pycharm" aria-labelledby="pycharmTitle">
+        <section class="program is-collapsed" data-program="pycharm" aria-labelledby="pycharmTitle">
             <div class="program-head">
-                <div class="file-icon" aria-hidden="true"><strong>PC</strong></div>
+                <div class="file-icon" aria-hidden="true"><img class="program-icon-image" src="assets/pycharm-header-icon.png" alt=""></div>
                 <div class="program-title">
                     <h2 id="pycharmTitle">PyCharm</h2>
                     <p>Среда разработки для Python</p>
                 </div>
-                <button class="collapse-button" type="button" aria-expanded="true" aria-controls="pycharmContent">
-                    <span>Свернуть</span>
+                <button class="collapse-button" type="button" aria-expanded="false" aria-controls="pycharmContent">
+                    <span>Развернуть</span>
                     <svg aria-hidden="true" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="m7 14 5-5 5 5"/></svg>
                 </button>
             </div>
