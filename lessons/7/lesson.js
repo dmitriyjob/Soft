@@ -36,6 +36,10 @@ function workedColors(){
  const label=(n,text)=>`<span class="solution-label"><span class="solution-number">${n}</span><span>${text}</span></span>`;
  return `<div class="worked-intro"><h2>Находим количество цветов</h2><div class="problem-card"><p class="worked-question">Для изображения <span data-condition="size">640 × 480 пикселей</span> выделено не более <span data-condition="memory">300 Кбайт</span>. Сжатия и заголовка нет, коды пикселей идут подряд и имеют одинаковую длину. Каково <span data-condition="target">максимальное число цветов</span>?</p></div></div><div class="worked-solution"><div class="worked-equations"><div class="equation-column">${reveal(5,'I = <span data-known="size">a</span> · <span data-known="size">b</span> · <span data-unknown="i">i</span>','worked-formula')}${reveal(6,'a = <b>640</b>, &nbsp; b = <b>480</b>','equation-givens given-size')}</div><div class="equation-column">${reveal(5,'N = 2<sup><span data-unknown="i">i</span></sup>','worked-formula')}${reveal(7,'I ≤ <b>300 Кбайт</b>','equation-givens given-colors')}</div></div>${reveal(8,`${label(1,'Переводим в биты')}<div class="calculation">300 · 8192 = <strong>2 457 600</strong> <span class="unit-accent">бит</span></div>`,'solution-line')}${reveal(9,`${label(2,'Находим i')}<div class="calculation">2 457 600 ÷ (640 · 480) = <strong>8 бит</strong> на пиксель</div>`,'solution-line')}${reveal(10,`${label(3,'Находим палитру')}<div class="calculation">N = 2<sup>8</sup> = <strong>256 цветов</strong></div>`,'solution-line')}${reveal(11,'Ответ: <strong>256</strong>','plain-answer')}</div>`;
 }
+function percentLesson(){
+ const part=(n,html,cls='')=>`<span class="build-in ${cls}" data-reveal="${n}">${html}</span>`;
+ return `<div class="percent-intro"><h2>Проценты · количество цветов</h2><div class="problem-card"><p class="worked-question">Для растрового изображения <span data-pct="size">640 × 480 пикселей</span> отведено <span data-pct="memory">230 Кбайт</span>. <span data-pct="compressed">При сохранении данные сжимаются</span>: итоговый файл становится <span data-pct="less">на 25% меньше</span> <span data-pct="original">исходного</span>. Коды пикселей имеют одинаковую длину и записаны подряд. Какое максимальное <span data-pct="target">количество цветов</span> можно использовать?</p></div></div><div class="percent-explanation">${reveal(8,'<span class="percent-caption">Мы знаем, что</span><div class="percent-formula">I = a · b · i '+part(9,'<small class="original-marker">ориг.</small>')+'</div>','percent-known')}${reveal(9,'НО','percent-but')}${reveal(10,'<b>Правило:</b> за 100% берём то, с чем сравниваем.','percent-rule')}</div><div class="percent-analysis"><div class="percent-table-wrap"><table class="percent-table"><thead><tr><th></th><th>I</th><th>%</th></tr></thead><tbody><tr><th>Сжатый</th><td>${part(15,'230 Кбайт')}</td><td>${part(14,'75%')}</td></tr><tr><th>Оригинал</th><td>${part(16,'X')}</td><td>${part(13,'100%')}</td></tr></tbody></table><svg class="percent-cross build-in" data-reveal="17" viewBox="0 0 600 210" preserveAspectRatio="none" aria-hidden="true"><path d="M300 48 L500 165 M500 48 L300 165"/></svg></div>${reveal(18,'X = 230 · 100 ÷ 75<br><strong>X = 306⅔ Кбайт</strong>','percent-x')}<div class="percent-calculations">${reveal(19,'640 · 480 · i ≤ (230 · 100 · 2<sup>13</sup>) ÷ 75','percent-line')}${reveal(20,'i ≤ (230 · 100 · 2<sup>13</sup>) ÷ (75 · 640 · 480) ≈ <strong>8,1778</strong>','percent-line')}${reveal(21,'i<sub>max</sub> = <strong>8 бит</strong>','percent-line')}${reveal(22,'N = 2<sup>8</sup> = <strong>256 цветов</strong>','percent-line')}${reveal(23,'Ответ: <strong>256</strong>','percent-answer')}</div></div>`;
+}
 let slides=[
 {group:'Начало',title:'О чём этот урок',type:'intro',body:`<div class="hero"><div class="hero-art">${bird()}</div><div class="hero-text"><h1>Графика.<br><em>Всё в битах.</em></h1><p class="lead">Разберём задание №7 ЕГЭ:<br>как посчитать объём изображения.</p><div class="tag-row"><span class="tag">Теория + практика</span><span class="tag">Без программирования</span></div><a class="primary" href="#2">Начать урок <span>→</span></a></div></div><div class="hero-caption"><b>От пикселя до ответа</b><span>Понятные формулы, пошаговые разборы<br>и примеры для самостоятельного разбора.</span></div>`},
 {group:'Графика',title:'Считаем объём изображения',type:'diagram',steps:4,bare:true,body:diagram()},
@@ -55,6 +59,7 @@ quiz(17,'Практика: передача','Объём файла с изоб�
 ];
 // Remove the slides identified by their original positions, before rebuilding navigation.
 slides=slides.filter((_,i)=>![8,9,10,12,13,14].includes(i+1));
+slides.splice(7,0,{group:'Проценты',title:'Сжатие изображения',type:'percent',steps:23,bare:true,body:percentLesson()});
 const $=s=>document.querySelector(s);
 let current=1,buildStep=0,pendingStep=0,state={};
 try{state=JSON.parse(localStorage.getItem('informatics-7-graphics-v2')||'{}');if(!state||Array.isArray(state)||typeof state!=='object')state={};}catch{}
@@ -96,7 +101,8 @@ function updateBuild(){
  if(s.type==='diagram')el.querySelectorAll('[data-factor]').forEach(f=>f.classList.toggle('highlight',f.dataset.factor===['','a','b','i','i'][buildStep]));
  el.classList.toggle('units-open',s.type==='bits'&&buildStep>=3);
  el.classList.toggle('byte-joined',s.type==='bits'&&buildStep>=2);
- el.classList.toggle('problem-at-top',s.type==='worked'&&buildStep>=4);
+ el.classList.toggle('problem-at-top',(s.type==='worked'&&buildStep>=4)||(s.type==='percent'&&buildStep>=7));
+ if(s.type==='percent'){el.classList.toggle('percent-cleared',buildStep>=11);el.classList.toggle('percent-table-mode',buildStep>=12);el.classList.toggle('percent-table-shift',buildStep>=18);el.querySelectorAll('[data-pct]').forEach(f=>f.classList.toggle('highlight',buildStep>=({size:1,memory:2,compressed:3,less:4,target:5,original:6}[f.dataset.pct])));}
  if(s.type==='worked'){
   el.querySelectorAll('[data-condition]').forEach(f=>f.classList.toggle('highlight',buildStep>=({size:1,colors:2,memory:2,target:3}[f.dataset.condition])));
   el.querySelectorAll('[data-known]').forEach(f=>f.classList.toggle('highlight',buildStep>=(f.dataset.known==='size'?6:7)));
@@ -125,7 +131,13 @@ function go(delta){
  const n=current+delta;if(n>=1&&n<=slides.length){pendingStep=delta<0?(slides[n-1].steps||0):0;location.hash=String(n);}
 }
 $('#slide').addEventListener('click',e=>{if(e.target.closest('a,button,input,select,label,option,textarea,details,summary'))return;const s=slides[current-1];if(buildStep<(s.steps||0)){buildStep++;updateBuild();}});
-$('#prev').addEventListener('click',()=>go(-1));$('#next').addEventListener('click',()=>go(1));window.addEventListener('hashchange',render);
+$('#prev').addEventListener('click',()=>go(-1));$('#next').addEventListener('click',()=>go(1));window.addEventListener('hashchange',()=>{
+ const next=Number(location.hash.slice(1)); const animated=(current===1&&next===2)||(current===2&&next===1);
+ const old=animated&&!matchMedia('(prefers-reduced-motion: reduce)').matches?document.querySelector('.bird-grid'):null;
+ let copy,box;if(old){box=old.getBoundingClientRect();copy=old.cloneNode(true);Object.assign(copy.style,{position:'fixed',left:box.left+'px',top:box.top+'px',width:box.width+'px',height:box.height+'px',zIndex:'100',pointerEvents:'none',margin:'0'});document.body.append(copy);}
+ render();
+ if(copy){const target=document.querySelector('.bird-grid');if(!target){copy.remove();return;}const end=target.getBoundingClientRect();target.style.visibility='hidden';const animation=copy.animate([{transform:'translate(0,0) scale(1)'},{transform:`translate(${end.left-box.left}px,${end.top-box.top}px) scale(${end.width/box.width},${end.height/box.height})`}],{duration:650,easing:'ease-in-out'});animation.finished.catch(()=>{}).finally(()=>{copy.remove();target.style.visibility='';});}
+});
 document.addEventListener('keydown',e=>{
  if(e.key==='Escape'){toggleMenu(false);$('#menu').focus();return;}
  if(e.target.closest('input,select,textarea,summary')||e.altKey||e.ctrlKey||e.metaKey)return;
