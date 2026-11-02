@@ -111,3 +111,5 @@ html,body,#stage,#slide-frame,article{background:#EAE7E4}#slide-frame{border:0;b
 @media(prefers-reduced-motion:reduce){.slide-percent *,.wrong-equation:after{transition:none!important}}
 
 @media(min-width:701px){.percent-cleared .percent-explanation{transform:translate(475px,-65px) scale(.68);transition-duration:1.1s}.percent-explanation{transition-duration:1.1s}.percent-caption,.percent-rule{transition-duration:1.1s}}
+
+.conversion-caption{font-size:1em}.bits-multiplier{font-weight:400}
