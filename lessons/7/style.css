@@ -120,3 +120,5 @@ html,body,#stage,#slide-frame,article{background:#F5F5F7}#slide-frame{border:0;b
 
 /* Shared page background and slide crossfade. */
 :root{--paper:#F5F5F7;--white:#F5F5F7}.slide-outgoing{position:absolute!important;inset:0;z-index:5;pointer-events:none!important;margin:0}
+
+.confetti-burst{position:fixed;inset:0;overflow:hidden;pointer-events:none;z-index:100}.confetti{position:absolute;pointer-events:none;will-change:transform,opacity}
