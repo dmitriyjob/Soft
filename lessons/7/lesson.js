@@ -44,7 +44,7 @@ function percentLesson(){
  return `<div class="percent-intro"><h2>Проценты · количество цветов</h2><div class="problem-card"><p class="worked-question">Для растрового изображения <span data-pct="size">640 × 480 пикселей</span> отведено <span data-pct="memory">230 Кбайт</span>. <span data-pct="compressed">При сохранении данные сжимаются</span>: итоговый файл становится <span data-pct="less">на 25% меньше</span> <span data-pct="original">ИСХОДНОГО</span>. Коды пикселей имеют одинаковую длину и записаны подряд. Какое максимальное <span data-pct="target">количество цветов</span> можно использовать?</p></div></div><div class="percent-explanation">${reveal(8,'<span class="percent-caption">Мы знаем, что</span><div class="percent-formula">I'+part(9,'<small class="original-marker">ориг.</small>')+' = a · b · i</div>','percent-known')}<div class="percent-misconception">${reveal(10,'<span class="wrong-equation">230 Кбайт = 640 · 480 · i</span>','percent-wrong')}${reveal(12,'В формуле — <b>исходный</b> объём. 230 Кбайт — объём <b>сжатого</b> файла.','percent-correction')}</div>${reveal(13,'<b>Правило:</b> за 100% берём то, с чем сравниваем.','percent-rule')}</div><div class="percent-analysis"><div class="percent-table-wrap"><table class="percent-table"><thead><tr><th></th><th>I</th><th>%</th></tr></thead><tbody><tr><th>Сжатый</th><td>${part(18,'230 Кбайт')}</td><td>${part(17,'75%')}</td></tr><tr><th>Оригинал</th><td>${part(19,'X')}</td><td>${part(16,'100%')}</td></tr></tbody></table><svg class="percent-cross build-in" data-reveal="20" viewBox="0 0 600 210" preserveAspectRatio="none" aria-hidden="true"><path d="M300 48 L500 165 M500 48 L300 165"/></svg></div><div class="percent-calculations">${reveal(22,`${num(1)}X = ${frac('230 · 100','75')} Кбайт`,'percent-line percent-x')} ${reveal(23,`${num(2)}<div class="percent-equation-slot">${equation(23,23,'I<sub>ориг.</sub> = a · b · i')}${equation(24,31,`I ориг. = ${frac('230 · 100','75')} <b class="bits-multiplier">· 8 · 1024</b> <span class="conversion-caption">переводим в биты</span>`)}${equation(25,31,`<span class="divide-source">640 · 480</span> · i ≤ ${frac('230 · 100 · 8 · 1024','75')} ${part(26,' | ÷ (640 · 480)','divide-hint')}`)}</div>`,'percent-line percent-solution-two')}${reveal(27,`${num(3)}i ≤ ${frac('230 · 100 · 8 · 1024','75 · <span class="divide-target">640 · 480</span>')} ≈ <strong>8,1778</strong>${part(28,'При i = 9 сжатое изображение займёт 253,125 Кбайт — больше выделенных 230 Кбайт.','nine-bit-note')}`,'percent-line percent-bound')}${reveal(29,`${num(4)}i<sub>max</sub> = <strong>8 бит</strong>`,'percent-line')}${reveal(30,`${num(5)}N = 2<sup>8</sup> = <strong>256 цветов</strong>`,'percent-line')}${reveal(31,'Ответ: <strong>256</strong>','percent-answer')}</div></div>`;
 }
 let slides=[
-{group:'Начало',title:'О чём этот урок',type:'intro',body:`<div class="hero"><div class="hero-art">${bird()}</div><div class="hero-text"><h1>Графика.<br><em>Всё в битах.</em></h1><p class="lead">Разберём задание №7 ЕГЭ:<br>как посчитать объём изображения.</p><div class="tag-row"><span class="tag">Теория + практика</span><span class="tag">Без программирования</span></div><a class="primary" href="#2">Начать урок <span>→</span></a></div></div><div class="hero-caption"><b>От пикселя до ответа</b><span>Понятные формулы, пошаговые разборы<br>и примеры для самостоятельного разбора.</span></div>`},
+{group:'Начало',title:'О чём этот урок',type:'intro',body:`<div class="hero"><div class="hero-art">${bird()}</div><div class="hero-text"><h1>Графика.<br><em>Всё в битах.</em></h1><p class="lead">Разберём задание №7 ЕГЭ:<br>как посчитать объём изображения.</p><a class="primary" href="#2">Начать урок <span>→</span></a></div></div>`},
 {group:'Графика',title:'Считаем объём изображения',type:'diagram',steps:4,bare:true,body:diagram()},
 {group:'Графика',title:'Биты, байты и единицы',type:'bits',steps:6,body:bits()},
 {group:'Графика',title:'Учимся переводить',type:'conversion',steps:14,body:conversions()},
@@ -77,6 +77,17 @@ function stylizeVolumes(root){
  const walker=document.createTreeWalker(root,NodeFilter.SHOW_TEXT);const nodes=[];
  while(walker.nextNode()){const node=walker.currentNode;if(/\bI\b/.test(node.textContent)&&!node.parentElement.closest('svg,.volume-symbol'))nodes.push(node);}
  for(const node of nodes){const fragment=document.createDocumentFragment();node.textContent.split(/(\bI\b)/).forEach(part=>{if(part!=='I'){fragment.append(document.createTextNode(part));return;}const symbol=document.createElement('span');symbol.className='volume-symbol';symbol.setAttribute('role','img');symbol.setAttribute('aria-label','I');symbol.innerHTML='<svg viewBox="0 0 32 44" aria-hidden="true"><path d="M5 5H27M16 5V39M5 39H27" fill="none" stroke="currentColor" stroke-width="4.5" stroke-linecap="round"/></svg>';fragment.append(symbol);});node.replaceWith(fragment);}
+}
+function captureSlide(){
+ document.querySelectorAll('.slide-outgoing').forEach(e=>e.remove());
+ if(matchMedia('(prefers-reduced-motion: reduce)').matches)return null;
+ const source=document.querySelector('#slide'),copy=source.cloneNode(true);copy.removeAttribute('id');copy.querySelectorAll('[id]').forEach(e=>e.removeAttribute('id'));copy.classList.add('slide-outgoing');copy.setAttribute('aria-hidden','true');copy.inert=true;source.parentElement.append(copy);copy.scrollTop=source.scrollTop;return copy;
+}
+function fadeSlides(copy,shared){
+ if(!copy)return;
+ if(shared)copy.querySelectorAll('.sound-wave,.bird-grid').forEach(e=>e.style.visibility='hidden');
+ copy.animate([{opacity:1},{opacity:0}],{duration:550,easing:'ease-in-out',fill:'forwards'}).finished.catch(()=>{}).finally(()=>copy.remove());
+ document.querySelector('#slide').animate([{opacity:0},{opacity:1}],{duration:550,easing:'ease-in-out'});
 }
 function render(){
  let n=Number(location.hash.slice(1));if(!Number.isInteger(n)||n<1||n>slides.length)n=1;
@@ -138,7 +149,7 @@ $('#prev').addEventListener('click',()=>go(-1));$('#next').addEventListener('cli
  const next=Number(location.hash.slice(1)); const animated=(current===1&&next===2)||(current===2&&next===1);
  const old=animated&&!matchMedia('(prefers-reduced-motion: reduce)').matches?document.querySelector('.bird-grid'):null;
  let copy,box;if(old){box=old.getBoundingClientRect();copy=old.cloneNode(true);Object.assign(copy.style,{position:'fixed',left:box.left+'px',top:box.top+'px',width:box.width+'px',height:box.height+'px',zIndex:'100',pointerEvents:'none',margin:'0',transformOrigin:'0 0'});document.body.append(copy);}
- render();
+ const outgoing=captureSlide();render();fadeSlides(outgoing,!!copy);
  if(copy){const target=document.querySelector('.bird-grid');if(!target){copy.remove();return;}const end=target.getBoundingClientRect();target.style.visibility='hidden';const animation=copy.animate([{transform:'translate(0,0) scale(1)'},{transform:`translate(${end.left-box.left}px,${end.top-box.top}px) scale(${end.width/box.width},${end.height/box.height})`}],{duration:650,easing:'ease-in-out'});animation.finished.catch(()=>{}).finally(()=>{copy.remove();target.style.visibility='';});}
 });
 document.addEventListener('keydown',e=>{
