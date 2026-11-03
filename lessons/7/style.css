@@ -122,3 +122,8 @@ html,body,#stage,#slide-frame,article{background:#F5F5F7}#slide-frame{border:0;b
 :root{--paper:#F5F5F7;--white:#F5F5F7}.slide-outgoing{position:absolute!important;inset:0;z-index:5;pointer-events:none!important;margin:0}
 
 .confetti-burst{position:fixed;inset:0;overflow:hidden;pointer-events:none;z-index:100}.confetti{position:absolute;pointer-events:none;will-change:transform,opacity}
+
+/* Keep the misconception with the formula; introduce the rule after the table. */
+.percent-cleared .percent-misconception{opacity:1;visibility:visible}
+@media(min-width:701px){.percent-cleared .percent-rule{margin-top:125px}.percent-table-wrap{transform:translateY(80px)}.percent-table-shift .percent-table-wrap{transform:translateY(-125px) scale(.58)}}
+@media(max-width:700px){.percent-misconception,.percent-cleared .percent-misconception{position:relative;top:auto;margin-top:20px}.percent-rule,.percent-cleared .percent-rule{margin-top:20px}}
