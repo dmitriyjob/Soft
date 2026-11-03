@@ -39,10 +39,18 @@ function stylizeNu(root){
  for(const node of nodes){const fragment=document.createDocumentFragment();node.textContent.split('ν').forEach((part,i)=>{if(i){const symbol=document.createElement('span');symbol.className='nu-symbol';symbol.setAttribute('role','img');symbol.setAttribute('aria-label','ню');symbol.innerHTML='<svg viewBox="0 0 34 48" aria-hidden="true"><path d="M12 5C29 7 31 19 25 31C22 37 17 42 14 44C10 39 9 31 6 24" fill="none" stroke="currentColor" stroke-width="3.5" stroke-linecap="round" stroke-linejoin="round"/></svg>';fragment.append(symbol);}fragment.append(document.createTextNode(part));});node.replaceWith(fragment);}
 }
 function celebrate(){
- document.querySelectorAll('.confetti').forEach(e=>e.remove());
+ document.querySelectorAll('.confetti-burst').forEach(e=>e.remove());
  if(matchMedia('(prefers-reduced-motion: reduce)').matches)return;
- const colors=['#E46E50','#244D85','#23804c','#e4b550'];
- for(let i=0;i<42;i++){const piece=document.createElement('span');piece.className='confetti';piece.setAttribute('aria-hidden','true');piece.style.background=colors[i%4];$('#slide-frame').append(piece);const angle=(i*137.5)*Math.PI/180,dx=Math.cos(angle)*(140+i*5),dy=-130-Math.abs(Math.sin(angle))*240;piece.animate([{transform:'translate(0,0) rotate(0deg)',opacity:0},{transform:`translate(${dx*.7}px,${dy}px) rotate(${i*21}deg)`,opacity:1,offset:.4},{transform:`translate(${dx}px,${dy+330}px) rotate(${i*39}deg)`,opacity:0}],{duration:1600+i%5*100,easing:'ease-out'}).finished.catch(()=>{}).finally(()=>piece.remove());}
+ const layer=document.createElement('div');layer.className='confetti-burst';layer.setAttribute('aria-hidden','true');document.body.append(layer);
+ const colors=['#E46E50','#244D85','#23804c','#e4b550','#f29e80'],width=innerWidth,height=innerHeight,animations=[];
+ for(let side=0;side<2;side++)for(let i=0;i<80;i++){
+  const piece=document.createElement('span'),spread=((i*37)%79)/79,lift=((i*53)%83)/83;
+  piece.className='confetti';Object.assign(piece.style,{background:colors[i%colors.length],left:side?'100%':'0',top:'72%',width:(10+i%7)+'px',height:(14+i%11)+'px',borderRadius:i%4===0?'50%':'2px'});layer.append(piece);
+  const distance=width*(.25+.5*spread)*(side?-1:1),rotation=(side?-1:1)*(450+i*17),frames=[];
+  for(let n=0;n<=24;n++){const t=n/24,x=distance*(1-(1-t)**2),y=height*(-(1.5+.8*lift)*t+2.3*t*t);frames.push({transform:`translate(${x}px,${y}px) rotate(${rotation*t}deg)`,opacity:t<.06?t/.06:t>.8?(1-t)/.2:1,offset:t});}
+  animations.push(piece.animate(frames,{duration:2500+i%8*100,delay:i%7*25,easing:'linear',fill:'both'}).finished.catch(()=>{}));
+ }
+ Promise.all(animations).then(()=>layer.remove());
 }
 function captureSlide(){
  document.querySelectorAll('.slide-outgoing').forEach(e=>e.remove());
@@ -55,7 +63,7 @@ function fadeSlides(copy,shared){
  copy.animate([{opacity:1},{opacity:0}],{duration:550,easing:'ease-in-out',fill:'forwards'}).finished.catch(()=>{}).finally(()=>copy.remove());
  document.querySelector('#slide').animate([{opacity:0},{opacity:1}],{duration:550,easing:'ease-in-out'});
 }
-function render(){let n=Number(location.hash.slice(1));if(!Number.isInteger(n)||n<1||n>slides.length)n=1;current=n;buildStep=pendingStep;pendingStep=0;const s=slides[n-1];if(location.hash!==`#${n}`)history.replaceState(null,'',`#${n}`);$('#slide').className=`audio-slide audio-${s.type||'theory'}`;$('#slide').innerHTML=s.body;stylizeVolumes($('#slide'));stylizeNu($('#slide'));$('#slide').scrollTop=0;document.title=`${s.title} · Задание 7 — звук`;document.querySelectorAll('#outline a').forEach(a=>{const active=+a.dataset.slide===n;a.classList.toggle('active',active);if(active)a.setAttribute('aria-current','step');else a.removeAttribute('aria-current');});update();resize();}
+function render(){document.querySelectorAll('.confetti-burst').forEach(e=>e.remove());let n=Number(location.hash.slice(1));if(!Number.isInteger(n)||n<1||n>slides.length)n=1;current=n;buildStep=pendingStep;pendingStep=0;const s=slides[n-1];if(location.hash!==`#${n}`)history.replaceState(null,'',`#${n}`);$('#slide').className=`audio-slide audio-${s.type||'theory'}`;$('#slide').innerHTML=s.body;stylizeVolumes($('#slide'));stylizeNu($('#slide'));$('#slide').scrollTop=0;document.title=`${s.title} · Задание 7 — звук`;document.querySelectorAll('#outline a').forEach(a=>{const active=+a.dataset.slide===n;a.classList.toggle('active',active);if(active)a.setAttribute('aria-current','step');else a.removeAttribute('aria-current');});update();resize();}
 function go(delta){const s=slides[current-1];if(delta>0&&buildStep<s.steps){buildStep++;update();return;}if(delta<0&&buildStep>0){buildStep--;update();return;}const next=current+delta;if(next>0&&next<=slides.length){pendingStep=delta<0?slides[next-1].steps:0;location.hash=next;}}
 $('#next').onclick=()=>go(1);$('#prev').onclick=()=>go(-1);$('#slide').onclick=e=>{if(!e.target.closest('a,button')&&buildStep<slides[current-1].steps)go(1);};
 let flight=null;
