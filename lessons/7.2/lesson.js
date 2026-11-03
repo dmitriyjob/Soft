@@ -48,7 +48,7 @@ function celebrate(){
   piece.className='confetti';Object.assign(piece.style,{background:colors[i%colors.length],left:side?'100%':'0',top:'72%',width:(10+i%7)+'px',height:(14+i%11)+'px',borderRadius:i%4===0?'50%':'2px'});layer.append(piece);
   const distance=width*(.25+.5*spread)*(side?-1:1),rotation=(side?-1:1)*(450+i*17),frames=[];
   for(let n=0;n<=24;n++){const t=n/24,x=distance*(1-(1-t)**2),y=height*(-(1.5+.8*lift)*t+2.3*t*t);frames.push({transform:`translate(${x}px,${y}px) rotate(${rotation*t}deg)`,opacity:t<.06?t/.06:t>.8?(1-t)/.2:1,offset:t});}
-  animations.push(piece.animate(frames,{duration:2500+i%8*100,delay:i%7*25,easing:'linear',fill:'both'}).finished.catch(()=>{}));
+  animations.push(piece.animate(frames,{duration:1400+i%8*50,delay:i%7*8,easing:'linear',fill:'both'}).finished.catch(()=>{}));
  }
  Promise.all(animations).then(()=>layer.remove());
 }
