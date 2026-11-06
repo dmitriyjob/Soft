@@ -159,3 +159,26 @@ html,body,#stage,#slide-frame,article{background:#F5F5F7}#slide-frame{border:0;b
 .comparison-steps .audio-answer{margin:9px 0 0;font-size:30px}
 @media(max-width:700px){.audio-comparison{padding:65px 24px 110px;overflow-y:auto}.audio-comparison .audio-intro,.audio-comparison.problem-at-top .audio-intro{position:relative;top:auto;left:auto;right:auto;margin-top:75px;transition:margin .8s ease}.audio-comparison.problem-at-top .audio-intro{margin-top:0}.audio-comparison .audio-intro h2,.audio-comparison.problem-at-top .audio-intro h2{font-size:27px}.audio-comparison .problem-card{padding:18px;font-size:18px}.audio-comparison.problem-at-top .problem-card{padding:15px;font-size:15px}.comparison-solution{position:relative;top:auto;left:auto;right:auto;margin-top:26px}.comparison-columns{grid-template-columns:1fr;gap:24px;min-height:0}.comparison-column h3{font-size:24px;margin-bottom:8px}.comparison-formula{font-size:21px;min-height:32px}.comparison-steps{font-size:18px;margin-top:24px}.comparison-step{gap:8px}.comparison-steps .audio-answer{font-size:27px}}
 @media(min-width:701px){.comparison-solution{top:195px}.comparison-columns{min-height:230px}}
+/* Worked transmission time, with separate recording and channel formulas. */
+.audio-transmission-worked{padding:0}
+.audio-transmission-worked .audio-intro{position:absolute;top:205px;left:85px;right:85px;text-align:center;transition:top .8s cubic-bezier(.22,.61,.36,1)}
+.audio-transmission-worked .audio-intro h2{font-size:38px;margin-bottom:20px;transition:font-size .8s ease,margin .8s ease}
+.audio-transmission-worked .problem-card{background:#fff;border-radius:18px;box-shadow:0 3px 10px #244d8518;padding:23px 29px;font-size:24px;line-height:1.55;transition:font-size .8s ease,padding .8s ease}
+.audio-transmission-worked.problem-at-top .audio-intro{top:22px}
+.audio-transmission-worked.problem-at-top .audio-intro h2{font-size:29px;margin-bottom:8px}
+.audio-transmission-worked.problem-at-top .problem-card{font-size:17px;padding:13px 20px}
+.transmission-solution{position:absolute;left:85px;right:85px;top:215px;color:var(--blue)}
+.transmission-formulas{display:grid;grid-template-columns:1fr 1fr;gap:60px;height:105px}
+.transmission-formulas p{font-size:16px;color:var(--muted);margin:0 0 2px}
+.transmission-equation{font-size:30px;white-space:nowrap}
+.transmission-equation sub{font-size:.48em}
+.transmission-formulas small{font-size:13px;color:var(--muted)}
+.transmission-givens{display:grid;grid-template-columns:repeat(3,1fr);gap:4px 28px;min-height:91px;font-size:18px}
+.transmission-givens strong{color:var(--accent)}
+.transmission-work{font-size:21px}
+.transmission-work .audio-step{margin:7px 0;font-size:21px}
+.transmission-work .audio-fraction{font-size:.95em}
+.transmission-work .audio-answer{margin:8px 0 0}
+.transmission-equation .find-ring{width:1.45em;height:1.45em;left:50%;top:50%;transform:translate(-50%,-50%)}
+@media(max-width:700px){.audio-transmission-worked{padding:65px 24px 110px;overflow-y:auto}.audio-transmission-worked .audio-intro,.audio-transmission-worked.problem-at-top .audio-intro{position:relative;top:auto;left:auto;right:auto;margin-top:70px;transition:margin .8s ease}.audio-transmission-worked.problem-at-top .audio-intro{margin-top:0}.audio-transmission-worked .audio-intro h2,.audio-transmission-worked.problem-at-top .audio-intro h2{font-size:26px}.audio-transmission-worked .problem-card{padding:18px;font-size:18px}.audio-transmission-worked.problem-at-top .problem-card{padding:15px;font-size:15px}.transmission-solution{position:relative;top:auto;left:auto;right:auto;margin-top:24px}.transmission-formulas{grid-template-columns:1fr;gap:18px;height:auto}.transmission-equation{font-size:25px}.transmission-givens{grid-template-columns:1fr 1fr;margin:20px 0;font-size:16px}.transmission-work .audio-step{font-size:18px}}
+@media(min-width:701px){.transmission-solution{top:180px}.transmission-formulas{height:95px}.transmission-givens{min-height:75px}}
