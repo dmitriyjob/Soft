@@ -130,3 +130,12 @@ html,body,#stage,#slide-frame,article{background:#F5F5F7}#slide-frame{border:0;b
 
 .depth-lead{font-size:23px;line-height:1.5}.depth-lead p{margin:12px 0}.depth-layout{margin-top:26px}.depth-layout .large-copy{font-size:23px;margin:15px 0}.depth-layout .sample-code{margin-top:15px}.conversion-chain{gap:14px}.conversion-cell{font-size:17px}
 @media(max-width:700px){.depth-lead,.depth-layout .large-copy{font-size:20px}.conversion-cell{font-size:17px}}
+
+/* Draw attention to the unknown after the given values have appeared. */
+.find-target{position:relative;display:inline-block}
+.find-ring{position:absolute;left:-13%;top:-17%;width:126%;height:134%;overflow:visible;pointer-events:none;color:#12666b}
+.find-ring ellipse{fill:none;stroke:currentColor;stroke-width:2.5;vector-effect:non-scaling-stroke;stroke-dasharray:1;stroke-dashoffset:1;transition:stroke-dashoffset .75s ease}
+.find-marked .find-ring ellipse{stroke-dashoffset:0}
+@media(prefers-reduced-motion:reduce){.find-ring ellipse{transition:none}}
+
+.slide-worked .find-ring,.worked-audio-formula .find-ring{width:1.45em;height:1.45em;left:50%;top:50%;transform:translate(-50%,-50%)}
