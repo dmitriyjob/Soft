@@ -157,7 +157,6 @@ html,body,#stage,#slide-frame,article{background:#F5F5F7}#slide-frame{border:0;b
 .color-check{align-items:center}.color-check .small{font-size:16px;color:var(--ink)}
 .color-limit-phase strong,.color-check strong,.color-choice strong{color:var(--accent);font-weight:500}
 .slide-worked[data-variant="colors"] .plain-answer strong{color:#23804c}
-.unit-arrow-fraction path{stroke-width:1.5}.unit-arrow-fraction text{font-size:20px}
 @media(max-width:700px){.color-limit-slot{height:137px;font-size:18px}.limit-conversion{font-size:14px;margin-left:0}.color-check,.color-choice{font-size:18px;gap:9px}.color-check .small{font-size:14px}.color-limit-phase .solution-number{width:19px}}
 
 .slide-worked .find-ring,.worked-audio-formula .find-ring{width:1.45em;height:1.45em;left:50%;top:50%;transform:translate(-50%,-50%)}
