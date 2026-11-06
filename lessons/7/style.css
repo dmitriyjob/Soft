@@ -173,3 +173,5 @@ html,body,#stage,#slide-frame,article{background:#F5F5F7}#slide-frame{border:0;b
 .color-limit-phase .limit-conversion{margin:4px 0 0;font-size:14px;line-height:1.2}
 .slide-worked[data-variant="colors"] .color-check,.slide-worked[data-variant="colors"] .color-choice{margin:5px 0;font-size:21px}
 @media(max-width:700px){.slide-worked[data-variant="colors"] .worked-solution{top:auto}.color-limit-slot{grid-template-columns:22px minmax(0,1fr);grid-template-rows:35px 38px 68px 102px;height:243px;font-size:18px}.slide-worked[data-variant="colors"] .color-check,.slide-worked[data-variant="colors"] .color-choice{font-size:18px}}
+.slide-percent .find-ring{display:none}
+.slide-percent .find-target.find-marked{outline:2px solid #12666b;outline-offset:2px;border-radius:999px}
