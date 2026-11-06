@@ -139,3 +139,23 @@ html,body,#stage,#slide-frame,article{background:#F5F5F7}#slide-frame{border:0;b
 @media(prefers-reduced-motion:reduce){.find-ring ellipse{transition:none}}
 
 .slide-worked .find-ring,.worked-audio-formula .find-ring{width:1.45em;height:1.45em;left:50%;top:50%;transform:translate(-50%,-50%)}
+/* Worked comparison of mono and stereo recordings. */
+.audio-comparison{padding:0}
+.audio-comparison .audio-intro{position:absolute;top:205px;left:85px;right:85px;text-align:center;transition:top .8s cubic-bezier(.22,.61,.36,1)}
+.audio-comparison .audio-intro h2{font-size:39px;margin-bottom:20px;transition:font-size .8s ease,margin .8s ease}
+.audio-comparison .problem-card{background:#fff;border-radius:18px;box-shadow:0 3px 10px #244d8518;padding:23px 29px;font-size:24px;line-height:1.55;transition:font-size .8s ease,padding .8s ease}
+.audio-comparison.problem-at-top .audio-intro{top:24px}
+.audio-comparison.problem-at-top .audio-intro h2{font-size:30px;margin-bottom:10px}
+.audio-comparison.problem-at-top .problem-card{font-size:18px;padding:14px 22px}
+.comparison-solution{position:absolute;top:260px;left:85px;right:85px;color:var(--blue)}
+.comparison-columns{display:grid;grid-template-columns:1fr 1fr;gap:60px;min-height:270px}
+.comparison-column h3{font-size:27px;font-weight:500;margin:0 0 16px;color:var(--blue)}
+.comparison-formula{font-size:25px;min-height:38px;line-height:1.35;margin:5px 0}
+.comparison-formula strong,.comparison-explain strong,.comparison-step strong{color:var(--accent)}
+.comparison-formula .audio-fraction,.comparison-step .audio-fraction{font-size:.9em}
+.comparison-steps{font-size:21px;line-height:1.4}
+.comparison-explain{margin:0 0 10px}
+.comparison-step{display:grid;grid-template-columns:24px 1fr;gap:12px;margin:8px 0}
+.comparison-steps .audio-answer{margin:9px 0 0;font-size:30px}
+@media(max-width:700px){.audio-comparison{padding:65px 24px 110px;overflow-y:auto}.audio-comparison .audio-intro,.audio-comparison.problem-at-top .audio-intro{position:relative;top:auto;left:auto;right:auto;margin-top:75px;transition:margin .8s ease}.audio-comparison.problem-at-top .audio-intro{margin-top:0}.audio-comparison .audio-intro h2,.audio-comparison.problem-at-top .audio-intro h2{font-size:27px}.audio-comparison .problem-card{padding:18px;font-size:18px}.audio-comparison.problem-at-top .problem-card{padding:15px;font-size:15px}.comparison-solution{position:relative;top:auto;left:auto;right:auto;margin-top:26px}.comparison-columns{grid-template-columns:1fr;gap:24px;min-height:0}.comparison-column h3{font-size:24px;margin-bottom:8px}.comparison-formula{font-size:21px;min-height:32px}.comparison-steps{font-size:18px;margin-top:24px}.comparison-step{gap:8px}.comparison-steps .audio-answer{font-size:27px}}
+@media(min-width:701px){.comparison-solution{top:195px}.comparison-columns{min-height:230px}}
