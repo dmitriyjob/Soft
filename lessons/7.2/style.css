@@ -192,3 +192,25 @@ html,body,#stage,#slide-frame,article{background:#F5F5F7}#slide-frame{border:0;b
 .transmission-givens .recording-depth{grid-column:4;grid-row:2}
 .transmission-derivation{line-height:1.2;margin:2px 0}
 @media(max-width:700px){.transmission-givens{grid-template-columns:1fr 1fr;gap:8px 10px}.transmission-givens .reveal{grid-column:auto;grid-row:auto}.transmission-givens .channel-speed{order:-1}}
+/* Interactive sampling diagram on slide 2. */
+.audio-signal{padding:65px 70px 45px}
+.audio-signal h2{font-size:38px;margin:0 0 24px}
+.sampling-layout{display:grid;grid-template-columns:minmax(0,790px) 330px;gap:42px;align-items:start;margin-top:25px}
+.sampling-graph{padding-top:35px;min-width:0}
+.sampled-wave{width:100%;height:auto;aspect-ratio:800/360}
+.sample-curve{fill:none;stroke:var(--blue);stroke-width:3;stroke-linejoin:round}
+.sample-stair{fill:none;stroke:var(--accent);stroke-width:3;stroke-linejoin:round;stroke-linecap:round;transition:d .35s ease}
+.sample-stems path{stroke:#30343b65;stroke-width:1}
+.sample-dots circle{fill:var(--accent)}
+.sampling-caption{font-size:14px;color:var(--muted);margin:6px 0 0 20px}
+.sampling-card,.sampling-note{background:#fff;border-radius:17px;box-shadow:0 3px 10px #244d8510}
+.sampling-card{padding:24px 24px 20px}
+.sampling-eyebrow{font-size:13px;text-transform:uppercase;letter-spacing:.12em;color:var(--muted);font-weight:700}
+.sampling-value{font-size:42px;color:var(--accent);font-weight:600;margin:14px 0 4px}
+.sampling-count{font-size:14px;color:var(--muted);margin-bottom:26px}
+.sampling-slider{display:block;width:100%;accent-color:var(--accent);cursor:pointer}
+.sampling-ticks{display:flex;justify-content:space-between;font-size:12px;color:var(--muted);padding:9px 1px 0}
+.sampling-note{border-left:4px solid var(--accent);margin-top:14px;padding:17px 18px;font-size:17px;line-height:1.5}
+.sampling-copy{font-size:16px;line-height:1.45}.sampling-copy .reveal{margin-top:13px}.sampling-copy p{margin:0}
+@media(max-width:700px){.audio-signal{padding:65px 24px 100px;overflow-y:auto}.audio-signal h2{font-size:29px;margin-bottom:16px}.sampling-layout{display:flex;flex-direction:column;gap:12px;margin:12px 0}.sampling-graph{width:100%;padding-top:5px}.sampled-wave{width:100%;aspect-ratio:800/390}.sampling-caption{font-size:12px;margin:2px 0}.sampling-side{width:100%}.sampling-card{padding:20px}.sampling-note{font-size:16px}.sampling-copy{font-size:17px}}
+@media(prefers-reduced-motion:reduce){.sample-stair{transition:none}}
