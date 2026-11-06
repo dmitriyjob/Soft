@@ -160,3 +160,16 @@ html,body,#stage,#slide-frame,article{background:#F5F5F7}#slide-frame{border:0;b
 @media(max-width:700px){.color-limit-slot{height:137px;font-size:18px}.limit-conversion{font-size:14px;margin-left:0}.color-check,.color-choice{font-size:18px;gap:9px}.color-check .small{font-size:14px}.color-limit-phase .solution-number{width:19px}}
 
 .slide-worked .find-ring,.worked-audio-formula .find-ring{width:1.45em;height:1.45em;left:50%;top:50%;transform:translate(-50%,-50%)}
+
+/* Keep each algebraic transformation visible in its own row. */
+.slide-worked[data-variant="colors"] .worked-solution{top:190px}
+.color-limit-slot{display:grid;grid-template-columns:33px minmax(0,1fr);grid-template-rows:30px 30px 62px 72px;height:194px;font-size:20px}
+.color-limit-number{grid-column:1;grid-row:1;margin-top:3px}
+.color-limit-phase{position:relative;inset:auto;width:auto;min-height:0;grid-column:2;line-height:1.15}
+.color-limit-phase[data-reveal="9"]{grid-row:1}
+.color-limit-phase[data-reveal="10"]{grid-row:2}
+.color-limit-phase[data-reveal="11"]{grid-row:3}
+.color-limit-phase[data-reveal="12"]{grid-row:4}
+.color-limit-phase .limit-conversion{margin:4px 0 0;font-size:14px;line-height:1.2}
+.slide-worked[data-variant="colors"] .color-check,.slide-worked[data-variant="colors"] .color-choice{margin:5px 0;font-size:21px}
+@media(max-width:700px){.slide-worked[data-variant="colors"] .worked-solution{top:auto}.color-limit-slot{grid-template-columns:22px minmax(0,1fr);grid-template-rows:35px 38px 68px 102px;height:243px;font-size:18px}.slide-worked[data-variant="colors"] .color-check,.slide-worked[data-variant="colors"] .color-choice{font-size:18px}}
