@@ -11,3 +11,17 @@
 @media(prefers-reduced-motion:reduce){.alternate-partition .partition-group{animation:none!important}}
 .length-example>div{display:grid;grid-template-columns:minmax(0,1fr) 100px;gap:8px}
 .length-example i{max-width:none}
+/* Read the exam statement, then mark its constraints in three passes. */
+.exam-task{background:white;border:1px solid var(--line);border-radius:19px;padding:22px 30px 24px;box-shadow:0 8px 30px #244d8508;transform:scale(.965);transform-origin:50% 20%;transition:transform .75s cubic-bezier(.22,.61,.36,1)}
+.slide-10:not([data-step="0"]) .exam-task{transform:scale(1)}
+.exam-task-header{display:flex;justify-content:space-between;gap:20px;color:var(--muted);font-size:13px;padding-bottom:14px;border-bottom:1px solid var(--line);margin-bottom:19px}
+.exam-task-text{font-size:22px;line-height:1.6;color:var(--ink)}
+.exam-task-text p{margin:0 0 17px}
+.exam-task-text [data-emphasize]{background-image:linear-gradient(var(--accent),var(--accent));background-repeat:no-repeat;background-position:0 100%;background-size:0% 2px;transition:color .55s ease,background-size .7s ease}
+.exam-task-text .emphasized{color:var(--accent);background-size:100% 2px}
+.exam-task-note{font-size:17px;line-height:1.5;color:var(--muted)}
+.exam-task-note b{font-weight:500;font-style:italic}
+.exam-answer-line{display:flex;gap:15px;align-items:baseline;font-size:21px;color:var(--blue);margin-top:12px}
+.exam-answer-line>span{display:block;width:280px;border-bottom:1px solid var(--line)}
+@media(max-width:700px){.exam-task{padding:18px 17px;margin-top:22px;transform:none!important}.exam-task-header{display:block;font-size:11px;line-height:1.6;margin-bottom:16px}.exam-task-header>span{display:block}.exam-task-text{font-size:17px;line-height:1.6}.exam-task-text p{margin-bottom:17px}.exam-task-note{font-size:14px}.exam-answer-line{font-size:18px}.exam-answer-line>span{width:180px}}
+@media(prefers-reduced-motion:reduce){.exam-task,.exam-task-text [data-emphasize]{transition:none!important}}
