@@ -1,85 +1,420 @@
 'use strict';
-const $=q=>document.querySelector(q);
-const reveal=(n,html,cls='')=>`<div class="reveal ${cls}" data-show="${n}">${html}</div>`;
-const b8=n=>Number(n).toString(2).padStart(8,'0');
-const parseIP=s=>{const a=s.trim().split('.');return a.length===4&&a.every(x=>/^\d{1,3}$/.test(x)&&+x<=255)?a.map(Number):null;};
-const ipNumber=s=>parseIP(s).reduce((n,x)=>n*256+x,0);
-const ipText=n=>[24,16,8,0].map(s=>(n>>>s)&255).join('.');
-function networkInfo(ip,p){const value=ipNumber(ip),mask=p===0?0:(0xffffffff<<(32-p))>>>0,net=(value&mask)>>>0,total=2**(32-p);return {mask:ipText(mask),network:ipText(net),broadcast:ipText(net+total-1),first:ipText(net+1),last:ipText(net+total-2),total,hosts:p<=30?total-2:null};}
-const matchingMasks=(ip,net)=>Array.from({length:33},(_,p)=>p).filter(p=>networkInfo(ip,p).network===net);
-function bitRow(label,ip,p=32){const a=typeof ip==='string'?ip.split('.'):ip;let at=0;return `<div class="bit-row"><span class="row-label">${label}</span><div class="bit-groups">${a.map(n=>`<div class="octet-bits">${[...b8(n)].map(b=>`<span data-index="${at}" class="ip-bit ${at++<p?'net-bit':'host-bit'}">${b}</span>`).join('')}</div>`).join('')}</div><code class="decimal-ip">${Array.isArray(ip)?ip.join('.'):ip}</code></div>`;}
-const board=(...rows)=>`<div class="bit-board">${rows.join('')}</div>`;
-const note=s=>`<div class="explain">${s}</div>`;
-const problem=s=>`<div class="problem">${s}</div>`;
-const line=(n,title,body)=>reveal(n,`<span class="step-no">${n}</span><div><small>${title}</small>${body}</div>`,'solution-line');
-const icon=(kind='router')=>{const paths={home:'M10 48L50 12 90 48M20 43V88H80V43M43 88V61H59V88M28 49H37V59H28M65 49H74V59H65',router:'M22 53H78V77H22ZM29 53L21 22M71 53L79 22M33 65H34M43 65H44M53 65H54',phone:'M32 10H68V90H32ZM42 18H58M46 82H54',server:'M17 15H83V35H17ZM17 42H83V62H17ZM17 69H83V89H17M25 25H30M25 52H30M25 79H30',pc:'M14 15H86V65H14ZM50 65V84M29 84H71'};return `<svg class="device-icon" viewBox="0 0 100 100" fill="none" stroke="currentColor" stroke-width="3.5" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="${paths[kind]}"/></svg>`;};
-function routeScene(internet=false){return `<div class="route-scene"><svg class="route-lines" viewBox="0 0 1000 270" preserveAspectRatio="none" aria-hidden="true"><path d="M110 160L370 75 650 75 890 160M370 75L510 220 650 75"/></svg><div class="route-node sender">${icon(internet?'phone':'home')}<b>${internet?'Телефон':'Миша'}</b><code>${internet?'91.24.13.7':'отправитель'}</code></div><div class="route-node hub one">${icon('router')}<small>${internet?'маршрутизатор':'почта'}</small></div><div class="route-node hub two">${icon('router')}<small>${internet?'маршрутизатор':'почта'}</small></div><div class="route-node hub three">${icon('router')}</div><div class="route-node receiver">${icon(internet?'server':'home')}<b>${internet?'Сервер сайта':'Аня'}</b><code>${internet?'188.32.24.7':'получатель'}</code></div><div class="moving-packet">✉</div></div>`;}
-function buildings(){return `<div class="buildings">${[7,12,25].map((house,i)=>`<div class="building ${i===1?'chosen-house':''}"><span class="house-number">дом ${house}</span><div class="windows">${Array.from({length:12},(_,j)=>`<span class="${j===4?'flat-five':''}">${j+1}</span>`).join('')}</div><div class="door"></div></div>`).join('')}</div>`;}
-function localNets(){return `<div class="local-nets">${[['Дом · Wi-Fi','192.168.1'],['Школа','10.34.166'],['Кафе','88.145.7']].map(([title,net])=>`<section class="local-net">${icon()}<h3>${title}</h3><code class="net-address">${net}.0 /24</code><div class="devices">${[2,3,5].map((v,i)=>`<div>${icon(i===1?'phone':'pc')}<code>${net}.${v}</code></div>`).join('')}</div></section>`).join('')}</div>`;}
-const converter=()=>`<div class="conversion-rows">${[192,168,0,1].map((v,i)=>`<div class="conversion-row"><b>${v}</b><span>→</span><code class="reveal" data-show="${i+1}">${b8(v)}</code><small class="reveal" data-show="${i+1}">ровно 8 бит</small></div>`).join('')}</div>`;
-function prefixPanel(id,value=16,ip='192.168.0.1'){return `<div class="prefix-control"><label for="${id}">Граница сети: <strong id="${id}-value">/${value}</strong></label><input type="range" id="${id}" min="0" max="32" value="${value}" aria-label="Количество бит сети"></div><div id="${id}-rows"></div>`;}
-function byteTrainer(){return `<p class="lead">Нажимайте на биты. Единица включает соответствующую степень двойки.</p><div class="byte-switches">${[128,64,32,16,8,4,2,1].map((w,i)=>`<div><small>${w}</small><button class="byte-bit" data-weight="${w}" aria-label="Бит с весом ${w}" aria-pressed="${i<2}">${i<2?1:0}</button></div>`).join('')}</div><div class="byte-result"><code id="byte-binary"></code><span>=</span><strong id="byte-value"></strong></div><div id="byte-sum" class="byte-sum"></div><div class="presets"><span>Собрать:</span>${[0,1,10,34,128,168,192,255].map(n=>`<button data-byte="${n}">${n}</button>`).join('')}</div>`;}
-function maskMatchesTable(){return `<div class="mask-table-wrap"><table class="mask-table"><thead><tr><th>Маска</th>${Array.from({length:13},(_,i)=>`<th>/${18+i}</th>`).join('')}</tr></thead><tbody><tr><th>Сеть совпала</th>${Array.from({length:13},(_,i)=>`<td class="${i>=2&&i<=10?'yes':'no'}">${i>=2&&i<=10?'✓':'×'}</td>`).join('')}</tr><tr class="reveal" data-show="2"><th>Узлов ≥ 60</th>${Array.from({length:13},(_,i)=>`<td class="${i<=8?'yes':'no'}">${i<=8?'✓':'×'}</td>`).join('')}</tr><tr class="reveal" data-show="3"><th>Оба условия</th>${Array.from({length:13},(_,i)=>`<td class="${i>=2&&i<=8?'yes selected-mask':'no'}">${i>=2&&i<=8?'✓':'×'}</td>`).join('')}</tr></tbody></table></div>`;}
-function calculator(){return `<div class="calc-input"><label for="calc-ip">IPv4-адрес</label><input type="text" id="calc-ip" value="192.168.10.77" spellcheck="false" autocomplete="off"><button id="random-ip">Другой пример</button><span id="ip-error" aria-live="polite"></span></div>${prefixPanel('calc-prefix',24,'192.168.10.77')}<div class="calc-results" aria-live="polite"></div>`;}
-const quizData=[
- ['Сколько бит в IPv4-адресе?',['4','8','255','32'],3,'Четыре октета по 8 бит: 4 × 8 = 32.'],
- ['Какое число не может быть одним октетом IP-адреса?',['256','0','255','127'],0,'Октет состоит из 8 бит: значения от 0 до 255.'],
- ['Какая запись является правильной маской?',['0.255.255.255','255.255.248.0','255.255.0.255','255.250.0.0'],1,'248 = 11111000. Во всей маске сначала идут единицы, затем только нули.'],
- ['IP 10.5.7.9, маска 255.255.0.0. Адрес сети?',['0.0.7.9','10.0.0.0','10.5.0.0','10.5.7.0'],2,'Первые два октета сохраняем, последние два обнуляем.'],
- ['В маске 26 единиц. Сколько адресов доступно компьютерам?',['64','26','6','62'],3,'6 бит узла: 2⁶ − 2 = 62 адреса без адреса сети и broadcast.'],
- ['Почему первый и последний адрес подсети обычно не дают компьютерам?',['Это адрес сети и широковещательный адрес','Они слишком короткие','Их забирает роутер Wi-Fi','Так удобнее считать'],0,'Нули в части узла задают адрес сети, единицы — широковещательный адрес.']
+
+const $ = selector => document.querySelector(selector);
+const live = $('#live');
+const video = $('#motion');
+const still = $('#still');
+const reducedMotion = matchMedia('(prefers-reduced-motion: reduce)');
+let current = 1;
+let step = 0;
+let generation = 0;
+let frameCallback = null;
+let stopAt = 0;
+let loopClip = false;
+const answers = Array(6).fill(null);
+const ranCode = Array(4).fill(false);
+const controls = { byte: 0, byteTouched: false, boundary: 8, boundaryTouched: false, mask: 12, maskTouched: false, ip: '192.168.10.77', prefix: 24, calcTouched: false, capacity: 3, capacityTouched: false };
+
+const b8 = n => Number(n).toString(2).padStart(8, '0');
+const parseIP = value => {
+  const parts = value.trim().split('.');
+  return parts.length === 4 && parts.every(p => /^\d{1,3}$/.test(p) && Number(p) <= 255) ? parts.map(Number) : null;
+};
+const ipText = value => [24,16,8,0].map(shift => (value >>> shift) & 255).join('.');
+function networkInfo(ip, prefix) {
+  const parts = parseIP(ip);
+  if (!parts || !Number.isInteger(prefix) || prefix < 0 || prefix > 32) return null;
+  const number = parts.reduce((sum, part) => sum * 256 + part, 0);
+  const mask = prefix === 0 ? 0 : (0xffffffff << (32 - prefix)) >>> 0;
+  const network = (number & mask) >>> 0;
+  const total = 2 ** (32 - prefix);
+  return { mask: ipText(mask), network: ipText(network), broadcast: ipText(network + total - 1), first: ipText(network + 1), last: ipText(network + total - 2), total, hosts: prefix <= 30 ? total - 2 : null };
+}
+
+function resize() {
+  const mobile = matchMedia('(max-width:700px)').matches;
+  const toolbar = $('#toolbar');
+  const destination = mobile ? document.body : $('#deck');
+  if (toolbar.parentElement !== destination) destination.append(toolbar);
+  const scale = Math.min(innerWidth / 1920, (innerHeight - (mobile ? 52 : 0)) / (mobile ? 964 : 1024));
+  document.documentElement.style.setProperty('--scale', scale);
+}
+addEventListener('resize', resize);
+
+function stopMotion() {
+  video.pause();
+  video.classList.remove('visible');
+  if (frameCallback !== null) {
+    if (video.cancelVideoFrameCallback) video.cancelVideoFrameCallback(frameCallback);
+    else cancelAnimationFrame(frameCallback);
+    frameCallback = null;
+  }
+  video.onseeked = null;
+}
+const heroSegments = [[.05, 2.18], [297.1, 298.25]];
+let heroPart = 0;
+function monitorMotion(token) {
+  if (token !== generation) return;
+  const next = (_now, metadata) => {
+    if (token !== generation) return;
+    const time = metadata ? metadata.mediaTime : video.currentTime;
+    if (time >= stopAt - .025) {
+      if (loopClip) {
+        heroPart = (heroPart + 1) % heroSegments.length;
+        video.pause();
+        playSegment(...heroSegments[heroPart], token, true);
+      } else stopMotion();
+      return;
+    }
+    monitorMotion(token);
+  };
+  frameCallback = video.requestVideoFrameCallback ? video.requestVideoFrameCallback(next) : requestAnimationFrame(next);
+}
+function playSegment(start, end, token, loop = false) {
+  if (reducedMotion.matches || token !== generation || end <= start) return;
+  stopAt = end;
+  loopClip = loop;
+  const begin = () => {
+    if (token !== generation) return;
+    video.onseeked = () => {
+      if (token !== generation) return;
+      video.onseeked = null;
+      // Some servers without byte-range support complete every seek at 0.
+      // Retain the matching still instead of displaying another slide.
+      if (Math.abs(video.currentTime - start) > .15) { stopMotion(); return; }
+      video.classList.add('visible');
+      video.play().then(() => monitorMotion(token)).catch(() => { if (token === generation) stopMotion(); });
+    };
+    video.currentTime = start;
+  };
+  if (video.readyState >= 1) begin();
+  else video.addEventListener('loadedmetadata', begin, { once: true });
+}
+function playRecorded(record, token, loop = false) {
+  // Navigation plays a recorded transition and stops at its reference frame.
+  // The two recorded title examples rotate while the title remains open.
+  if (loop) { heroPart = 0; playSegment(...heroSegments[0], token, true); }
+  else playSegment(Math.max(0, record.start - .04), record.posterTime, token);
+}
+video.addEventListener('error', stopMotion);
+reducedMotion.addEventListener('change', () => { if (reducedMotion.matches) stopMotion(); });
+
+function hotspot(label, x, y, width, height, action, extraClass = '') {
+  const button = document.createElement('button');
+  button.className = 'hotspot ' + extraClass;
+  button.style.cssText = `left:${x}px;top:${y}px;width:${width}px;height:${height}px`;
+  button.setAttribute('aria-label', label);
+  button.title = label;
+  button.onclick = action;
+  live.append(button);
+  return button;
+}
+function surface(id, className = '') {
+  const element = document.createElement('section');
+  element.id = id;
+  element.className = 'live-surface ' + className;
+  live.append(element);
+  return element;
+}
+function panel(id, open) {
+  const element = $('#' + id);
+  element.hidden = !open;
+  const button = id === 'outline' ? $('#menu') : $('#notes');
+  button.setAttribute('aria-expanded', String(open));
+  if (open) element.querySelector('a,button')?.focus();
+  else button.focus();
+}
+$('#menu').onclick = $('#jump').onclick = () => panel('outline', $('#outline').hidden);
+$('#notes').onclick = () => panel('notes-panel', $('#notes-panel').hidden);
+document.querySelectorAll('[data-close]').forEach(button => button.onclick = () => {
+  if (button.dataset.close === 'help') $('#help').close();
+  else panel(button.dataset.close, false);
+});
+$('#outline nav').innerHTML = REFERENCE.map(s => `<a href="#${s.number}" data-slide="${s.number}"><span>${String(s.number).padStart(2,'0')}</span>${s.title}</a>`).join('');
+$('#outline nav').onclick = event => {
+  const link = event.target.closest('a');
+  if (!link) return;
+  event.preventDefault();
+  panel('outline', false);
+  current = Number(link.dataset.slide);
+  step = 0;
+  render(false);
+};
+function fullscreen() {
+  const result = document.fullscreenElement ? document.exitFullscreen() : document.documentElement.requestFullscreen?.();
+  result?.catch(() => { $('#status').textContent = 'Полноэкранный режим недоступен в этом окне.'; });
+}
+$('#fullscreen').onclick = fullscreen;
+
+function render(animate = false) {
+  const token = ++generation;
+  stopMotion();
+  const slide = REFERENCE[current - 1];
+  step = Math.max(0, Math.min(step, slide.states.length - 1));
+  const record = slide.states[step];
+  live.replaceChildren();
+  $('#viewport').dataset.hash = record.hash;
+  $('#viewport').dataset.ready = 'false';
+  still.alt = `${slide.title}. ${slide.note}`;
+  still.src = record.poster;
+  still.decode().then(() => {
+    if (token !== generation) return;
+    $('#viewport').dataset.ready = 'true';
+    if (current === 1) playRecorded(record, token, true);
+    else if (animate && ![4,8,10,22,23,24].includes(current) && !(current === 17 && step >= 4)) playRecorded(record, token);
+  }).catch(() => { if (token === generation) $('#status').textContent = 'Не удалось загрузить кадр. Обновите страницу.'; });
+  const hash = '#' + record.hash;
+  if (location.hash !== hash) history.replaceState(null, '', hash);
+  document.title = `${slide.title} · №10`;
+  $('#counter').textContent = String(current).padStart(2, '0') + ' / 26';
+  $('#prev').disabled = current === 1 && step === 0;
+  $('#next').textContent = current === 24 && step < 6 ? 'Следующий вопрос' : current === 26 && step === slide.states.length - 1 ? 'Сначала' : 'Дальше';
+  $('#progress i').style.width = (current / 26 * 100) + '%';
+  $('#notes-panel h2').textContent = slide.title;
+  $('#notes-panel p').textContent = slide.note;
+  $('#status').textContent = `${slide.title}. Слайд ${current} из 26, шаг ${step + 1} из ${slide.states.length}.`;
+  document.querySelectorAll('#outline a').forEach(a => {
+    const active = Number(a.dataset.slide) === current;
+    a.classList.toggle('active', active);
+    if (active) a.setAttribute('aria-current', 'page');
+    else a.removeAttribute('aria-current');
+  });
+  if (current === 4) initByte();
+  if (current === 8) initBoundary(false);
+  if (current === 10 && step >= 2) initBoundary(true);
+  if (current === 17 && step >= 4) initCapacity();
+  if (current === 22) initCalculator();
+  if (current === 23) initCode();
+  if (current === 24) initQuiz();
+  if (current === 1) {
+    [[2,206,633,150,48],[10,368,633,126,48],[12,505,633,142,48],[17,206,691,237,48],[23,455,691,130,48],[25,598,691,110,48]].forEach(([n,x,y,w,h]) => hotspot(REFERENCE[n-1].title,x,y,w,h,() => { current=n;step=0;render(); }));
+  }
+  const following = slide.states[step + 1] || REFERENCE[current]?.states[0];
+  if (following) { const preload = new Image(); preload.src = following.poster; }
+}
+function go(direction) {
+  const lastStep = REFERENCE[current - 1].states.length - 1;
+  if (direction > 0) {
+    if (step < lastStep) step++;
+    else { current = current === 26 ? 1 : current + 1; step = 0; }
+  } else {
+    if (step > 0) step--;
+    else if (current > 1) { current--; step = REFERENCE[current - 1].states.length - 1; }
+    else return;
+  }
+  render(direction > 0);
+}
+function readHash() {
+  const match = location.hash.match(/^#(\d+)(?:\.(\d+))?$/);
+  current = match ? Math.max(1, Math.min(26, Number(match[1]))) : 1;
+  step = match ? Number(match[2] || 0) : 0;
+  render(false);
+}
+$('#next').onclick = () => go(1);
+$('#prev').onclick = () => go(-1);
+$('#viewport').onclick = event => {
+  if (!event.target.closest('button,input,textarea,a,.live-surface')) go(1);
+};
+addEventListener('hashchange', readHash);
+document.addEventListener('keydown', event => {
+  if (event.ctrlKey || event.metaKey || event.altKey || event.target.closest('input,textarea,[contenteditable]')) return;
+  if (event.key === 'Escape') {
+    if (!$('#outline').hidden) panel('outline',false);
+    if (!$('#notes-panel').hidden) panel('notes-panel',false);
+    $('#help').close();
+    return;
+  }
+  if ($('#help').open || !$('#outline').hidden || !$('#notes-panel').hidden) return;
+  if (event.key === 'ArrowRight' || (event.key === ' ' && !event.target.closest('button,a'))) { event.preventDefault(); go(1); }
+  else if (event.key === 'ArrowLeft') { event.preventDefault(); go(-1); }
+  else if (event.key === 'Home') { event.preventDefault(); current=1;step=0;render(); }
+  else if (event.key === 'End') { event.preventDefault();current=26;step=0;render(); }
+  else if (event.key.toLowerCase() === 'm' || event.key.toLowerCase() === 'ь') panel('outline', true);
+  else if (event.key.toLowerCase() === 'n' || event.key.toLowerCase() === 'т') panel('notes-panel', true);
+  else if (event.key.toLowerCase() === 'f' || event.key.toLowerCase() === 'а') fullscreen();
+  else if (event.key === '?') $('#help').showModal();
+});
+
+function initByte() {
+  if (controls.byteTouched) { drawByte(); return; }
+  [128,64,32,16,8,4,2,1].forEach((weight,i) => {
+    const button = hotspot(`Бит ${weight}`,221 + i * 111.5,209,69,129,() => setByte(controls.byte ^ weight),'byte-hotspot');
+    button.setAttribute('aria-pressed','false');
+  });
+  [192,168,255,1,10,34].forEach((n,i) => hotspot(`Собрать ${n}`,296 + i * 83.5,507,73,50,() => setByte(n),'byte-hotspot'));
+  const input = document.createElement('input');
+  input.type='number';input.min='0';input.max='255';input.inputMode='numeric';input.className='hotspot-input byte-hotspot';
+  input.style.cssText='left:1349px;top:460px;width:345px;height:50px';input.setAttribute('aria-label','Введите число от 0 до 255');
+  input.oninput=()=>{const n=Number(input.value);if(input.value!==''&&Number.isInteger(n)&&n>=0&&n<=255){setByte(n);$('#byte-input').focus();}};
+  live.append(input);
+}
+function setByte(value) {
+  controls.byte=value;controls.byteTouched=true;
+  live.querySelectorAll('.byte-hotspot').forEach(e=>e.remove());
+  drawByte();
+}
+function drawByte() {
+  let root=$('#byte-live');
+  if(!root){
+    root=surface('byte-live');
+    root.innerHTML=`<div class="byte-controls"><div class="byte-weights">${[128,64,32,16,8,4,2,1].map(n=>`<span>${n}</span>`).join('')}</div><div class="byte-switches">${[128,64,32,16,8,4,2,1].map(n=>`<button class="byte-switch" data-weight="${n}" aria-label="Бит ${n}"></button>`).join('')}</div><div class="byte-digits">${Array.from({length:8},()=>'<span>0</span>').join('')}</div><div class="byte-equation"><code id="byte-binary"></code><span>=</span><strong id="byte-value"></strong></div><div class="byte-presets"><b>Собери:</b>${[192,168,255,1,10,34].map(n=>`<button data-byte="${n}">${n}</button>`).join('')}</div></div><div class="programmer"><div class="programmer-title">≡ &nbsp; Программист</div><div class="programmer-value"></div>${['HEX','DEC','OCT','BIN'].map(base=>`<div class="programmer-base"><span>${base}</span><b data-base="${base}"></b></div>`).join('')}<input id="byte-input" type="number" min="0" max="255" placeholder="Введи число 0–255" aria-label="Введите число от 0 до 255"><p>Калькулятор Windows → ≡ → «Программист». В Python: <code>bin(192)</code> — нули слева дописать самому.</p></div>`;
+    root.querySelectorAll('[data-weight]').forEach(button=>button.onclick=()=>setByte(controls.byte ^ Number(button.dataset.weight)));
+    root.querySelectorAll('[data-byte]').forEach(button=>button.onclick=()=>setByte(Number(button.dataset.byte)));
+    $('#byte-input').oninput=event=>{const input=event.target,n=Number(input.value),valid=input.value!==''&&Number.isInteger(n)&&n>=0&&n<=255;input.setAttribute('aria-invalid',String(!valid));if(valid){controls.byte=n;drawByte();}};
+  }
+  const bits=b8(controls.byte);
+  root.querySelectorAll('[data-weight]').forEach((button,i)=>{button.classList.toggle('on',bits[i]==='1');button.setAttribute('aria-pressed',String(bits[i]==='1'));});
+  root.querySelectorAll('.byte-digits span').forEach((span,i)=>{span.textContent=bits[i];span.classList.toggle('on',bits[i]==='1');});
+  $('#byte-binary').textContent=bits;$('#byte-value').textContent=controls.byte;
+  $('.programmer-value').textContent=controls.byte;
+  const bases={HEX:controls.byte.toString(16).toUpperCase(),DEC:String(controls.byte),OCT:controls.byte.toString(8),BIN:bits.slice(0,4)+' '+bits.slice(4)};
+  Object.entries(bases).forEach(([base,value])=>root.querySelector(`[data-base="${base}"]`).textContent=value);
+}
+
+function nativeRow(label,ip,prefix,plain=false) {
+  let index=0;
+  return `<div class="native-row ${plain?'plain':''}"><span class="native-label">${label}</span><div class="native-groups">${ip.split('.').map(n=>`<div class="native-octet">${[...b8(n)].map(bit=>{const at=index++;return `<span class="native-bit ${at<prefix?'network-bit':'host-bit'} ${bit==='1'?'one':''}" data-bit="${at}">${bit}</span>`;}).join('')}</div>`).join('')}</div><code class="native-decimal">${ip}</code></div>`;
+}
+function makePrefix(parent,mode,prefix,getIP,onChange,active=false) {
+  const root=document.createElement('div');root.className='prefix-widget '+(mode==='mask'?'mask-live':'');root.style.background='transparent';
+  if(mode==='boundary')root.style.height='130px';
+  const fill=document.createElement('div');root.append(fill);
+  const range=document.createElement('input');range.type='range';range.className='prefix-range';range.min='0';range.max='32';range.step='1';range.value=prefix;range.setAttribute('aria-label','Количество единиц в маске');root.append(range);
+  const hit=document.createElement('button');hit.className='hotspot';hit.setAttribute('aria-label','Изменить границу щелчком или перетаскиванием');hit.style.cssText=`left:120px;top:46px;width:1196px;height:${mode==='calc'?304:mode==='mask'?144:64}px;z-index:4;cursor:col-resize`;root.append(hit);
+  parent.append(root);
+  function draw(value) {
+    range.value=value;
+    const ip=getIP(),info=networkInfo(ip,value);
+    root.style.background='var(--paper)';
+    const rows=[nativeRow('IP',ip,value)];
+    if(mode!=='boundary')rows.push(nativeRow('Маска',info.mask,value));
+    if(mode==='calc')rows.push(nativeRow('Сеть',info.network,value,true),nativeRow('Broadcast',info.broadcast,value,true));
+    fill.innerHTML=`<div class="prefix-band"><span class="network" style="width:${value/32*100}%">АДРЕС СЕТИ</span><span class="host" style="width:${(32-value)/32*100}%">АДРЕС УЗЛА</span></div><div class="native-rows">${rows.join('')}</div><div class="prefix-handle" style="left:${120+1196*value/32}px"><b>/${value}</b></div>${mode==='mask'?`<div class="prefix-current"><small>СЕЙЧАС</small><strong>/${value}</strong><code>${info.mask}</code><span>${value} единиц · ${32-value} нулей</span></div>`:''}`;
+  }
+  function change(value) {onChange(value);draw(value);}
+  range.oninput=()=>change(Number(range.value));
+  function fromPointer(event) {
+    const rect=hit.getBoundingClientRect();
+    const p=Math.max(0,Math.min(32,Math.round((event.clientX-rect.left)/rect.width*32)));
+    change(p);
+  }
+  hit.onpointerdown=event=>{event.preventDefault();hit.setPointerCapture(event.pointerId);fromPointer(event);};
+  hit.onpointermove=event=>{if(hit.hasPointerCapture(event.pointerId))fromPointer(event);};
+  hit.onpointerup=event=>{if(hit.hasPointerCapture(event.pointerId))hit.releasePointerCapture(event.pointerId);};
+  if(active)draw(prefix);
+  return {root,draw,range};
+}
+function initBoundary(mask) {
+  const key=mask?'mask':'boundary',touched=key+'Touched';
+  makePrefix(live,mask?'mask':'boundary',!controls[touched]&&!mask?(step===0?16:8):controls[key],()=> '192.168.0.1',value=>{controls[key]=value;controls[touched]=true;},controls[touched]);
+}
+function initCalculator() {
+  const root=surface('calc-live');root.style.background='transparent';
+  const fill=document.createElement('div');root.append(fill);
+  const input=document.createElement('input');input.type='text';input.spellcheck=false;input.autocomplete='off';input.value=controls.ip;input.id='calc-ip';input.className='hotspot-input';input.style.cssText='left:92px;top:0;width:278px;height:52px';input.setAttribute('aria-label','IP-адрес');root.append(input);
+  const random=document.createElement('button');random.className='hotspot';random.style.cssText='left:387px;top:0;width:140px;height:52px';random.setAttribute('aria-label','Случайный IP-адрес');root.append(random);
+  const prefix=makePrefix(root,'calc',controls.prefix,()=>controls.ip,value=>{controls.prefix=value;controls.calcTouched=true;draw();},controls.calcTouched);
+  prefix.range.id='calc-prefix';
+  function draw() {
+    root.style.background='var(--paper)';input.classList.add('active');random.classList.add('active');random.textContent='Случайный';
+    const p=controls.prefix,info=networkInfo(controls.ip,p);
+    fill.innerHTML=`<div class="calc-controls"><label for="calc-ip">IP-адрес</label><span class="calc-hint">тяни ромбик над битами или кликай по ним</span></div><div id="ip-error" class="calc-error" aria-live="polite"></div><div class="calc-cards" aria-live="polite">${[
+      ['МАСКА',info.mask,`/${p} — ${p} единиц`],
+      ['АДРЕС СЕТИ',info.network,'нули в части узла'],
+      ['ШИРОКОВЕЩАТЕЛЬНЫЙ',info.broadcast,'единицы в части узла'],
+      ['КОМПЬЮТЕРАМ',p<=30?info.first+' … '+info.last:'Особый случай /'+p,p<=30?'первый и последний — нельзя':'правило «минус 2» не применяется'],
+      ['АДРЕСОВ',`2<sup>${32-p}</sup> = ${info.total.toLocaleString('ru-RU')}`,p<=30?'компьютеров: '+info.hosts.toLocaleString('ru-RU'):'особая подсеть']
+    ].map(([title,value,note],i)=>`<div class="native-card ${i===4?'dark':''}"><small>${title}</small><b>${value}</b><p>${note}</p></div>`).join('')}</div>`;
+    const valid=!!parseIP(input.value);input.setAttribute('aria-invalid',String(!valid));$('#ip-error').textContent=valid?'':'Нужны четыре числа от 0 до 255 через точки.';
+  }
+  input.onfocus=()=>input.classList.add('active');
+  input.oninput=()=>{
+    controls.calcTouched=true;
+    const parts=parseIP(input.value);draw();
+    if(!parts){input.setAttribute('aria-invalid','true');$('#ip-error').textContent='Нужны четыре числа от 0 до 255 через точки.';return;}
+    input.setAttribute('aria-invalid','false');controls.ip=parts.join('.');draw();prefix.draw(controls.prefix);
+  };
+  random.onclick=()=>{const examples=['10.5.7.9','172.16.37.146','191.128.66.83','192.168.10.77'].filter(ip=>ip!==controls.ip);controls.ip=examples[Math.floor(Math.random()*examples.length)];input.value=controls.ip;controls.calcTouched=true;input.setAttribute('aria-invalid','false');draw();prefix.draw(controls.prefix);};
+  if(controls.calcTouched)draw();
+}
+
+function initCapacity() {
+  if (!controls.capacityTouched) controls.capacity = step >= 5 ? 6 : 3;
+  if(controls.capacityTouched){drawCapacity();return;}
+  const range=document.createElement('input');range.type='range';range.min='1';range.max='10';range.value=controls.capacity;range.setAttribute('aria-label','Нулей в маске');range.style.cssText='position:absolute;left:348px;top:472px;width:360px;height:32px;opacity:0;cursor:ew-resize';
+  range.oninput=()=>{controls.capacity=Number(range.value);controls.capacityTouched=true;drawCapacity();};live.append(range);
+}
+function drawCapacity() {
+  let root=$('#capacity-live');
+  if(!root){root=surface('capacity-live');root.innerHTML='<div id="capacity-drawing"></div><label class="capacity-slider" style="position:absolute;left:0;top:292px">нулей в маске <input id="capacity-range" type="range" min="1" max="10" aria-label="Нулей в маске"><b id="capacity-k"></b></label>';$('#capacity-range').oninput=event=>{controls.capacity=Number(event.target.value);drawCapacity();};}
+  const k=controls.capacity,count=2**k,cols=count<=8?Math.min(4,count):10,cells=count<=8?count:100;
+  $('#capacity-drawing').innerHTML=`<div class="capacity-mask">маска &nbsp; ${'1'.repeat(16-k)}<strong>${'0'.repeat(k)}</strong></div><div class="capacity-counter"><small>номер устройства · <b style="display:inline;font:inherit;letter-spacing:0">${k} места</b>, на каждом 0 или 1</small><b>${'1'.repeat(Math.min(k,8))}</b><p>${'0'.repeat(k)} … ${'1'.repeat(k)} → ${count}</p></div><div class="capacity-note" style="position:absolute;left:0;top:359px">Двигай ползунок: каждый новый ноль в маске — ещё одно место, и дом <strong style="color:#b64f1b">удваивается</strong>. Адресов = 2<sup>нулей</sup> = 2<sup>32 − единиц</sup>.</div><div class="capacity-building"><h2>2<sup>${k}</sup> = ${count}</h2><p>адресов в сети</p><div class="capacity-grid" style="grid-template-columns:repeat(${cols},1fr)">${Array.from({length:cells},(_,i)=>`<i class="${i<count?'on':''}" style="height:${count<=8?104:36}px">${count<=8?i.toString(2).padStart(k,'0'):''}</i>`).join('')}</div></div>`;
+  $('#capacity-range').value=k;$('#capacity-k').textContent=k;
+}
+
+function codeLines(tab) {
+  if(tab===0)return Array.from({length:32},(_,i)=>{const prefix=i+1,info=networkInfo('220.128.112.142',prefix);return {text:info.network+'/'+prefix,selected:info.network==='220.128.96.0'};});
+  if(tab===1)return Array.from({length:32},(_,i)=>i+1).filter(p=>networkInfo('111.81.208.27',p).network==='111.81.192.0').map(p=>({text:networkInfo('111.81.208.27',p).mask,selected:true}));
+  if(tab===2)return Array.from({length:32},(_,i)=>i+1).filter(p=>networkInfo('157.127.182.76',p).network!==networkInfo('157.127.190.80',p).network).map((p,i)=>({text:`${p} ${networkInfo('157.127.182.76',p).network}/${p} ${networkInfo('157.127.190.80',p).network}/${p}`,selected:i===0}));
+  const info=networkInfo('191.128.66.83',10);
+  return [info.network+'/10',String(info.hosts),info.last].map((text,i)=>({text,selected:i===2}));
+}
+function initCode() {
+  const output=document.createElement('div');output.id='code-output';output.innerHTML='<div class="output-header">Run</div><div class="output-lines" aria-live="polite"></div>';live.append(output);
+  // The last tab has one extra editor line in the recording.
+  if(step===3){output.style.top='402px';output.style.height='324px';output.querySelector('.output-lines').style.height='286px';}
+  const run=()=>{
+    ranCode[step]=true;
+    const lines=output.querySelector('.output-lines');lines.replaceChildren();
+    const path=document.createElement('span');path.textContent='C:\\Users\\ion\\13.py';path.className='muted';lines.append(path);
+    codeLines(step).forEach(line=>{const span=document.createElement('span');span.textContent=line.text;if(line.selected)span.className='selected';lines.append(span);});
+    const finished=document.createElement('span');finished.textContent='Process finished with exit code 0';finished.className='muted';lines.append(finished);
+    if(step===0)lines.scrollTop=15*27;
+  };
+  hotspot('Run — выполнить пример',1123,170,76,34,run,'code-run-hit');
+  [[0,290,114,'Байт маски'],[1,408,154,'Наименьший байт'],[2,575,93,'Два узла'],[3,673,80,'Фишки']].forEach(([tab,x,w,label])=>hotspot(label,x,161,w,47,()=>{step=tab;render(false);},'code-tab-hit'));
+  if(ranCode[step])run();
+}
+
+const quiz=[
+  {q:'Сколько бит в IP-адресе (IPv4)?',options:['4','8','255','32'],correct:3,explanation:'4 байта × 8 бит = 32 бита.'},
+  {q:'Какое число не может быть частью IP-адреса?',options:['256','0','255','127'],correct:0,explanation:'Каждый байт — число от 0 до 255. 256 уже не помещается в 8 бит.'},
+  {q:'Какая из этих записей — правильная маска?',options:['0.255.255.255','255.255.248.0','255.255.0.255','255.250.0.0'],correct:1,explanation:'248 = 11111000 — единицы, потом нули. В остальных после нуля снова идут единицы.'},
+  {q:'IP 10.5.7.9, маска 255.255.0.0. Адрес сети?',options:['0.0.7.9','10.0.0.0','10.5.0.0','10.5.7.0'],correct:2,explanation:'255 сохраняет первые два байта, 0 обнуляет последние два: 10.5.0.0.'},
+  {q:'В маске 26 единиц. Сколько компьютеров можно подключить?',options:['64','26','6','62'],correct:3,explanation:'32 − 26 = 6 нулей. 2⁶ = 64 адреса, компьютерам 64 − 2 = 62.'},
+  {q:'Почему первый и последний адрес сети не дают компьютерам?',options:['Это адрес сети и широковещательный','Они слишком короткие','Их забирает роутер Wi-Fi','Так удобнее считать'],correct:0,explanation:'Все нули в части узла — адрес сети, все единицы — широковещательный (broadcast).'}
 ];
-const codeSamples=[
- {name:'Третий байт',title:'Перебираем все маски',ip:'220.128.112.142',target:'220.128.96.0',text:'Нужна сеть 220.128.96.0. Подходит /19: третий байт маски 11100000₂ = 224.',code:"from ipaddress import ip_network\n\nfor m in range(1, 33):\n    n = ip_network('220.128.112.142/' + str(m), strict=False)\n    print(n)"},
- {name:'Наименьший байт',title:'Подходящих масок две',ip:'111.81.208.27',target:'111.81.192.0',text:'Сеть совпадает при /18 и /19. Наименьший третий байт: /18 → 11000000₂ = 192.',code:"from ipaddress import ip_network\n\nfor m in range(1, 33):\n    n = ip_network('111.81.208.27/' + str(m), strict=False)\n    if str(n.network_address) == '111.81.192.0':\n        print(m, n.netmask)"},
- {name:'Два узла',title:'Первое различие сетей',text:'При /21 сети становятся разными: 157.127.176.0 и 157.127.184.0.',code:"from ipaddress import ip_network\n\nfor m in range(1, 33):\n    a = ip_network('157.127.182.76/' + str(m), strict=False)\n    b = ip_network('157.127.190.80/' + str(m), strict=False)\n    if a != b:\n        print(m, a, b)\n        break"},
- {name:'Возможности',title:'Что умеет ip_network',text:'Маску можно указать префиксом или четырьмя октетами. strict=False позволяет передать адрес узла и получить его сеть.',code:"from ipaddress import ip_network\n\nn = ip_network('191.128.66.83/255.192.0.0', strict=False)\nprint(n.network_address)\nprint(n.broadcast_address)\nprint(n.num_addresses)"}
-];
-const slides=[
- {title:'IP-адреса и маски',group:'Начало',steps:0,html:`<div class="kicker">УРОК 10 · ЕГЭ ПО ИНФОРМАТИКЕ</div><div class="hero"><div><h1>IP-адреса<br>и <em>маски</em></h1><p class="lead">От письма и номера квартиры — к двоичной записи, адресу сети и решению задач.</p><a class="primary" href="#2">Начать урок →</a></div><div class="intro-terminal"><small>127.0.0.1</small><code>127 → 01111111<br>  0 → 00000000<br>  0 → 00000000<br>  1 → 00000001</code><span>IPv4 · 32 бита</span></div></div>`},
- {title:'Зачем нужен адрес?',group:'Адрес',type:'mail',steps:4,titles:['Зачем вообще нужен адрес?','Письмо едет по адресу','Письмо пришло получателю','Ответ — обратно','Ответ нашёл отправителя'],html:`${routeScene()}<div class="mail-envelope"><small>Кому: Ане</small><b>г. Казань, ул. Вишнёвая,<br>дом 12, квартира 5</b><span>От кого: Миши</span></div>${note('Адрес однозначно задаёт, <strong>куда доставить письмо</strong>. Адрес отправителя нужен, чтобы ответ пришёл обратно.')}`},
- {title:'Пакет летит по IP',group:'Адрес',type:'internet',steps:3,titles:['Пакет летит по IP-адресу','Маршрутизаторы выбирают путь','Сервер получил запрос','Ответ — по адресу отправителя'],html:`${routeScene(true)}${note('У сетевого пакета есть <strong>IP отправителя и получателя</strong>. Маршрутизаторы передают его к нужной сети, а получатель знает, куда отправить ответ.')}`},
- {title:'Каждое число — 1 байт',group:'Адрес',steps:3,html:`<div class="giant-ip">${[192,168,0,1].map(n=>`<span>${n}<small>1 байт</small></span>`).join('<i>.</i>')}</div>${reveal(1,note('IPv4-адрес записывают как <strong>четыре числа через точки</strong>. Каждое число занимает один байт.'))}${reveal(2,note('Один байт = 8 бит. Возможные значения: <strong>0…255</strong>.'))}${reveal(3,'4 × 8 = <strong>32 бита</strong>','big-formula')}`},
- {title:'192.168.0.1 в двоичном виде',group:'Адрес',steps:5,html:`${converter()}${reveal(3,note('В каждом октете должно быть <strong>ровно 8 бит</strong>. Недостающие нули дописываем слева.'))}${reveal(5,'11000000.10101000.00000000.00000001','binary-summary')}`},
- {title:'Собери байт',group:'Практика',type:'byte',steps:0,html:byteTrainer()},
- {title:'Квартира 5 — в каждом доме',group:'Сеть и узел',steps:2,html:`${buildings()}${reveal(1,note('Квартира 5 есть в разных домах. Сначала ищем <strong>дом 12</strong>, затем — квартиру 5.'))}${reveal(2,note('Полный адрес состоит из двух частей: <strong>номер дома + номер квартиры</strong>. В IP похожим образом выделяют сеть и устройство.'))}`},
- {title:'Сначала сеть, потом устройство',group:'Сеть и узел',steps:3,html:`${localNets()}${reveal(1,note('В примере с /24 общая часть адресов задаёт <strong>сеть</strong>, последний октет — устройство внутри неё.'))}${reveal(2,note('Пакет сначала приходит в нужную сеть. Затем доставляется <strong>конкретному устройству</strong>.'))}${reveal(3,note('Правая часть может повторяться в разных сетях, как номер квартиры в разных домах.'))}`},
- {title:'Где граница?',group:'Сеть и узел',type:'boundary',steps:1,html:`<p class="lead">Положение границы задаёт маска. Попробуйте менять количество бит сети.</p>${prefixPanel('boundary',16)}${reveal(1,note('Слева от границы — <strong>номер сети</strong>, справа — биты устройства. Граница может проходить внутри октета.'))}`},
- {title:'Где дом, а где квартира?',group:'Маска',steps:3,html:`<div class="decimal-mask"><span>Адрес</span><code>5 1 2 <em>4 6 6</em></code>${reveal(1,'<span>Маска</span><code>1 1 1 <em>0 0 0</em></code>','decimal-line')}${reveal(2,'<span>Результат</span><code>5 1 2 <em>0 0 0</em></code>','decimal-line')}</div>${reveal(1,note('Это <strong>аналогия</strong>: у адреса 512466 первые три цифры — дом 512, последние три — квартира 466.'))}${reveal(2,note('Умножаем цифру на цифру: 1 сохраняет, 0 стирает. Получаем <strong>512000</strong>.'))}${reveal(3,note('В настоящем IPv4 вместо десятичных цифр используются биты. Нужную часть сохраняет <strong>маска сети</strong>.'))}`},
- {title:'Сначала единицы, потом нули',group:'Маска',steps:3,html:`${board(bitRow('IP','192.168.0.1',12))}${reveal(1,board(bitRow('Маска','255.240.0.0',12)))}${reveal(2,'<code>1 И 1 = 1　 1 И 0 = 0　 0 И 1 = 0　 0 И 0 = 0</code>','and-truth')}${reveal(3,board(bitRow('Сеть','192.160.0.0',12)))}${reveal(1,note('В маске единицы идут подряд слева, затем — только нули. <strong>255.240.0.0 = /12</strong>.'))}${reveal(3,note('Адрес сети = IP <strong>И</strong> маска. Сетевые биты сохраняются, биты устройства обнуляются.'))}`},
- {title:'Задача: восстановить маску',group:'Разборы',steps:3,html:`${problem('Для узла с IP <span data-mark="1">148.195.140.28</span> адрес сети равен <span data-mark="1">148.195.140.0</span>. Найдите <span data-mark="2">наименьшее возможное количество единиц</span> в двоичной записи маски подсети.')}${reveal(1,note('Известны IP и адрес сети. Значит, подбираем маску, чтобы <strong>IP И маска = сеть</strong>.'))}${reveal(2,note('Нужно не просто найти подходящую маску, а сделать число единиц <strong>минимальным</strong>.'))}${reveal(3,note('Для этого оставим в сетевой части самый короткий префикс, который сохраняет все единицы адреса сети.'))}`},
- {title:'Находим адрес сети',group:'Разборы',steps:4,html:`${problem('IP: <b>217.8.244.3</b> · маска: <b>255.255.252.0</b>. Найдите адрес сети.')}${board(bitRow('IP','217.8.244.3',22),bitRow('Маска','255.255.252.0',22))}${line(1,'Переведём пограничный октет','244 = <code>11110100</code>, 252 = <code>11111100</code>.')}${line(2,'Выполним побитовое И','11110100 И 11111100 = <strong>11110100</strong> = 244.')}${line(3,'Остальные октеты','Маска 255 сохраняет 217 и 8, маска 0 обнуляет последний октет.')}${reveal(4,'Ответ: <strong>217.8.244.0</strong>','answer')}`},
- {title:'Наибольший третий байт маски',group:'Разборы',steps:4,html:`${problem('IP: <b>111.81.200.27</b> · сеть: <b>111.81.192.0</b>. Наибольший третий байт маски?')}${board(bitRow('IP','111.81.200.27',20),bitRow('Сеть','111.81.192.0',20))}${line(1,'Сравним третий октет','200 = <code>11001000</code>, 192 = <code>11000000</code>.')}${line(2,'Где в IP 1, а в сети 0, маска обязана иметь 0','Пятый бит третьего октета: 1 → 0. До него можно сохранить четыре единицы маски.')}${line(3,'Возьмём самый длинный допустимый префикс','Маска /20: <strong>255.255.240.0</strong>; третий байт 11110000₂.')}${reveal(4,'Ответ: <strong>240</strong>','answer')}`},
- {title:'Наименьшее количество единиц',group:'Разборы',steps:4,html:`${problem('IP: <b>148.195.140.28</b> · сеть: <b>148.195.140.0</b>. Минимум единиц в маске?')}${board(bitRow('IP','148.195.140.28',22),bitRow('Сеть','148.195.140.0',22))}${line(1,'В сети единица → в маске тоже единица','Третий октет сети: 140 = <code>10001100</code>. Последняя единица находится в шестом бите.')}${line(2,'Все единицы маски образуют один непрерывный префикс','Два полных октета и шесть бит: <strong>8 + 8 + 6 = 22</strong>.')}${line(3,'Проверим','148.195.140.28 И 255.255.252.0 = <strong>148.195.140.0</strong>.')}${reveal(4,'Ответ: <strong>22</strong>','answer')}`},
- {title:'Два узла — разные подсети',group:'Разборы',steps:4,html:`${problem('IP₁: <b>157.127.182.76</b>, IP₂: <b>157.127.190.80</b>. Одинаковые маски, разные подсети. Минимум единиц?')}${board(bitRow('IP₁','157.127.182.76',21),bitRow('IP₂','157.127.190.80',21))}${line(1,'Сначала сравним совпадающие октеты','Первые 16 бит одинаковы. Смотрим третий октет.')}${line(2,'Найдём первое различие','182 = <code>1011<strong>0</strong>110</code>; 190 = <code>1011<strong>1</strong>110</code>. Различается пятый бит.')}${line(3,'Включим различающийся бит в номер сети','Минимальная маска — <strong>/21</strong>. Сети 157.127.176.0 и 157.127.184.0.')}${reveal(4,'Ответ: <strong>21</strong>','answer')}`},
- {title:'Сколько адресов даёт маска?',group:'Количество адресов',type:'capacity',steps:3,html:`<div class="capacity-layout"><div><p class="lead" id="capacity-copy"></p><div class="big-formula" id="capacity-formula"></div><div class="capacity-example" id="capacity-example"></div></div><div id="capacity-grid" class="capacity-grid"></div></div>${note('Каждый свободный двоичный разряд даёт два варианта. Если в маске <strong>k нулей</strong>, всего адресов <strong>2ᵏ</strong>.')}`},
- {title:'Сеть /29 — 8 адресов',group:'Количество адресов',steps:2,html:`<p class="lead">Маска /29: 32 − 29 = <strong>3 бита узла</strong> → 2³ = 8 адресов.</p><div class="address-hall">${Array.from({length:8},(_,i)=>`<div class="address-cell ${i===0?'first':i===7?'last':''}">${icon('pc')}<code>${b8(i).slice(-3)}</code><b>.${24+i}</b><small>${i===0?'сеть':i===7?'broadcast':'компьютер'}</small></div>`).join('')}</div>${reveal(1,note('Для сети <strong>192.168.10.24/29</strong> диапазон — от .24 до .31. Все нули в части узла задают адрес сети, все единицы — broadcast.'))}${reveal(2,'8 − 2 = <strong>6 компьютеров</strong>','big-formula')}`},
- {title:'Считаем нули в маске',group:'Разборы',steps:4,html:`${problem('Маска <b>255.255.254.0</b>. Сколько адресов компьютеров, если адрес сети и broadcast не используются?')}${board(bitRow('Маска','255.255.254.0',23))}${line(1,'Число единиц','8 + 8 + 7 = <strong>23</strong>.')}${line(2,'Число нулей','32 − 23 = <strong>9</strong>.')}${line(3,'Всего адресов','2⁹ = <strong>512</strong>.')}${reveal(4,'Компьютерам: 512 − 2 = <strong>510</strong>','answer')}`},
- {title:'Сколько масок, если узлов ≥ 60?',group:'Разборы',steps:3,html:`${problem('IP: <b>175.122.80.13</b> · сеть: <b>175.122.80.0</b>. Сколько масок подходят, если в сети не менее 60 адресов компьютеров?')}${maskMatchesTable()}${line(1,'Сеть должна совпасть','Подходят префиксы <strong>от /20 до /28</strong>.')}${line(2,'Места должно хватить','2ᵏ − 2 ≥ 60 → k ≥ 6. Значит, префикс <strong>не длиннее /26</strong>.')}${reveal(3,'Пересечение: /20…/26 → <strong>7 масок</strong>','answer')}`},
- {title:'Наибольший IP компьютера',group:'Разборы',steps:4,html:`${problem('IP: <b>191.128.66.83</b> · маска: <b>255.192.0.0</b>. Найдите наибольший адрес компьютера в сети. Ответ запишите без точек.')}${board(bitRow('IP','191.128.66.83',10),bitRow('Маска','255.192.0.0',10))}${line(1,'Граница /10','Маска содержит 8 + 2 единицы. Сеть: <strong>191.128.0.0</strong>.')}${line(2,'Все биты узла равны 1','Получаем <strong>191.191.255.255</strong> — это broadcast, его не назначают компьютеру.')}${line(3,'Вычтем единицу','Наибольший адрес компьютера: <strong>191.191.255.254</strong>.')}${reveal(4,'Ответ без точек: <strong>191191255254</strong>','answer')}`},
- {title:'Сетевой калькулятор',group:'Практика',type:'calculator',steps:0,html:calculator()},
- {title:'Перебираем маски в Python',group:'Python',type:'python',steps:3,html:`<div class="python-tabs">${codeSamples.map((s,i)=>`<button data-code-tab="${i}">${s.name}</button>`).join('')}</div><div class="python-layout"><div class="editor"><pre id="python-code"></pre><button id="show-output">Показать вывод →</button><pre id="python-output" aria-live="polite"></pre></div><div class="python-explanation" id="python-explanation"></div></div>`},
- {title:'Проверь себя',group:'Практика',type:'quiz',steps:5,html:`<div id="quiz-progress" class="quiz-progress"></div><h3 id="quiz-title"></h3><div id="quiz-options" class="quiz-options"></div><div id="quiz-feedback" aria-live="polite"></div>`},
- {title:'Алгоритм задания №10',group:'Итог',steps:5,html:`<div class="algorithm">${line(1,'Что дано и что найти?','Выпишите IP, маску или адрес сети. Уточните, нужны адреса или компьютеры.')}${line(2,'Переводим в двоичную','Каждый октет — ровно 8 бит, включая нули слева.')}${line(3,'Находим границу','Маска — непрерывные единицы, затем нули. Сеть = IP И маска.')}${line(4,'Учитываем ограничение','Минимум или максимум маски, разные сети, количество узлов — проверяем всё условие.')}${line(5,'Проверяем ответ','Для компьютеров обычно исключаем адрес сети и broadcast. Соблюдаем формат ответа.')}</div>`},
- {title:'Шпаргалка №10',group:'Итог',steps:3,html:`<div class="cheatsheet">${[['IP-адрес','4 октета по 8 бит. Всего <strong>32 бита</strong>. Значения октета — 0…255.'],['В двоичную','Каждый октет — ровно 8 знаков: 1 → <strong>00000001</strong>.'],['Маска','Сначала единицы, затем нули. После первого нуля — <strong>только нули</strong>.'],['Адрес сети','<strong>IP И маска</strong>. 255 сохраняет октет, 0 его обнуляет.'],['Восстановить маску','В сети 1 → в маске 1. В IP 1, а в сети 0 → в маске 0.'],['Два узла','Разные сети получаются, когда маска включает <strong>первый различающийся бит</strong>.'],['Количество адресов','k нулей → <strong>2ᵏ адресов</strong>; обычно компьютерам — 2ᵏ − 2.'],['Служебные адреса','Первый — адрес сети, последний — широковещательный.'],['Python',"<code>ip_network(ip + '/' + str(m), strict=False)</code>"]].map(([h,p],i)=>reveal(Math.floor(i/3)+1,`<h3>${h}</h3><p>${p}</p>`,'cheat-card')).join('')}</div>`}
-];
-let current=1,step=0,quizAnswers=Array(6).fill(null);
-$('#outline').innerHTML=slides.map((s,i)=>`${i===0||s.group!==slides[i-1].group?`<div class="group-name">${s.group}</div>`:''}<a href="#${i+1}" data-slide="${i+1}"><span>${String(i+1).padStart(2,'0')}</span>${s.title}</a>`).join('');
-function resize(){const e=$('#stage');$('#slide-frame').style.setProperty('--scale',matchMedia('(max-width:700px)').matches?1:Math.min(e.clientWidth/1360,e.clientHeight/800));}
-new ResizeObserver(resize).observe($('#stage'));
-function menu(open){document.body.classList.toggle('menu-open',open);$('#sidebar').hidden=!open;$('#sidebar').inert=!open;$('#menu').setAttribute('aria-expanded',String(open));resize();}
-$('#menu').onclick=()=>menu(!document.body.classList.contains('menu-open'));
-function paintPrefix(id,ip,calc=false){const p=Number($('#'+id).value),info=networkInfo(ip,p);$('#'+id+'-value').textContent='/'+p;$('#'+id+'-rows').innerHTML=board(bitRow('IP',ip,p),...(calc?[bitRow('Маска',info.mask,p),bitRow('Сеть',info.network,p),bitRow('Broadcast',info.broadcast,p)]:[]));$('#'+id+'-rows').dataset.prefix=p;if(calc){$('.calc-results').innerHTML=[['Маска',info.mask],['Адрес сети',info.network],['Broadcast',info.broadcast],['Компьютерам',p<=30?info.first+' … '+info.last:'Особый случай /'+p],['Адресов',info.total.toLocaleString('ru-RU')+(p<=30?`<small>компьютерам: ${info.hosts.toLocaleString('ru-RU')}</small>`:'<small>Правило «минус 2» здесь не применяется</small>')]].map(([t,v])=>`<div><small>${t}</small><b>${v}</b></div>`).join('');}}
-function initPrefix(id,ip,calc=false){const range=$('#'+id),refresh=()=>{const value=calc?$('#calc-ip').value:ip;if(!parseIP(value)){$('#ip-error').textContent='Нужны четыре числа от 0 до 255 через точки.';return;}if(calc)$('#ip-error').textContent='';paintPrefix(id,value,calc);};range.addEventListener('input',refresh);$('#'+id+'-rows').onclick=e=>{const b=e.target.closest('[data-index]');if(!b)return;range.value=+b.dataset.index+1;refresh();};if(calc){$('#calc-ip').addEventListener('input',refresh);$('#random-ip').onclick=()=>{$('#calc-ip').value=['10.5.7.9','172.16.37.146','192.168.10.77','191.128.66.83'][Math.floor(Math.random()*4)];refresh();};}refresh();}
-function initByte(){const refresh=()=>{const buttons=[...document.querySelectorAll('.byte-bit')],value=buttons.reduce((s,b)=>s+(b.getAttribute('aria-pressed')==='true'?Number(b.dataset.weight):0),0);buttons.forEach(b=>b.textContent=b.getAttribute('aria-pressed')==='true'?'1':'0');$('#byte-binary').textContent=b8(value);$('#byte-value').textContent=value;$('#byte-sum').textContent=buttons.filter(b=>b.getAttribute('aria-pressed')==='true').map(b=>b.dataset.weight).join(' + ')||'Все биты выключены: 0';};document.querySelectorAll('.byte-bit').forEach(b=>b.onclick=()=>{b.setAttribute('aria-pressed',String(b.getAttribute('aria-pressed')!=='true'));refresh();});document.querySelectorAll('[data-byte]').forEach(b=>b.onclick=()=>{const bits=b8(b.dataset.byte);document.querySelectorAll('.byte-bit').forEach((button,i)=>button.setAttribute('aria-pressed',String(bits[i]==='1')));refresh();});refresh();}
-function updateCapacity(){const counts=[100,4,8,64],bases=[10,2,2,2],places=[2,2,3,6],n=counts[step];$('#capacity-copy').textContent=step===0?'Две десятичные цифры дают 100 вариантов: от 00 до 99.':'В двоичной системе на каждом месте только 0 или 1.';$('#capacity-formula').innerHTML=`${bases[step]}<sup>${places[step]}</sup> = <strong>${n}</strong>`;$('#capacity-example').textContent=step===0?'00, 01, 02, …, 99':step===1?'00, 01, 10, 11':step===2?'000, 001, 010, …, 111':'000000, 000001, …, 111111';$('#capacity-grid').style.setProperty('--cols',step===0?10:step===1?2:step===2?4:8);$('#capacity-grid').innerHTML=Array.from({length:n},(_,i)=>`<span>${n<=8?i.toString(2).padStart(places[step],'0'):''}</span>`).join('');}
-function updateQuiz(){const q=quizData[step],chosen=quizAnswers[step];$('#quiz-progress').innerHTML=quizData.map((_,i)=>`<span class="${i===step?'active':quizAnswers[i]===quizData[i][2]?'correct':''}"></span>`).join('');$('#quiz-title').textContent=q[0];$('#quiz-options').innerHTML=q[1].map((a,i)=>`<button data-choice="${i}" class="${chosen===i?(i===q[2]?'right':'wrong'):''}"><b>${['А','Б','В','Г'][i]}</b>${a}</button>`).join('');$('#quiz-feedback').textContent=chosen===null?'Выберите ответ.':chosen===q[2]?q[3]:'Пока неверно. Попробуйте ещё раз.';$('#quiz-feedback').className=chosen===q[2]?'good':'normal';document.querySelectorAll('[data-choice]').forEach(b=>b.onclick=()=>{const previous=quizAnswers[step];quizAnswers[step]=Number(b.dataset.choice);updateQuiz();if(quizAnswers[step]===q[2]&&previous!==q[2])celebrate();});}
-function updatePython(){const s=codeSamples[step];$('#slide-title').textContent=s.title;$('#python-code').textContent=s.code;$('#python-explanation').textContent=s.text;$('#python-output').replaceChildren();document.querySelectorAll('[data-code-tab]').forEach(b=>b.classList.toggle('selected',+b.dataset.codeTab===step));}
-function pythonOutput(){let lines=[];if(step===0)lines=Array.from({length:32},(_,i)=>({text:networkInfo(codeSamples[0].ip,i+1).network+'/'+(i+1),selected:networkInfo(codeSamples[0].ip,i+1).network===codeSamples[0].target}));if(step===1)lines=matchingMasks('111.81.208.27','111.81.192.0').map(p=>({text:p+' '+networkInfo('111.81.208.27',p).mask,selected:true}));if(step===2)lines=[{text:'21 157.127.176.0/21 157.127.184.0/21',selected:true}];if(step===3)lines=['191.128.0.0','191.191.255.255','4194304'].map(text=>({text,selected:false}));const output=$('#python-output');output.replaceChildren();lines.forEach(l=>{const line=document.createElement('span');line.textContent=l.text;line.className=l.selected?'output-selected':'';output.append(line);});const selected=output.querySelector('.output-selected');if(selected)output.scrollTop=selected.offsetTop-output.offsetTop-45;}
-function celebrate(){if(matchMedia('(prefers-reduced-motion: reduce)').matches)return;document.querySelectorAll('.confetti-burst').forEach(e=>e.remove());const layer=document.createElement('div');layer.className='confetti-burst';layer.setAttribute('aria-hidden','true');document.body.append(layer);const promises=[];for(let side=0;side<2;side++)for(let i=0;i<60;i++){const p=document.createElement('i');p.style.cssText=`position:absolute;left:${side?100:0}%;top:75%;width:${8+i%6}px;height:${12+i%7}px;background:${['#E46E50','#244D85','#12666b','#e4b550'][i%4]}`;layer.append(p);const x=innerWidth*(.25+(i*37%79)/158)*(side?-1:1),lift=1.5+(i*53%83)/104;const frames=Array.from({length:25},(_,j)=>{const t=j/24;return {transform:`translate(${x*(1-(1-t)**2)}px,${innerHeight*(-lift*t+2.1*t*t)}px) rotate(${t*(500+i*17)}deg)`,opacity:t<.06?t/.06:t>.8?(1-t)/.2:1};});promises.push(p.animate(frames,{duration:1400+i%8*50,delay:i%7*8,fill:'both'}).finished.catch(()=>{}));}Promise.all(promises).then(()=>layer.remove());}
-function update(){const s=slides[current-1],el=$('#slide'),old=Number(el.dataset.step);el.dataset.step=step;el.querySelectorAll('[data-show]').forEach(e=>{const visible=step>=+e.dataset.show;e.classList.toggle('visible',visible);e.setAttribute('aria-hidden',String(!visible));});el.querySelectorAll('[data-mark]').forEach(e=>e.classList.toggle('marked',step>=+e.dataset.mark));if(s.titles)$('#slide-title').textContent=s.titles[step];if(['mail','internet'].includes(s.type)){const positions=s.type==='mail'?[[12,52],[38,24],[88,52],[64,24],[12,52]]:[[12,52],[38,24],[88,52],[12,52]];const pos=positions[step];Object.assign($('.moving-packet').style,{left:pos[0]+'%',top:pos[1]+'%'});}if(s.type==='capacity')updateCapacity();if(s.type==='quiz')updateQuiz();if(s.type==='python')updatePython();if(s.type!=='quiz'&&el.querySelector('.answer.visible')&&old!==step&&step===s.steps)celebrate();$('#prev').disabled=current===1&&step===0;$('#next').disabled=current===slides.length&&step===s.steps;$('#next').textContent=s.type==='quiz'&&step<s.steps?'Следующий вопрос →':step<s.steps?'Далее →':'Следующий слайд →';$('#status').textContent=s.title;history.replaceState(null,'',`#${current}${step?'.'+step:''}`);}
-function render(){document.querySelectorAll('.confetti-burst').forEach(e=>e.remove());const match=location.hash.match(/^#(\d+)(?:\.(\d+))?$/);current=match?Math.max(1,Math.min(slides.length,+match[1])):1;const s=slides[current-1];step=Math.min(Number(match?.[2]||0),s.steps);const el=$('#slide');el.className=`ip-lesson slide-${current} type-${s.type||'theory'}`;el.dataset.step='-1';el.innerHTML=(current===1?'':`<div class="kicker">${s.group.toUpperCase()}</div><h2 id="slide-title">${s.title}</h2>`)+s.html;el.scrollTop=0;if(s.type==='byte')initByte();if(s.type==='boundary')initPrefix('boundary','192.168.0.1');if(s.type==='calculator')initPrefix('calc-prefix','192.168.10.77',true);if(s.type==='python'){document.querySelectorAll('[data-code-tab]').forEach(b=>b.onclick=()=>{step=+b.dataset.codeTab;update();});$('#show-output').onclick=pythonOutput;}document.title=s.title+' · Задание 10';document.querySelectorAll('#outline a').forEach(a=>{const active=Number(a.dataset.slide)===current;a.classList.toggle('active',active);if(active)a.setAttribute('aria-current','page');else a.removeAttribute('aria-current');});update();resize();}
-function go(dir){const s=slides[current-1];if(dir>0&&step<s.steps){step++;update();return;}if(dir<0&&step>0){step--;update();return;}const next=current+dir;if(next<1||next>slides.length)return;location.hash='#'+next+(dir<0&&slides[next-1].steps?'.'+slides[next-1].steps:'');}
-$('#next').onclick=()=>go(1);$('#prev').onclick=()=>go(-1);$('#slide').onclick=e=>{if(!e.target.closest('a,button,input,select,label,pre,.bit-board')&&step<slides[current-1].steps)go(1);};$('#outline').onclick=e=>{if(e.target.closest('a')&&matchMedia('(max-width:700px)').matches)menu(false);};
-window.addEventListener('hashchange',()=>{const old=$('#slide').cloneNode(true);old.removeAttribute('id');old.querySelectorAll('[id]').forEach(e=>e.removeAttribute('id'));old.classList.add('outgoing');old.inert=true;old.setAttribute('aria-hidden','true');$('#slide-frame').append(old);render();if(matchMedia('(prefers-reduced-motion: reduce)').matches){old.remove();return;}old.animate([{opacity:1},{opacity:0}],{duration:500,easing:'ease-in-out'}).finished.catch(()=>{}).finally(()=>old.remove());$('#slide').animate([{opacity:0},{opacity:1}],{duration:500,easing:'ease-in-out'});});
-document.addEventListener('keydown',e=>{if(e.ctrlKey||e.metaKey||e.altKey||e.target.closest('input,select,textarea'))return;if(e.key==='ArrowRight'||(e.key===' '&&!e.target.closest('button,a'))){e.preventDefault();go(1);}if(e.key==='ArrowLeft'){e.preventDefault();go(-1);}if(e.key==='Escape')menu(false);});render();
+function initQuiz() {
+  const score=answers.filter((answer,i)=>answer===quiz[i].correct).length;
+  const root=surface('quiz-live');root.classList.add('reference-quiz');
+  const dots=Array.from({length:6},(_,i)=>`<i class="${answers[i]===quiz[i].correct?'correct':step===i?'active':''}"></i>`).join('');
+  if(step===6){
+    root.classList.remove('reference-quiz');
+    root.innerHTML=`<div class="kicker">ИТОГ</div><div class="quiz-steps">${dots}</div><h1 style="font-size:62px;margin-top:47px">${score===6?'Идеально!':score>=4?'Хорошая работа!':'Попробуем ещё раз'}</h1><div class="quiz-score"><strong>${score}</strong><span>из 6 правильно</span><button id="retry-quiz">Пройти заново</button></div>`;
+    $('#retry-quiz').onclick=()=>{answers.fill(null);step=0;render();};
+    return;
+  }
+  const q=quiz[step],chosen=answers[step],answered=chosen!==null;
+  root.innerHTML=`<h1 class="sr-only">${q.q}</h1><div class="quiz-steps">${dots}</div><div class="quiz-options">${q.options.map((option,i)=>`<button data-choice="${i}" aria-label="${['А','Б','В','Г'][i]}. ${option}" class="${chosen===i?(i===q.correct?'right':'wrong'):answered?'dim':''}"><b>${['А','Б','В','Г'][i]}</b><span>${option}</span></button>`).join('')}</div><div class="quiz-feedback ${answered&&chosen!==q.correct?'wrong':''}" aria-live="polite">${answered?(chosen===q.correct?q.explanation:'Пока неверно. Попробуй ещё раз.') : ''}</div><div class="quiz-bottom-mask" aria-hidden="true"></div>`;
+  root.querySelectorAll('[data-choice]').forEach(button=>button.onclick=()=>{
+    const answer=Number(button.dataset.choice),previous=answers[step];answers[step]=answer;
+    root.remove();initQuiz();
+    if(answer===q.correct&&previous!==q.correct)celebrate();
+  });
+}
+function celebrate() {
+  if(reducedMotion.matches)return;
+  document.querySelectorAll('.confetti-layer').forEach(layer=>layer.remove());
+  const layer=document.createElement('div');layer.className='confetti-layer';layer.setAttribute('aria-hidden','true');$('#viewport').append(layer);
+  const animations=[];
+  for(let side=0;side<2;side++)for(let i=0;i<60;i++){
+    const particle=document.createElement('i');particle.style.left=(side?100:0)+'%';particle.style.background=['#b44e23','#368d69','#347bd4','#6433b2','#d8a531','#1c1c1e'][i%6];layer.append(particle);
+    const x=(450+(i*71%1000))*(side?-1:1),lift=900+(i*43%600);
+    const frames=Array.from({length:31},(_,j)=>{const t=j/30;return {transform:`translate(${x*(1-(1-t)**2)}px,${-lift*t+1500*t*t}px) rotate(${t*(700+i*31)}deg)`,opacity:t>.85?(1-t)/.15:1};});
+    animations.push(particle.animate(frames,{duration:2200+i%9*90,delay:i%7*12,fill:'both'}).finished.catch(()=>{}));
+  }
+  Promise.all(animations).then(()=>layer.remove());
+}
+
+resize();
+readHash();
