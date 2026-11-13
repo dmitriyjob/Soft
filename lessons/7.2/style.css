@@ -214,3 +214,107 @@ html,body,#stage,#slide-frame,article{background:#F5F5F7}#slide-frame{border:0;b
 .sampling-copy{font-size:16px;line-height:1.45}.sampling-copy .reveal{margin-top:13px}.sampling-copy p{margin:0}
 @media(max-width:700px){.audio-signal{padding:65px 24px 100px;overflow-y:auto}.audio-signal h2{font-size:29px;margin-bottom:16px}.sampling-layout{display:flex;flex-direction:column;gap:12px;margin:12px 0}.sampling-graph{width:100%;padding-top:5px}.sampled-wave{width:100%;aspect-ratio:800/390}.sampling-caption{font-size:12px;margin:2px 0}.sampling-side{width:100%}.sampling-card{padding:20px}.sampling-note{font-size:16px}.sampling-copy{font-size:17px}}
 @media(prefers-reduced-motion:reduce){.sample-stair{transition:none}}
+
+/* Task 31114: distinguish storage capacity from the integer part of a result. */
+.audio-storage-worked,.audio-rounding{padding:44px 48px 65px}
+.case-label{font-size:11px;font-weight:700;letter-spacing:1.4px;line-height:1.4;color:var(--muted);margin-bottom:12px}
+.audio-slide .case-heading{font-size:46px;font-weight:600;line-height:1.15;letter-spacing:-1.5px;margin:0 0 20px}
+.case-heading em{font-style:normal;color:var(--accent)}
+.case-problem{background:#fff;border:1px solid var(--line);border-radius:18px;padding:18px 22px;font-size:20px;line-height:1.55}
+.case-problem [data-given]{padding:2px 3px;box-decoration-break:clone;-webkit-box-decoration-break:clone}
+.case-problem .highlight{font-weight:700}
+.case-problem .storage-demand.highlight{color:#ffba89;background:var(--ink)}
+.storage-work{display:grid;grid-template-columns:1fr 1.2fr 1fr;gap:18px;margin-top:20px}
+.storage-card{min-width:0;height:256px;background:#fff;border:1px solid var(--line);border-radius:18px;padding:19px}
+.storage-value{font:700 21px/1.5 monospace;margin:9px 0 0;white-space:nowrap}
+.storage-value b{color:var(--accent)}
+.storage-value small{display:block;font:14px/1.3 Arial;color:var(--muted)}
+.storage-calculation{display:flex;flex-direction:column;justify-content:center}
+.storage-equation{font:700 27px/1.4 monospace;text-align:center;margin:9px 0}
+.storage-calculation .storage-equation:nth-child(2){font-size:23px;color:var(--muted)}
+.storage-equation .audio-fraction{margin:0;max-width:100%}
+.storage-calculator{background:#30343b;color:#fff}
+.storage-calculator .case-label{color:#bfc3ca}
+.calculator-screen{background:#202125;padding:16px 13px 20px;border-radius:12px;text-align:right}
+.calculator-screen div{font:700 13px/1.4 monospace;color:#bfc3ca;white-space:nowrap}
+.calculator-screen output{display:block;font:300 40px/1.5 Arial;white-space:nowrap;letter-spacing:-1px}
+.storage-calculator p{font-size:13px;color:#d7d9df;margin:17px 0 0}
+.storage-answer{display:flex;align-items:center;justify-content:space-between;gap:16px;padding:16px 20px;border-radius:16px;background:#202125;color:#fff;margin-top:20px}
+.storage-answer p{margin:0;font-size:18px;line-height:1.5}
+.storage-answer b,.storage-answer>span:nth-child(2){color:#ffba89}
+.storage-exact{font:700 25px/1.4 monospace;white-space:nowrap}
+.audio-slide .storage-result{background:var(--accent);color:#fff;font:700 37px/1.25 monospace;border-radius:12px;padding:8px 16px;white-space:nowrap}
+.rounding-layout{display:grid;grid-template-columns:.9fr 1.1fr;gap:22px;align-items:start}
+.capacity-card,.rounding-rule,.integer-example{background:#fff;border:1px solid var(--line);border-radius:18px;padding:18px}
+.capacity-card+.capacity-card{margin-top:16px}
+.capacity-heading{display:flex;align-items:start;justify-content:space-between;gap:12px;margin-bottom:8px}
+.capacity-heading h3{font-size:21px;font-weight:700;line-height:1.3;color:var(--ink);margin:0}
+.capacity-heading b{font-size:19px;line-height:1.4;white-space:nowrap}
+.fits{color:#23804c}.overflows{color:#c23232}
+.capacity-ticks{display:flex;justify-content:space-between;position:relative;font:700 12px/1.3 monospace;color:var(--muted);margin:0 0 7px}
+.capacity-ticks.short{width:84.210526%}
+.capacity-bar{position:relative;display:flex;height:58px;border-radius:10px;overflow:hidden;background:#e1f1e8}
+.capacity-recording{position:relative;background:repeating-linear-gradient(90deg,transparent 0 16px,#ffffff2b 17px 18px),var(--accent);height:100%}
+.capacity-bar.fits .capacity-recording{width:59.375%}
+.capacity-bar.fits .capacity-tail{flex:1;background:repeating-linear-gradient(45deg,#ceeada 0 8px,#e9f5ef 8px 16px)}
+.capacity-bar.overflows .capacity-recording{width:84.210526%}
+.capacity-bar.overflows .capacity-tail{flex:1;background:#c23232;border:2px solid #f6a4a4;border-radius:0 10px 10px 0}
+.capacity-card p{font-size:15px;line-height:1.5;color:var(--muted);margin:10px 0 0}
+.capacity-card p b{color:var(--ink)}
+.rounding-rules{display:grid;grid-template-columns:1fr 1fr;gap:12px}
+.rounding-rule{padding:15px}
+.rounding-rule .case-label{font-size:10px;letter-spacing:.9px;margin-bottom:8px}
+.rounding-rule p{font-size:16px;line-height:1.5;margin:0 0 12px;min-height:96px}
+.rounding-rule p b,.audio-slide .rounding-rule strong{color:var(--accent);font-weight:700}
+.rule-result{font:700 18px/1.5 monospace;padding:10px 11px;border-radius:12px;white-space:nowrap}
+.rule-result small{display:block;font:700 10px/1.5 Arial;letter-spacing:1px;margin-top:2px}
+.rule-up{color:#23804c;background:#e1f1e8}.rule-integer{color:#ae4b2e;background:#ffeddf}
+.integer-example{margin-top:14px}
+.integer-example .case-label{color:var(--accent);font-size:10px;margin-bottom:8px}
+.integer-example p{font-size:17px;line-height:1.5;margin:0 0 10px}
+.integer-instruction{background:var(--ink);color:#ffba89!important;font-weight:700!important;padding:2px 5px;border-radius:4px;box-decoration-break:clone;-webkit-box-decoration-break:clone}
+.integer-givens{font:700 15px/1.5 monospace;color:var(--muted);margin-bottom:14px}
+.integer-equation{display:flex;align-items:center;flex-wrap:wrap;gap:8px;font:700 18px/1.4 monospace}
+.integer-equation .audio-fraction{margin:0}
+.integer-equation>span:last-child{white-space:nowrap}
+.discarded{color:#9a6060;text-decoration:line-through;text-decoration-thickness:2px}
+.audio-slide .integer-equation strong{display:inline-block;background:var(--accent);color:#fff;font-size:27px;border-radius:8px;padding:3px 10px}
+.integer-takeaway{display:flex;flex-direction:column;gap:2px;background:#ffeddf;color:#ae4b2e;border-left:4px solid var(--accent);padding:9px 12px;border-radius:6px;margin-top:14px;font-size:14px;line-height:1.5}
+.integer-takeaway b{font-size:17px;letter-spacing:.4px}
+.rounding-reminder{padding:15px 18px;border-radius:14px;background:#202125;color:#fff;font-size:17px;line-height:1.5;margin-top:16px}
+.rounding-reminder b,.audio-slide .rounding-reminder strong{color:#ffba89;font-weight:700}
+.capacity-caption{font-size:12px;color:var(--muted);margin:14px 0 0}
+@media(max-width:700px){
+ .audio-storage-worked,.audio-rounding{padding:64px 22px 95px;overflow-y:auto}
+ .case-label{font-size:9px;letter-spacing:1px;margin-bottom:10px}
+ .audio-slide .case-heading{font-size:31px;letter-spacing:-.8px;margin-bottom:18px}
+ .case-problem{font-size:17px;padding:17px;line-height:1.6}
+ .audio-storage-worked .reveal:not(.visible),.audio-rounding .reveal:not(.visible){display:none}
+ .storage-work{display:flex;flex-direction:column;gap:14px;margin-top:16px}
+ .storage-card{height:auto;min-height:225px;padding:19px}
+ .storage-value{font-size:20px;white-space:normal}
+ .storage-equation{font-size:clamp(16px,5vw,25px)}
+ .calculator-screen output{font-size:40px}
+ .storage-answer{flex-wrap:wrap;justify-content:flex-start;gap:10px;margin-top:16px;padding:18px}
+ .storage-answer p{font-size:16px;flex-basis:100%}
+ .storage-exact{font-size:25px}
+ .audio-slide .storage-result{font-size:34px}
+ .rounding-layout{display:flex;flex-direction:column;gap:18px}
+ .capacity-column,.rounding-examples{width:100%;min-width:0}
+ .capacity-card{padding:16px}
+ .capacity-heading{gap:8px}
+ .capacity-heading h3{font-size:18px}
+ .capacity-heading b{font-size:15px}
+ .capacity-card p{font-size:14px}
+ .rounding-rules{grid-template-columns:1fr;gap:12px}
+ .rounding-rule p{min-height:0;font-size:17px}
+ .rule-result{font-size:20px}
+ .integer-example{padding:17px}
+ .integer-example p{font-size:17px}
+ .integer-givens{font-size:14px}
+ .integer-equation{font-size:15px;gap:12px}
+ .integer-takeaway b{font-size:16px}
+ .integer-takeaway{font-size:14px}
+ .rounding-reminder{font-size:16px}
+ .capacity-caption{font-size:11px}
+}
