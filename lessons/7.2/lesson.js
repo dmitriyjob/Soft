@@ -81,8 +81,8 @@ function roundingLesson(){
 // The same variables and the same 72 MB recording as in the worked example.
 function ratioComparison(){
  const cancel=s=>`<span class="ratio-cancel">${s}</span>`;
- return `${show(18,`<div class="ratio-panel"><span class="ratio-label">Было / Стало<br>t₁ = t₂</span><div class="ratio-equation">${fraction(`1 · ${cancel('ν₁')} · ${cancel('i₁')} · ${cancel('t₁')}`,`2 · (${cancel('ν₁')}/4,5) · 3${cancel('i₁')} · ${cancel('t₂')}`)}<span>=</span>${fraction('72','X')}</div></div>`)}
- ${show(19,'Длительность та же: t₁ = t₂. Сокращаем ν₁, i₁ и равные t₁, t₂. Умножаем крест-накрест.','ratio-explanation')}
+ return `${show(18,`<div class="ratio-panel"><span class="ratio-label">Было / Стало</span><div class="ratio-equation">${fraction(`1 · ${cancel('ν₁')} · ${cancel('i₁')} · ${cancel('t₁')}`,`2 · (${cancel('ν₁')}/4,5) · 3${cancel('i₁')} · ${cancel('t₁')}`)}<span>=</span>${fraction('72','X')}</div></div>`)}
+ ${show(19,'Сокращаем ν₁, i₁ и t₁ в числителе и знаменателе. Умножаем крест-накрест.','ratio-explanation')}
  ${show(20,'<div class="ratio-result">X = 72 · 2 · 3 / 4,5 = <strong>96 Мбайт</strong></div>')}`;
 }
 const mixerOptions={
