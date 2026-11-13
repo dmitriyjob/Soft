@@ -318,3 +318,41 @@ html,body,#stage,#slide-frame,article{background:#F5F5F7}#slide-frame{border:0;b
  .rounding-reminder{font-size:16px}
  .capacity-caption{font-size:11px}
 }
+
+/* Fill the same message into two capacities, then reveal the result. */
+.rounding-heading{display:flex;align-items:baseline;justify-content:space-between;gap:16px}
+.capacity-replay{display:inline-flex;align-items:center;gap:6px;flex-shrink:0;border:1px solid var(--line);border-radius:20px;background:transparent;color:var(--blue);padding:3px 11px;font:12px/1.5 Arial;transition:background .2s,border-color .2s}
+.capacity-replay span{font-size:18px;line-height:1}
+.capacity-replay:hover{background:#fff;border-color:var(--accent)}
+.capacity-bar{isolation:isolate;background:#eceef2}
+.capacity-bar.fits{background:repeating-linear-gradient(45deg,#ceeada 0 8px,#e9f5ef 8px 16px)}
+.capacity-fill{position:absolute;inset:0;display:flex;clip-path:inset(0 100% 0 0);animation:capacity-pour 2.3s cubic-bezier(.22,.61,.36,1) var(--fill-delay) both}
+.capacity-fill:after{content:'';position:absolute;inset:0;background:linear-gradient(105deg,transparent 25%,#fff4 45%,#fff8 50%,#fff2 55%,transparent 75%);transform:translateX(-100%);animation:capacity-shine 2.3s ease-out var(--fill-delay) both;pointer-events:none}
+.capacity-bar.fits .capacity-tail{background:transparent}
+.capacity-limit{position:absolute;top:0;bottom:0;left:50%;border-left:2px solid #fff9;pointer-events:none}
+.capacity-bar.overflows .capacity-limit{left:84.210526%;border-color:#c2323270}
+.capacity-bar.overflows .capacity-tail{animation:capacity-warning .7s ease-out calc(var(--fill-delay) + 2.3s) both}
+.capacity-heading>b{animation:capacity-verdict .5s cubic-bezier(.2,.8,.3,1.2) calc(var(--fill-delay) + 2.3s) both;transform-origin:right center}
+.capacity-card>p{animation:capacity-caption .5s ease calc(var(--fill-delay) + 2.4s) both}
+@keyframes capacity-pour{from{clip-path:inset(0 100% 0 0)}to{clip-path:inset(0 calc(100% - var(--fill-end)) 0 0)}}
+@keyframes capacity-shine{0%{transform:translateX(-100%);opacity:0}15%{opacity:1}85%{opacity:.7}100%{transform:translateX(100%);opacity:0}}
+@keyframes capacity-warning{0%,100%{filter:brightness(1)}45%{filter:brightness(1.4)}}
+@keyframes capacity-verdict{from{opacity:0;transform:translateY(5px) scale(.9)}to{opacity:1;transform:none}}
+@keyframes capacity-caption{from{opacity:0;transform:translateY(5px)}to{opacity:1;transform:none}}
+/* The comparison card follows the wording and emphasis in the reference. */
+.integer-rule p{font-size:18px;line-height:1.5}
+.integer-rule .rule-integer{font-size:20px}
+.integer-rule .rule-integer small{font-size:11px;letter-spacing:1.2px}
+@media(max-width:700px){
+ .rounding-heading{align-items:start;gap:8px}
+ .rounding-heading .case-label{max-width:170px}
+ .capacity-replay{font-size:10px;padding:3px 8px;gap:4px}
+ .capacity-replay span{font-size:16px}
+ .integer-rule p{font-size:18px}
+ .integer-rule .rule-integer{font-size:21px}
+}
+@media(prefers-reduced-motion:reduce){
+ .capacity-fill,.capacity-fill:after,.capacity-bar.overflows .capacity-tail,.capacity-heading>b,.capacity-card>p{animation:none;clip-path:none;opacity:1;transform:none}
+ .capacity-fill:after,.capacity-replay{display:none}
+}
+@media(min-width:701px){.audio-rounding{padding-bottom:45px}}
