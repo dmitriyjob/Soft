@@ -29,7 +29,7 @@ let byteValue=0;
 function byteLab(){
  return `<div class="kicker">ПЕРЕВОД В ДВОИЧНУЮ · ПОПРОБУЙ САМ</div><h2>Собери <em>байт</em></h2><div class="byte-lab"><section><div class="bit-switches" role="group" aria-label="Восемь разрядов байта">${weights.map(weight=>`<button class="bit-switch" type="button" role="switch" aria-checked="false" aria-label="Разряд ${weight}" data-weight="${weight}"><span class="bit-weight">${weight}</span><span class="switch-track"><span class="switch-knob"></span></span><span class="switch-digit">0</span></button>`).join('')}</div><div class="byte-total" aria-live="polite"><code id="lab-binary">00000000</code><span>=</span><strong id="lab-decimal">0</strong></div><div class="byte-presets"><span>Собери:</span>${[192,168,255,1,10,34].map(value=>`<button type="button" data-byte="${value}">${value}</button>`).join('')}</div><button class="reset-byte" type="button">Сбросить тумблеры</button></section><section class="programmer"><h3><span aria-hidden="true">≡</span> Программист</h3><output id="calculator-decimal">0</output><dl><div><dt>HEX</dt><dd id="calculator-hex">0</dd></div><div class="selected-base"><dt>DEC</dt><dd id="calculator-dec">0</dd></div><div><dt>OCT</dt><dd id="calculator-oct">0</dd></div><div><dt>BIN</dt><dd id="calculator-bin">0000 0000</dd></div></dl><label class="sr-only" for="byte-input">Целое число от 0 до 255</label><input id="byte-input" type="text" inputmode="numeric" autocomplete="off" placeholder="введи число 0–255" aria-describedby="byte-input-feedback" aria-invalid="false"><p id="byte-input-feedback" role="status"></p><p class="calculator-note">Калькулятор Windows → ≡ → «Программист». В Python: <code>bin(192)</code> — нули слева дописать самому.</p></section></div>`;
 }
-const binaryTitles=['192.168.0.1 — <em>в двоичном</em>','192.168.0.1 — <em>в двоичном</em>','192.168.0.1 — <em>в двоичном</em>','Ноль — это <em>одна цифра?</em>','Дописываем <em>нули слева</em>','Единица — <em>тоже 8 бит</em>'];
+const binaryTitles=['192.168.0.1 — <em>в двоичном</em>','192.168.0.1 — <em>в двоичном</em>','192.168.0.1 — <em>в двоичном</em>','Ноль — это <em>одна цифра?</em>','Дописываем <em>нули слева</em>','Единица — <em>тоже 8 бит</em>','Почему нули <em>именно слева?</em>','Так адрес видит <em>компьютер</em>'];
 function binaryLesson(){
  return `<div class="kicker">КАК АДРЕС ВИДИТ КОМПЬЮТЕР</div><h2 id="binary-title">${binaryTitles[0]}</h2><div class="binary-board">${octets.map((n,row)=>`<div class="binary-row" data-octet-row="${row}"><div class="binary-decimal">${n}</div><span class="binary-arrow">→</span><div class="binary-octet" aria-label="Двоичная запись числа ${n}">${weights.map((weight,col)=>`<span class="flip-tile" data-column="${col}"><span class="digit-value"></span></span>`).join('')}</div><div class="binary-comment"><span class="binary-count"></span><span class="binary-explain"></span></div></div>`).join('')}</div>${reveal(3,'<strong>Правило:</strong> каждый кусочек IPv4 — <strong>ровно 8 цифр</strong>. Калькулятор и <code>bin()</code> лишние нули не пишут — дописываем их <strong>слева</strong> сами.','binary-rule')}`;
 }
@@ -38,7 +38,12 @@ const slides=[
  {title:'Зачем устройству адрес',group:'IP-адрес',type:'journey',steps:5,body:journey()},
  {title:'Четыре числа — 32 бита',group:'IP-адрес',type:'bytes',steps:4,body:bytesLesson()},
  {title:'Собери байт',group:'Двоичная запись',type:'lab',steps:0,body:byteLab()},
- {title:'192.168.0.1 в двоичном',group:'Двоичная запись',type:'binary',steps:5,body:binaryLesson()}
+ {title:'192.168.0.1 в двоичном',group:'Двоичная запись',type:'binary',steps:7,body:binaryLesson()+paddingExplanation()},
+ {title:'Дома, квартиры и сети',group:'Адрес сети',type:'street',steps:5,body:streetLesson()},
+ {title:'Сеть и устройство',group:'Адрес сети',type:'split',steps:2,body:splitLesson()},
+ {title:'Как работает маска',group:'Маска',type:'and',steps:2,body:andLesson()},
+ {title:'Единицы, затем нули',group:'Маска',type:'mask-rule',steps:2,body:maskRuleLesson()},
+ {title:'Измени маску',group:'Маска',type:'mask-lab',steps:2,body:maskLab()}
 ];
 let current=1,step=0;
 let journeyFrame=0,journeyGeneration=0,journeyMotion=null;
@@ -123,7 +128,7 @@ function paintBinary(previous){
   });
   const badge=row.querySelector('.binary-count'),note=row.querySelector('.binary-explain');badge.textContent=active?(short?'1 из 8':'8 бит ✓'):'';badge.className='binary-count '+(short?'bad':'good');note.textContent=active?(short?'калькулятор выдаёт просто «0» — одна цифра':notes[index]):'';note.classList.toggle('current',index===(step<=2?step-1:step<=4?2:3));
  });
- if(step<=previous||step===0)return;
+ if(step<=previous||step===0||step>5)return;
  const index=step===1?0:step===2?1:step<=4?2:3,row=$(`#slide [data-octet-row="${index}"]`);
  if(step===1||step===2)animateDigits([...row.querySelectorAll('.digit-value')]);
  else if(step===3)animateDigits([row.querySelector('[data-column="7"] .digit-value')]);
@@ -142,15 +147,19 @@ function update(){
  root.querySelectorAll('[data-show]').forEach(element=>{const visible=step>=Number(element.dataset.show);element.classList.toggle('visible',visible);element.setAttribute('aria-hidden',String(!visible));element.inert=!visible;});
  if(s.type==='journey')updateJourney(previous);
  if(s.type==='bytes')$('#byte-title').innerHTML=byteTitles[step];
- if(s.type==='binary')paintBinary(previous);
+ if(s.type==='binary'){paintBinary(previous);updatePadding();}
+ if(s.type==='street')updateStreet();
+ if(s.type==='mask-lab')paintMask();
  $('#prev').disabled=current===1&&step===0;$('#next').disabled=current===slides.length&&step===s.steps;
  $('#slide-count').textContent=`${String(current).padStart(2,'0')} / ${String(slides.length).padStart(2,'0')}`;
  $('#status').textContent=root.querySelector('h2')?.textContent||s.title;setHash();
 }
 function render(){
- stopJourney();stopDigits();const match=location.hash.match(/^#(\d+)(?:\.(\d+))?$/);let n=Number(match?.[1]||1);if(n<1||n>slides.length)n=1;current=n;step=Math.min(Number(match?.[2]||0),slides[n-1].steps);
+ stopJourney();stopDigits();stopStreet();const match=location.hash.match(/^#(\d+)(?:\.(\d+))?$/);let n=Number(match?.[1]||1);if(n<1||n>slides.length)n=1;current=n;step=Math.min(Number(match?.[2]||0),slides[n-1].steps);
  const s=slides[n-1],root=$('#slide');root.className='lesson-ten slide-'+s.type;root.dataset.step='-1';root.innerHTML=s.body;root.scrollTop=0;
  if(s.type==='lab')initByteLab();
+ if(s.type==='street')$('#street-target').addEventListener('change',e=>startStreet(e.target.value));
+ if(s.type==='mask-lab')initMask();
  document.title=s.title+' · Задание 10';$('#outline').querySelectorAll('a').forEach(a=>{const active=Number(a.dataset.slide)===n;a.classList.toggle('active',active);if(active)a.setAttribute('aria-current','page');else a.removeAttribute('aria-current');});
  update();resize();
 }
@@ -165,6 +174,7 @@ $('#menu').onclick=()=>menu(!document.body.classList.contains('menu-open'));
 $('#prev').onclick=()=>go(-1);$('#next').onclick=()=>go(1);
 $('#outline').onclick=e=>{if(e.target.closest('a')&&matchMedia('(max-width:700px)').matches)menu(false);};
 $('#slide').onclick=e=>{
+ if(extensionClick(e))return;
  const button=e.target.closest('button');
  if(button?.matches('.replay-journey')){startJourney(step>=3?'internet':'post',step===2||step===5);return;}
  if(button?.matches('[data-weight]')){byteValue^=Number(button.dataset.weight);paintByte();return;}
@@ -182,6 +192,7 @@ addEventListener('hashchange',()=>{
  old.animate([{opacity:1},{opacity:0}],{duration:500,easing:'ease-in-out',fill:'forwards'}).finished.catch(()=>{}).finally(()=>old.remove());$('#slide').animate([{opacity:0},{opacity:1}],{duration:500,easing:'ease-in-out'});
 });
 document.addEventListener('keydown',e=>{
+ if(extensionKey(e))return;
  if(e.altKey||e.ctrlKey||e.metaKey||e.target.closest('input,textarea,select'))return;
  if(e.key==='ArrowRight'||([' ','Enter'].includes(e.key)&&!e.target.closest('button,a'))){e.preventDefault();go(1);}
  if(e.key==='ArrowLeft'){e.preventDefault();go(-1);}
