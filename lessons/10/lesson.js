@@ -41,6 +41,10 @@ const slides=[
  {title:'192.168.0.1 в двоичном',group:'Двоичная запись',type:'binary',steps:7,body:binaryLesson()+paddingExplanation()},
  {title:'Дома, квартиры и сети',group:'Адрес сети',type:'street',steps:5,body:streetLesson()},
  {title:'Сеть и устройство',group:'Адрес сети',type:'split',steps:2,body:splitLesson()},
+ {title:'Дом, школа и кафе',group:'Адрес сети',type:'networks',steps:4,body:networksLesson()},
+ {title:'Где граница IP-адреса',group:'Граница адреса',type:'boundary-ip',steps:1,body:boundaryIPLesson()},
+ {title:'Дом и квартира: двигай границу',group:'Граница адреса',type:'decimal-mask',steps:4,body:decimalMaskLesson()},
+ {title:'Маска: выбирай границу',group:'Маска',type:'boundary-mask',steps:3,body:boundaryMaskLesson()},
  {title:'Как работает маска',group:'Маска',type:'and',steps:2,body:andLesson()},
  {title:'Единицы, затем нули',group:'Маска',type:'mask-rule',steps:2,body:maskRuleLesson()},
  {title:'Измени маску',group:'Маска',type:'mask-lab',steps:2,body:maskLab()}
@@ -150,16 +154,18 @@ function update(){
  if(s.type==='binary'){paintBinary(previous);updatePadding();}
  if(s.type==='street')updateStreet();
  if(s.type==='mask-lab')paintMask();
+ updateSequence(s.type,previous);
  $('#prev').disabled=current===1&&step===0;$('#next').disabled=current===slides.length&&step===s.steps;
  $('#slide-count').textContent=`${String(current).padStart(2,'0')} / ${String(slides.length).padStart(2,'0')}`;
  $('#status').textContent=root.querySelector('h2')?.textContent||s.title;setHash();
 }
 function render(){
- stopJourney();stopDigits();stopStreet();const match=location.hash.match(/^#(\d+)(?:\.(\d+))?$/);let n=Number(match?.[1]||1);if(n<1||n>slides.length)n=1;current=n;step=Math.min(Number(match?.[2]||0),slides[n-1].steps);
+ stopJourney();stopDigits();stopStreet();stopNetworkDelivery();const match=location.hash.match(/^#(\d+)(?:\.(\d+))?$/);let n=Number(match?.[1]||1);if(n<1||n>slides.length)n=1;current=n;step=Math.min(Number(match?.[2]||0),slides[n-1].steps);
  const s=slides[n-1],root=$('#slide');root.className='lesson-ten slide-'+s.type;root.dataset.step='-1';root.innerHTML=s.body;root.scrollTop=0;
  if(s.type==='lab')initByteLab();
  if(s.type==='street')$('#street-target').addEventListener('change',e=>startStreet(e.target.value));
  if(s.type==='mask-lab')initMask();
+ initSequence(s.type);
  document.title=s.title+' · Задание 10';$('#outline').querySelectorAll('a').forEach(a=>{const active=Number(a.dataset.slide)===n;a.classList.toggle('active',active);if(active)a.setAttribute('aria-current','page');else a.removeAttribute('aria-current');});
  update();resize();
 }
@@ -174,6 +180,7 @@ $('#menu').onclick=()=>menu(!document.body.classList.contains('menu-open'));
 $('#prev').onclick=()=>go(-1);$('#next').onclick=()=>go(1);
 $('#outline').onclick=e=>{if(e.target.closest('a')&&matchMedia('(max-width:700px)').matches)menu(false);};
 $('#slide').onclick=e=>{
+ if(sequenceClick(e))return;
  if(extensionClick(e))return;
  const button=e.target.closest('button');
  if(button?.matches('.replay-journey')){startJourney(step>=3?'internet':'post',step===2||step===5);return;}
@@ -192,6 +199,7 @@ addEventListener('hashchange',()=>{
  old.animate([{opacity:1},{opacity:0}],{duration:500,easing:'ease-in-out',fill:'forwards'}).finished.catch(()=>{}).finally(()=>old.remove());$('#slide').animate([{opacity:0},{opacity:1}],{duration:500,easing:'ease-in-out'});
 });
 document.addEventListener('keydown',e=>{
+ if(sequenceKey(e))return;
  if(extensionKey(e))return;
  if(e.altKey||e.ctrlKey||e.metaKey||e.target.closest('input,textarea,select'))return;
  if(e.key==='ArrowRight'||([' ','Enter'].includes(e.key)&&!e.target.closest('button,a'))){e.preventDefault();go(1);}
