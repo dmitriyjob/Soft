@@ -356,3 +356,128 @@ html,body,#stage,#slide-frame,article{background:#F5F5F7}#slide-frame{border:0;b
  .capacity-fill:after,.capacity-replay{display:none}
 }
 @media(min-width:701px){.audio-rounding{padding-bottom:45px}}
+
+/* Compare the two recordings directly, then cancel the common variables. */
+.ratio-panel{display:flex;align-items:center;gap:25px;background:var(--soft);border:1px solid var(--line);border-radius:16px;padding:14px 20px;margin:5px 0 10px}
+.ratio-label{font-size:14px;color:var(--muted);white-space:nowrap}
+.ratio-equation{display:flex;align-items:center;justify-content:center;gap:22px;flex:1;font:700 31px/1.3 monospace;color:var(--ink)}
+.ratio-equation .audio-fraction{font-size:1em;margin:0}
+.ratio-cancel{position:relative;display:inline-block;white-space:nowrap}
+.ratio-cancel:after{content:'';position:absolute;left:-8%;top:50%;width:116%;height:3px;border-radius:3px;background:#c23232;transform:rotate(-18deg) scaleX(0);transform-origin:left center;transition:transform .5s ease}
+.ratio-cancel.cancelled:after{transform:rotate(-18deg) scaleX(1)}
+.ratio-explanation{font-size:17px;color:var(--muted);line-height:1.4;margin:9px 0}
+.ratio-result{font:700 29px/1.4 monospace;color:var(--blue);margin-top:8px}
+.ratio-result strong{color:var(--accent)}
+
+/* Four independent multipliers and two bars on a shared linear scale. */
+.audio-mixer{padding:48px 52px 70px}
+.audio-mixer h2{font-size:39px;font-weight:600;max-width:1190px;margin-bottom:30px}
+.audio-mixer h2 em,.audio-sound-cheatsheet h2 em{font-style:normal;color:var(--accent)}
+.mixer-layout{display:grid;grid-template-columns:minmax(0,1.5fr) minmax(0,1fr);gap:54px;align-items:start}
+.mixer-controls{min-width:0}
+.mixer-baseline{font-size:16px;color:var(--muted);margin:0 0 23px}
+.mixer-baseline b{color:var(--ink)}
+.mixer-row{display:grid;grid-template-columns:120px minmax(0,1fr);gap:15px;align-items:center;margin-bottom:14px}
+.mixer-row h3{font-size:19px;font-weight:700;color:var(--ink);margin:0}
+.mixer-segments{display:flex;align-items:stretch;flex-wrap:wrap;gap:3px;padding:4px;background:#e8e9ed;border-radius:13px;width:fit-content;max-width:100%}
+.mixer-option{border:0;border-radius:10px;padding:11px 12px;background:transparent;color:var(--muted);font:700 16px/1.5 Arial;white-space:nowrap;transition:background .2s,color .2s}
+.mixer-option[aria-pressed="true"]{background:var(--blue);color:white}
+.mixer-option:hover:not([aria-pressed="true"]){background:#ffffffb3;color:var(--ink)}
+.mixer-actions{display:flex;gap:10px;margin:23px 0 18px}
+.mixer-actions button,.sound-quiz-restart{border:1px solid var(--line);border-radius:11px;background:white;color:var(--ink);padding:12px 18px;font-size:15px;font-weight:600}
+.mixer-actions .mixer-preset{background:var(--accent);border-color:var(--accent);color:white}
+.mixer-actions button:hover,.sound-quiz-restart:hover{filter:brightness(.96)}
+.mixer-equation{font:700 29px/1.4 monospace;color:var(--blue);min-height:84px}
+.mixer-equation strong{color:var(--accent);font-weight:700}
+.mixer-note{font-size:14px;color:var(--muted);line-height:1.6;margin:10px 0 0}
+.mixer-chart{padding-top:52px;min-width:0}
+.mixer-columns{display:flex;align-items:end;gap:30px;height:350px;border-bottom:3px solid var(--ink);padding:0 15px}
+.mixer-column{position:relative;flex:1;height:100%;min-width:0}
+.mixer-bar{position:absolute;bottom:0;left:0;right:0;height:var(--bar-size);border-radius:14px 14px 0 0;transition:height .65s cubic-bezier(.22,.61,.36,1)}
+.mixer-before{background:#a5a8b1}
+.mixer-after{background:linear-gradient(180deg,#f1a181,var(--accent))}
+.mixer-bar-label{position:absolute;bottom:calc(100% + 10px);left:-15px;right:-15px;display:flex;flex-direction:column;align-items:center;line-height:1.3;text-align:center;white-space:nowrap}
+.mixer-bar-label small{font-size:14px;color:var(--muted)}
+.mixer-bar-label b{font:700 22px/1.35 monospace;color:var(--ink)}
+.mixer-change{font-size:18px;color:var(--muted);text-align:center;margin-top:15px;line-height:1.5}
+
+/* Six question stages share the same slide and preserve the chosen answers. */
+.audio-sound-quiz{padding:48px 52px 75px}
+.sound-quiz-top{display:flex;align-items:center;justify-content:space-between;margin-bottom:35px;gap:25px}
+.sound-quiz-top .case-label{margin:0}
+.sound-quiz-progress{display:flex;gap:7px;flex-shrink:0}
+.sound-quiz-progress span{display:block;width:30px;height:5px;border-radius:5px;background:#d5d8dd}
+.sound-quiz-progress span.correct{background:#53a37b}
+.sound-quiz-progress span.incorrect{background:#da8c8c}
+.sound-quiz-progress span.current{background:var(--blue)}
+.audio-sound-quiz h2{font-size:36px;font-weight:600;line-height:1.3;margin:0 0 27px;max-width:1200px}
+.sound-quiz-options{display:grid;grid-template-columns:1fr 1fr;gap:14px}
+.sound-quiz-option{display:flex;align-items:center;gap:14px;min-height:72px;padding:17px 19px;text-align:left;border:1px solid #244d8526;border-radius:14px;background:white;color:var(--ink);font-size:19px;line-height:1.4;transition:background .2s,border-color .2s}
+.sound-option-letter{display:grid;place-items:center;width:29px;height:31px;flex-shrink:0;border-radius:7px;background:#eceef2;color:var(--muted);font:700 13px/1 Arial}
+.sound-quiz-option>b{margin-left:auto;font-size:24px}
+.sound-quiz-option:hover:not([aria-disabled="true"]){border-color:var(--blue);background:#f9fbff}
+.sound-quiz-option[aria-disabled="true"]{cursor:default}
+.sound-quiz-option.correct{background:#e1f1e8;border-color:#70b595;color:#216d45}
+.sound-quiz-option.incorrect{background:#fceaea;border-color:#e9a4a4;color:#aa2f2f}
+.sound-quiz-option.correct .sound-option-letter{background:#cce6d7;color:#216d45}
+.sound-quiz-option.incorrect .sound-option-letter{background:#f3d2d2;color:#aa2f2f}
+.sound-quiz-feedback{font-size:20px;line-height:1.6;margin-top:23px;max-width:1000px;min-height:70px}
+.sound-quiz-feedback.correct{color:#216d45}.sound-quiz-feedback.incorrect{color:#aa2f2f}
+.sound-quiz-note{font-size:17px;color:var(--muted);margin:-12px 0 24px}
+.sound-quiz-score{display:flex;align-items:baseline;gap:20px;margin:30px 0}
+.audio-slide .sound-quiz-score strong{font-size:112px;line-height:1.2;font-weight:600;color:var(--accent)}
+.sound-quiz-score span,.sound-quiz-skipped{font-size:20px;color:var(--muted)}
+.sound-quiz-restart{margin-top:15px}
+
+.audio-sound-cheatsheet{padding:45px 48px 70px}
+.audio-sound-cheatsheet h2{font-size:43px;font-weight:600;margin-bottom:23px}
+.sound-cheat-grid{display:grid;grid-template-columns:repeat(3,minmax(0,1fr));gap:14px}
+.sound-cheat-card{background:white;border:1px solid var(--line);border-radius:17px;padding:19px;min-height:157px}
+.sound-cheat-card h3{font-size:12px;letter-spacing:1px;font-weight:700;color:var(--accent);margin:0 0 12px;line-height:1.5}
+.sound-cheat-card p{font-size:18px;line-height:1.5;margin:0}
+.sound-cheat-card b{color:var(--accent)}
+.sound-cheat-card.formula-card{background:#202125;color:white}
+.formula-card h3{color:#ffba89}
+.formula-card b{color:#ffba89}
+.sound-cheat-formula{font-size:31px;line-height:1.3;color:#ffba89;margin:0 0 12px;white-space:nowrap}
+.formula-card p{font-size:15px}
+.sound-cheat-card.rounding-card{background:#ffeddf;border-color:#ffdbc5}
+@media(max-width:700px){
+ .ratio-panel{padding:13px 10px;gap:10px;flex-direction:column}
+ .ratio-label{font-size:13px}
+ .ratio-equation{font-size:clamp(12px,3.6vw,24px);gap:10px;width:100%}
+ .ratio-equation .audio-fraction>span:first-child{padding-left:1px;padding-right:1px}
+ .ratio-explanation{font-size:15px}
+ .ratio-result{font-size:22px}
+ .audio-mixer,.audio-sound-quiz,.audio-sound-cheatsheet{padding:65px 22px 100px;overflow-y:auto}
+ .audio-mixer h2{font-size:29px;margin-bottom:22px}
+ .mixer-layout{grid-template-columns:1fr;gap:25px}
+ .mixer-row{grid-template-columns:1fr;gap:8px;margin-bottom:18px}
+ .mixer-row h3{font-size:17px}
+ .mixer-option{font-size:14px;padding:10px 12px}
+ .mixer-equation{font-size:25px;min-height:0}
+ .mixer-chart{padding-top:40px}
+ .mixer-columns{height:270px;gap:25px}
+ .mixer-bar-label b{font-size:20px}
+ .mixer-baseline{font-size:15px;margin-bottom:22px}
+ .mixer-change{font-size:17px}
+ .mixer-note{font-size:14px}
+ .sound-quiz-top{gap:12px;margin-bottom:27px}
+ .sound-quiz-progress{gap:5px}
+ .sound-quiz-progress span{width:17px;height:4px}
+ .audio-sound-quiz h2{font-size:28px;margin-bottom:24px}
+ .sound-quiz-options{grid-template-columns:1fr;gap:12px}
+ .sound-quiz-option{font-size:17px;min-height:69px;padding:15px;gap:11px}
+ .sound-quiz-feedback{font-size:17px;margin-top:20px}
+ .sound-quiz-note{font-size:15px;line-height:1.6;margin-top:-8px}
+ .audio-slide .sound-quiz-score strong{font-size:96px}
+ .sound-quiz-score span,.sound-quiz-skipped{font-size:17px}
+ .sound-quiz-score{gap:15px}
+ .audio-sound-cheatsheet h2{font-size:31px}
+ .sound-cheat-grid{grid-template-columns:1fr;gap:13px}
+ .sound-cheat-card{min-height:0;padding:19px}
+ .sound-cheat-card p{font-size:18px}
+ .sound-cheat-card h3{font-size:12px}
+ .sound-cheat-formula{font-size:30px}
+}
+@media(prefers-reduced-motion:reduce){.ratio-cancel:after,.mixer-bar{transition:none}}

@@ -33,7 +33,7 @@ function channelCard(k,title){return `<div class="channel-card"><div class="chan
 const numbered=(n,label,body,step)=>show(step,`<span class="step-no">${n}</span><div><div class="step-title">${label}</div>${body}</div>`,'audio-step');
 function comparisonLesson(){
  const row=(n,html)=>show(n,html,'comparison-formula');
- return `<div class="audio-intro"><h2>Разбор: повторная запись</h2><div class="problem-card">Музыкальный фрагмент без сжатия записали сначала в формате <span data-given="1">моно</span>. Размер файла — <span data-given="2">72 Мбайт</span>. Затем тот же фрагмент записали в формате <span data-given="3">стерео</span>: глубина кодирования стала <span data-given="4">в 3 раза выше</span>, а частота дискретизации — <span data-given="5">в 4,5 раза ниже</span>. Каков <span data-given="6">размер второго файла в Мбайтах</span>?</div></div><div class="comparison-solution"><div class="comparison-columns"><section class="comparison-column">${show(9,'<h3>Первая запись</h3>')}${row(9,'I₁ = k₁ · ν₁ · i₁ · t')}${row(10,'k₁ = <strong>1</strong> · моно')}${row(11,'<strong>72 Мбайт</strong> = 1 · ν₁ · i₁ · t')}</section><section class="comparison-column">${show(9,'<h3>Повторная запись</h3>')}${row(9,'X = k₂ · ν₂ · i₂ · t')}${row(12,'k₂ = <strong>2</strong> · стерео')}${row(13,'i₂ = <strong>3i₁</strong>')}${row(14,`ν₂ = ${fraction('<strong>ν₁</strong>','4,5')}`)}${row(15,'X = 2 · ν₂ · i₂ · t')}${row(16,`X = 2 · ${fraction('<strong>ν₁</strong>','4,5')} · 3<strong>i₁</strong> · t`)}</section></div><div class="comparison-steps">${show(17,'Переставим множители: в обеих формулах есть одно произведение <strong>ν₁ · i₁ · t</strong>.','comparison-explain')}${show(18,'<span class="step-no">1</span><span>Из первой записи: <strong>ν₁ · i₁ · t = 72 Мбайт</strong>.</span>','comparison-step')}${show(19,`<span class="step-no">2</span><span>Во второй записи: X = ${fraction('2 · 3','4,5')} · (ν₁ · i₁ · t) = ${fraction('6','4,5')} · 72 Мбайт.</span>`,'comparison-step')}${show(20,`<span class="step-no">3</span><span>X = ${fraction('6 · 72','4,5')} = <strong>96 Мбайт</strong>.</span>`,'comparison-step')}${show(21,'<div class="audio-answer">Ответ: <strong>96 Мбайт</strong></div>')}</div></div>`;
+ return `<div class="audio-intro"><h2>Разбор: повторная запись</h2><div class="problem-card">Музыкальный фрагмент без сжатия записали сначала в формате <span data-given="1">моно</span>. Размер файла — <span data-given="2">72 Мбайт</span>. Затем тот же фрагмент записали в формате <span data-given="3">стерео</span>: глубина кодирования стала <span data-given="4">в 3 раза выше</span>, а частота дискретизации — <span data-given="5">в 4,5 раза ниже</span>. Каков <span data-given="6">размер второго файла в Мбайтах</span>?</div></div><div class="comparison-solution"><div class="comparison-columns"><section class="comparison-column">${show(9,'<h3>Было</h3>')}${row(9,'I₁ = k₁ · ν₁ · i₁ · t')}${row(10,'k₁ = <strong>1</strong> · моно')}${row(11,'<strong>72 Мбайт</strong> = 1 · ν₁ · i₁ · t')}</section><section class="comparison-column">${show(9,'<h3>Стало</h3>')}${row(9,'X = k₂ · ν₂ · i₂ · t')}${row(12,'k₂ = <strong>2</strong> · стерео')}${row(13,'i₂ = <strong>3i₁</strong>')}${row(14,`ν₂ = ${fraction('<strong>ν₁</strong>','4,5')}`)}${row(15,'X = 2 · ν₂ · i₂ · t')}${row(16,`X = 2 · ${fraction('<strong>ν₁</strong>','4,5')} · 3<strong>i₁</strong> · t`)}</section></div><div class="comparison-steps">${ratioComparison()}</div></div>`;
 }
 function transmissionLesson(){
  const ring='<span class="find-target">t<svg class="find-ring" viewBox="0 0 100 60" preserveAspectRatio="none" aria-hidden="true"><ellipse cx="50" cy="30" rx="47" ry="27" pathLength="1"/></svg></span>';
@@ -78,6 +78,98 @@ function roundingLesson(){
  </div></div><p class="capacity-caption">На схеме увеличен последний участок записи: от 13 991 Кбайт.</p>`;
 }
 
+// The same variables and the same 72 MB recording as in the worked example.
+function ratioComparison(){
+ const cancel=s=>`<span class="ratio-cancel">${s}</span>`;
+ return `${show(17,`<div class="ratio-panel"><span class="ratio-label">Было / Стало</span><div class="ratio-equation">${fraction(`1 · ${cancel('ν₁')} · ${cancel('i₁')} · ${cancel('t')}`,`2 · (${cancel('ν₁')}/4,5) · 3${cancel('i₁')} · ${cancel('t')}`)}<span>=</span>${fraction('72','X')}</div></div>`)}
+ ${show(18,'Сокращаем ν₁, i₁ и t в числителе и знаменателе. Затем умножаем крест-накрест.','ratio-explanation')}
+ ${show(19,'<div class="ratio-result">X = 72 · 2 · 3 / 4,5 = <strong>96 Мбайт</strong></div>')}`;
+}
+const mixerOptions={
+ k:{label:'Каналы k',options:[[1,'моно'],[2,'стерео'],[4,'квадро']]},
+ i:{label:'Глубина i',options:[[.25,'÷ 4'],[.5,'÷ 2'],[1,'как было'],[2,'× 2'],[3,'× 3'],[4,'× 4']]},
+ nu:{label:'Частота ν',options:[[1/4.5,'÷ 4,5'],[.5,'÷ 2'],[1/1.5,'÷ 1,5'],[1,'как было'],[1.5,'× 1,5'],[2,'× 2']]},
+ t:{label:'Время t',options:[[.5,'÷ 2'],[1,'как было'],[2,'× 2'],[3,'× 3']]}
+};
+let mixerState={k:1,i:1,nu:1,t:1};
+const audioNumber=value=>value.toLocaleString('ru-RU',{maximumFractionDigits:3});
+function mixerLesson(){
+ return `<div class="case-label">ВО СКОЛЬКО РАЗ · ПУЛЬТ</div><h2>Покрути — объём <em>изменится во столько же раз</em></h2>
+ <div class="mixer-layout"><section class="mixer-controls" aria-label="Параметры новой записи"><p class="mixer-baseline">Было: <b>моно, 72 Мбайт</b>. Меняй параметры новой записи.</p>
+ ${Object.entries(mixerOptions).map(([key,group])=>`<div class="mixer-row"><h3>${group.label}</h3><div class="mixer-segments" role="group" aria-label="${group.label}">${group.options.map(([value,label])=>`<button type="button" class="mixer-option" data-mixer-factor="${key}" data-value="${value}" aria-pressed="${value===1}">${label}</button>`).join('')}</div></div>`).join('')}
+ <div class="mixer-actions"><button type="button" class="mixer-preset">Как в задаче</button><button type="button" class="mixer-reset">Сбросить</button></div>
+ <div class="mixer-equation" aria-live="polite"><span>I₂ = </span><span data-mixer-expression>72 = <strong>72 Мбайт</strong></span></div>
+ <p class="mixer-note">Каналы, глубина, частота и время <b>перемножаются</b>. Каждый параметр меняет объём во столько же раз.</p></section>
+ <section class="mixer-chart" aria-label="Сравнение объёма записей"><div class="mixer-columns" role="img" aria-label="Было 72 Мбайт, стало 72 Мбайт"><div class="mixer-column"><div class="mixer-bar mixer-before" style="--bar-size:92.592593%"><div class="mixer-bar-label"><small>было</small><b>72 Мбайт</b></div></div></div><div class="mixer-column"><div class="mixer-bar mixer-after" style="--bar-size:92.592593%"><div class="mixer-bar-label"><small>стало</small><b><span data-mixer-volume>72</span> Мбайт</b></div></div></div></div><p class="mixer-change" aria-live="polite">Объём не изменился</p></section></div>`;
+}
+function paintMixer(){
+ const root=$('#slide'),{k,i,nu,t}=mixerState,ratio=k*i*nu*t,value=72*ratio,max=Math.max(1,ratio)*1.08;
+ root.querySelectorAll('[data-mixer-factor]').forEach(button=>button.setAttribute('aria-pressed',String(Number(button.dataset.value)===mixerState[button.dataset.mixerFactor])));
+ const terms=Object.values(mixerState).filter(value=>value!==1).map(value=>value<1?` ÷ ${audioNumber(1/value)}`:` · ${audioNumber(value)}`).join('');
+ root.querySelector('[data-mixer-expression]').innerHTML=`72${terms} = <strong>${audioNumber(value)} Мбайт</strong>`;
+ root.querySelector('[data-mixer-volume]').textContent=audioNumber(value);
+ root.querySelector('.mixer-before').style.setProperty('--bar-size',`${100/max}%`);
+ root.querySelector('.mixer-after').style.setProperty('--bar-size',`${ratio/max*100}%`);
+ root.querySelector('.mixer-columns').setAttribute('aria-label',`Было 72 Мбайт, стало ${audioNumber(value)} Мбайт`);
+ root.querySelector('.mixer-change').textContent=Math.abs(ratio-1)<1e-10?'Объём не изменился':ratio>1?`Объём увеличился: × ${audioNumber(ratio)}`:`Объём уменьшился: ÷ ${audioNumber(1/ratio)}`;
+}
+function handleMixer(button){
+ if(button.matches('.mixer-option'))mixerState[button.dataset.mixerFactor]=Number(button.dataset.value);
+ else if(button.matches('.mixer-preset'))mixerState={k:2,i:3,nu:1/4.5,t:1};
+ else if(button.matches('.mixer-reset'))mixerState={k:1,i:1,nu:1,t:1};
+ paintMixer();
+}
+
+const soundQuestions=[
+ {title:'Что такое частота дискретизации ν?',options:['Сколько бит на один отсчёт','Сколько каналов в записи','Громкость звука','Сколько раз за секунду «режем» звук'],correct:3,explanation:'Частота ν — число измерений сигнала за одну секунду. Измеряется в герцах.'},
+ {title:'Файл в формате «стерео». Чему равно k?',options:['2','1','4','8'],correct:0,explanation:'Стерео — два канала: k = 2. Для моно k = 1, для квадро k = 4.'},
+ {title:'Запись длится 2 минуты 5 секунд. Чему равно t?',options:['7,5','125','205','25'],correct:1,explanation:'Время подставляем в секундах: 2 · 60 + 5 = 125 с.'},
+ {title:'Объём получился в битах. Как сразу перевести в Кбайты?',options:['Умножить на 8','Разделить на 1024','Разделить на 8 · 1024','Разделить на 1000'],correct:2,explanation:'Сначала делим на 8 — получаем байты. Затем на 1024 — получаем Кбайты.'},
+ {title:'Вышло 512,3 Кбайт. Вопрос: «наименьшее количество Кбайт, необходимое для сохранения». Ответ?',options:['512','512,3','500','513'],correct:3,explanation:'Нужно целое количество Кбайт, которого хватит для всей записи. Округляем вверх: 512,3 → 513.'},
+ {title:'Звук перезаписали: стерео вместо моно, частота в 2 раза меньше. Объём…',note:'Глубина кодирования и длительность записи не изменились.',options:['не изменился','вырос в 2 раза','вырос в 4 раза','уменьшился в 2 раза'],correct:0,explanation:'Каналов стало вдвое больше, частота вдвое меньше: 2 · ½ = 1. Объём не изменился.'}
+];
+const soundQuizKey='soft-sound-quiz-v1';
+let soundAnswers=Array(6).fill(null);
+try{const saved=JSON.parse(sessionStorage.getItem(soundQuizKey));if(Array.isArray(saved)&&saved.length===6&&saved.every(x=>x===null||Number.isInteger(x)&&x>=0&&x<4))soundAnswers=saved;}catch{}
+function saveSoundAnswers(){try{sessionStorage.setItem(soundQuizKey,JSON.stringify(soundAnswers));}catch{}}
+const soundScore=()=>soundQuestions.reduce((score,q,i)=>score+Number(soundAnswers[i]===q.correct),0);
+function renderSoundQuiz(){
+ const host=$('#slide .sound-quiz-host'),result=buildStep===6,score=soundScore();
+ const progress=`<div class="sound-quiz-progress" aria-label="${result?'Результат':`Вопрос ${buildStep+1} из 6`}">${soundQuestions.map((q,i)=>`<span class="${!result&&i===buildStep?'current ':''}${soundAnswers[i]===q.correct?'correct':soundAnswers[i]!==null?'incorrect':''}" ${!result&&i===buildStep?'aria-current="step"':''} aria-label="Вопрос ${i+1}${soundAnswers[i]===null?'':soundAnswers[i]===q.correct?': верно':': неверно'}"></span>`).join('')}</div>`;
+ if(result){
+  const answered=soundAnswers.filter(x=>x!==null).length;
+  host.innerHTML=`<div class="sound-quiz-top"><div class="case-label">ИТОГ</div>${progress}</div><h2>${score===6?'Отлично! Всё получилось':score>=4?'Хороший результат':'Есть над чем поработать'}</h2><div class="sound-quiz-score"><strong>${score}</strong><span>из 6 правильно</span></div>${answered<6?`<p class="sound-quiz-skipped">Без ответа: ${6-answered}. Можно вернуться к вопросам.</p>`:''}<button type="button" class="sound-quiz-restart">Пройти заново</button>`;
+ }else{
+  const q=soundQuestions[buildStep],selected=soundAnswers[buildStep],answered=selected!==null;
+  host.innerHTML=`<div class="sound-quiz-top"><div class="case-label">ВОПРОС ${buildStep+1} ИЗ 6</div>${progress}</div><h2>${q.title}</h2>${q.note?`<p class="sound-quiz-note">${q.note}</p>`:''}<div class="sound-quiz-options" role="group" aria-label="Варианты ответа">${q.options.map((option,i)=>`<button type="button" class="sound-quiz-option ${answered&&i===q.correct?'correct':answered&&i===selected?'incorrect':''}" data-sound-answer="${i}" aria-pressed="${selected===i}" aria-disabled="${answered}"><span class="sound-option-letter">${'АБВГ'[i]}</span><span>${option}</span>${answered&&i===q.correct?'<b aria-label="Правильный ответ">✓</b>':answered&&i===selected?'<b aria-label="Неверный ответ">×</b>':''}</button>`).join('')}</div><div class="sound-quiz-feedback ${answered?selected===q.correct?'correct':'incorrect':''}" role="status">${answered?`<b>${selected===q.correct?'Верно!':'Пока неверно.'}</b> ${q.explanation}`:''}</div>`;
+ }
+ stylizeNu(host);
+}
+function answerSoundQuestion(choice){
+ if(buildStep>=6||soundAnswers[buildStep]!==null)return;
+ soundAnswers[buildStep]=Number(choice);saveSoundAnswers();renderSoundQuiz();
+ // Replacing the answer buttons must not lose keyboard focus.
+ $('#slide [data-sound-answer="'+choice+'"]').focus();
+}
+function restartSoundQuiz(){
+ soundAnswers=Array(6).fill(null);saveSoundAnswers();buildStep=0;
+ history.replaceState(null,'',`#${current}`);update();$('#slide').scrollTop=0;$('#slide h2').setAttribute('tabindex','-1');$('#slide h2').focus({preventScroll:true});
+}
+function soundCheatsheet(){
+ const card=(title,body,cls='')=>`<section class="sound-cheat-card ${cls}"><h3>${title}</h3>${body}</section>`;
+ return `<h2>Шпаргалка № 7 · <em>звук</em></h2><div class="sound-cheat-grid">
+ ${card('ФОРМУЛА','<div class="sound-cheat-formula">I = k · ν · i · t</div><p>Получаем <b>биты</b>. Всё перемножаем. Запись без сжатия и заголовков.','formula-card')}
+ ${card('ν — ЧАСТОТА','<p>Измерений за 1 секунду. <b>Гц</b>.<br>1 кГц = 1000 Гц.</p>')}
+ ${card('i — ГЛУБИНА','<p>Видишь <b>биты</b> — это она. Ещё «разрешение», «глубина кодирования».</p>')}
+ ${card('t — ВРЕМЯ','<p>Сразу в <b>секунды</b>:<br>3 мин 19 с = 199 с.</p>')}
+ ${card('k — КАНАЛЫ','<p>Моно <b>1</b> · стерео <b>2</b> · квадро <b>4</b>. Число каналов ищем в тексте.</p>')}
+ ${card('ЕДИНИЦЫ','<p>Кбайт: I / (8 · 1024).<br>Мбайт: I / (8 · 1024 · 1024).</p>')}
+ ${card('«НЕОБХОДИМОЕ ДЛЯ СОХРАНЕНИЯ»','<p>Округляем <b>вверх</b>:<br>13 992,1875 → 13 993.</p>','rounding-card')}
+ ${card('«ТОЛЬКО ЦЕЛУЮ ЧАСТЬ»','<p><b>Отбрасываем</b> дробь:<br>91,552734375 → 91.</p>','rounding-card')}
+ ${card('ВО СКОЛЬКО РАЗ','<p>Было / Стало = I₁ / I₂. Общие переменные сокращаем, остаются <b>множители</b>.</p>')}
+ </div>`;
+}
+
 const slides=[
 {title:'Звук.',group:'Начало',type:'intro',steps:0,body:`<div class="kicker">УРОК 07 · ЕГЭ ПО ИНФОРМАТИКЕ</div><div class="hero"><div class="audio-hero-art">${wave()}</div><div class="hero-text"><h1>Звук.</h1><p class="lead">Разберём задание №7 ЕГЭ:<br>как посчитать объём звуковой записи.</p><a class="primary" href="#2">Начать урок <span>→</span></a></div></div>`},
 {title:'Из чего же состоит звук?',group:'Звук',type:'signal',steps:5,body:`<h2>Из чего же состоит звук?</h2><div class="sampling-layout"><div class="sampling-graph">${sampledWave()}<p class="sampling-caption">Схема: показана часть измерений, чтобы было видно каждый замер.</p></div><div class="sampling-side"><div class="sampling-card"><div class="sampling-eyebrow">Частота дискретизации</div><div class="sampling-value">48 кГц</div><div class="sampling-count">48 000 замеров в секунду</div><input class="sampling-slider" type="range" min="6" max="48" step="6" value="48" aria-label="Частота дискретизации, кГц"><div class="sampling-ticks"><span>6</span><span>12</span><span>24</span><span>48</span></div></div><div class="sampling-note">Каждый замер — число. Чаще замеры — точнее звук, но больше файл.</div><div class="sampling-copy">${show(4,'<p><strong>Точки</strong> — моменты измерения через равные промежутки времени.</p>')}${show(5,'<p>Значение сигнала в каждый момент сохраняется <strong>двоичным кодом одинаковой длины</strong>.</p>')}</div></div></div>`},
@@ -88,7 +180,10 @@ const slides=[
 {title:'Объём звукового файла',group:'Формула',steps:5,body:`<h2>Объём звукового файла</h2><p class="lead">Четыре множителя — одна формула.</p><div class="final-formula">I = ${show(1,'k','factor')}${show(2,'· ν','factor')}${show(3,'· i','factor')}${show(4,'· t','factor')}</div><div class="factor-grid">${show(1,'<b>k</b><p>Число каналов</p>')}${show(2,'<b>ν</b><p>Частота дискретизации<br>в Гц</p>')}${show(3,'<b>i</b><p>Глубина кодирования<br>в битах</p>')}${show(4,'<b>t</b><p>Продолжительность звукозаписи<br>в секундах</p>')}</div>${show(5,'<p class="large-copy">Получаем <strong>объём в битах</strong>.</p>')}`},
 {title:'Задача № 31114: объём сообщения',group:'Практика',type:'storage-worked',steps:6,body:storageLesson()},
 {title:'Округление: только целую часть',group:'Практика',type:'rounding',steps:3,body:roundingLesson()},
-{title:'Разбор: повторная запись',group:'Практика',type:'comparison',steps:21,body:comparisonLesson()},
+{title:'Разбор: повторная запись',group:'Практика',type:'comparison',steps:19,body:comparisonLesson()},
+{title:'Пульт: меняем параметры записи',group:'Практика',type:'mixer',steps:0,body:mixerLesson()},
+{title:'Проверь себя: 6 вопросов',group:'Закрепление',type:'sound-quiz',steps:6,body:'<div class="sound-quiz-host"></div>'},
+{title:'Шпаргалка: звук',group:'Закрепление',type:'sound-cheatsheet',steps:0,body:soundCheatsheet()},
 {title:'Разбор: время передачи',group:'Практика',type:'transmission-worked',steps:22,body:transmissionLesson()}
 ];
 let current=1,buildStep=0;
@@ -98,7 +193,7 @@ new ResizeObserver(resize).observe($('#stage'));
 function toggleMenu(open){document.body.classList.toggle('menu-open',open);$('#sidebar').hidden=!open;$('#sidebar').inert=!open;$('#menu').setAttribute('aria-expanded',String(open));$('#menu').title=$('#menu').ariaLabel=open?'Скрыть боковое меню':'Показать боковое меню';resize();}
 $('#menu').onclick=()=>toggleMenu(!document.body.classList.contains('menu-open'));
 $('#outline').onclick=e=>{if(e.target.closest('a')&&matchMedia('(max-width:700px)').matches)toggleMenu(false);};
-function update(){const s=slides[current-1],el=$('#slide');const previous=Number(el.dataset.step);el.dataset.step=buildStep;if(((s.type==='storage-worked'&&buildStep===6)||(s.type==='comparison'&&buildStep===21)||(s.type==='transmission-worked'&&buildStep===22))&&previous!==buildStep)celebrate();el.querySelectorAll('[data-step]').forEach(e=>{const visible=buildStep>=+e.dataset.step;e.classList.toggle('visible',visible);e.setAttribute('aria-hidden',String(!visible));});el.classList.toggle('problem-at-top',['worked-audio','comparison','transmission-worked'].includes(s.type)&&buildStep>=8);el.querySelectorAll('[data-given]').forEach(e=>e.classList.toggle('highlight',buildStep>=+e.dataset.given));el.querySelectorAll('[data-factor]').forEach(e=>e.classList.toggle('highlight',buildStep>=({t:10,k:11,nu:12,i:13}[e.dataset.factor])));el.querySelectorAll('.find-target').forEach(e=>e.classList.toggle('find-marked',buildStep>=(s.type==='transmission-worked'?16:14)));if(s.type==='storage-worked')el.querySelector('.case-heading').innerHTML=storageTitles[buildStep];if(s.type==='rounding')el.querySelector('.case-heading').innerHTML=roundingTitles[buildStep];$('#prev').disabled=current===1&&buildStep===0;$('#next').disabled=current===slides.length&&buildStep===s.steps;$('#status').textContent=s.title;}
+function update(){const s=slides[current-1],el=$('#slide');const previous=Number(el.dataset.step);el.dataset.step=buildStep;if(((s.type==='storage-worked'&&buildStep===6)||(s.type==='comparison'&&buildStep===19)||(s.type==='transmission-worked'&&buildStep===22)||(s.type==='sound-quiz'&&buildStep===6&&soundScore()===6))&&previous!==buildStep)celebrate();el.querySelectorAll('[data-step]').forEach(e=>{const visible=buildStep>=+e.dataset.step;e.classList.toggle('visible',visible);e.setAttribute('aria-hidden',String(!visible));});el.classList.toggle('problem-at-top',['worked-audio','comparison','transmission-worked'].includes(s.type)&&buildStep>=8);el.querySelectorAll('[data-given]').forEach(e=>e.classList.toggle('highlight',buildStep>=+e.dataset.given));el.querySelectorAll('[data-factor]').forEach(e=>e.classList.toggle('highlight',buildStep>=({t:10,k:11,nu:12,i:13}[e.dataset.factor])));el.querySelectorAll('.find-target').forEach(e=>e.classList.toggle('find-marked',buildStep>=(s.type==='transmission-worked'?16:14)));el.querySelectorAll('.ratio-cancel').forEach(e=>e.classList.toggle('cancelled',buildStep>=18));if(s.type==='storage-worked')el.querySelector('.case-heading').innerHTML=storageTitles[buildStep];if(s.type==='rounding')el.querySelector('.case-heading').innerHTML=roundingTitles[buildStep];if(s.type==='sound-quiz')renderSoundQuiz();$('#next').innerHTML=s.type==='sound-quiz'&&buildStep<6?(buildStep===5?'Показать результат':'Следующий вопрос'):'Далее <span>→</span>';$('#prev').disabled=current===1&&buildStep===0;$('#next').disabled=current===slides.length&&buildStep===s.steps;$('#status').textContent=s.type==='sound-quiz'?(buildStep===6?`Результат: ${soundScore()} из 6 правильно`:soundQuestions[buildStep].title):s.title;}
 function stylizeVolumes(root){
  const walker=document.createTreeWalker(root,NodeFilter.SHOW_TEXT);const nodes=[];
  while(walker.nextNode()){const node=walker.currentNode;if(/\bI\b/.test(node.textContent)&&!node.parentElement.closest('svg,.volume-symbol'))nodes.push(node);}
@@ -134,10 +229,10 @@ function fadeSlides(copy,shared){
  copy.animate([{opacity:1},{opacity:0}],{duration:550,easing:'ease-in-out',fill:'forwards'}).finished.catch(()=>{}).finally(()=>copy.remove());
  document.querySelector('#slide').animate([{opacity:0},{opacity:1}],{duration:550,easing:'ease-in-out'});
 }
-function render(){document.querySelectorAll('.confetti-burst').forEach(e=>e.remove());const match=location.hash.match(/^#(\d+)(?:\.(\d+))?$/);let n=match?Number(match[1]):1;if(n<1||n>slides.length)n=1;current=n;const s=slides[n-1];buildStep=Math.min(Number(match?.[2]||0),s.steps);const hash=`#${n}${buildStep?'.'+buildStep:''}`;if(location.hash!==hash)history.replaceState(null,'',hash);$('#slide').className=`audio-slide audio-${s.type||'theory'}`;$('#slide').innerHTML=s.body;stylizeVolumes($('#slide'));stylizeNu($('#slide'));if(s.type==='signal'){const slider=$('.sampling-slider');slider.addEventListener('input',e=>paintSamples(e.target.value));paintSamples(slider.value);}$('#slide').scrollTop=0;document.title=`${s.title} · Задание 7 — звук`;document.querySelectorAll('#outline a').forEach(a=>{const active=+a.dataset.slide===n;a.classList.toggle('active',active);if(active)a.setAttribute('aria-current','step');else a.removeAttribute('aria-current');});update();resize();}
-function go(delta){const s=slides[current-1];if((delta>0&&buildStep<s.steps)||(delta<0&&buildStep>0)){buildStep+=delta;history.replaceState(null,'',`#${current}${buildStep?'.'+buildStep:''}`);update();return;}const next=current+delta;if(next>0&&next<=slides.length){const step=delta<0?slides[next-1].steps:0;location.hash=`${next}${step?'.'+step:''}`;}}
+function render(){document.querySelectorAll('.confetti-burst').forEach(e=>e.remove());const match=location.hash.match(/^#(\d+)(?:\.(\d+))?$/);let n=match?Number(match[1]):1;if(n<1||n>slides.length)n=1;current=n;const s=slides[n-1];buildStep=Math.min(Number(match?.[2]||0),s.steps);const hash=`#${n}${buildStep?'.'+buildStep:''}`;if(location.hash!==hash)history.replaceState(null,'',hash);$('#slide').className=`audio-slide audio-${s.type||'theory'}`;$('#slide').innerHTML=s.body;stylizeVolumes($('#slide'));stylizeNu($('#slide'));if(s.type==='signal'){const slider=$('.sampling-slider');slider.addEventListener('input',e=>paintSamples(e.target.value));paintSamples(slider.value);}if(s.type==='mixer')paintMixer();$('#slide').scrollTop=0;document.title=`${s.title} · Задание 7 — звук`;document.querySelectorAll('#outline a').forEach(a=>{const active=+a.dataset.slide===n;a.classList.toggle('active',active);if(active)a.setAttribute('aria-current','step');else a.removeAttribute('aria-current');});update();resize();}
+function go(delta){const s=slides[current-1];if((delta>0&&buildStep<s.steps)||(delta<0&&buildStep>0)){buildStep+=delta;history.replaceState(null,'',`#${current}${buildStep?'.'+buildStep:''}`);update();if(s.type==='sound-quiz')$('#slide').scrollTop=0;return;}const next=current+delta;if(next>0&&next<=slides.length){const step=delta<0?slides[next-1].steps:0;location.hash=`${next}${step?'.'+step:''}`;}}
 function replayCapacity(){const slide=$('#slide');slide.querySelectorAll('.capacity-card').forEach(card=>card.getAnimations({subtree:true}).forEach(animation=>{animation.currentTime=0;animation.play();}));}
-$('#next').onclick=()=>go(1);$('#prev').onclick=()=>go(-1);$('#slide').onclick=e=>{if(e.target.closest('.capacity-replay')){replayCapacity();return;}if(!e.target.closest('a,button')&&buildStep<slides[current-1].steps)go(1);};
+$('#next').onclick=()=>go(1);$('#prev').onclick=()=>go(-1);$('#slide').onclick=e=>{const button=e.target.closest('button');if(button?.matches('.mixer-option,.mixer-preset,.mixer-reset')){handleMixer(button);return;}if(button?.matches('[data-sound-answer]')){answerSoundQuestion(button.dataset.soundAnswer);return;}if(button?.matches('.sound-quiz-restart')){restartSoundQuiz();return;}if(slides[current-1].type==='sound-quiz')return;if(e.target.closest('.capacity-replay')){replayCapacity();return;}if(!e.target.closest('a,button')&&buildStep<slides[current-1].steps)go(1);};
 let flight=null;
 window.addEventListener('hashchange',()=>{if(flight){flight.cancel();flight=null;}const next=Number(location.hash.slice(1).split('.')[0]);const old=((current===1&&next===2)||(current===2&&next===1))&&!matchMedia('(prefers-reduced-motion: reduce)').matches?$('.sound-wave'):null;let copy,box;if(old){box=old.getBoundingClientRect();copy=old.cloneNode(true);copy.classList.add('flying-wave');Object.assign(copy.style,{position:'fixed',left:box.x+'px',top:box.y+'px',width:box.width+'px',height:box.height+'px',zIndex:100,pointerEvents:'none',transformOrigin:'0 0'});old.querySelectorAll('.wave-axis,.wave-second').forEach((g,i)=>{copy.querySelectorAll('.wave-axis,.wave-second')[i].style.opacity=getComputedStyle(g).opacity;});document.body.append(copy);}const outgoing=captureSlide();render();fadeSlides(outgoing,!!copy);if(copy){const target=$('.sound-wave'),end=target.getBoundingClientRect();target.style.visibility='hidden';copy.querySelectorAll('.wave-axis,.wave-second').forEach((g,i)=>g.animate([{opacity:getComputedStyle(g).opacity},{opacity:getComputedStyle(target.querySelectorAll('.wave-axis,.wave-second')[i]).opacity}],{duration:900,fill:'forwards'}));flight=copy.animate([{transform:'translate(0,0) scale(1)'},{transform:`translate(${end.x-box.x}px,${end.y-box.y}px) scale(${end.width/box.width},${end.height/box.height})`}],{duration:900,easing:'cubic-bezier(.4,0,.2,1)',fill:'forwards'});flight.finished.catch(()=>{}).finally(()=>{copy.remove();target.style.visibility='';});}});
 document.addEventListener('keydown',e=>{if(e.altKey||e.ctrlKey||e.metaKey||e.target.closest('input,select,textarea'))return;if(e.key==='ArrowRight'){e.preventDefault();go(1);}if(e.key==='ArrowLeft'){e.preventDefault();go(-1);}if(e.key==='Escape')toggleMenu(false);});
