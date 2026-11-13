@@ -25,3 +25,110 @@
 .exam-answer-line>span{display:block;width:280px;border-bottom:1px solid var(--line)}
 @media(max-width:700px){.exam-task{padding:18px 17px;margin-top:22px;transform:none!important}.exam-task-header{display:block;font-size:11px;line-height:1.6;margin-bottom:16px}.exam-task-header>span{display:block}.exam-task-text{font-size:17px;line-height:1.6}.exam-task-text p{margin-bottom:17px}.exam-task-note{font-size:14px}.exam-answer-line{font-size:18px}.exam-answer-line>span{width:180px}}
 @media(prefers-reduced-motion:reduce){.exam-task,.exam-task-text [data-emphasize]{transition:none!important}}
+/* Keep each decoded letter directly below the bits of its code word. */
+.slide-5 .decode-stream,.slide-5 .decode-partition{display:grid;grid-template-columns:repeat(14,minmax(0,1fr));gap:5px}
+.slide-5 .decode-stream .bit-token{width:100%;height:62px}
+.slide-5 .bit-token.read{background:white;color:#929298;border-color:var(--line)}
+.slide-5 .bit-token.read:after{content:'';position:absolute;left:5px;right:5px;bottom:6px;height:3px;border-radius:2px;background:var(--letter)}
+.slide-5 .bit-token.current-bit{background:var(--ink);color:white;box-shadow:none;border-color:var(--ink)}
+.slide-5 .decode-partition{margin-top:15px}
+.decoded-group{opacity:0;visibility:hidden;transform:translateY(8px);text-align:center;color:var(--letter);transition:opacity .45s,transform .45s,visibility 0s linear .45s}
+.decoded-group.decoded{opacity:1;visibility:visible;transform:none;transition:opacity .45s,transform .45s,visibility 0s}
+.decoded-group i{display:block;height:14px;border:3px solid var(--letter);border-top:0;border-radius:0 0 8px 8px}
+.decoded-group b{display:block;font-size:37px;line-height:1.2;margin-top:7px;font-weight:600}
+.slide-5 .read-status{margin-top:22px}
+.validation-pending{border:1px solid var(--line);background:#244d8505;color:var(--muted);border-radius:12px;padding:14px 17px;line-height:1.4}
+.empty-code-tree{height:100%;display:grid;place-items:center;padding:35px;text-align:center;color:var(--muted);font-size:19px;border:1px dashed var(--line);border-radius:18px}
+/* Slides 11–13: editable algorithm cards and an SVG code tree. */
+.tree-algorithm{display:grid;gap:14px;margin-top:28px}
+.tree-algorithm-row{display:grid;grid-template-columns:44px minmax(0,1fr) auto;align-items:center;gap:20px;background:white;border:1px solid var(--line);border-radius:18px;padding:19px 23px;min-height:100px}
+.algorithm-number{display:grid;place-items:center;width:44px;height:44px;border-radius:12px;background:var(--accent);color:white;font-size:24px;font-weight:600}
+.tree-algorithm-row h3{font:600 25px/1.3 monospace;color:var(--accent);margin:0 0 5px}
+.tree-algorithm-row p{font-size:18px;line-height:1.5;margin:0;color:var(--ink)}
+.algorithm-example{display:flex;justify-content:flex-end;gap:9px;align-items:center;white-space:nowrap}
+.algorithm-example i{font-style:normal;font-size:23px;color:var(--muted)}
+.mini-tree-pill{display:inline-flex;align-items:center;justify-content:center;gap:6px;padding:5px 10px;min-width:39px;min-height:38px;border:1.5px solid var(--ink);border-radius:22px;font:600 21px/1.2 monospace;color:var(--ink)}
+.mini-tree-pill.assigned{color:var(--accent);border-color:var(--accent);background:#e46e5012}
+.mini-tree-pill.assigned b{font:600 17px Arial;background:var(--accent);color:white;border-radius:6px;padding:2px 5px}
+.tree-workbench{display:grid;grid-template-columns:245px minmax(0,1fr);gap:26px;margin-top:27px;align-items:start}
+.tree-instructions,.worked-tree-panel{min-width:0}
+.exam-tree-codes{display:grid;gap:9px}
+.exam-code-row{padding:10px 15px;background:white;border:1px solid var(--line);border-radius:13px;transition:background .45s,border-color .45s}
+.exam-code-content{position:relative;display:inline-flex;gap:18px;align-items:center;font-size:25px;line-height:1.2;transition:opacity .45s}
+.exam-code-content b{font-weight:600;color:var(--accent)}
+.exam-code-content code{font:600 26px/1.2 monospace;color:var(--ink)}
+.exam-code-row.unknown{border:1.5px dashed var(--accent)}
+.exam-code-row.unknown code{color:var(--muted)}
+.exam-code-row.done .exam-code-content{opacity:.4}
+.exam-code-row.done .exam-code-content:after{content:'';position:absolute;left:-3px;right:-3px;top:50%;height:2px;background:var(--accent);border-radius:2px}
+.exam-code-row.final-answer{background:var(--accent);border-style:solid;box-shadow:0 5px 18px #e46e5018}
+.exam-code-row.final-answer b,.exam-code-row.final-answer code{color:white}
+.exam-tree-note{font-size:19px;line-height:1.5;background:white;border:1px solid var(--line);border-radius:15px;padding:16px;margin-top:14px;transition:background .45s,border-color .45s}
+.exam-tree-note strong{color:var(--accent);font-weight:600}
+.exam-tree-note.is-answer{background:#12666b12;border-color:#12666b45}
+.exam-tree-note.is-answer strong{color:var(--teal)}
+.worked-tree-panel{height:500px}
+.worked-code-tree{display:block;width:100%;height:100%;overflow:visible}
+.worked-tree-node,.worked-tree-edge{opacity:0;visibility:hidden;transition:opacity .45s,visibility 0s linear .45s}
+.worked-tree-node.is-visible,.worked-tree-edge.is-visible{opacity:1;visibility:visible;transition:opacity .45s,visibility 0s}
+.worked-tree-edge path{fill:none;stroke:#b8bbc2;stroke-width:2;stroke-linecap:round;stroke-dasharray:1;stroke-dashoffset:1;transition:stroke-dashoffset .55s}
+.worked-tree-edge.is-visible path{stroke-dashoffset:0}
+.worked-tree-edge text{font:600 15px monospace;fill:#93969e;text-anchor:middle}
+.worked-tree-node .tree-root{fill:var(--ink)}
+.worked-tree-node .node-pill{fill:white;stroke:var(--ink);stroke-width:1.8;transition:fill .45s,stroke .45s}
+.worked-tree-node .node-code{font:600 25px monospace;fill:var(--ink);text-anchor:middle;transition:fill .45s}
+.worked-tree-node .node-halo{fill:transparent;transition:fill .45s}
+.worked-tree-node .node-letter{font:600 25px Arial;fill:var(--accent);text-anchor:middle}
+.worked-tree-node .node-underline{stroke:var(--accent);stroke-width:1.8;fill:none}
+.worked-tree-node .node-letter,.worked-tree-node .node-underline,.worked-tree-node .node-strike{opacity:0;transition:opacity .4s}
+.worked-tree-node.assigned .node-pill{fill:#e46e5012;stroke:var(--accent)}
+.worked-tree-node.assigned .node-code{fill:var(--accent)}
+.worked-tree-node.assigned .node-letter,.worked-tree-node.assigned .node-underline{opacity:1}
+.worked-tree-node .node-strike{fill:none;stroke:#bf493f;stroke-width:3;stroke-linecap:round}
+.worked-tree-node.blocked .node-code{fill:#aaaeb6}
+.worked-tree-node.blocked .node-pill{stroke:#d3d5dc}
+.worked-tree-node.blocked .node-strike{opacity:1}
+.worked-tree-node.available .node-pill{fill:#12666b12;stroke:var(--teal);stroke-width:2}
+.worked-tree-node.available .node-code{fill:var(--teal)}
+.worked-tree-node.available .node-halo{fill:#12666b0d}
+.worked-tree-node.candidate .node-pill,.worked-tree-node.chosen .node-pill{fill:var(--accent);stroke:var(--accent);stroke-width:2}
+.worked-tree-node.candidate .node-code,.worked-tree-node.chosen .node-code{fill:white}
+.worked-tree-node.candidate .node-halo,.worked-tree-node.chosen .node-halo{fill:#e46e5025}
+.worked-tree-node.ghost .node-pill{fill:#bf493f08;stroke:#d68e88;stroke-dasharray:4 4;stroke-width:1.5}
+.worked-tree-node.ghost .node-code{font-size:18px;fill:#cf8c86}
+.worked-tree-edge.ghost path{stroke:#d68e88;stroke-dasharray:5 5}
+.ghost-cross-circle{fill:white;stroke:#e3b1ac;stroke-width:1.2}
+.ghost-cross{fill:#bf493f;font:600 16px Arial;text-anchor:middle}
+.lesson-celebration{position:absolute;inset:0;overflow:hidden;z-index:12;pointer-events:none}
+.lesson-celebration i{position:absolute;top:80%;width:8px;height:13px;border-radius:1px}
+@media(max-width:700px){
+ .slide-5 .decode-stream,.slide-5 .decode-partition{gap:2px}
+ .slide-5 .decode-stream .bit-token{height:39px}
+ .slide-5 .bit-token.read:after{left:2px;right:2px;bottom:4px;height:2px}
+ .slide-5 .decode-partition{margin-top:12px}
+ .decoded-group i{height:10px;border-width:2px;border-radius:0 0 5px 5px}
+ .decoded-group b{font-size:27px;margin-top:6px}
+ .slide-5 .read-status{margin-top:20px;min-height:60px}
+ .empty-code-tree{font-size:17px;padding:20px}
+ .tree-algorithm{margin-top:24px;gap:15px}
+ .tree-algorithm-row{grid-template-columns:38px minmax(0,1fr);gap:12px;padding:18px;min-height:0}
+ .algorithm-number{width:38px;height:38px;font-size:22px;border-radius:10px}
+ .tree-algorithm-row h3{font-size:20px;overflow-wrap:anywhere}
+ .tree-algorithm-row p{font-size:17px}
+ .algorithm-example{grid-column:1/-1;gap:7px}
+ .mini-tree-pill{font-size:18px;min-height:33px;min-width:35px;padding:5px 8px}
+ .tree-workbench{grid-template-columns:minmax(0,1fr);gap:18px;margin-top:24px}
+ .exam-tree-codes{grid-template-columns:1fr 1fr;gap:9px}
+ .exam-code-row{padding:10px 12px}
+ .exam-code-content{gap:12px;font-size:23px}
+ .exam-code-content code{font-size:23px}
+ .exam-tree-note{font-size:17px;padding:15px}
+ .worked-tree-panel{height:auto;overflow-x:auto;overscroll-behavior-inline:contain;padding:8px 0;scrollbar-width:thin}
+ .worked-code-tree{min-width:660px;width:100%;height:auto;aspect-ratio:910/565}
+}
+@media(prefers-reduced-motion:reduce){
+ .decoded-group,.exam-code-row,.exam-code-content,.exam-tree-note,.worked-tree-node,.worked-tree-edge,.worked-tree-edge path,.worked-tree-node .node-pill,.worked-tree-node .node-code,.worked-tree-node .node-halo,.worked-tree-node .node-letter,.worked-tree-node .node-underline,.worked-tree-node .node-strike{transition:none!important}
+}
+/* Opaque node fills keep branch lines behind the code labels. */
+.worked-tree-node.assigned:not(.chosen) .node-pill{fill:#fcece7}
+.worked-tree-node.available .node-pill{fill:#e3efed}
