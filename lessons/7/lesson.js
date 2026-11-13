@@ -94,6 +94,13 @@ slides=slides.filter((_,i)=>![8,9,10,12,13,14].includes(i+1));
 slides.splice(7,0,{group:'Проценты',title:'Сжатие изображения',type:'percent',steps:32,bare:true,body:percentLesson()});
 slides.splice(8,0,{group:'Скорость передачи',title:'Скорость, время и объём',type:'transfer',steps:6,bare:true,body:transferTheory()},{group:'Скорость передачи',title:'Разбор: пакет снимков',type:'packet',steps:18,bare:true,body:packetLesson()});
 slides.splice(5,0,{group:'Графика',title:'Сколько цветов можно закодировать?',type:'capacity',steps:7,bare:true,body:paletteCapacity()});
+// Select the course part without duplicating presentation sources.
+const lessonPart=document.documentElement.dataset.lessonPart;
+if(lessonPart==='1')slides=slides.filter(s=>!['transfer','packet'].includes(s.type));
+if(lessonPart==='3'){
+ slides=slides.filter(s=>['transfer','packet'].includes(s.type));
+ slides.push({group:'Итоги',title:'Шпаргалка: передача данных',type:'summary',body:`<p class="lead">Объём и скорость приводим к одинаковым единицам. Время — в секундах.</p><div class="grid2">${panel('Объём, скорость и время','<div class="formula">I = v · t</div><p>t = I / v &nbsp; · &nbsp; v = I / t</p>')}${panel('Пакет одинаковых файлов','<div class="formula">N = ⌊v · t / I₁⌋</div><p>I₁ — объём одного файла. Число целых файлов округляем вниз.</p>')}${panel('Единицы','<p>1 байт = 8 бит<br>1 Кбайт = 1024 байта<br>1 Мбайт = 1024 Кбайта</p>')}${panel('Сжатие и заголовки','<p>Уменьшили на 25% → осталось 75%.<br>Уменьшили в 4 раза → делим на 4.<br>Заголовок учитываем по условию.</p>')}</div>`});
+}
 const $=s=>document.querySelector(s);
 let current=1,buildStep=0,pendingStep=0,state={};
 try{state=JSON.parse(localStorage.getItem('informatics-7-graphics-v2')||'{}');if(!state||Array.isArray(state)||typeof state!=='object')state={};}catch{}
@@ -146,7 +153,7 @@ function render(){
  if(location.hash!==`#${n}`)history.replaceState(null,'',`#${n}`);
  const el=$('#slide');el.className=`slide-${s.type||'content'}`;el.dataset.slide=String(n);el.dataset.variant=s.variant||'';
  el.innerHTML=`${s.bare?'':`<div class="kicker">${s.type==='intro'?'УРОК 07 · ЕГЭ ПО ИНФОРМАТИКЕ':s.group.toUpperCase()}</div>`}${s.type==='intro'||s.bare?'':`<h2>${s.title}</h2>`}${s.body}`;
- stylizeVolumes(el);prepareFindTargets(el,s);el.scrollTop=0;if(s.type==='transfer')el.querySelector('.replay-transfer').addEventListener('click',()=>{buildStep=2;updateBuild();startTransmission();});document.title=`${s.title} · Задание 7 — изображения`;
+ stylizeVolumes(el);prepareFindTargets(el,s);el.scrollTop=0;if(s.type==='transfer')el.querySelector('.replay-transfer').addEventListener('click',()=>{buildStep=2;updateBuild();startTransmission();});document.title=`${s.title} · Задание 7 — ${lessonPart==='3'?'передача данных':'изображения'}`;
  document.querySelectorAll('#outline a').forEach(a=>{const active=Number(a.dataset.slide)===n;a.classList.toggle('active',active);if(active)a.setAttribute('aria-current','step');else a.removeAttribute('aria-current');});
  if(s.type==='palette'){
   $('#combinations-bits').addEventListener('change',e=>setDepth(e.target.value));
