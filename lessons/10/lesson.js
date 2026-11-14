@@ -46,6 +46,9 @@ const slides=[
  {title:'Дом и квартира: двигай границу',group:'Граница адреса',type:'decimal-mask',steps:4,body:decimalMaskLesson()},
  {title:'Маска: выбирай границу',group:'Маска',type:'boundary-mask',steps:3,body:boundaryMaskLesson()},
  {title:'Как работает маска',group:'Маска',type:'and',steps:2,body:andLesson()},
+ {title:'Задача 245: адрес сети',group:'Задачи',type:'ip-task',task:'network',steps:4,body:ipTaskLesson('network')},
+ {title:'Задача 250: наибольший байт',group:'Задачи',type:'ip-task',task:'maximum',steps:5,body:ipTaskLesson('maximum')},
+ {title:'Задача 10154: минимум единиц',group:'Задачи',type:'ip-task',task:'minimum',steps:5,body:ipTaskLesson('minimum')},
  {title:'Единицы, затем нули',group:'Маска',type:'mask-rule',steps:2,body:maskRuleLesson()},
  {title:'Измени маску',group:'Маска',type:'mask-lab',steps:2,body:maskLab()}
 ];
@@ -155,17 +158,19 @@ function update(){
  if(s.type==='street')updateStreet();
  if(s.type==='mask-lab')paintMask();
  updateSequence(s.type,previous);
+ if(s.type==='ip-task')updateIPTask(s.task,previous);
  $('#prev').disabled=current===1&&step===0;$('#next').disabled=current===slides.length&&step===s.steps;
  $('#slide-count').textContent=`${String(current).padStart(2,'0')} / ${String(slides.length).padStart(2,'0')}`;
  $('#status').textContent=root.querySelector('h2')?.textContent||s.title;setHash();
 }
 function render(){
- stopJourney();stopDigits();stopStreet();stopNetworkDelivery();const match=location.hash.match(/^#(\d+)(?:\.(\d+))?$/);let n=Number(match?.[1]||1);if(n<1||n>slides.length)n=1;current=n;step=Math.min(Number(match?.[2]||0),slides[n-1].steps);
+ stopJourney();stopDigits();stopStreet();stopNetworkDelivery();stopTaskAnimations();const match=location.hash.match(/^#(\d+)(?:\.(\d+))?$/);let n=Number(match?.[1]||1);if(n<1||n>slides.length)n=1;current=n;step=Math.min(Number(match?.[2]||0),slides[n-1].steps);
  const s=slides[n-1],root=$('#slide');root.className='lesson-ten slide-'+s.type;root.dataset.step='-1';root.innerHTML=s.body;root.scrollTop=0;
  if(s.type==='lab')initByteLab();
  if(s.type==='street')$('#street-target').addEventListener('change',e=>startStreet(e.target.value));
  if(s.type==='mask-lab')initMask();
  initSequence(s.type);
+ if(s.type==='ip-task')initIPTask(s.task);
  document.title=s.title+' · Задание 10';$('#outline').querySelectorAll('a').forEach(a=>{const active=Number(a.dataset.slide)===n;a.classList.toggle('active',active);if(active)a.setAttribute('aria-current','page');else a.removeAttribute('aria-current');});
  update();resize();
 }
@@ -180,6 +185,7 @@ $('#menu').onclick=()=>menu(!document.body.classList.contains('menu-open'));
 $('#prev').onclick=()=>go(-1);$('#next').onclick=()=>go(1);
 $('#outline').onclick=e=>{if(e.target.closest('a')&&matchMedia('(max-width:700px)').matches)menu(false);};
 $('#slide').onclick=e=>{
+ if(ipTaskClick(e))return;
  if(sequenceClick(e))return;
  if(extensionClick(e))return;
  const button=e.target.closest('button');
