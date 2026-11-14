@@ -1,4 +1,4 @@
-/* ion_inf · №10 — IP-адреса и маски (поверх styles.css) */
+/* ion_inf · №13 — IP-адреса и маски (поверх styles.css) */
 #app { overflow: clip; }
 :root { --net: #1F6FEB; --net-bg: #DCE9F8; --net-bg2: #EAF2FD; --hostc: #B9521D; --host-bg: #FFE3D0; --spring: cubic-bezier(.34,1.56,.64,1); --okc: #2F855A; }
 h1 em { font-style: normal; color: var(--accent); }

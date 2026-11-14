@@ -1,0 +1,393 @@
+<!doctype html>
+<html lang="ru">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Задание 13 · IP-адреса и маски — Soft</title>
+<meta name="description" content="Интерактивный урок: задание 13 ЕГЭ по информатике. IP-адрес, двоичная запись, маска, адрес сети, количество адресов, Python.">
+<meta name="theme-color" content="#F5F5F7">
+<link rel="icon" href="data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 32 32'%3E%3Crect width='32' height='32' rx='8' fill='%23B9521D'/%3E%3Ctext x='16' y='23' text-anchor='middle' font-family='Arial' font-size='23' font-weight='700' fill='white'%3Ei%3C/text%3E%3C/svg%3E">
+<link rel="stylesheet" href="./styles.css?v=efc3f98612a9">
+<link rel="stylesheet" href="./ip.css?v=e076610cc301">
+<link rel="stylesheet" href="./viewer.css?v=808977a8e282">
+</head>
+<body data-home="../">
+
+<div id="app">
+
+
+  <main id="deck">
+
+  <!-- ============ 01 · IP-АДРЕС ============ -->
+  <section class="slide title-slide" data-sec="1" data-id="title" data-title="Что будет сегодня?" data-w="hero">
+    <div class="row" style="align-items:center;height:100%;gap:40px">
+      <div class="col" style="flex:1">
+        <div class="tbadge"><b>№13</b><span>ЕГЭ по информатике</span></div>
+        <h1 style="font-size:92px">IP-адреса<br>и <em>маски</em></h1>
+        <p class="lead" style="max-width:500px">Как устроен адрес любого устройства в интернете — и как по нему найти сеть, дом и квартиру.</p>
+        <div class="tplan">
+          <span><i>01</i>IP-адрес</span><span><i>02</i>Маска</span><span><i>03</i>Задачи</span><span><i>04</i>Сколько адресов</span><span><i>05</i>Python</span><span><i>06</i>Итог</span>
+        </div>
+        <div class="kbhint"><span><kbd>→</kbd>листать</span><span><kbd>N</kbd>пояснения</span><span><kbd>?</kbd>все клавиши</span></div>
+      </div>
+      <div class="col" style="flex:none">
+        <div class="board" id="hero">
+          <div class="board-top"><span class="led"></span><span id="heroCap">Табло адресов</span><span class="board-ip" id="heroIp"></span></div>
+          <div class="board-rows" id="heroRows"></div>
+          <div class="board-ft"><span>десятичный</span><span>двоичный · 8 бит</span></div>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <section class="slide" data-sec="1" data-id="addr" data-title="Зачем нужен адрес" data-steps="6" data-w="addr">
+    <div class="eyebrow">IP-адрес · идея</div>
+    <h1 id="adHead">Зачем вообще нужен <em>адрес</em>?</h1>
+    <div class="ad-wrap">
+      <svg class="ad-svg" id="adG" viewBox="0 0 1400 420"></svg>
+      <div class="ad-cap" id="adCap"></div>
+    </div>
+  </section>
+
+  <section class="slide" data-sec="1" data-id="bytes" data-title="4 байта через точку" data-steps="4" data-w="bytes">
+    <div class="eyebrow">Из чего состоит IP-адрес</div>
+    <h1 id="byHead">Четыре числа <em>через точку</em></h1>
+    <div class="by-ip" id="byIp">
+      <div class="by-o"><b>192</b><span class="by-br" data-s="1">1 байт</span><span class="by-bits" data-s="2">8 бит</span></div><i class="by-dot">.</i>
+      <div class="by-o"><b>168</b><span class="by-br" data-s="1">1 байт</span><span class="by-bits" data-s="2">8 бит</span></div><i class="by-dot">.</i>
+      <div class="by-o"><b>0</b><span class="by-br" data-s="1">1 байт</span><span class="by-bits" data-s="2">8 бит</span></div><i class="by-dot">.</i>
+      <div class="by-o"><b>1</b><span class="by-br" data-s="1">1 байт</span><span class="by-bits" data-s="2">8 бит</span></div>
+    </div>
+    <div class="by-row">
+      <div class="by-sum" data-s="2"><b>4 × 8 = 32 бита</b><span>столько бит в любом IP-адресе</span></div>
+      <div class="by-sum" data-s="3"><b>каждое число 0…255</b><span>8 единиц = 11111111 = 255. Больше в один байт не влезет</span></div>
+      <div class="by-chk" data-s="4">
+        <div class="by-chk-h">Это IP-адрес? <small>кликни</small></div>
+        <div class="by-chips" id="byChips"></div>
+      </div>
+    </div>
+  </section>
+
+  <section class="slide" data-sec="1" data-id="byte" data-title="Собери байт" data-steps="0" data-w="byte">
+    <div class="eyebrow">Перевод в двоичную · попробуй сам</div>
+    <h1>Собери <em>байт</em></h1>
+    <div class="row" style="gap:44px;align-items:flex-start">
+      <div class="sw-l">
+        <div class="sw-row" id="swRow"></div>
+        <div class="sw-sum" id="swSum"></div>
+        <div class="sw-goals" id="swGoals"></div>
+      </div>
+      <div class="calc" id="calc">
+        <div class="calc-h"><span class="calc-ham">≡</span><b>Программист</b></div>
+        <div class="calc-v" id="calcV">0</div>
+        <div class="calc-l"><span>HEX</span><b id="cHex">0</b></div>
+        <div class="calc-l on"><span>DEC</span><b id="cDec">0</b></div>
+        <div class="calc-l"><span>OCT</span><b id="cOct">0</b></div>
+        <div class="calc-l"><span>BIN</span><b id="cBin">0000 0000</b></div>
+        <input class="calc-in" id="calcIn" inputmode="numeric" maxlength="3" placeholder="введи число 0–255" autocomplete="off">
+        <p class="calc-n">Калькулятор Windows → <b>≡</b> → «Программист». В Python: <span class="mono">bin(192)</span> — нули слева дописать самому.</p>
+      </div>
+    </div>
+  </section>
+
+  <section class="slide" data-sec="1" data-id="tobin" data-title="Весь адрес в двоичном" data-steps="7" data-w="tobin">
+    <div class="eyebrow">Как адрес видит компьютер</div>
+    <h1 id="tbHead">192.168.0.1 — <em>в двоичном</em></h1>
+    <div class="tb-rows" id="tbRows"></div>
+    <div class="tb-line" id="tbLine"></div>
+  </section>
+
+  <section class="slide" data-sec="1" data-id="street" data-title="Дома и квартиры" data-steps="5" data-w="street">
+    <div class="eyebrow">Аналогия · улица, дома, квартиры</div>
+    <h1 id="ulHead">Как письмо находит <em>квартиру</em>?</h1>
+    <div class="ul" id="ul">
+      <div class="ul-walk"></div>
+      <div class="ul-road"><i class="ul-sign">ул. Почтовая</i></div>
+      <div class="ul-post" id="ulPost"><span class="ul-post-r"></span><b>ПОЧТА</b><span class="ul-post-ic"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linejoin="round"><rect x="3" y="6" width="18" height="12" rx="1.5"/><path d="M3.5 7l8.5 6 8.5-6"/></svg></span><i class="ul-post-d"></i></div>
+      <div class="ul-hs" id="ulHs"></div>
+      <div class="nt-pkt" id="ulPkt"><div class="nt-pk-env"><b class="nt-pk-to"></b></div><span class="nt-pk-tip"></span></div>
+    </div>
+    <div class="nt-cap ul-cap" id="ulCap"></div>
+  </section>
+
+  <section class="slide" data-sec="1" data-id="nets" data-title="Сеть и устройство" data-steps="5" data-w="nets">
+    <div class="eyebrow">Адрес сети и номер устройства</div>
+    <h1 id="ntHead">С IP — <em>то же самое</em></h1>
+    <div class="nt" id="nt">
+      <svg class="nt-svg" id="ntSvg" viewBox="0 0 1408 500"></svg>
+      <div class="nt-blds" id="ntBlds"></div>
+      <div class="nt-pkt" id="ntPkt"><div class="nt-pk-env"><b class="nt-pk-to"></b></div><span class="nt-pk-tip"></span></div>
+    </div>
+    <div class="nt-cap" id="ntCap"></div>
+  </section>
+
+  <!-- ============ 02 · МАСКА ============ -->
+  <section class="slide" data-sec="2" data-id="split" data-title="Как поделить IP" data-steps="1" data-w="split">
+    <div class="eyebrow">Адрес сети и адрес узла</div>
+    <h1 id="spHead">Как поделить <em>IP-адрес</em>?</h1>
+    <div class="bits-host sp-bits" id="spB"></div>
+    <div class="row sp-side" id="spSide"></div>
+  </section>
+
+  <section class="slide" data-sec="2" data-id="house" data-title="Дом и квартира" data-steps="4" data-w="house">
+    <div class="eyebrow">Аналогия · двигай палку</div>
+    <h1 id="hsHead">Где тут <em>дом</em>, а где <em>квартира</em>?</h1>
+    <div class="row" style="gap:40px;align-items:flex-start">
+      <div class="hs-l">
+        <div class="hs-grid" id="hsGrid"></div>
+        <div class="hs-cap" id="hsCap"></div>
+      </div>
+      <svg class="hs-svg" id="hsG" viewBox="0 0 460 520"></svg>
+    </div>
+  </section>
+
+  <section class="slide" data-sec="2" data-id="mask" data-title="Маска сети" data-steps="3" data-w="mask">
+    <div class="eyebrow">Маска</div>
+    <h1 id="mkHead">Для этого есть <em>маска</em></h1>
+    <div class="bits-host" id="mkB"></div>
+    <div class="row" style="gap:24px;margin-top:22px;align-items:flex-start">
+      <div class="col" id="mkSide"></div>
+      <div class="mk-chk" id="mkChk" data-s="3"><div class="by-chk-h">Это маска? <small>кликни</small></div><div class="by-chips" id="mkChips"></div><div class="mk-bin" id="mkBin"></div></div>
+    </div>
+  </section>
+
+  <section class="slide" data-sec="2" data-id="and" data-title="IP & маска = адрес сети" data-steps="5" data-w="and">
+    <div class="eyebrow">Поразрядная конъюнкция</div>
+    <h1 id="anHead">IP <em>&amp;</em> маска = адрес сети</h1>
+    <div class="bits-host" id="anB"></div>
+    <div class="row" style="gap:22px;align-items:stretch;margin-top:16px">
+      <div class="an-tt" id="anTT">
+        <div class="an-tt-h">умножаем побитово</div>
+        <div class="an-tt-g"><div><b>1</b>·<b>1</b> = <em>1</em></div><div><b>1</b>·<b>0</b> = 0</div><div><b>0</b>·<b>1</b> = 0</div><div><b>0</b>·<b>0</b> = 0</div></div>
+      </div>
+      <div class="col"><div class="an-cap" id="anCap"></div></div>
+    </div>
+  </section>
+
+  <!-- ============ 03 · ЗАДАЧИ ============ -->
+  <section class="slide" data-sec="3" data-id="kim" data-title="Как читать условие" data-steps="2" data-w="kim">
+    <div class="kimv"><div class="kimp">
+      <div class="kim-hd"><span>ЕГЭ · ИНФОРМАТИКА, 11 класс</span><span>Задание 13 (10154)</span></div>
+      <div class="kim-task"><div class="kim-n">10</div><div class="kim-body">
+        <div class="kz kz-pre"><p>В терминологии сетей TCP/IP маска сети — это двоичное число, меньшее 2<sup>32</sup>; в маске сначала (в старших разрядах) стоят единицы, а затем с некоторого места нули. Маска определяет, какая часть IP-адреса узла сети относится к адресу сети, а какая — к адресу самого узла в этой сети. Обычно маска записывается по тем же правилам, что и IP-адрес — в виде четырёх байт, причём каждый байт записывается в виде десятичного числа. Адрес сети получается в результате применения поразрядной конъюнкции к заданному IP-адресу узла и маске.</p></div>
+        <div class="kz"><p>Для узла с IP-адресом <span class="kmark">148.195.140.28</span> адрес сети равен <span class="kmark">148.195.140.0</span>. Найдите <span class="kmark">наименьшее возможное количество единиц</span> в двоичной записи маски подсети.</p>
+        <p class="kans">Ответ: <i></i></p></div>
+      </div></div>
+    </div></div>
+    <div class="kimcap" id="kimCap"></div>
+  </section>
+
+  <section class="slide" data-sec="3" data-id="t245" data-title="Найди адрес сети" data-steps="4" data-w="t245">
+    <div class="eyebrow">Задача 245 · тип 1</div>
+    <h1 id="t1Head">Адрес сети по IP и маске</h1>
+    <div class="tq" id="t1Q"><b>IP-адрес:</b> 217.8.244.3 &nbsp; <b>Маска:</b> 255.255.252.0 &nbsp;→&nbsp; найдите адрес сети</div>
+    <div class="bits-host" id="t1B"></div>
+    <div class="tcap" id="t1Cap"></div>
+  </section>
+
+  <section class="slide" data-sec="3" data-id="t250" data-title="Наибольший байт маски" data-steps="5" data-w="t250">
+    <div class="eyebrow">Задача 250 · тип 2 · восстанавливаем маску</div>
+    <h1 id="t2Head">Наибольший третий байт маски</h1>
+    <div class="tq"><b>IP:</b> 111.81.200.27 &nbsp; <b>адрес сети:</b> 111.81.192.0 &nbsp;→&nbsp; наибольшее значение <b>третьего слева байта</b> маски?</div>
+    <div class="bits-host" id="t2B"></div>
+    <div class="tcap" id="t2Cap"></div>
+  </section>
+
+  <section class="slide" data-sec="3" data-id="t154" data-title="Наименьшее число единиц" data-steps="5" data-w="t154">
+    <div class="eyebrow">Задача 10154 · тип 2</div>
+    <h1 id="t3Head">Наименьшее количество единиц в маске</h1>
+    <div class="tq"><b>IP:</b> 148.195.140.28 &nbsp; <b>адрес сети:</b> 148.195.140.0 &nbsp;→&nbsp; наименьшее количество единиц в маске?</div>
+    <div class="bits-host" id="t3B"></div>
+    <div class="tcap" id="t3Cap"></div>
+  </section>
+
+  <section class="slide" data-sec="3" data-id="t2n" data-title="Два узла в разных подсетях" data-steps="4" data-w="t2n">
+    <div class="eyebrow">Тип 3 · два адреса</div>
+    <h1 id="t4Head">Два узла — <em>разные</em> подсети</h1>
+    <div class="tq"><b>IP₁:</b> 157.127.182.76 &nbsp; <b>IP₂:</b> 157.127.190.80 &nbsp; — в разных подсетях, единиц в масках поровну. Наименьшее количество единиц?</div>
+    <div class="bits-host" id="t4B"></div>
+    <div class="tcap" id="t4Cap"></div>
+  </section>
+
+  <!-- ============ 04 · СКОЛЬКО АДРЕСОВ ============ -->
+  <section class="slide" data-sec="4" data-id="flats" data-title="Сколько квартир в доме" data-steps="5" data-w="flats">
+    <div class="eyebrow">Сколько адресов в сети</div>
+    <h1 id="flHead">Сколько квартир <em>в доме</em>?</h1>
+    <div class="row" style="gap:40px;align-items:flex-start">
+      <div class="fl-l">
+        <div class="fl-top" id="flTop"></div>
+        <div class="odo-box"><div class="odo-h" id="odoH"></div><div class="odo" id="odo"></div><div class="odo-eq" id="odoEq"></div></div>
+        <div class="fl-k" id="flK"><span>нулей в маске</span><input type="range" min="1" max="10" value="3" id="flRange"><b id="flKv">3</b></div>
+        <div class="hs-cap" id="flCap"></div>
+      </div>
+      <div class="fl-r">
+        <div class="fl-bld" id="flBld"></div>
+      </div>
+    </div>
+  </section>
+
+  <section class="slide" data-sec="4" data-id="reserved" data-title="Первый и последний — нельзя" data-steps="3" data-w="reserved">
+    <div class="eyebrow">Два адреса заняты всегда</div>
+    <h1 id="rsHead">Сеть /29 — <em>8 адресов</em></h1>
+    <div class="rs-top" id="rsTop"></div>
+    <div class="rs-bld">
+      <div class="rs-roof"></div>
+      <div class="rs-plate" id="rsPlate"><small>табличка на доме</small><b>сеть 192.168.1.0</b></div>
+      <div class="rs-doors" id="rsDoors"></div>
+    </div>
+    <div class="rs-row">
+      <div class="rs-c" data-s="1"><div class="rs-ic net">000</div><b>Адрес сети</b><p>Все нули в части узла — это <b>сама сеть</b>, «номер дома». Как табличка на доме: квартирой её не сделаешь.</p></div>
+      <div class="rs-c" data-s="2"><div class="rs-ic bc"><svg viewBox="0 0 40 40"><path d="M8 16h6l12-8v24l-12-8H8z" fill="currentColor"/><path d="M30 13c3 4 3 10 0 14M33 9c5 6 5 16 0 22" stroke="currentColor" stroke-width="2.5" fill="none" stroke-linecap="round"/></svg></div><b>Широковещательный</b><p>Все единицы в части узла — <b>broadcast</b>: «всем в этой сети». Как объявление в подъезде — для всех сразу.</p></div>
+      <div class="rs-c dark" data-s="3"><div class="rs-f">2<sup>k</sup> − 2</div><b>компьютеров</b><p>k — сколько нулей в маске. Минус адрес сети и broadcast.</p></div>
+    </div>
+  </section>
+
+  <section class="slide" data-sec="4" data-id="t166" data-title="Сколько компьютеров в сети" data-steps="4" data-w="t166">
+    <div class="eyebrow">Задача 10166</div>
+    <h1 id="t5Head">Маска 255.255.254.0 — сколько компьютеров?</h1>
+    <div class="tq">Сколько различных адресов компьютеров допускает маска, если <b>адрес сети и широковещательный</b> не используются?</div>
+    <div class="bits-host" id="t5B"></div>
+    <div class="t5-f" id="t5F"></div>
+  </section>
+
+  <section class="slide" data-sec="4" data-id="t60" data-title="Не менее 60 узлов" data-steps="5" data-w="t60">
+    <div class="eyebrow">Модуль 2 · сколько масок</div>
+    <h1 id="t6Head">Сколько масок, если узлов <em>≥ 60</em>?</h1>
+    <div class="tq"><b>IP:</b> 175.122.80.13 &nbsp; <b>сеть:</b> 175.122.80.0 &nbsp;→&nbsp; сколько различных масок, если в сети не менее 60 узлов?</div>
+    <div class="bits-host" id="t6B"></div>
+    <div class="t6-tab" id="t6Tab"></div>
+    <div class="tcap" id="t6Cap"></div>
+  </section>
+
+  <section class="slide" data-sec="4" data-id="tdemo" data-title="Демоверсия 2026" data-steps="5" data-w="tdemo">
+    <div class="eyebrow">№ 23751 · демоверсия 2026</div>
+    <h1 id="t7Head">Наибольший IP <em>компьютера</em> в сети</h1>
+    <div class="tq"><b>IP узла:</b> 191.128.66.83 &nbsp; <b>маска:</b> 255.192.0.0 &nbsp;→&nbsp; наибольший IP, который можно назначить компьютеру. Ответ — без точек.</div>
+    <div class="bits-host" id="t7B"></div>
+    <div class="tcap" id="t7Cap"></div>
+  </section>
+
+  <section class="slide" data-sec="4" data-id="lab" data-title="Сетевой калькулятор" data-steps="0" data-w="lab">
+    <div class="eyebrow">Песочница · тяни маску</div>
+    <h1>Сетевой <em>калькулятор</em></h1>
+    <div class="lab-in"><span>IP-адрес</span><input id="labIp" value="192.168.10.77" autocomplete="off" spellcheck="false"><button class="btn" id="labRnd">Случайный</button><span class="lab-hint">тяни ромбик над битами или кликай по ним</span></div>
+    <div class="bits-host" id="labB"></div>
+    <div class="lab-out" id="labOut"></div>
+  </section>
+
+  <!-- ============ 05 · PYTHON ============ -->
+  <section class="slide" data-sec="5" data-id="py" data-title="Решаем кодом" data-steps="3" data-w="py">
+    <div class="eyebrow">Python · библиотека ipaddress</div>
+    <h1 id="pyHead">Перебираем <em>все маски</em></h1>
+    <div class="py">
+      <div class="ide">
+        <div class="ide-top"><span class="dots"><i></i><i></i><i></i></span><div class="ide-tabs" id="pyTabs"></div><button class="ide-run" id="pyRun">▶ Run</button></div>
+        <pre class="ide-code" id="pyCode"></pre>
+        <div class="ide-con"><div class="ide-con-h">Run</div><pre id="pyOut"></pre></div>
+      </div>
+      <div class="py-side" id="pySide"></div>
+    </div>
+  </section>
+
+  <!-- ============ 06 · ИТОГ ============ -->
+  <section class="slide" data-sec="6" data-id="quiz" data-title="Проверь себя" data-steps="6" data-w="quiz" data-btn="Следующий вопрос">
+    <div style="display:flex;align-items:center;justify-content:space-between">
+      <div class="eyebrow" id="qzNum">Вопрос 1 из 6</div>
+      <div class="dots" id="qzDots"></div>
+    </div>
+    <div id="qzBox"></div>
+  </section>
+
+  <section class="slide" data-sec="6" data-id="cheat" data-title="Шпаргалка" data-steps="0">
+    <h1>Шпаргалка №13</h1>
+    <div class="csg">
+      <div class="csc"><h3>IP-адрес</h3><p>4 байта через точку, каждый 0…255. Всего <b>32 бита</b>.</p></div>
+      <div class="csc"><h3>В двоичную</h3><p>Каждый байт — <b>ровно 8</b> цифр. 1 = 00000001.</p></div>
+      <div class="csc"><h3>Маска</h3><p>Сначала единицы, потом нули. После нуля — <b>только нули</b>.</p></div>
+      <div class="csc dark"><h3>Адрес сети</h3><p>IP <b>&amp;</b> маска. Байт 255 — копируем, 0 — ноль, считаем только «пограничный».</p></div>
+      <div class="csc dark"><h3>Восстановить маску</h3><p>Где в сети 1 — в маске 1. Где у IP 1, а у сети 0 — в маске 0. Между — <b>выбор</b>.</p></div>
+      <div class="csc dark"><h3>Два узла</h3><p>Разные сети, когда маска дошла до <b>первого различия</b> битов.</p></div>
+      <div class="csc hot"><h3>Сколько адресов</h3><p>2<sup>нулей</sup>. Компьютеров — <b>2<sup>нулей</sup> − 2</b>.</p></div>
+      <div class="csc hot"><h3>Нельзя выдавать</h3><p>Первый (адрес сети) и последний (широковещательный).</p></div>
+      <div class="csc"><h3>Python</h3><p><span class="mono">ip_network(ip + '/' + str(m), strict=False)</span> — перебор масок.</p></div>
+    </div>
+  </section>
+
+  <section class="slide" data-sec="6" data-id="algo" data-title="Алгоритм на экзамене" data-steps="5">
+    <div class="row" style="gap:80px;height:100%">
+      <div class="col" style="flex:1.1">
+        <div class="eyebrow">На экзамене</div>
+        <h1>Алгоритм <em>№13</em></h1>
+        <ol class="algo">
+          <li data-s="1"><i>1</i><div><b>Читай последнее предложение</b><span>Определение маски одинаковое в каждой задаче.</span></div></li>
+          <li data-s="2"><i>2</i><div><b>Переведи в двоичную</b><span>Только нужные байты. Каждый — 8 цифр.</span></div></li>
+          <li data-s="3"><i>3</i><div><b>Проведи границу маски</b><span>Слева — сеть, справа — узел.</span></div></li>
+          <li data-s="4"><i>4</i><div><b>Ответь на вопрос</b><span>Байт маски, число единиц, адресов (−2?) — переведи обратно.</span></div></li>
+        </ol>
+      </div>
+      <div class="col algo-r" data-s="5">
+        <div class="quote">«Задание номер тринадцать — практически весь <em>решается руками</em>»</div>
+        <p class="lead">Код — запасной путь: перебрать все маски от 1 до 32 и найти нужную. Но если понял дом и квартиру — ручками быстрее.</p>
+      </div>
+    </div>
+  </section>
+
+  </main>
+
+  <div class="pline"><i id="pBar"></i></div>
+
+  <div hidden><b id="fSec"></b><span id="fNext"></span><i id="fBar"></i></div>
+
+  <canvas id="ink" width="1600" height="900"></canvas>
+  <div id="spot"></div>
+  <div id="blank">Экран скрыт · нажми B</div>
+  <div class="toast" id="toast"></div>
+
+  <div class="ov" id="ovToc"><div class="panel"><button class="x" data-close>✕</button><h2 style="font-size:34px;margin-bottom:6px">План занятия</h2><div class="toc" id="tocList"></div></div></div>
+  <div class="ov" id="ovHelp"><div class="panel" style="width:1020px"><button class="x" data-close>✕</button><h2 style="font-size:34px;margin-bottom:18px">Управление</h2>
+    <div class="keys">
+      <div><kbd>→</kbd><kbd>Пробел</kbd> следующий шаг / экран</div>
+      <div><kbd>←</kbd> назад</div>
+      <div><kbd>N</kbd> пояснение к слайду</div>
+      <div><kbd>Q</kbd> вопрос на слайде</div>
+      <div><kbd>G</kbd> оглавление</div>
+      <div><kbd>F</kbd> полный экран</div>
+      <div><kbd>L</kbd> лазерная указка</div>
+      <div><kbd>D</kbd> рисовать поверх слайда</div>
+      <div><kbd>C</kbd> стереть рисунок</div>
+      <div><kbd>S</kbd> прожектор</div>
+      <div><kbd>B</kbd> скрыть экран</div>
+      <div><kbd>R</kbd> заново этот слайд</div>
+      <div><kbd>Home</kbd><kbd>End</kbd> в начало / в конец</div>
+      <div><kbd>Esc</kbd> закрыть окно / инструмент</div>
+    </div>
+
+  </div></div>
+</div>
+
+<button id="hTop" class="menu-toggle" aria-label="Показать боковое меню" aria-controls="lessonMenu" aria-expanded="false" title="Показать боковое меню"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.6" aria-hidden="true"><rect x="3" y="4" width="18" height="16" rx="2"/><path d="M9 4v16M5.5 8h1M5.5 12h1M5.5 16h1"/></svg></button>
+<aside class="lesson-menu" id="lessonMenu" aria-label="Содержание урока" aria-hidden="true" inert>
+  <div class="menu-heading"><span class="eyebrow">ЗАДАНИЕ ЕГЭ</span><div class="lesson-number">13<span>IP-адреса<br>и маски</span></div><button id="menuClose" aria-label="Закрыть меню" hidden>Закрыть</button></div>
+  <div class="sidebar-label">СОДЕРЖАНИЕ УРОКА</div>
+  <nav id="tabs" aria-label="Слайды урока"></nav>
+  <div class="menu-materials"><a id="homeLink" href="../">← Все уроки</a><a href="#22">Калькулятор</a><a href="#25">Шпаргалка</a></div>
+  <div class="menu-navigation"><button id="bPrev" aria-label="Предыдущий шаг">←</button><span id="fCnt"></span><button id="bNext">Дальше</button></div>
+  <div class="menu-tools"><button id="nTab" aria-controls="notes" aria-expanded="false">Пояснения</button><button id="bFull" aria-label="Полный экран" aria-pressed="false">Полный экран</button><button id="bToc">Все слайды</button><button id="bHelp">Управление</button></div>
+  <p class="sidebar-hint">← → &nbsp; Слайды и шаги</p>
+</aside>
+<aside class="notes" id="notes" aria-label="Пояснение к слайду" aria-hidden="true" inert>
+  <div class="nhd"><div><small id="nSec"></small><b id="nTitle"></b></div><button class="nx" id="nClose" aria-label="Закрыть пояснения"><svg viewBox="0 0 24 24"><path d="m6 6 12 12M18 6 6 18"/></svg></button></div>
+  <div class="nbody" id="nBody"></div>
+  <div class="nft"><button id="nPrev" title="Назад">←</button><span id="nCnt"></span><button id="nNext" title="Дальше">→</button></div>
+</aside>
+
+
+
+
+
+<div id="laser"></div>
+<script src="./notes.js?v=2bcd44082fc4"></script>
+<script src="./ip.js?v=76b92b82c7ed"></script>
+<script src="./deck.js?v=970ae2218f6d"></script>
+</body>
+</html>

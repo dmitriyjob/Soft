@@ -1,4 +1,4 @@
-/* ion_inf · №10 (бывший 13) — IP-адреса и маски: библиотека и виджеты урока */
+/* ion_inf · №13 — IP-адреса и маски: библиотека и виджеты урока */
 (() => {
 'use strict';
 const $ = (s, r = document) => r.querySelector(s);
@@ -1594,5 +1594,5 @@ W.t60 = foldWrap(W.t60, ['ip', 'n'], '#t6Cap');
 W.tdemo = foldWrap(W.tdemo, ['ip', 'm'], '#t7Cap');
 
 window.IP = { ip2n, n2ip, maskN, AND, bcast, validP, Bits };
-window.DECK = { sections: { 1: 'IP-адрес', 2: 'Маска', 3: 'Задачи', 4: 'Сколько адресов', 5: 'Python', 6: 'Итог' }, key: 'soft:interactive:10:v1', prefix: 'soft10', widgets: W };
+window.DECK = { sections: { 1: 'IP-адрес', 2: 'Маска', 3: 'Задачи', 4: 'Сколько адресов', 5: 'Python', 6: 'Итог' }, key: 'soft:interactive:13:v1', prefix: 'soft13', widgets: W };
 })();
