@@ -13,25 +13,24 @@ const toast = msg => window.DP ? DP.toast(msg) : null;
 let SCALE = 1;
 
 /* ---------------- scaling ---------------- */
-let notesOpen = false, dockHidden = false;
-const dock = $('.viewer-dock'), dockRestore = $('#dockRestore');
-const DOCK_KEY = 'soft10_dock_hidden';
-try { dockHidden = localStorage.getItem(DOCK_KEY) === '1'; } catch {}
+let notesOpen = false;
 const NOTES_W = () => Math.min(480, Math.max(380, innerWidth * 0.3));
 const notesDock = () => innerWidth >= 1100;
 function fit() {
-  const nw = notesOpen && notesDock() ? NOTES_W() : 0, aw = innerWidth - nw;
-  const dockHeight = dockHidden ? 0 : dock.getBoundingClientRect().height;
+  const nw = notesOpen && notesDock() ? NOTES_W() : 0;
+  const sw = document.body.classList.contains('showtop') && innerWidth > 700 ? 246 : 0;
+  const aw = innerWidth - nw - sw;
+  const dockHeight = 0;
   const ah = Math.max(1, innerHeight - dockHeight);
   document.documentElement.style.setProperty('--dock-height', dockHeight + 'px');
   SCALE = Math.min(aw / 1600, ah / 900);
   app.style.top = (ah / 2) + 'px';
-  app.style.left = (aw / 2) + 'px';
+  app.style.left = (sw + aw / 2) + 'px';
   app.style.transform = `translate(-50%,-50%) scale(${SCALE})`;
   document.documentElement.style.setProperty('--nw', NOTES_W() + 'px');
 }
 addEventListener('resize', fit);
-if (typeof ResizeObserver !== 'undefined') new ResizeObserver(fit).observe(dock);
+
 fit();
 
 let cur = 0, step = 0;
@@ -64,12 +63,12 @@ function next() { if (step < stepsOf(cur)) show(cur, step + 1, 1); else if (cur 
 function prev() { if (step > 0) show(cur, step - 1, -1); else if (cur > 0) show(cur - 1, stepsOf(cur - 1), -1); }
 
 const tabs = $('#tabs');
-tabs.innerHTML = Object.entries(SECTIONS).map(([k, v]) => `<button data-sec="${k}"><i>${pad(k)}</i>${v}</button>`).join('');
-$$('button', tabs).forEach(b => b.addEventListener('click', e => { e.currentTarget.blur(); setMenu(false); show(slides.findIndex(s => s.dataset.sec === b.dataset.sec), 0, 1); }));
+tabs.innerHTML = slides.map((s, i) => `${i === 0 || s.dataset.sec !== slides[i - 1].dataset.sec ? `<div class="group-name">${SECTIONS[s.dataset.sec]}</div>` : ''}<a href="#${i + 1}" data-slide="${i}"><span>${pad(i + 1)}</span>${s.dataset.title}</a>`).join('');
+tabs.addEventListener('click', e => { const link = e.target.closest('a[data-slide]'); if (!link) return; e.preventDefault(); show(+link.dataset.slide, 0, 1); if (innerWidth <= 700) setMenu(false); });
 
 function chrome() {
   const el = slides[cur], sec = el.dataset.sec, more = step < stepsOf(cur);
-  $$('button', tabs).forEach(b => b.classList.toggle('on', b.dataset.sec === sec));
+  $$('a', tabs).forEach(a => { const active = +a.dataset.slide === cur; a.classList.toggle('active', active); if (active) a.setAttribute('aria-current', 'page'); else a.removeAttribute('aria-current'); });
   $('#fSec').textContent = `${pad(sec)} / ${SECTIONS[sec]}`;
   $('#fNext').textContent = more ? 'Дальше: следующий шаг' : (cur < N - 1 ? 'Дальше: ' + slides[cur + 1].dataset.title : 'Это последний экран');
   const frac = (cur + (stepsOf(cur) ? step / stepsOf(cur) : 1)) / N;
@@ -126,32 +125,13 @@ addEventListener('mousemove', e => {
 
 /* Controls open only on click, never on hover. */
 const BC = document.body.classList;
-function syncDock() {
-  BC.toggle('dock-hidden', dockHidden);
-  dock.setAttribute('aria-hidden', String(dockHidden));
-  dock.inert = dockHidden;
-  if (dockRestore) {
-    dockRestore.hidden = !dockHidden;
-    dockRestore.setAttribute('aria-expanded', String(!dockHidden));
-  }
-  fit();
-}
-function setDockHidden(on, focus = true) {
-  dockHidden = on;
-  if (on) { setMenu(false); setNotes(false); closeOv(); }
-  syncDock();
-  try { localStorage.setItem(DOCK_KEY, on ? '1' : '0'); } catch {}
-  if (focus) (on ? dockRestore : $('#bHideDock'))?.focus({ preventScroll: true });
-}
-$('#bHideDock')?.addEventListener('click', () => setDockHidden(true));
-dockRestore?.addEventListener('click', () => setDockHidden(false));
 function setMenu(on) {
-  if (on && dockHidden) setDockHidden(false, false);
   BC.toggle('showtop', on);
   $('#hTop').setAttribute('aria-expanded', String(on));
   $('#lessonMenu').setAttribute('aria-hidden', String(!on));
   $('#lessonMenu').inert = !on;
-  if (on) { setNotes(false); $('#menuClose').focus({preventScroll:true}); }
+  if (on) setNotes(false);
+  fit();
 }
 $('#hTop').addEventListener('click', () => setMenu(!BC.contains('showtop')));
 $('#menuClose').addEventListener('click', () => { setMenu(false); $('#hTop').focus(); });
@@ -178,7 +158,6 @@ function renderNotes() {
   if (curP && notesOpen) { const r = curP.offsetTop - nBody.clientHeight / 2 + curP.offsetHeight / 2; nBody.scrollTo({ top: Math.max(0, r), behavior: 'smooth' }); }
 }
 function setNotes(on) {
-  if (on && dockHidden) setDockHidden(false, false);
   notesOpen = on; BC.toggle('notes-open', on);
   $('#nTab').setAttribute('aria-expanded', String(on));
   $('#notes').setAttribute('aria-hidden', String(!on)); $('#notes').inert = !on;
@@ -206,7 +185,7 @@ addEventListener('keydown', e => {
   if (e.metaKey || e.ctrlKey || e.altKey) return;
   if ((e.key === 'Enter' || e.key === ' ') && e.target.closest('a, button')) return;
   const k = e.key, c = e.code;
-  if (k === 'Escape') { if (BC.contains('showtop')) { setMenu(false); $('#hTop').focus(); return; } if (notesOpen) { setNotes(false); $('#nTab').focus(); return; } if ($('.ask.open')) { closeAsks(); return; } if (ovOpen()) closeOv(); else if (drawOn) setDraw(false); else if (laserOn) setLaser(false); else if (spot.classList.contains('on')) spot.classList.remove('on'); else if (!$('#blank').classList.contains('on') && dockHidden) setDockHidden(false); $('#blank').classList.remove('on'); return; }
+  if (k === 'Escape') { if (BC.contains('showtop')) { setMenu(false); $('#hTop').focus(); return; } if (notesOpen) { setNotes(false); $('#nTab').focus(); return; } if ($('.ask.open')) { closeAsks(); return; } if (ovOpen()) closeOv(); else if (drawOn) setDraw(false); else if (laserOn) setLaser(false); else if (spot.classList.contains('on')) spot.classList.remove('on'); $('#blank').classList.remove('on'); return; }
   if (k === '?' || c === 'KeyH') { toggleOv('ovHelp'); return; }
   if (c === 'KeyG') { toggleOv('ovToc'); return; }
   if (ovOpen()) return;
@@ -245,8 +224,8 @@ addEventListener('hashchange', () => {
  if(target) { setMenu(false); show(+target[1]-1, +(target[2]||0)); }
 });
 /* start */
-syncDock();
-try { if (!dockHidden && localStorage.getItem(P + '_notes') === '1' && notesDock()) { setNotes(true); } } catch (e) {}
+fit();
+try { if (localStorage.getItem(P + '_notes') === '1' && notesDock()) { setNotes(true); } } catch (e) {}
 const m = location.hash.match(/^#(\d+)(?:\.(\d+))?/);
 show(m ? +m[1] - 1 : 0, m && m[2] ? +m[2] : 0, 1);
 requestAnimationFrame(() => requestAnimationFrame(() => BC.add('ready')));
