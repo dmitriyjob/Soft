@@ -276,8 +276,8 @@ const tween = (ms, fn, alive) => new Promise(res => {
   requestAnimationFrame(tick);
 });
 const LET = {
-  go: { from: ['От: Ион', 'Москва, ул. Ленина, 12, кв. 5'], to: ['Кому: Ане', 'г. Казань, ул. Баумана,', 'д. 7, кв. 3'] },
-  back: { from: ['От: Аня', 'Казань, ул. Баумана, 7, кв. 3'], to: ['Кому: Иону', 'г. Москва, ул. Ленина,', 'д. 12, кв. 5'] }
+  go: { from: ['От: Дмитрий', 'Москва, ул. Ленина, 12, кв. 5'], to: ['Кому: Ане', 'г. Казань, ул. Баумана,', 'д. 7, кв. 3'] },
+  back: { from: ['От: Аня', 'Казань, ул. Баумана, 7, кв. 3'], to: ['Кому: Дмитрию', 'г. Москва, ул. Ленина,', 'д. 12, кв. 5'] }
 };
 W.addr = {
   init(el) {
@@ -319,7 +319,7 @@ W.addr = {
       const w = S('text', { x: 0, y: -92, class: 'ad-who' }, h); w.textContent = who;
       return h;
     };
-    this.hA = house(AD.phone, 'snd', 'ОТПРАВИТЕЛЬ', 'Ион', 'Москва · Ленина, 12');
+    this.hA = house(AD.phone, 'snd', 'ОТПРАВИТЕЛЬ', 'Дмитрий', 'Москва · Ленина, 12');
     this.hB = house(AD.srv, 'rcv', 'ПОЛУЧАТЕЛЬ', 'Аня', 'Казань · Баумана, 7');
     const mailbox = (x, y, mirror) => {
       const mb = S('g', { class: 'ad-mb', transform: `translate(${x} ${y})${mirror ? ' scale(-1 1)' : ''}` }, s0);
@@ -1538,7 +1538,7 @@ W.py = {
       }
       await wait(250); if (!alive()) return;
     } else code.innerHTML = lines.map(L => `<div class="cl">${hl(L) || '&nbsp;'}</div>`).join('');
-    const res = P.out(), path = '<div class="ol dim">C:\\Users\\ion\\13.py</div>';
+    const res = P.out(), path = '<div class="ol dim">C:\\Users\\Dmitriy\\13.py</div>';
     out.innerHTML = path;
     let hit = null;
     for (const r of res) {
