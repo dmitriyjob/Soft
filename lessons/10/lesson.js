@@ -48,9 +48,7 @@ const slides=[
  {title:'Как работает маска',group:'Маска',type:'and',steps:2,body:andLesson()},
  {title:'Задача 245: адрес сети',group:'Задачи',type:'ip-task',task:'network',steps:4,body:ipTaskLesson('network')},
  {title:'Задача 250: наибольший байт',group:'Задачи',type:'ip-task',task:'maximum',steps:5,body:ipTaskLesson('maximum')},
- {title:'Задача 10154: минимум единиц',group:'Задачи',type:'ip-task',task:'minimum',steps:5,body:ipTaskLesson('minimum')},
- {title:'Единицы, затем нули',group:'Маска',type:'mask-rule',steps:2,body:maskRuleLesson()},
- {title:'Измени маску',group:'Маска',type:'mask-lab',steps:2,body:maskLab()}
+ {title:'Задача 10154: минимум единиц',group:'Задачи',type:'ip-task',task:'minimum',steps:5,body:ipTaskLesson('minimum')}
 ];
 let current=1,step=0;
 let journeyFrame=0,journeyGeneration=0,journeyMotion=null;
