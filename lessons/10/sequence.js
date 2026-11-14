@@ -57,6 +57,14 @@ const maskOptions=['255.255.255.0','255.255.0.255','255.240.0.0','255.255.250.0'
 function boundaryMaskLesson(){return `<div class="kicker">МАСКА</div><h2 id="boundary-mask-title">Для этого есть <em>маска</em></h2><div class="mask-boundary-demo"><div class="mask-division-labels" hidden><span>АДРЕС СЕТИ</span><span>АДРЕС УЗЛА</span></div>${revealByteRow('ip',boundaryOctets,true)}${revealByteRow('mask',[255,240,0,0])}${dividerHandle('mask-divider','Длина префикса маски',0,32,12)}</div><div class="mask-reference-bottom"><div><div class="card mask-reference-note"><div class="mini-label" id="mask-reference-label">МАСКА СЕТИ</div><p id="mask-reference-description">Ещё 32 бита — такие же 4 байта через точку. Здесь: <code>255.240.0.0</code>.</p></div><div class="current-mask-summary card" hidden><span>СЕЙЧАС</span><b id="boundary-prefix-output">/12</b><code id="boundary-mask-output">255.240.0.0</code><small id="boundary-count-output">12 единиц · 20 нулей</small></div><p class="mask-reference-hint" id="mask-reference-hint">Кликни по числам маски — посмотрим, что внутри.</p></div><div class="mask-validator card" hidden><div class="mini-label">ЭТО МАСКА? <small>КЛИКНИ</small></div><div class="address-options">${maskOptions.map(value=>`<button type="button" data-check-mask="${value}">${value}</button>`).join('')}</div><p id="mask-validation-feedback" role="status"></p></div></div>`;}
 function prefixOctets(prefix){return Array.from({length:4},(_,i)=>parseInt(('1'.repeat(prefix)+'0'.repeat(32-prefix)).slice(i*8,i*8+8),2));}
 function validSubnetMask(value){return validIPv4(value)&&/^1*0*$/.test(value.split('.').map(n=>toByte(Number(n))).join(''));}
+function showMaskValidation(value,valid){
+ let seenZero=false,index=0;
+ const binary=value.split('.').map(octet=>[...toByte(Number(octet))].map(bit=>{
+  const misplaced=bit==='1'&&seenZero;if(bit==='0')seenZero=true;
+  return `<span class="mask-feedback-bit ${misplaced?'misplaced-one':bit==='0'?'mask-feedback-zero':'mask-feedback-one'}" data-bit-index="${index++}">${bit}</span>`;
+ }).join('')).join('<span class="mask-feedback-dot">.</span>');
+ $('#mask-validation-feedback').innerHTML=`<span class="mask-feedback-address">${value}</span><code class="mask-feedback-binary">${binary}</code><span class="mask-feedback-explanation">${valid?'Сначала единицы, потом нули — <strong>маска.</strong>':'После нуля снова единица — <strong>так нельзя.</strong>'}</span>`;
+}
 function paintExpanded(kind,values,force){
  const state=kind==='ip'?expandedIP:expandedMask;
  $('#slide').querySelectorAll(`[data-expand^="${kind}:"]`).forEach((button,i)=>{const open=force||state[i];button.classList.toggle('expanded',open);button.setAttribute('aria-expanded',String(open));button.querySelector('.octet-decimal').textContent=values[i];button.querySelectorAll('.address-bit').forEach((el,col)=>{const bit=toByte(values[i])[col];el.textContent=bit;el.dataset.bit=bit;});});
@@ -115,7 +123,7 @@ function sequenceClick(e){
  if(button.matches('.division-handle'))return true;
  if(button.matches('.replay-network-delivery')){startNetworkDelivery();return true;}
  if(button.dataset.expand){const [kind,index]=button.dataset.expand.split(':'),state=kind==='ip'?expandedIP:expandedMask;if((slides[current-1].type==='boundary-ip'&&step===0)||(slides[current-1].type==='boundary-mask'&&kind==='mask'&&step===0)){state[Number(index)]=!state[Number(index)];paintExpanded(kind,kind==='ip'?boundaryOctets:[255,240,0,0],false);}return true;}
- if(button.dataset.checkMask){const value=button.dataset.checkMask,valid=validSubnetMask(value);button.classList.toggle('is-valid',valid);button.classList.toggle('is-invalid',!valid);button.textContent=value+(valid?' ✓':' ×');button.setAttribute('aria-label',value+(valid?' — корректная маска':' — некорректная маска'));$('#mask-validation-feedback').textContent=valid?'Верно: подряд единицы, затем подряд нули.':`Не маска: ${value.split('.').map(n=>toByte(Number(n))).join('.')} — единица появилась после нуля.`;return true;}
+ if(button.dataset.checkMask){const value=button.dataset.checkMask,valid=validSubnetMask(value);button.classList.toggle('is-valid',valid);button.classList.toggle('is-invalid',!valid);button.textContent=value+(valid?' ✓':' ×');button.setAttribute('aria-label',value+(valid?' — корректная маска':' — некорректная маска'));showMaskValidation(value,valid);return true;}
  return false;
 }
 function sequenceKey(e){return Boolean(e.target.closest('.division-handle')&&['ArrowLeft','ArrowRight','ArrowUp','ArrowDown','Home','End','Enter',' '].includes(e.key));}
