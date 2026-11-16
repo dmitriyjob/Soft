@@ -393,8 +393,8 @@ W.hero = {
 };
 
 /* ================= соцсеть ================= */
-const SN = { Дмитрий: [120, 250, 'a1', 'Д'], Артём: [330, 90, 'a2', 'А'], Дима: [330, 410, 'a3', 'Д'], Артур: [540, 250, 'a4', 'А'] };
-const SE = [['Дмитрий', 'Артём'], ['Дмитрий', 'Дима'], ['Артём', 'Артур'], ['Дима', 'Артур']];
+const SN = { Дмитрий: [120, 250, 'a1', 'Д'], Артём: [330, 90, 'a2', 'А'], Ион: [330, 410, 'a3', 'И'], Артур: [540, 250, 'a4', 'А'] };
+const SE = [['Дмитрий', 'Артём'], ['Дмитрий', 'Ион'], ['Артём', 'Артур'], ['Ион', 'Артур']];
 const SCOL = { a1: '#1D1D1F', a2: '#2B6CB0', a3: '#2F855A', a4: '#B9521D' };
 W.social = {
   init(el) {
@@ -414,10 +414,10 @@ W.social = {
   leave() { this.T.stop(); },
   async step(el, s, o) {
     const k = this.T.next(), alive = () => this.T.alive(k), anim = animOf(o);
-    const vis = { Дмитрий: s >= 0, Артём: s >= 1, Дима: s >= 1, Артур: s >= 2 };
+    const vis = { Дмитрий: s >= 0, Артём: s >= 1, Ион: s >= 1, Артур: s >= 2 };
     for (const v in this.N) this.N[v].classList.toggle('off', !vis[v]);
-    this.E['ДмитрийАртём'].classList.toggle('off', s < 1); this.E['ДмитрийДима'].classList.toggle('off', s < 1);
-    this.E['АртёмАртур'].classList.toggle('off', s < 2); this.E['ДимаАртур'].classList.toggle('off', s < 2);
+    this.E['ДмитрийАртём'].classList.toggle('off', s < 1); this.E['ДмитрийИон'].classList.toggle('off', s < 1);
+    this.E['АртёмАртур'].classList.toggle('off', s < 2); this.E['ИонАртур'].classList.toggle('off', s < 2);
     Object.values(this.E).forEach(e => e.classList.remove('hl'));
     this.sug.classList.toggle('off', s < 3); this.q.style.opacity = s >= 3 ? 1 : 0;
     this.gX.innerHTML = '';
@@ -428,7 +428,7 @@ W.social = {
     if (s === 3) {
       Object.values(this.E).forEach(e => e.classList.add('hl'));
       if (anim) {
-        const dots = [['Дмитрий', 'Артём', 'Артур'], ['Дмитрий', 'Дима', 'Артур']];
+        const dots = [['Дмитрий', 'Артём', 'Артур'], ['Дмитрий', 'Ион', 'Артур']];
         for (let rep = 0; rep < 2 && alive(); rep++) {
           const ds = dots.map(() => S('circle', { r: 9, class: 'so-dot' }, this.gX));
           const t0 = performance.now(), T = 1400;
