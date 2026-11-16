@@ -8,7 +8,7 @@
       const start = card.querySelector('.part-start');
       const part = card.dataset.part;
       const saved = progress[part];
-      const valid = saved && Number.isInteger(saved.slide) && saved.slide >= 1 &&
+      const valid = saved && (part !== '2' || saved.layout === 'sound-original-v1') && Number.isInteger(saved.slide) && saved.slide >= 1 &&
         saved.slide <= Number(link.dataset.max) && Number.isInteger(saved.step) && saved.step >= 0;
       const action = valid ? 'Продолжить' : 'Смотреть';
       link.textContent = `${action} часть ${part}`;
