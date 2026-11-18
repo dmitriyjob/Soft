@@ -1,1 +1,443 @@
-<!doctype html><html lang="ru"><head><meta charset="utf-8"><meta name="viewport" content="width=device-width,initial-scale=1"><meta name="description" content="Задание 4 ЕГЭ: кодирование, условие Фано и пошаговое построение дерева кода."><meta name="theme-color" content="#F5F5F7"><title>Задание 4 · Кодирование и условие Фано</title><link rel="stylesheet" href="./style.css?v=9aac8ae59ac2"><link rel="stylesheet" href="./continuation.css?v=e692e74cd159"><script defer src="./continuation.js?v=c754dea9e315"></script><script defer src="./lesson.js?v=e752e57b1383"></script></head><body><button id="menu" class="menu-toggle" aria-label="Показать содержание" aria-expanded="false">☷</button><aside id="sidebar" hidden inert><div class="eyebrow">ЗАДАНИЕ ЕГЭ</div><div class="lesson-number">04 <span>Кодирование и условие Фано</span></div><div class="sidebar-label">СОДЕРЖАНИЕ УРОКА</div><nav id="outline" aria-label="Слайды урока"></nav><p class="sidebar-hint">← → &nbsp; Слайды и шаги</p></aside><main id="stage"><div id="slide-frame"><article id="slide" tabindex="-1" aria-label="Слайд урока"></article><footer class="slide-footer"><button id="prev" class="nav-btn" aria-label="Предыдущий шаг или слайд">←</button><button id="next" class="nav-btn next">Далее →</button></footer></div></main><div id="status" class="sr-only" aria-live="polite"></div></body></html>
+<!doctype html>
+<html lang="ru">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Ион · Задание 4 — условие Фано</title>
+<meta name="description" content="Интерактивный урок: задание 4 ЕГЭ по информатике. Неравномерное кодирование, условие Фано, дерево кода, минимальная длина и частоты букв.">
+<meta name="theme-color" content="#F5F5F7">
+<link rel="icon" href="data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 32 32'%3E%3Crect width='32' height='32' rx='8' fill='%23B9521D'/%3E%3Ctext x='16' y='23' text-anchor='middle' font-family='Arial' font-size='23' font-weight='700' fill='white'%3Ei%3C/text%3E%3C/svg%3E">
+<link rel="stylesheet" href="./styles.css?v=efc3f98612a9">
+<link rel="stylesheet" href="./fano.css?v=bca40ed4b18b">
+</head>
+<body data-home="../">
+<nav class="mobile-links" aria-label="Навигация урока"><a href="../">← Все уроки</a></nav>
+<div id="app">
+  <header class="top">
+    <div class="brand">ion<span>_</span>inf</div><a class="home" id="homeLink" href="../">← Все уроки</a>
+    <nav class="tabs" id="tabs"></nav>
+    <div class="tools">
+      <button id="bHelp" title="Горячие клавиши (?)"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8"><circle cx="12" cy="12" r="9.5"/><path d="M9.6 9.3a2.5 2.5 0 1 1 3.4 2.3c-.7.3-1 .8-1 1.5v.6M12 16.9v.1" stroke-linecap="round"/></svg></button>
+      <button id="bToc" title="Оглавление (G)"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8"><rect x="4" y="4" width="6.5" height="6.5" rx="1.5"/><rect x="13.5" y="4" width="6.5" height="6.5" rx="1.5"/><rect x="4" y="13.5" width="6.5" height="6.5" rx="1.5"/><rect x="13.5" y="13.5" width="6.5" height="6.5" rx="1.5"/></svg></button>
+      <button id="bFull" title="Полный экран (F)"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round"><path d="M4 9V4h5M20 9V4h-5M4 15v5h5M20 15v5h-5"/></svg></button>
+    </div>
+  </header>
+
+  <main id="deck">
+
+  <!-- ============ 01 · КОДИРОВАНИЕ ============ -->
+  <section class="slide title-slide" data-sec="1" data-id="title" data-title="Что будет сегодня?">
+    <div class="row" style="align-items:center;height:100%;gap:80px">
+      <div class="col" style="flex:1.2">
+        <div class="tbadge"><b>№4</b><span>ЕГЭ по информатике</span></div>
+        <h1>Кодирование:<br>условие <em>Фано</em></h1>
+        <div class="kbhint"><span><kbd>→</kbd>листать</span><span><kbd>N</kbd>пояснения</span><span><kbd>?</kbd>все клавиши</span></div>
+      </div>
+      <div class="col">
+        <ol class="olist big-ol stagger">
+          <li><i>01</i><b>Что такое кодирование</b></li>
+          <li><i>02</i><b>Условие Фано</b></li>
+          <li><i>03</i><b>Дерево кода</b></li>
+          <li><i>04</i><b>Минимальная длина</b></li>
+          <li><i>05</i><b>Слово и частоты букв</b></li>
+        </ol>
+      </div>
+    </div>
+  </section>
+
+  <section class="slide" data-sec="1" data-id="cipher" data-title="Кодирование ≠ шифрование" data-steps="2">
+    <div class="eyebrow">Не путаем</div>
+    <h1>Кодирование <em>≠</em> шифрование</h1>
+    <div class="vs">
+      <div class="vs-c" data-s="1">
+        <div class="vs-ic"><svg viewBox="0 0 48 48" fill="none" stroke="currentColor" stroke-width="3" stroke-linecap="round" stroke-linejoin="round"><rect x="10" y="21" width="28" height="20" rx="4"/><path d="M16 21v-6a8 8 0 0 1 16 0v6"/><path d="M24 29v5"/></svg></div>
+        <h2>Шифрование</h2>
+        <p>Способ <b>скрыть</b> информацию, чтобы её прочитал только тот, кому она предназначена.</p>
+        <div class="vs-ex"><span class="mono">ПРИВЕТ</span><i>→</i><span class="mono">ТУЛЕИХ</span></div>
+      </div>
+      <div class="vs-c hot" data-s="2">
+        <div class="vs-ic"><svg viewBox="0 0 48 48" fill="none" stroke="currentColor" stroke-width="3" stroke-linecap="round"><path d="M12 12v24M20 12h6a5 5 0 0 1 5 5v14a5 5 0 0 1-5 5h-6zM38 12v24"/></svg></div>
+        <h2>Кодирование</h2>
+        <p>Представление информации <b>в виде кода</b>. Ничего не прячем — просто переводим в нули и единицы.</p>
+        <div class="vs-ex"><span class="mono">Б</span><i>→</i><span class="mono">10</span></div>
+      </div>
+    </div>
+    <div class="note" data-s="2" style="margin-top:34px;font-size:22px;max-width:1100px">Компьютер умеет хранить и обрабатывать <b>только 0 и 1</b>. Картинки, звук и текст он видит как код.</div>
+    <div class="asks"><div class="ask"><button><i>?</i>Зачем вообще кодировать?</button><div class="ans">Технически компьютер умеет только записывать, двигать и переставлять <b>нули и единицы</b>. Чтобы он хранил изображение, аудио или текст, люди придумали, как превратить их в код.</div></div></div>
+  </section>
+
+  <section class="slide" data-sec="1" data-id="stages" data-title="Два этапа кодирования" data-steps="3">
+    <div class="eyebrow">Как это работает</div>
+    <h1>Два этапа кодирования</h1>
+    <div class="stg">
+      <div class="stg-c" data-s="1">
+        <div class="stg-n">1</div>
+        <h2>Дискретизация</h2>
+        <p>Делим целое на простые элементы, из которых оно состоит.</p>
+        <div class="stg-ex">
+          <div class="stg-row"><div class="pix" id="pix"></div><i>→</i><span>изображение — это набор <b>пикселей</b></span></div>
+          <div class="stg-row" data-s="2"><div class="stg-word"><span>Б</span><span>А</span><span>О</span><span>Б</span><span>А</span><span>Б</span></div><i>→</i><span>текст — это набор <b>символов</b>: буквы, пробел, знаки препинания</span></div>
+        </div>
+      </div>
+      <div class="stg-arrow" data-s="3">→</div>
+      <div class="stg-c hot" data-s="3">
+        <div class="stg-n">2</div>
+        <h2>Кодирование</h2>
+        <p>Каждому элементу даём свой код из 0 и 1.</p>
+        <div class="stg-ex">
+          <div class="stg-code"><span class="px-sw"></span><i>→</i><b class="mono">1101</b></div>
+          <div class="stg-code"><span class="stg-ch">Б</span><i>→</i><b class="mono">10</b></div>
+        </div>
+      </div>
+    </div>
+    <div class="asks"><div class="ask"><button><i>?</i>Пробел — тоже символ?</button><div class="ans">Да. Пробел, перенос строки, точка и запятая кодируются вместе с буквами. Поэтому говорим не «буквы», а <b>символы</b>.</div></div></div>
+  </section>
+
+  <section class="slide" data-sec="1" data-id="encode" data-title="Кодируем «БАОБАБ»" data-steps="4" data-w="encode">
+    <div class="eyebrow">Неравномерный код</div>
+    <h1 id="encHead">Кодируем <em>БАОБАБ</em></h1>
+    <div class="enc">
+      <div class="ctab" id="encTab"></div>
+      <div class="enc-main">
+        <div class="enc-cols" id="encCols"></div>
+        <div class="enc-mem" data-s="3"><div class="enc-lab">так слово лежит в памяти</div><div class="bits" id="encBits"></div></div>
+      </div>
+    </div>
+    <div class="defcard" data-s="4"><b>Неравномерный код</b> — коды символов разной длины: у Б два знака, у А три.</div>
+    <div class="asks"><div class="ask"><button><i>?</i>А равномерный — это как?</button><div class="ans">Когда у <b>всех</b> символов коды одной длины, например ровно по 5 знаков. Сегодня разбираем неравномерный: длины кодируем «как хотим».</div></div></div>
+  </section>
+
+  <section class="slide" data-sec="1" data-id="decode" data-title="Декодируем слева направо" data-steps="2" data-w="decode" data-dec="0">
+    <div class="eyebrow">Обратно в текст</div>
+    <h1>Декодируем <em>слева направо</em></h1>
+    <div class="dec">
+      <div class="ctab" id="dec0Tab"></div>
+      <div class="dec-main">
+        <div class="reader" id="dec0Read"></div>
+        <div class="bitwrap"><div class="prow up" id="dec0Up"></div><div class="bits" id="dec0Bits"></div><div class="prow dn" id="dec0Dn"></div></div>
+        <div class="dec-out" id="dec0Out"></div>
+      </div>
+    </div>
+    <div class="defcard" data-s="2">В памяти — <b>нули и единицы</b>. По таблице кодов компьютер переводит их обратно в текст.</div>
+    <div class="asks"><div class="ask"><button><i>?</i>Как понять, где кончается буква?</button><div class="ans">Читаем по одному знаку и после каждого смотрим в таблицу: «1» — нет, «10» — есть, это Б. Начинаем заново со следующего знака.</div></div></div>
+  </section>
+
+  <!-- ============ 02 · УСЛОВИЕ ФАНО ============ -->
+  <section class="slide" data-sec="2" data-id="ambig" data-title="Добавим букву Т = 01" data-steps="3" data-w="decode" data-dec="1">
+    <div class="eyebrow">Проблема неравномерного кода</div>
+    <h1 id="dec1Head">Добавим букву <em>Т = 01</em></h1>
+    <div class="dec">
+      <div class="ctab" id="dec1Tab"></div>
+      <div class="dec-main">
+        <div class="reader" id="dec1Read"></div>
+        <div class="bitwrap"><div class="prow up" id="dec1Up"></div><div class="bits" id="dec1Bits"></div><div class="prow dn" id="dec1Dn"></div></div>
+        <div class="dec-out" id="dec1Out"></div>
+      </div>
+    </div>
+    <div class="defcard" data-s="3"><b>Неоднозначность</b> — один и тот же код читается двумя способами. Так быть не должно.</div>
+    <div class="asks"><div class="ask"><button><i>?</i>Чем это опасно?</button><div class="ans">Отправили «<b>не</b> открывать», а получатель прочитал «открывать». Сообщение должно расшифровываться <b>только одним</b> способом.</div></div></div>
+  </section>
+
+  <section class="slide" data-sec="2" data-id="why" data-title="Почему код сломался" data-steps="3">
+    <div class="eyebrow">Ищем причину</div>
+    <h1>Почему код <em>сломался</em>?</h1>
+    <div class="why">
+      <div class="why-l">
+        <div class="pfx"><b>Т</b><span class="mono"><u>01</u></span></div>
+        <div class="pfx"><b>А</b><span class="mono"><u>01</u>0</span></div>
+        <div class="why-t" data-s="1">Код Т — это <b>начало</b> кода А. Каждый раз, когда пишем А, сначала получается Т, а потом ещё 0.</div>
+      </div>
+      <div class="fano" data-s="2">
+        <div class="eyebrow" style="color:var(--accent)">Условие Фано</div>
+        <p>Ни одно кодовое слово не должно быть <b>началом</b> другого кодового слова.</p>
+        <small>Роберт Фано — американский учёный, один из создателей теории информации. Если условие выполнено, любое сообщение расшифровывается однозначно.</small>
+      </div>
+    </div>
+    <div class="fixes" data-s="3">
+      <div class="fx ok"><span class="mono">Т = 11</span><span>не начало ни Б, ни А, ни О — подходит</span></div>
+      <div class="fx no"><span class="mono">110</span><span>для следующей буквы уже нельзя — начинается с 11, а это Т</span></div>
+    </div>
+    <div class="asks"><div class="ask"><button><i>?</i>А если нужно 33 буквы?</button><div class="ans">Наугад подбирать долго, и легко сделать код <b>длиннее</b>, чем нужно, — он займёт лишнее место. Поэтому есть алгоритм — <b>дерево кода</b>.</div></div></div>
+  </section>
+
+  <section class="slide" data-sec="2" data-id="check" data-title="Проверь код сам" data-steps="0" data-w="check">
+    <div class="row" style="align-items:flex-end;gap:24px">
+      <div class="col"><div class="eyebrow">Тренажёр</div><h1 style="margin-bottom:0">Проверь код на Фано</h1></div>
+      <div class="seg" id="fcPre"><button data-p="lesson" class="on">Как на уроке</button><button data-p="fix">Т = 11</button><button data-p="mine">Свой код</button></div>
+    </div>
+    <div class="fc">
+      <div class="fc-l">
+        <div class="fc-rows" id="fcRows"></div>
+        <div class="fc-msg" id="fcMsg" role="status" aria-live="polite"></div>
+        <div class="fc-word" id="fcWord"></div>
+      </div>
+      <div class="treebox ctb sm fc-tree" id="fcTree"></div>
+    </div>
+  </section>
+
+  <section class="slide" data-sec="2" data-id="goal" data-title="Каким должен быть код" data-steps="3">
+    <div class="eyebrow">Задача</div>
+    <h1>Каким должен быть код</h1>
+    <div class="goals">
+      <div class="goal" data-s="1"><i>1</i><b>Условие Фано</b><span>никакой код не начало другого — читается однозначно</span><div class="goal-ex"><span class="mono ok">0 · 10 · 110</span><span class="mono no">01 · 010</span></div></div>
+      <div class="goal" data-s="2"><i>2</i><b>Минимальная длина</b><span>не длиннее, чем нужно, — без лишнего места</span><div class="goal-ex col"><div class="br"><span class="bars"><i style="width:78%"></i></span><b>25 знаков</b></div><div class="br bad"><span class="bars bad"><i style="width:84%"></i></span><b>27 — лишнее</b></div></div></div>
+      <div class="goal" data-s="3"><i>3</i><b>Хватает на все буквы</b><span>нужно 4 буквы — место есть для всех четырёх</span><div class="goal-ex"><span class="lt">А</span><span class="lt">Б</span><span class="lt">В</span><span class="lt">Г</span><span class="ok">✓</span></div></div>
+    </div>
+    <div class="defcard" data-s="3">Всё это сразу даёт простой алгоритм — <b>дерево кода</b>.</div>
+  </section>
+
+  <!-- ============ 03 · ДЕРЕВО ============ -->
+  <section class="slide" data-sec="3" data-id="kim1" data-title="Задание как на ЕГЭ" data-steps="3" data-w="kim">
+    <div class="kimv"><div class="kimp">
+      <div class="kim-hd"><span>ЕГЭ · ИНФОРМАТИКА, 11 класс</span><span>№ 23363 · резервный день 19.06.25</span></div>
+      <div class="kim-task"><div class="kim-n">4</div><div class="kim-body">
+        <div class="kz kz-a"><p>По каналу связи передаются сообщения, содержащие только <span class="kmark">четыре буквы: А, Б, В, Г</span>. Для передачи используется двоичный код, <span class="kmark">удовлетворяющий условию Фано</span>.</p></div>
+        <div class="kz kz-b"><p>Для букв А, Б, В используются такие кодовые слова: <span class="kmark">А – 0; Б – 1100; В – 1000</span>.</p></div>
+        <div class="kz kz-c"><p>Укажите <span class="kmark">кратчайшее кодовое слово для буквы Г</span>, при котором код допускает однозначное декодирование. Если таких слов несколько, укажите код <span class="kmark">с наибольшим числовым значением</span>.</p></div>
+        <p class="kim-note"><i>Примечание.</i> Условие Фано означает, что никакое кодовое слово не является началом другого кодового слова. Это обеспечивает возможность однозначной расшифровки закодированных сообщений.</p>
+        <p class="kans">Ответ: <i></i></p>
+      </div></div>
+    </div></div>
+    <div class="asks"><div class="ask"><button><i>?</i>Это сложное задание?</button><div class="ans">Это базовый уровень, номер с резерва 2025 года. На экзамене может быть сложнее, но алгоритм тот же — <b>дерево</b>.</div></div></div>
+  </section>
+
+  <section class="slide" data-sec="3" data-id="rules" data-title="Как строить дерево" data-steps="4">
+    <div class="eyebrow">Алгоритм</div>
+    <h1>Как строить дерево</h1>
+    <div class="rules">
+      <div class="rule" data-s="1"><i>1</i><div class="rc"><code>старт: 0 и 1</code><span>Дерево всегда начинается с двух веток — нолика и единички.</span></div><div class="rx"><span class="cn-mini">0</span><span class="cn-mini">1</span></div></div>
+      <div class="rule" data-s="2"><i>2</i><div class="rc"><code>влево +0 · вправо +1</code><span>Идём влево — дописываем в конец 0, вправо — дописываем 1.</span></div><div class="rx"><span class="cn-mini">10</span><span class="rx-a">→</span><span class="cn-mini">100</span><span class="cn-mini">101</span></div></div>
+      <div class="rule" data-s="3"><i>3</i><div class="rc"><code>сразу обе ветки</code><span>Раскрыл узел — рисуй обоих детей: и влево, и вправо.</span></div><div class="rx"><span class="cn-mini">11</span><span class="rx-a">→</span><span class="cn-mini">110</span><span class="cn-mini">111</span></div></div>
+      <div class="rule" data-s="4"><i>4</i><div class="rc"><code>нашёл код — подпиши</code><span>Нашёл данное кодовое слово — подчеркни, подпиши букву, а в условии зачеркни.</span></div><div class="rx"><span class="cn-mini let">1000<em>В</em></span></div></div>
+    </div>
+    <div class="asks"><div class="ask"><button><i>?</i>Зачем зачёркивать?</button><div class="ans">Чтобы не потерять букву. Если не зачёркивать, рано или поздно по невнимательности ошибёшься — и потеряешь балл.</div></div></div>
+  </section>
+
+  <section class="slide" data-sec="3" data-id="tree1" data-title="Строим дерево" data-steps="4" data-w="ctree" data-tree="t1">
+    <div class="eyebrow">№ 23363 · А = 0, Б = 1100, В = 1000</div>
+    <h1 class="th"></h1>
+    <div class="tlay"><div class="tside"><div class="given"></div><div class="tnote"></div></div><div class="treebox ctb"></div></div>
+  </section>
+
+  <section class="slide" data-sec="3" data-id="where" data-title="Куда поставить Г" data-steps="5" data-w="ctree" data-tree="w1">
+    <div class="eyebrow">№ 23363 · ищем код для Г</div>
+    <h1 class="th"></h1>
+    <div class="tlay"><div class="tside"><div class="given"></div><div class="tnote"></div></div><div class="treebox ctb"></div></div>
+    <div class="asks"><div class="ask"><button><i>?</i>Б = 1100 начинается с 11. Г = 111 — нарушение?</button><div class="ans">Нет. Условие — про кодовое слово <b>целиком</b>: 111 не начало 1100, и 1100 не начало 111. Проблема была бы, если бы Г = <b>11</b> — тогда 11 было бы началом 1100.</div></div></div>
+  </section>
+
+  <section class="slide" data-sec="3" data-id="kim3" data-title="Ловушка: весь алфавит" data-steps="2" data-w="kim">
+    <div class="kimv"><div class="kimp">
+      <div class="kim-hd"><span>ЕГЭ · ИНФОРМАТИКА, 11 класс</span><span>Задача № 238</span></div>
+      <div class="kim-task"><div class="kim-n">4</div><div class="kim-body">
+        <div class="kz kz-a"><p><span class="kmark">Все заглавные буквы русского алфавита</span> закодированы неравномерным двоичным кодом, в котором никакое кодовое слово не является началом другого кодового слова. Это условие обеспечивает возможность однозначной расшифровки закодированных сообщений. Кодовые слова для некоторых букв известны: <span class="kmark">А – 00, Б – 01, В – 110, Г – 101, Д – 100</span>.</p></div>
+        <div class="kz kz-b"><p>Укажите возможный <span class="kmark">код минимальной длины для буквы Я</span>. Если таких кодов несколько, укажите тот из них, который имеет <span class="kmark">максимальное числовое значение</span>.</p></div>
+        <p class="kans">Ответ: <i></i></p>
+      </div></div>
+    </div></div>
+    <div class="asks"><div class="ask"><button><i>?</i>Где тут подвох?</button><div class="ans">В первых словах: «<b>все</b> буквы русского алфавита». Их 33 — и для каждой должно найтись место в дереве.</div></div></div>
+  </section>
+
+  <section class="slide" data-sec="3" data-id="tree3" data-title="Оставляем пустую ветку" data-steps="4" data-w="ctree" data-tree="t3">
+    <div class="eyebrow">№ 238 · все 33 буквы</div>
+    <h1 class="th"></h1>
+    <div class="tlay"><div class="tside"><div class="given"></div><div class="tnote"></div></div><div class="treebox ctb"></div></div>
+    <div class="asks"><div class="ask"><button><i>?</i>А если букв всего шесть?</button><div class="ans">Тогда запас не нужен: Я = <b>111</b>. Всегда считай, <b>сколько букв</b> нужно закодировать и сколько уже есть.</div></div></div>
+  </section>
+
+  <!-- ============ 04 · СУММА ДЛИН ============ -->
+  <section class="slide" data-sec="4" data-id="kim2" data-title="Минимальная общая длина" data-steps="2" data-w="kim">
+    <div class="kimv"><div class="kimp">
+      <div class="kim-hd"><span>ЕГЭ · ИНФОРМАТИКА, 11 класс</span><span>Задача № 110</span></div>
+      <div class="kim-task"><div class="kim-n">4</div><div class="kim-body">
+        <div class="kz kz-a"><p>По каналу связи передаются сообщения, содержащие только <span class="kmark">семь букв: А, Б, В, Г, Д, Е и Ж</span>. Для передачи используется двоичный код, удовлетворяющий условию Фано. Для буквы А используется кодовое слово <span class="kmark">1</span>; для буквы Б используется кодовое слово <span class="kmark">01</span>.</p></div>
+        <div class="kz kz-b"><p>Какова <span class="kmark">минимальная общая длина</span> кодовых слов <span class="kmark">для всех семи букв</span>?</p></div>
+        <p class="kans">Ответ: <i></i></p>
+      </div></div>
+    </div></div>
+    <div class="asks"><div class="ask"><button><i>?</i>Что тут нового?</button><div class="ans">Кодируем не одну букву, а <b>сразу пять</b>. И от того, как раскроем дерево, зависит итоговая длина.</div></div></div>
+  </section>
+
+  <section class="slide" data-sec="4" data-id="sum" data-title="Лесенка или ровно" data-steps="3" data-w="sum">
+    <div class="eyebrow">№ 110 · А = 1, Б = 01, ещё пять букв</div>
+    <h1>Два дерева — <em>две суммы</em></h1>
+    <div class="duo">
+      <div class="duo-c" data-s="1"><div class="duo-h"><b>Лесенкой</b><span class="duo-s bad" id="sumAs">27</span></div><div class="treebox ctb sm" id="sumA"></div><div class="lens" id="lenA"></div></div>
+      <div class="duo-c" data-s="2"><div class="duo-h"><b>Ровно</b><span class="duo-s good" id="sumBs">25</span></div><div class="treebox ctb sm" id="sumB"></div><div class="lens" id="lenB"></div></div>
+    </div>
+    <div class="defcard" data-s="3">Длины должны быть <b>примерно одинаковыми</b>: 4 4 4 5 5 — короче, чем 3 4 5 6 6.</div>
+    <div class="asks"><div class="ask"><button><i>?</i>Как быстро проверить себя?</button><div class="ans">Посмотри на длины. Если они «в разброс» — 3, 4, 5, 6, 6 — почти наверняка можно короче. Хорошо, когда они рядом: 2 2 3 3, 3 3 3, 4 4 5.</div></div></div>
+  </section>
+
+  <section class="slide" data-sec="4" data-id="build" data-title="Собери дерево сам" data-steps="0" data-w="build">
+    <div class="row" style="align-items:flex-end;gap:24px">
+      <div class="col"><div class="eyebrow">Тренажёр</div><h1 style="margin-bottom:0">Собери дерево сам</h1></div>
+      <div class="seg" id="bdPre"><button data-p="seven" class="on">№ 110 · семь букв</button><button data-p="word">ТАРАНТАС</button></div>
+    </div>
+    <div class="bd">
+      <div class="treebox ctb bd-tree" id="bdTree"></div>
+      <div class="bd-side">
+        <p class="bd-hint">Нажми на <b>свободную</b> ветку — она разделится на две. Нажми на раскрытую — свернётся.</p>
+        <div class="bd-list" id="bdList"></div>
+        <div class="bd-sum"><small id="bdSumL">сумма длин</small><b id="bdSum">—</b><span id="bdBest"></span></div>
+        <div class="bd-msg" id="bdMsg" role="status" aria-live="polite"></div>
+        <button class="btn" id="bdReset">Сбросить</button>
+      </div>
+    </div>
+  </section>
+
+  <!-- ============ 05 · СЛОВО И ЧАСТОТЫ ============ -->
+  <section class="slide" data-sec="5" data-id="morse" data-title="Азбука Морзе" data-steps="3" data-w="morse">
+    <div class="eyebrow">Зачем неравномерный код</div>
+    <h1 id="mrHead">Азбука <em>Морзе</em></h1>
+    <div class="row" style="gap:40px;align-items:flex-start">
+      <div class="morse" id="morse"></div>
+      <div class="mr-side">
+        <div class="mr-it" data-s="1"><b>1 знак</b><span><span class="mono">E</span> и <span class="mono">T</span> — самые частые буквы в английских текстах</span></div>
+        <div class="mr-it" data-s="2"><b>2 знака</b><span><span class="mono">A I M N</span> — A, I и N тоже среди самых частых букв</span></div>
+        <div class="mr-it" data-s="3"><b>5 знаков</b><span>цифры встречаются редко — им не жалко длинного кода</span></div>
+      </div>
+    </div>
+    <div class="defcard" data-s="3">Чем <b>чаще</b> символ встречается, тем <b>короче</b> его код. В этом и смысл неравномерного кодирования.</div>
+  </section>
+
+  <section class="slide" data-sec="5" data-id="kim4" data-title="Кодируем целое слово" data-steps="3" data-w="kim">
+    <div class="kimv"><div class="kimp">
+      <div class="kim-hd"><span>ЕГЭ · ИНФОРМАТИКА, 11 класс</span><span>№ 28925 · ЕГКР 18.04.26</span></div>
+      <div class="kim-task"><div class="kim-n">4</div><div class="kim-body">
+        <div class="kz kz-a"><p>По каналу связи передаются сообщения, содержащие только буквы из набора: <span class="kmark">А, Н, Р, С, Т, Я</span>. Для передачи используется двоичный код, удовлетворяющий условию Фано. Кодовые слова для некоторых букв известны: <span class="kmark">С – 00, Р – 010, Н – 11</span>.</p></div>
+        <div class="kz kz-b"><p>Для оставшихся букв <span class="kmark">А, Т и Я</span> кодовые слова неизвестны.</p></div>
+        <div class="kz kz-c"><p>Какое количество двоичных знаков требуется для кодирования <span class="kmark">слова ТАРАНТАС</span>, если известно, что оно закодировано <span class="kmark">минимально возможным</span> количеством двоичных знаков?</p></div>
+        <p class="kim-note"><i>Примечание.</i> Условие Фано означает, что никакое кодовое слово не является началом другого кодового слова. Это обеспечивает возможность однозначной расшифровки закодированных сообщений.</p>
+        <p class="kans">Ответ: <i></i></p>
+      </div></div>
+    </div></div>
+    <div class="asks"><div class="ask"><button><i>?</i>Это сложный тип?</button><div class="ans">Да, считается самым сложным: кодируем <b>целое слово</b>. Такой номер был на последнем ЕГЭ — скорее всего, будет и у вас.</div></div></div>
+  </section>
+
+  <section class="slide" data-sec="5" data-id="count" data-title="Считаем буквы в слове" data-steps="2" data-w="count">
+    <div class="eyebrow">№ 28925 · сначала частоты</div>
+    <h1>Сколько раз встречается <em>каждая буква</em>?</h1>
+    <div class="wtiles" id="cntWord"></div>
+    <div class="cnts" id="cntList"></div>
+    <div class="defcard" data-s="2">Буквы встречаются <b>разное</b> число раз — значит, не «ровно», а самой частой — <b>самый короткий</b> код.</div>
+    <div class="asks"><div class="ask"><button><i>?</i>Зачем тут Я, если её нет в слове?</button><div class="ans">Она есть в наборе букв — значит, ей тоже нужен код, иначе условие нарушено. Это главная ловушка задачи — смотри следующий слайд.</div></div></div>
+  </section>
+
+  <section class="slide" data-sec="5" data-id="tree4" data-title="Дерево для ТАРАНТАС" data-steps="4" data-w="ctree" data-tree="t4">
+    <div class="eyebrow">№ 28925 · С = 00, Р = 010, Н = 11</div>
+    <h1 class="th"></h1>
+    <div class="tlay"><div class="tside"><div class="given"></div><div class="tnote"></div></div><div class="treebox ctb"></div></div>
+    <div class="asks"><div class="ask"><button><i>?</i>Можно поменять местами данные коды?</button><div class="ans">Нет. Коды С, Р и Н даны в условии — их не трогаем. Подбираем только А, Т и Я.</div></div></div>
+  </section>
+
+  <section class="slide" data-sec="5" data-id="cost" data-title="Длина слова" data-steps="2" data-w="cost">
+    <div class="eyebrow">№ 28925 · считаем знаки</div>
+    <h1>ТАРАНТАС — <em id="costH">сколько знаков?</em></h1>
+    <table class="mtab cost" id="costTab">
+      <tr><th>буква</th><th>код</th><th>длина</th><th>раз в слове</th><th>знаков</th></tr>
+      <tr><td><b>Т</b></td><td class="mono">0111</td><td>4</td><td data-s="1">× 2</td><td data-s="1"><b>8</b></td></tr>
+      <tr><td><b>А</b></td><td class="mono">10</td><td>2</td><td data-s="1">× 3</td><td data-s="1"><b>6</b></td></tr>
+      <tr><td><b>Р</b></td><td class="mono">010</td><td>3</td><td data-s="1">× 1</td><td data-s="1"><b>3</b></td></tr>
+      <tr><td><b>Н</b></td><td class="mono">11</td><td>2</td><td data-s="1">× 1</td><td data-s="1"><b>2</b></td></tr>
+      <tr><td><b>С</b></td><td class="mono">00</td><td>2</td><td data-s="1">× 1</td><td data-s="1"><b>2</b></td></tr>
+      <tr class="dimrow"><td><b>Я</b></td><td class="mono">0110</td><td>4</td><td data-s="1">× 0</td><td data-s="1"><b>0</b></td></tr>
+    </table>
+    <div class="cost-ans" data-s="2"><small>Ответ</small><b id="costN">21</b></div>
+    <div class="asks"><div class="ask"><button><i>?</i>А если раскрыть 10, а не 011?</button><div class="ans">А = 100, Т = 101, Я = 011: 3·3 + 3·2 + 3 + 2 + 2 = <b>22</b>. Длиннее: частой А выгоднее короткий код 10.</div></div></div>
+  </section>
+
+  <!-- ============ 06 · ПРОВЕРЬ СЕБЯ ============ -->
+  <section class="slide" data-sec="6" data-id="quiz" data-title="Проверь себя" data-steps="6" data-w="quiz" data-btn="Следующий вопрос">
+    <div style="display:flex;align-items:center;justify-content:space-between">
+      <div class="eyebrow" id="qzNum">Вопрос 1 из 6</div>
+      <div class="dots" id="qzDots"></div>
+    </div>
+    <div id="qzBox"></div>
+  </section>
+
+  <section class="slide" data-sec="6" data-id="cheat" data-title="Шпаргалка" data-steps="0" data-w="cheat">
+    <h1>Шпаргалка №4</h1>
+    <div class="csg">
+      <div class="csc"><h3>Условие Фано</h3><p>Ни одно кодовое слово не начало другого. В дереве буквы стоят только в <b>концах веток</b>.</p></div>
+      <div class="csc"><h3>Дерево</h3><p>Старт — 0 и 1. Влево <b>+0</b>, вправо <b>+1</b>, сразу обе ветки. Нашёл код — подпиши букву, в условии зачеркни.</p></div>
+      <div class="csc"><h3>Куда можно</h3><p>Не выше и не ниже букв — только <b>свободные</b> ветки рядом.</p></div>
+      <div class="csc"><h3>Кратчайший код</h3><p>Самая верхняя свободная ветка. Несколько — бери <b>наибольшее</b> число: 111 &gt; 101.</p></div>
+      <div class="csc"><h3>Сумма длин</h3><p>Длины — <b>ровные</b>: 4 4 4 5 5, а не лесенка 3 4 5 6 6. Целое слово — частым буквам короткие коды.</p></div>
+      <div class="csc hot"><h3>Считай буквы</h3><p>Место должно быть для <b>всех</b>. «Весь алфавит» — оставь одну <b>пустую ветку</b>.</p></div>
+    </div>
+    <div class="cs-tree"><div class="cs-leg"><span class="lg-l">буква</span><span class="lg-x">выше и ниже букв — нельзя</span><span class="lg-f">свободно — можно</span><span class="lg-p">ответ</span></div><div class="treebox ctb sm" id="csTree"></div></div>
+  </section>
+
+  <section class="slide" data-sec="6" data-id="algo" data-title="Алгоритм на экзамене" data-steps="6">
+    <div class="row" style="gap:80px;height:100%">
+      <div class="col" style="flex:1.25">
+        <div class="eyebrow">На экзамене</div>
+        <h1>Алгоритм решения</h1>
+        <ul class="check">
+          <li data-s="1"><i>1</i>Выпиши данные коды и все буквы, которые нужно закодировать.</li>
+          <li data-s="2"><i>2</i>Построй дерево до данных кодов: подпиши буквы, в условии зачеркни.</li>
+          <li data-s="3"><i>3</i>Найди свободные ветки — не выше и не ниже букв.</li>
+          <li data-s="4"><i>4</i>Посчитай буквы: всем хватит места? Весь алфавит — оставь пустую ветку.</li>
+          <li data-s="5"><i>5</i>Раздай коды: кратчайший, длины ровно, частым буквам — короче.</li>
+          <li data-s="6"><i>6</i>Что просят: код, его длину или сумму? Несколько вариантов — наибольшее число.</li>
+        </ul>
+      </div>
+      <div class="col" style="flex:.75;display:flex;flex-direction:column;justify-content:center;align-items:flex-start">
+        <div class="tbadge xl"><b>№4</b></div>
+        <h2 style="font-size:44px;margin-top:26px">Вопросы?</h2>
+        <p class="lead">Дальше — модули 1–3 и домашка по №4.</p>
+      </div>
+    </div>
+  </section>
+
+  </main>
+
+  <div class="hnd t" id="hTop"><i></i><span>разделы урока</span></div>
+  <div class="hnd b" id="hBot"><span>навигация</span><i></i></div>
+  <div class="pline"><i id="pBar"></i></div>
+
+  <footer class="bot">
+    <div class="where"><b id="fSec">01 / Кодирование</b><br><span id="fNext">Дальше: …</span></div>
+    <div class="prog"><div class="bar"><i id="fBar"></i></div><span id="fCnt">01 / 26</span></div>
+    <div class="navb"><button class="btn sq" id="bPrev" title="Назад (←)"><svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round"><path d="M15 5l-7 7 7 7"/></svg></button><button class="btn pri" id="bNext">Дальше</button></div>
+  </footer>
+
+  <canvas id="ink" width="1600" height="900"></canvas>
+  <div id="spot"></div>
+  <div id="blank">Экран скрыт · нажми B</div>
+  <div class="toast" id="toast"></div>
+
+  <div class="ov" id="ovToc"><div class="panel"><button class="x" data-close>✕</button><h2 style="font-size:34px;margin-bottom:6px">План занятия</h2><div class="toc" id="tocList"></div></div></div>
+  <div class="ov" id="ovHelp"><div class="panel" style="width:1020px"><button class="x" data-close>✕</button><h2 style="font-size:34px;margin-bottom:18px">Управление</h2>
+    <div class="keys">
+      <div><kbd>→</kbd><kbd>Пробел</kbd> следующий шаг / экран</div>
+      <div><kbd>←</kbd> назад</div>
+      <div><kbd>N</kbd> пояснение к слайду</div>
+      <div><kbd>Q</kbd> вопрос на слайде</div>
+      <div><kbd>G</kbd> оглавление</div>
+      <div><kbd>F</kbd> полный экран</div>
+      <div><kbd>L</kbd> лазерная указка</div>
+      <div><kbd>D</kbd> рисовать поверх слайда</div>
+      <div><kbd>C</kbd> стереть рисунок</div>
+      <div><kbd>S</kbd> прожектор</div>
+      <div><kbd>B</kbd> скрыть экран</div>
+      <div><kbd>R</kbd> заново этот слайд</div>
+      <div><kbd>Home</kbd><kbd>End</kbd> в начало / в конец</div>
+      <div><kbd>Esc</kbd> закрыть окно / инструмент</div>
+    </div>
+    <p class="small" style="margin-top:18px">Панели спрятаны: наведи на верхний край — разделы урока, на нижний — навигация. Можно листать колесом мыши или свайпом. Номер слайда сохраняется в адресе.</p>
+  </div></div>
+</div>
+
+<button class="ntab" id="nTab" title="Пояснение к слайду (N)"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round"><path d="M5 6h14M5 11h14M5 16h9"/></svg><span>Пояснение</span></button>
+<aside class="notes" id="notes" aria-label="Пояснение к слайду">
+  <div class="nhd"><div><small id="nSec"></small><b id="nTitle"></b></div><button class="nx" id="nClose" title="Закрыть (N)">✕</button></div>
+  <div class="nbody" id="nBody"></div>
+  <div class="nft"><button id="nPrev" title="Назад">←</button><span id="nCnt"></span><button id="nNext" title="Дальше">→</button><span class="nk"><kbd>N</kbd> закрыть</span></div>
+</aside>
+<div id="laser"></div>
+<script src="./notes.js?v=019e8ef70c02"></script>
+<script src="./app.js?v=a1a4d25780d0"></script>
+</body>
+</html>

@@ -1,14 +1,34 @@
-/* Continuation adapted from ion_inf lesson 4. */
+/* ion_inf · Задание 4 — движок презентации и интерактивные виджеты */
 (() => {
 'use strict';
-let active = null, previous = -1;
-const $ = (s, r = active) => r.querySelector(s);
-const $$ = (s, r = active) => [...r.querySelectorAll(s)];
-const app = document.getElementById('slide-frame');
+const $ = (s, r = document) => r.querySelector(s);
+const $$ = (s, r = document) => [...r.querySelectorAll(s)];
+const app = $('#app'), deck = $('#deck');
+const slides = $$('.slide', deck);
+const N = slides.length;
+const SECTIONS = { 1: 'Кодирование', 2: 'Условие Фано', 3: 'Дерево кода', 4: 'Сумма длин', 5: 'Слово и частоты', 6: 'Проверь себя' };
+const KEY = 'ion:interactive:4:v1';
+const pad = n => String(n).padStart(2, '0');
 const fmt = n => Number(n).toLocaleString('ru-RU').replace(/\s/g, ' ');
+const wait = ms => new Promise(r => setTimeout(r, ms));
 const reduced = () => matchMedia('(prefers-reduced-motion: reduce)').matches;
+let SCALE = 1;
+
+/* ---------------- scaling ---------------- */
+let notesOpen = false;
+const NOTES_W = () => Math.min(480, Math.max(380, innerWidth * 0.3));
+const notesDock = () => innerWidth >= 1100;
+function fit() {
+  const nw = notesOpen && notesDock() ? NOTES_W() : 0, aw = innerWidth - nw;
+  SCALE = Math.min(aw / 1600, innerHeight / 900);
+  app.style.left = (aw / 2) + 'px';
+  app.style.transform = `translate(-50%,-50%) scale(${SCALE})`;
+  document.documentElement.style.setProperty('--nw', NOTES_W() + 'px');
+}
+addEventListener('resize', fit); fit();
+
+/* ---------------- helpers ---------------- */
 function countUp(el, to, ms = 1100, suf = '') {
-  if (reduced()) { setNum(el, to, suf); return; }
   const t0 = performance.now(), from = 0, tok = (el._cu = (el._cu || 0) + 1);
   const tick = now => {
     if (tok !== el._cu) return;
@@ -31,7 +51,7 @@ function confetti(n = 90) {
       { duration: 1800 + Math.random() * 1400, easing: 'cubic-bezier(.2,.6,.4,1)', delay: Math.random() * 300 }).onfinish = () => d.remove();
   }
 }
-function toast(msg) { const t = document.getElementById('status'); t.textContent = msg;  }
+function toast(msg) { const t = $('#toast'); t.textContent = msg; t.classList.add('on'); clearTimeout(t._h); t._h = setTimeout(() => t.classList.remove('on'), 1700); }
 const znak = n => n % 10 === 1 && n % 100 !== 11 ? 'знак' : [2, 3, 4].includes(n % 10) && ![12, 13, 14].includes(n % 100) ? 'знака' : 'знаков';
 
 
@@ -83,18 +103,30 @@ function ctabHTML(codes, o = {}) {
     `<div class="crow${o.newL === L ? ' new' : ''}" data-l="${L}" style="${cv(L)}"><b>${L}</b><span class="mono">${c}</span><small>${c.length} ${znak(c.length)}</small></div>`).join('');
 }
 
-/* Highlight each clause without moving the rest of the statement off screen. */
+/* ---- КИМ-страница (камера) ---- */
+const offIn = (e, root) => { let x = 0, y = 0; while (e && e !== root) { x += e.offsetLeft; y += e.offsetTop; e = e.offsetParent; } return { x, y }; };
 W.kim = {
   step(el, s) {
-    $$('.kz', el).forEach((zone, i) => {
-      zone.classList.toggle('on', i === s - 1);
-      zone.classList.toggle('read', i < s);
-    });
+    const view = $('.kimv', el), page = $('.kimp', el), zones = $$('.kz', page);
+    const VW = view.clientWidth, VH = view.clientHeight, PW = page.offsetWidth, PH = page.offsetHeight;
+    let k, tx, ty, rot = 0;
+    if (!s) { k = Math.min(VH * 0.95 / PH, VW * 0.95 / PW, 1.3); tx = (VW - PW * k) / 2; ty = (VH - PH * k) / 2 + 4; rot = -0.9; }
+    else {
+      const z = zones[Math.min(s, zones.length) - 1], p = offIn(z, page), w = z.offsetWidth, h = z.offsetHeight;
+      k = Math.min(VW * 0.92 / w, VH * 0.86 / h, 1.75); tx = VW / 2 - (p.x + w / 2) * k; ty = VH / 2 - (p.y + h / 2) * k;
+      ty = Math.min(18, Math.max(ty, VH - PH * k - 18));
+    }
+    page.style.transform = `translate(${tx}px,${ty}px) scale(${k}) rotate(${rot}deg)`;
+    zones.forEach((z, i) => { z.classList.toggle('on', i === s - 1); z.classList.toggle('read', i < s); });
   }
 };
 
 /* ---- два этапа: картинка из пикселей ---- */
-
+(function pixels() {
+  const box = $('#pix'); if (!box) return;
+  const P = ['01100110', '11111111', '11111111', '11111111', '01111110', '00111100', '00011000', '00000000'];
+  box.innerHTML = P.join('').split('').map(b => `<i class="${b === '1' ? 'on' : ''}"></i>`).join('');
+})();
 
 /* ---- кодируем БАОБАБ ---- */
 W.encode = {
@@ -383,10 +415,21 @@ W.build = {
       n.classList.toggle('click', leaf || inner); n.classList.toggle('open', leaf && !assign[c]); n.classList.toggle('inner', inner);
       if (this.fresh.includes(c)) n.classList.add('fresh');
       n.onclick = leaf ? () => this.split(c) : inner ? () => this.join(c) : null;
-      if (leaf || inner) n.title = leaf ? 'Разделить ветку' : 'Свернуть ветку';
+      if (leaf || inner) {
+        n.title = leaf ? 'Разделить ветку' : 'Свернуть ветку';
+        n.setAttribute('role', 'button');
+        n.setAttribute('aria-label', n.title + ' ' + c);
+        n.tabIndex = 0;
+        n.onkeydown = e => {
+          if (e.key !== 'Enter' && e.key !== ' ') return;
+          e.preventDefault();
+          e.stopPropagation();
+          n.click();
+          box.querySelector('.cnode[data-c="' + c + '"]')?.focus({ preventScroll: true });
+        };
+      }
     });
     this.fresh = [];
-    $$('.cnode.click', box).forEach(accessibleNode);
     const codeOf = L => Object.keys(assign).find(k => assign[k] === L);
     const rows = P.fixed.map(([L, c]) => ({ L, c, fixed: true })).concat(P.letters.map(L => ({ L, c: codeOf(L) })));
     $('#bdList', el).innerHTML = rows.map(r => `<div class="bl${r.fixed ? ' fixed' : r.c ? ' got' : ' miss'}"><b>${r.L}</b><span class="${r.c ? 'mono' : 'nm'}">${r.c || 'нет места'}</span><small>${r.c ? (this.p === 'word' ? `${r.c.length}×${wt(r.L)}` : r.c.length) : ''}</small></div>`).join('');
@@ -541,7 +584,7 @@ W.quiz = {
       const ok = this.ans.filter((a, i) => a === QUIZ[i].a).length;
       $('#qzNum', el).textContent = 'Итог';
       box.innerHTML = `<h1 style="margin-top:30px">${ok === QUIZ.length ? 'Идеально!' : ok >= 4 ? 'Отлично!' : 'Есть над чем поработать'}</h1><div style="display:flex;align-items:baseline;gap:20px;margin-top:20px"><div class="big" style="color:var(--accent)">${ok}</div><div class="lead">из ${QUIZ.length} правильно</div></div><button class="btn" id="qzAgain" style="margin-top:28px">Пройти заново</button>`;
-      $('#qzAgain', el).addEventListener('click', e => { e.currentTarget.blur(); this.ans = []; window.dispatchEvent(new CustomEvent('fano-restart')); });
+      $('#qzAgain', el).addEventListener('click', e => { e.currentTarget.blur(); this.ans = []; show(cur, 0, -1); });
       if (ok >= 5) confetti(110);
       return;
     }
@@ -553,27 +596,207 @@ W.quiz = {
   step(el, s) { this.render(el, s); }
 };
 
+/* =================================================================== */
+/*                               ENGINE                                */
+/* =================================================================== */
+let cur = 0, step = 0;
+const inited = new Set();
+const stepsOf = i => +(slides[i].dataset.steps || 0);
 
-window.FanoContinuation = {
- slides: [{"title": "Ловушка: весь алфавит", "group": "Дерево кода", "steps": 2, "extension": true, "body": "<div class=\"extension-shell\"><section class=\"fano-extension slide cur\" data-sec=\"3\" data-id=\"kim3\" data-title=\"Ловушка: весь алфавит\" data-steps=\"2\" data-w=\"kim\">\n    <div class=\"kimv\"><div class=\"kimp\">\n      <div class=\"kim-hd\"><span>ЕГЭ · ИНФОРМАТИКА, 11 класс</span><span>Задача № 238</span></div>\n      <div class=\"kim-task\"><div class=\"kim-n\">4</div><div class=\"kim-body\">\n        <div class=\"kz kz-a\"><p><span class=\"kmark\">Все заглавные буквы русского алфавита</span> закодированы неравномерным двоичным кодом, в котором никакое кодовое слово не является началом другого кодового слова. Это условие обеспечивает возможность однозначной расшифровки закодированных сообщений. Кодовые слова для некоторых букв известны: <span class=\"kmark\">А – 00, Б – 01, В – 110, Г – 101, Д – 100</span>.</p></div>\n        <div class=\"kz kz-b\"><p>Укажите возможный <span class=\"kmark\">код минимальной длины для буквы Я</span>. Если таких кодов несколько, укажите тот из них, который имеет <span class=\"kmark\">максимальное числовое значение</span>.</p></div>\n        <p class=\"kans\">Ответ: <i></i></p>\n      </div></div>\n    </div></div>\n    <div class=\"asks\"><div class=\"ask\"><button><i>?</i>Где тут подвох?</button><div class=\"ans\">В первых словах: «<b>все</b> буквы русского алфавита». Их 33 — и для каждой должно найтись место в дереве.</div></div></div>\n  </section></div>", "question": "Пояснения к слайду", "answer": "<p>Ещё один номер — с одной из главных хитростей задания 4. Здесь специально пытаются подловить.</p><p>Прочитай первые слова: «<b>все</b> заглавные буквы русского алфавита закодированы». Известны коды пяти букв: А, Б, В, Г, Д.</p><p>Нужен код минимальной длины для Я, а если вариантов несколько — с максимальным числовым значением.</p>"}, {"title": "Оставляем пустую ветку", "group": "Дерево кода", "steps": 4, "extension": true, "body": "<div class=\"extension-shell\"><section class=\"fano-extension slide cur\" data-sec=\"3\" data-id=\"tree3\" data-title=\"Оставляем пустую ветку\" data-steps=\"4\" data-w=\"ctree\" data-tree=\"t3\">\n    <div class=\"eyebrow\">№ 238 · все 33 буквы</div>\n    <h1 class=\"th\"></h1>\n    <div class=\"tlay\"><div class=\"tside\"><div class=\"given\"></div><div class=\"tnote\"></div></div><div class=\"treebox ctb\"></div></div>\n    <div class=\"asks\"><div class=\"ask\"><button><i>?</i>А если букв всего шесть?</button><div class=\"ans\">Тогда запас не нужен: Я = <b>111</b>. Всегда считай, <b>сколько букв</b> нужно закодировать и сколько уже есть.</div></div></div>\n  </section></div>", "question": "Пояснения к слайду", "answer": "<p>Строим дерево только там, где необходимо, лишний раз ветки не увеличиваем. И обязательно вычёркиваем найденные буквы.</p><p>А, Б, В, Г, Д на месте. Свободна одна ветка — 111.</p><p>Хочется ответить Я = 111. Если так сделать — получим 0 баллов.</p><p>Почему? Закодированы <b>все</b> буквы алфавита — их 33. А сейчас закодировано шесть. Куда записать седьмую, восьмую, девятую? Места нет — условие нарушено.</p><p>Поэтому всегда считаем, сколько букв дали и сколько закодировали. Все 33 сейчас записывать не нужно, но должна быть такая возможность. Раскрываем 111: 1111 — буква Я, а 1110 оставляем пустой. Из пустой ветки можно сколько угодно строить вниз и закодировать хоть сто тридцать три буквы. <b>Ответ: 1111.</b></p>"}, {"title": "Минимальная общая длина", "group": "Сумма длин", "steps": 2, "extension": true, "body": "<div class=\"extension-shell\"><section class=\"fano-extension slide cur\" data-sec=\"4\" data-id=\"kim2\" data-title=\"Минимальная общая длина\" data-steps=\"2\" data-w=\"kim\">\n    <div class=\"kimv\"><div class=\"kimp\">\n      <div class=\"kim-hd\"><span>ЕГЭ · ИНФОРМАТИКА, 11 класс</span><span>Задача № 110</span></div>\n      <div class=\"kim-task\"><div class=\"kim-n\">4</div><div class=\"kim-body\">\n        <div class=\"kz kz-a\"><p>По каналу связи передаются сообщения, содержащие только <span class=\"kmark\">семь букв: А, Б, В, Г, Д, Е и Ж</span>. Для передачи используется двоичный код, удовлетворяющий условию Фано. Для буквы А используется кодовое слово <span class=\"kmark\">1</span>; для буквы Б используется кодовое слово <span class=\"kmark\">01</span>.</p></div>\n        <div class=\"kz kz-b\"><p>Какова <span class=\"kmark\">минимальная общая длина</span> кодовых слов <span class=\"kmark\">для всех семи букв</span>?</p></div>\n        <p class=\"kans\">Ответ: <i></i></p>\n      </div></div>\n    </div></div>\n    <div class=\"asks\"><div class=\"ask\"><button><i>?</i>Что тут нового?</button><div class=\"ans\">Кодируем не одну букву, а <b>сразу пять</b>. И от того, как раскроем дерево, зависит итоговая длина.</div></div></div>\n  </section></div>", "question": "Пояснения к слайду", "answer": "<p>Чуть более продвинутый номер: кодируем не одну букву, а сразу много.</p><p>Семь букв: А, Б, В, Г, Д, Е, Ж. Известны А = 1 и Б = 01.</p><p>Нужна <b>минимальная общая длина</b> кодов всех семи букв. От того, как мы закодируем, зависит, какая длина получится.</p>"}, {"title": "Лесенка или ровно", "group": "Сумма длин", "steps": 3, "extension": true, "body": "<div class=\"extension-shell\"><section class=\"fano-extension slide cur\" data-sec=\"4\" data-id=\"sum\" data-title=\"Лесенка или ровно\" data-steps=\"3\" data-w=\"sum\">\n    <div class=\"eyebrow\">№ 110 · А = 1, Б = 01, ещё пять букв</div>\n    <h1>Два дерева — <em>две суммы</em></h1>\n    <div class=\"duo\">\n      <div class=\"duo-c\" data-s=\"1\"><div class=\"duo-h\"><b>Лесенкой</b><span class=\"duo-s bad\" id=\"sumAs\">27</span></div><div class=\"treebox ctb sm\" id=\"sumA\"></div><div class=\"lens\" id=\"lenA\"></div></div>\n      <div class=\"duo-c\" data-s=\"2\"><div class=\"duo-h\"><b>Ровно</b><span class=\"duo-s good\" id=\"sumBs\">25</span></div><div class=\"treebox ctb sm\" id=\"sumB\"></div><div class=\"lens\" id=\"lenB\"></div></div>\n    </div>\n    <div class=\"defcard\" data-s=\"3\">Длины должны быть <b>примерно одинаковыми</b>: 4 4 4 5 5 — короче, чем 3 4 5 6 6.</div>\n    <div class=\"asks\"><div class=\"ask\"><button><i>?</i>Как быстро проверить себя?</button><div class=\"ans\">Посмотри на длины. Если они «в разброс» — 3, 4, 5, 6, 6 — почти наверняка можно короче. Хорошо, когда они рядом: 2 2 3 3, 3 3 3, 4 4 5.</div></div></div>\n  </section></div>", "question": "Пояснения к слайду", "answer": "<p>Закодируем двумя способами и сравним. А = 1 и Б = 01 не меняются, оставшиеся пять букв кладём под 00.</p><p>Первый способ — «лесенкой»: В = 000, Г = 0010, Д = 00110, Е и Ж — по шесть знаков. Длины 1, 2, 3, 4, 5, 6, 6 — в сумме 27.</p><p>Второй способ — ровнее: В = 0000, Г = 0001, Д = 0010, Е = 00110, Ж = 00111. Длины 1, 2, 4, 4, 4, 5, 5 — в сумме 25. Это меньше, значит, правильный ответ — <b>25</b>.</p><p>Как это прочувствовать? В первом варианте длины в разброс — от 3 до 6. Во втором все примерно на одном месте — 4 и 5. Когда буквы встречаются одинаково часто, стремимся, чтобы коды были <b>примерно одной длины</b>: 2 2 3 3 или 2 2 2 3 лучше, чем 1 2 3 4.</p>"}, {"title": "Собери дерево сам", "group": "Сумма длин", "steps": 0, "extension": true, "body": "<div class=\"extension-shell\"><section class=\"fano-extension slide cur\" data-sec=\"4\" data-id=\"build\" data-title=\"Собери дерево сам\" data-steps=\"0\" data-w=\"build\">\n    <div class=\"row\" style=\"align-items:flex-end;gap:24px\">\n      <div class=\"col\"><div class=\"eyebrow\">Тренажёр</div><h1 style=\"margin-bottom:0\">Собери дерево сам</h1></div>\n      <div class=\"seg\" id=\"bdPre\"><button data-p=\"seven\" class=\"on\">№ 110 · семь букв</button><button data-p=\"word\">ТАРАНТАС</button></div>\n    </div>\n    <div class=\"bd\">\n      <div class=\"treebox ctb bd-tree\" id=\"bdTree\"></div>\n      <div class=\"bd-side\">\n        <p class=\"bd-hint\">Нажми на <b>свободную</b> ветку — она разделится на две. Нажми на раскрытую — свернётся.</p>\n        <div class=\"bd-list\" id=\"bdList\"></div>\n        <div class=\"bd-sum\"><small id=\"bdSumL\">сумма длин</small><b id=\"bdSum\">—</b><span id=\"bdBest\"></span></div>\n        <div class=\"bd-msg\" id=\"bdMsg\" role=\"status\" aria-live=\"polite\"></div>\n        <button class=\"btn\" id=\"bdReset\">Сбросить</button>\n      </div>\n    </div>\n  </section></div>", "question": "Пояснения к слайду", "answer": "<p>Тренажёр: строй дерево сам. Нажимай на свободные ветки, чтобы разделить их на две. Буквы сами встают в самые короткие свободные места.</p><p>Режим «№ 110» — та же задача с семью буквами: найди минимальную сумму длин. Режим «ТАРАНТАС» — задача из следующего раздела: там важно, сколько раз встречается каждая буква.</p>"}, {"title": "Азбука Морзе", "group": "Слово и частоты", "steps": 3, "extension": true, "body": "<div class=\"extension-shell\"><section class=\"fano-extension slide cur\" data-sec=\"5\" data-id=\"morse\" data-title=\"Азбука Морзе\" data-steps=\"3\" data-w=\"morse\">\n    <div class=\"eyebrow\">Зачем неравномерный код</div>\n    <h1 id=\"mrHead\">Азбука <em>Морзе</em></h1>\n    <div class=\"row\" style=\"gap:40px;align-items:flex-start\">\n      <div class=\"morse\" id=\"morse\"></div>\n      <div class=\"mr-side\">\n        <div class=\"mr-it\" data-s=\"1\"><b>1 знак</b><span><span class=\"mono\">E</span> и <span class=\"mono\">T</span> — самые частые буквы в английских текстах</span></div>\n        <div class=\"mr-it\" data-s=\"2\"><b>2 знака</b><span><span class=\"mono\">A I M N</span> — A, I и N тоже среди самых частых букв</span></div>\n        <div class=\"mr-it\" data-s=\"3\"><b>5 знаков</b><span>цифры встречаются редко — им не жалко длинного кода</span></div>\n      </div>\n    </div>\n    <div class=\"defcard\" data-s=\"3\">Чем <b>чаще</b> символ встречается, тем <b>короче</b> его код. В этом и смысл неравномерного кодирования.</div>\n  </section></div>", "question": "Пояснения к слайду", "answer": "<p>Для чего вообще нужно неравномерное кодирование? Посмотрим на азбуку Морзе.</p><p>Буквы E и T кодируются одним знаком. Создатели азбуки проанализировали тексты и поняли, что E и T встречаются в сообщениях чаще всего.</p><p>A, I, M, N — двумя знаками. A, I и N тоже входят в число самых частых букв.</p><p>А цифры — по пять знаков: их используют редко, на них можно и потратить побольше. Суть неравномерного кодирования — подобрать коды исходя из того, <b>как часто</b> мы их используем: самые частые символы — самые короткие. Так сообщения передаются быстрее.</p>"}, {"title": "Кодируем целое слово", "group": "Слово и частоты", "steps": 3, "extension": true, "body": "<div class=\"extension-shell\"><section class=\"fano-extension slide cur\" data-sec=\"5\" data-id=\"kim4\" data-title=\"Кодируем целое слово\" data-steps=\"3\" data-w=\"kim\">\n    <div class=\"kimv\"><div class=\"kimp\">\n      <div class=\"kim-hd\"><span>ЕГЭ · ИНФОРМАТИКА, 11 класс</span><span>№ 28925 · ЕГКР 18.04.26</span></div>\n      <div class=\"kim-task\"><div class=\"kim-n\">4</div><div class=\"kim-body\">\n        <div class=\"kz kz-a\"><p>По каналу связи передаются сообщения, содержащие только буквы из набора: <span class=\"kmark\">А, Н, Р, С, Т, Я</span>. Для передачи используется двоичный код, удовлетворяющий условию Фано. Кодовые слова для некоторых букв известны: <span class=\"kmark\">С – 00, Р – 010, Н – 11</span>.</p></div>\n        <div class=\"kz kz-b\"><p>Для оставшихся букв <span class=\"kmark\">А, Т и Я</span> кодовые слова неизвестны.</p></div>\n        <div class=\"kz kz-c\"><p>Какое количество двоичных знаков требуется для кодирования <span class=\"kmark\">слова ТАРАНТАС</span>, если известно, что оно закодировано <span class=\"kmark\">минимально возможным</span> количеством двоичных знаков?</p></div>\n        <p class=\"kim-note\"><i>Примечание.</i> Условие Фано означает, что никакое кодовое слово не является началом другого кодового слова. Это обеспечивает возможность однозначной расшифровки закодированных сообщений.</p>\n        <p class=\"kans\">Ответ: <i></i></p>\n      </div></div>\n    </div></div>\n    <div class=\"asks\"><div class=\"ask\"><button><i>?</i>Это сложный тип?</button><div class=\"ans\">Да, считается самым сложным: кодируем <b>целое слово</b>. Такой номер был на последнем ЕГЭ — скорее всего, будет и у вас.</div></div></div>\n  </section></div>", "question": "Пояснения к слайду", "answer": "<p>Номер, который использует эту идею. Такой был на последнем ЕГЭ — его считают самым сложным типом: кодируем <b>целое слово</b>.</p><p>Буквы — А, Н, Р, С, Т, Я. Известны коды С = 00, Р = 010, Н = 11.</p><p>Коды А, Т и Я неизвестны — их подбираем мы.</p><p>Спрашивают, сколько знаков займёт слово ТАРАНТАС, если закодировать его минимально возможным количеством знаков.</p>"}, {"title": "Считаем буквы в слове", "group": "Слово и частоты", "steps": 2, "extension": true, "body": "<div class=\"extension-shell\"><section class=\"fano-extension slide cur\" data-sec=\"5\" data-id=\"count\" data-title=\"Считаем буквы в слове\" data-steps=\"2\" data-w=\"count\">\n    <div class=\"eyebrow\">№ 28925 · сначала частоты</div>\n    <h1>Сколько раз встречается <em>каждая буква</em>?</h1>\n    <div class=\"wtiles\" id=\"cntWord\"></div>\n    <div class=\"cnts\" id=\"cntList\"></div>\n    <div class=\"defcard\" data-s=\"2\">Буквы встречаются <b>разное</b> число раз — значит, не «ровно», а самой частой — <b>самый короткий</b> код.</div>\n    <div class=\"asks\"><div class=\"ask\"><button><i>?</i>Зачем тут Я, если её нет в слове?</button><div class=\"ans\">Она есть в наборе букв — значит, ей тоже нужен код, иначе условие нарушено. Это главная ловушка задачи — смотри следующий слайд.</div></div></div>\n  </section></div>", "question": "Пояснения к слайду", "answer": "<p>Кодируем не просто буквы, а слово. На что стоит обратить внимание?</p><p>Сколько раз встречается каждая буква: А — 3 раза, Т — 2 раза, Р, Н и С — по одному.</p><p>В прошлом номере все буквы встречались одинаково — поэтому коды делали «средними». Здесь частоты разные: значит, сначала самый короткий код — самой частой букве, потом чуть длиннее, и так далее. И не забываем про Я.</p>"}, {"title": "Дерево для ТАРАНТАС", "group": "Слово и частоты", "steps": 4, "extension": true, "body": "<div class=\"extension-shell\"><section class=\"fano-extension slide cur\" data-sec=\"5\" data-id=\"tree4\" data-title=\"Дерево для ТАРАНТАС\" data-steps=\"4\" data-w=\"ctree\" data-tree=\"t4\">\n    <div class=\"eyebrow\">№ 28925 · С = 00, Р = 010, Н = 11</div>\n    <h1 class=\"th\"></h1>\n    <div class=\"tlay\"><div class=\"tside\"><div class=\"given\"></div><div class=\"tnote\"></div></div><div class=\"treebox ctb\"></div></div>\n    <div class=\"asks\"><div class=\"ask\"><button><i>?</i>Можно поменять местами данные коды?</button><div class=\"ans\">Нет. Коды С, Р и Н даны в условии — их не трогаем. Подбираем только А, Т и Я.</div></div></div>\n  </section></div>", "question": "Пояснения к слайду", "answer": "<p>Строим дерево по данным кодам.</p><p>Свободны 10 (длина 2) и 011 (длина 3). Самый короткий — 10, отдаём его частой А.</p><p>Дальше хочется взять 011 для Т — и получить 0 баллов. Хитрость в другом: где буква Я? Всегда считаем, сколько букв дано — шесть, и сколько закодировали — пять. Специально дают незаметную букву, которой нет в слове.</p><p>Правильно — раскрыть 011: Я = 0110, Т = 0111. Данные коды при этом не трогаем — менять их местами нельзя.</p>"}, {"title": "Длина слова", "group": "Слово и частоты", "steps": 2, "extension": true, "body": "<div class=\"extension-shell\"><section class=\"fano-extension slide cur\" data-sec=\"5\" data-id=\"cost\" data-title=\"Длина слова\" data-steps=\"2\" data-w=\"cost\">\n    <div class=\"eyebrow\">№ 28925 · считаем знаки</div>\n    <h1>ТАРАНТАС — <em id=\"costH\">сколько знаков?</em></h1>\n    <table class=\"mtab cost\" id=\"costTab\">\n      <tr><th>буква</th><th>код</th><th>длина</th><th>раз в слове</th><th>знаков</th></tr>\n      <tr><td><b>Т</b></td><td class=\"mono\">0111</td><td>4</td><td data-s=\"1\">× 2</td><td data-s=\"1\"><b>8</b></td></tr>\n      <tr><td><b>А</b></td><td class=\"mono\">10</td><td>2</td><td data-s=\"1\">× 3</td><td data-s=\"1\"><b>6</b></td></tr>\n      <tr><td><b>Р</b></td><td class=\"mono\">010</td><td>3</td><td data-s=\"1\">× 1</td><td data-s=\"1\"><b>3</b></td></tr>\n      <tr><td><b>Н</b></td><td class=\"mono\">11</td><td>2</td><td data-s=\"1\">× 1</td><td data-s=\"1\"><b>2</b></td></tr>\n      <tr><td><b>С</b></td><td class=\"mono\">00</td><td>2</td><td data-s=\"1\">× 1</td><td data-s=\"1\"><b>2</b></td></tr>\n      <tr class=\"dimrow\"><td><b>Я</b></td><td class=\"mono\">0110</td><td>4</td><td data-s=\"1\">× 0</td><td data-s=\"1\"><b>0</b></td></tr>\n    </table>\n    <div class=\"cost-ans\" data-s=\"2\"><small>Ответ</small><b id=\"costN\">21</b></div>\n    <div class=\"asks\"><div class=\"ask\"><button><i>?</i>А если раскрыть 10, а не 011?</button><div class=\"ans\">А = 100, Т = 101, Я = 011: 3·3 + 3·2 + 3 + 2 + 2 = <b>22</b>. Длиннее: частой А выгоднее короткий код 10.</div></div></div>\n  </section></div>", "question": "Пояснения к слайду", "answer": "<p>Считаем длину слова ТАРАНТАС.</p><p>Для каждой буквы: длина кода × сколько раз она встречается. Т: 4 × 2 = 8, А: 2 × 3 = 6, Р — 3, Н — 2, С — 2. Я в слове нет — 0.</p><p>8 + 6 + 3 + 2 + 2 = <b>21</b>. Такой номер внимательно: тут сразу две ловушки — частоты и забытая буква.</p>"}, {"title": "Проверь себя", "group": "Итоги и практика", "steps": 6, "extension": true, "body": "<div class=\"extension-shell\"><section class=\"fano-extension slide cur\" data-sec=\"6\" data-id=\"quiz\" data-title=\"Проверь себя\" data-steps=\"6\" data-w=\"quiz\" data-btn=\"Следующий вопрос\">\n    <div style=\"display:flex;align-items:center;justify-content:space-between\">\n      <div class=\"eyebrow\" id=\"qzNum\">Вопрос 1 из 6</div>\n      <div class=\"dots\" id=\"qzDots\"></div>\n    </div>\n    <div id=\"qzBox\"></div>\n  </section></div>", "question": "Пояснения к слайду", "answer": "<p>Шесть вопросов по уроку. Выбери ответ — сразу увидишь объяснение.</p><p>Ищем, где один код — начало другого.</p><p>Построй дерево: А, Б, В — где свободно?</p><p>Вспомни Т = 01 и А = 010.</p><p>Ловушка «весь алфавит».</p><p>Считаем частоты букв.</p><p>Сумма длин: раскрываем под 0.</p>"}, {"title": "Шпаргалка", "group": "Итоги и практика", "steps": 0, "extension": true, "body": "<div class=\"extension-shell\"><section class=\"fano-extension slide cur\" data-sec=\"6\" data-id=\"cheat\" data-title=\"Шпаргалка\" data-steps=\"0\" data-w=\"cheat\">\n    <h1>Шпаргалка №4</h1>\n    <div class=\"csg\">\n      <div class=\"csc\"><h3>Условие Фано</h3><p>Ни одно кодовое слово не начало другого. В дереве буквы стоят только в <b>концах веток</b>.</p></div>\n      <div class=\"csc\"><h3>Дерево</h3><p>Старт — 0 и 1. Влево <b>+0</b>, вправо <b>+1</b>, сразу обе ветки. Нашёл код — подпиши букву, в условии зачеркни.</p></div>\n      <div class=\"csc\"><h3>Куда можно</h3><p>Не выше и не ниже букв — только <b>свободные</b> ветки рядом.</p></div>\n      <div class=\"csc\"><h3>Кратчайший код</h3><p>Самая верхняя свободная ветка. Несколько — бери <b>наибольшее</b> число: 111 &gt; 101.</p></div>\n      <div class=\"csc\"><h3>Сумма длин</h3><p>Длины — <b>ровные</b>: 4 4 4 5 5, а не лесенка 3 4 5 6 6. Целое слово — частым буквам короткие коды.</p></div>\n      <div class=\"csc hot\"><h3>Считай буквы</h3><p>Место должно быть для <b>всех</b>. «Весь алфавит» — оставь одну <b>пустую ветку</b>.</p></div>\n    </div>\n    <div class=\"cs-tree\"><div class=\"cs-leg\"><span class=\"lg-l\">буква</span><span class=\"lg-x\">выше и ниже букв — нельзя</span><span class=\"lg-f\">свободно — можно</span><span class=\"lg-p\">ответ</span></div><div class=\"treebox ctb sm\" id=\"csTree\"></div></div>\n  </section></div>", "question": "Пояснения к слайду", "answer": "<p>Всё задание 4 на одном экране. Сфотографируй или открой перед домашкой.</p>"}, {"title": "Алгоритм на экзамене", "group": "Итоги и практика", "steps": 6, "extension": true, "body": "<div class=\"extension-shell\"><section class=\"fano-extension slide cur\" data-sec=\"6\" data-id=\"algo\" data-title=\"Алгоритм на экзамене\" data-steps=\"6\">\n    <div class=\"row\" style=\"gap:80px;height:100%\">\n      <div class=\"col\" style=\"flex:1.25\">\n        <div class=\"eyebrow\">На экзамене</div>\n        <h1>Алгоритм решения</h1>\n        <ul class=\"check\">\n          <li data-s=\"1\"><i>1</i>Выпиши данные коды и все буквы, которые нужно закодировать.</li>\n          <li data-s=\"2\"><i>2</i>Построй дерево до данных кодов: подпиши буквы, в условии зачеркни.</li>\n          <li data-s=\"3\"><i>3</i>Найди свободные ветки — не выше и не ниже букв.</li>\n          <li data-s=\"4\"><i>4</i>Посчитай буквы: всем хватит места? Весь алфавит — оставь пустую ветку.</li>\n          <li data-s=\"5\"><i>5</i>Раздай коды: кратчайший, длины ровно, частым буквам — короче.</li>\n          <li data-s=\"6\"><i>6</i>Что просят: код, его длину или сумму? Несколько вариантов — наибольшее число.</li>\n        </ul>\n      </div>\n      <div class=\"col\" style=\"flex:.75;display:flex;flex-direction:column;justify-content:center;align-items:flex-start\">\n        <div class=\"tbadge xl\"><b>№4</b></div>\n        <h2 style=\"font-size:44px;margin-top:26px\">Вопросы?</h2>\n        <p class=\"lead\">Дальше — модули 1–3 и домашка по №4.</p>\n      </div>\n    </div>\n  </section></div>", "question": "Пояснения к слайду", "answer": "<p>Порядок действий на экзамене.</p><p>Сначала выпиши данные коды и посчитай, сколько всего букв нужно закодировать.</p><p>Строй дерево: влево +0, вправо +1, сразу обе ветки. Нашёл код — подпиши и зачеркни.</p><p>Свободно только то, что рядом: не выше и не ниже букв.</p><p>Все ли буквы помещаются? «Весь алфавит» — оставь пустую ветку.</p><p>Раздай коды: кратчайший — сверху; для суммы — длины ровно; для слова — частым буквам короче.</p><p>Перечитай вопрос: что именно записать в ответ. Задачи этого номера нужно именно нарешать — как билеты: вопросы лёгкие, но без практики не получится.</p>"}],
- mount(el) {
-  active = el.querySelector('.fano-extension'); previous = -1;
-  const widget = W[active.dataset.w];
-  if (widget && widget.init) widget.init(active);
-  active.querySelectorAll('.cnode.click').forEach(accessibleNode);
-  active.addEventListener('click', e => { const button=e.target.closest('.ask > button'); if(button){ const box=button.parentElement; box.classList.toggle('open'); button.setAttribute('aria-expanded',String(box.classList.contains('open'))); } });
- },
- update(s) {
-  if (!active || !active.isConnected) return;
-  active.querySelectorAll('[data-s]').forEach(el=>{ const v=el.dataset.s; const on=v.includes('-') ? s>=+v.split('-')[0] && s<=+v.split('-')[1] : s>=+v;el.classList.toggle('on',on);el.setAttribute('aria-hidden',String(!on)); });
-  const widget=W[active.dataset.w];
-  if(widget && widget.step)widget.step(active,s,{dir:s>=previous?1:-1,enter:previous<0});
-  previous=s;
-  active.querySelectorAll('.cnode.click').forEach(accessibleNode);
- }
-};
-function accessibleNode(el) {
- el.setAttribute('role','button');el.tabIndex=0;el.setAttribute('aria-label',(el.title||'Ветка')+' '+el.dataset.c);
- el.onkeydown=e=>{if(e.key==='Enter'||e.key===' '){e.preventDefault();e.stopPropagation();el.click();active.querySelectorAll('.cnode.click').forEach(accessibleNode);}};
+function applySteps(el, s) {
+  $$('[data-s]', el).forEach(e => {
+    const v = e.dataset.s; let on;
+    if (v.includes('-')) { const [a, b] = v.split('-').map(Number); on = s >= a && s <= b; } else on = s >= +v;
+    e.classList.toggle('on', on);
+  });
 }
+function show(i, s = 0, dir = 1) {
+  i = Math.max(0, Math.min(N - 1, i)); s = Math.max(0, Math.min(stepsOf(i), s));
+  const enter = i !== cur || !show.started; show.started = true;
+  if (enter && i !== cur) { const old = slides[cur], widget = W[old.dataset.w]; if (widget && widget.leave) widget.leave(old); }
+  cur = i; step = s;
+  slides.forEach((el, k) => { el.classList.toggle('cur', k === cur); el.classList.toggle('back', k < cur); });
+  const el = slides[cur], w = W[el.dataset.w];
+  if (w && !inited.has(cur)) { w.init && w.init(el); inited.add(cur); }
+  applySteps(el, step);
+  if (w && w.step) w.step(el, step, { dir, enter });
+  if (enter) { clearInk(); closeAsks(); }
+  chrome(); renderNotes();
+  try { localStorage.setItem(KEY, JSON.stringify({ slide: cur + 1, step, title: slides[cur].dataset.title })); } catch (e) {}
+  try { history.replaceState(null, '', `#${cur + 1}${step ? '.' + step : ''}`); } catch (e) {}
+}
+function next() { if (step < stepsOf(cur)) show(cur, step + 1, 1); else if (cur < N - 1) show(cur + 1, 0, 1); else show(0, 0, 1); }
+function prev() { if (step > 0) show(cur, step - 1, -1); else if (cur > 0) show(cur - 1, stepsOf(cur - 1), -1); }
+
+const tabs = $('#tabs');
+tabs.innerHTML = Object.entries(SECTIONS).map(([k, v]) => `<button data-sec="${k}"><i>${pad(k)}</i>${v}</button>`).join('');
+$$('button', tabs).forEach(b => b.addEventListener('click', e => { e.currentTarget.blur(); show(slides.findIndex(s => s.dataset.sec === b.dataset.sec), 0, 1); }));
+
+function chrome() {
+  const el = slides[cur], sec = el.dataset.sec, more = step < stepsOf(cur);
+  $$('button', tabs).forEach(b => b.classList.toggle('on', b.dataset.sec === sec));
+  $('#fSec').textContent = `${pad(sec)} / ${SECTIONS[sec]}`;
+  $('#fNext').textContent = more ? 'Дальше: следующий шаг' : (cur < N - 1 ? 'Дальше: ' + slides[cur + 1].dataset.title : 'Это последний экран');
+  const frac = (cur + (stepsOf(cur) ? step / stepsOf(cur) : 1)) / N;
+  $('#fBar').style.width = (Math.max(frac, 1 / N) * 100) + '%';
+  $('#pBar').style.width = (Math.max(frac, 1 / N) * 100) + '%';
+  $('#fCnt').textContent = `${pad(cur + 1)} / ${pad(N)}`;
+  $('#bNext').textContent = more ? (el.dataset.btn || 'Дальше') : (cur === N - 1 ? 'Сначала' : 'Дальше');
+  $('#bPrev').disabled = cur === 0 && step === 0;
+  $$('#tocList button').forEach(b => b.classList.toggle('on', +b.dataset.i === cur));
+}
+
+/* TOC */
+(function buildToc() {
+  let h = '', last = 0;
+  slides.forEach((s, i) => {
+    if (+s.dataset.sec !== last) { last = +s.dataset.sec; h += `<h4>${pad(last)} · ${SECTIONS[last]}</h4>`; }
+    h += `<button data-i="${i}"><i>${pad(i + 1)}</i>${s.dataset.title}</button>`;
+  });
+  $('#tocList').innerHTML = h;
+  $$('#tocList button').forEach(b => b.addEventListener('click', () => { closeOv(); show(+b.dataset.i, 0, 1); }));
+})();
+
+/* overlays */
+const ovOpen = () => $$('.ov.open').length > 0;
+function toggleOv(id) { const o = $('#' + id), on = !o.classList.contains('open'); closeOv(); o.classList.toggle('open', on); }
+function closeOv() { $$('.ov').forEach(o => o.classList.remove('open')); }
+$$('.ov').forEach(o => o.addEventListener('click', e => { if (e.target === o || e.target.closest('[data-close]')) closeOv(); }));
+$('#bToc').addEventListener('click', e => { e.currentTarget.blur(); toggleOv('ovToc'); });
+$('#bHelp').addEventListener('click', e => { e.currentTarget.blur(); toggleOv('ovHelp'); });
+function fullscreen() { if (!document.fullscreenElement) document.documentElement.requestFullscreen?.(); else document.exitFullscreen?.(); }
+$('#bFull').addEventListener('click', e => { e.currentTarget.blur(); fullscreen(); });
+$('#bNext').addEventListener('click', e => { e.currentTarget.blur(); next(); });
+$('#bPrev').addEventListener('click', e => { e.currentTarget.blur(); prev(); });
+
+/* presenter tools */
+const ink = $('#ink'), ctx = ink.getContext('2d'), laser = $('#laser'), spot = $('#spot');
+let drawing = false, drawOn = false, laserOn = false, last = null;
+function clearInk() { ctx.clearRect(0, 0, 1600, 900); }
+function toApp(e) { const r = app.getBoundingClientRect(), k = r.width / 1600; return { x: (e.clientX - r.left) / k, y: (e.clientY - r.top) / k }; }
+ink.addEventListener('pointerdown', e => { if (!drawOn) return; drawing = true; last = toApp(e); ink.setPointerCapture(e.pointerId); });
+ink.addEventListener('pointermove', e => {
+  if (!drawing) return; const p = toApp(e);
+  ctx.strokeStyle = '#E5484D'; ctx.lineWidth = 5; ctx.lineCap = 'round'; ctx.lineJoin = 'round';
+  ctx.beginPath(); ctx.moveTo(last.x, last.y); ctx.lineTo(p.x, p.y); ctx.stroke(); last = p;
+});
+ink.addEventListener('pointerup', () => { drawing = false; });
+function setDraw(on) { drawOn = on; ink.classList.toggle('on', on); toast(on ? 'Рисование включено · C — стереть' : 'Рисование выключено'); }
+function setLaser(on) { laserOn = on; document.body.classList.toggle('laser', on); laser.style.display = on ? 'block' : 'none'; toast(on ? 'Лазерная указка' : 'Указка выключена'); }
+addEventListener('mousemove', e => {
+  if (laserOn) { laser.style.left = e.clientX + 'px'; laser.style.top = e.clientY + 'px'; }
+  if (spot.classList.contains('on')) { const p = toApp(e); spot.style.setProperty('--sx', p.x + 'px'); spot.style.setProperty('--sy', p.y + 'px'); }
+});
+
+/* auto-hiding bars: top (sections) & bottom (navigation) */
+const topBar = $('.top'), botBar = $('.bot'), hTop = $('#hTop'), hBot = $('#hBot'), BC = document.body.classList;
+let mmT = 0;
+addEventListener('mousemove', e => {
+  BC.add('mm'); clearTimeout(mmT); mmT = setTimeout(() => BC.remove('mm'), 2400);
+  if (ovOpen()) return;
+  const p = toApp(e), inX = p.x > -400 && p.x < 2000;
+  if (inX && p.y < 26 && p.y > -400) BC.add('showtop');
+  else if (BC.contains('showtop') && p.y > 104 && !topBar.matches(':hover')) BC.remove('showtop');
+  if (inX && p.y > 872 && p.y < 1400) BC.add('showbot');
+  else if (BC.contains('showbot') && p.y < 796 && !botBar.matches(':hover')) BC.remove('showbot');
+  hTop.classList.toggle('near', p.y < 160 && !BC.contains('showtop'));
+  hBot.classList.toggle('near', p.y > 740 && !BC.contains('showbot'));
+}, { passive: true });
+[[hTop, 'showtop'], [hBot, 'showbot']].forEach(([h, c]) => { h.addEventListener('mouseenter', () => BC.add(c)); h.addEventListener('click', () => BC.toggle(c)); });
+document.addEventListener('mouseleave', () => { BC.remove('showtop', 'showbot'); hTop.classList.remove('near'); hBot.classList.remove('near'); });
+deck.addEventListener('touchstart', () => BC.remove('showtop', 'showbot'), { passive: true });
+if (!/^https?:/.test(location.protocol)) BC.add('local');
+else { const h = document.body.dataset.home; if (h) $('#homeLink').href = h; }
+/* first visit: show where the bars live */
+(function coach() {
+  let n = 0; try { n = +localStorage.getItem('ion4_coach') || 0; localStorage.setItem('ion4_coach', n + 1); } catch (e) {}
+  if (n >= 3) return;
+  setTimeout(() => { BC.add('coach', 'mm'); setTimeout(() => BC.remove('coach'), 4200); }, 900);
+})();
+
+/* notes drawer */
+const nBody = $('#nBody');
+function renderNotes() {
+  const el = slides[cur], sec = el.dataset.sec, arr = (window.NOTES || {})[el.dataset.id] || [];
+  $('#nSec').textContent = `${pad(sec)} · ${SECTIONS[sec]}`;
+  $('#nTitle').textContent = el.dataset.title;
+  $('#nCnt').textContent = `${pad(cur + 1)} / ${pad(N)}`;
+  if (nBody.dataset.for !== el.dataset.id) {
+    nBody.dataset.for = el.dataset.id;
+    const asks = $$('.ask', el).map(a => `<div class="nq"><span class="qi">?</span><b>${$('button', a).textContent.replace(/^\?/, '')}</b><p>${$('.ans', a).innerHTML}</p></div>`).join('');
+    nBody.innerHTML = arr.map(it => { const [st, t] = Array.isArray(it) ? it : [null, it]; return `<p${st !== null ? ` data-ns="${st}"` : ''}>${t}</p>`; }).join('') +
+      (asks ? `<div class="nqs"><h5>Вопросы со слайда</h5>${asks}</div>` : '');
+    nBody.scrollTop = 0;
+  }
+  let curP = null;
+  $$('p[data-ns]', nBody).forEach(p => { const st = +p.dataset.ns; p.classList.toggle('cur', st === step); p.classList.toggle('fut', st > step); if (st === step) curP = p; });
+  if (curP && notesOpen) { const r = curP.offsetTop - nBody.clientHeight / 2 + curP.offsetHeight / 2; nBody.scrollTo({ top: Math.max(0, r), behavior: 'smooth' }); }
+}
+function setNotes(on) {
+  notesOpen = on; BC.toggle('notes-open', on); fit(); renderNotes();
+  try { localStorage.setItem('ion4_notes', on ? '1' : '0'); } catch (e) {}
+}
+$('#nTab').addEventListener('click', e => { e.currentTarget.blur(); setNotes(true); });
+$('#nClose').addEventListener('click', e => { e.currentTarget.blur(); setNotes(false); });
+$('#nPrev').addEventListener('click', e => { e.currentTarget.blur(); prev(); });
+$('#nNext').addEventListener('click', e => { e.currentTarget.blur(); next(); });
+
+/* ask-pills: click a question — the answer pops out */
+function closeAsks() { $$('.ask.open').forEach(a => a.classList.remove('open')); }
+document.addEventListener('click', e => {
+  const b = e.target.closest('.ask > button');
+  if (b) { const a = b.parentElement, on = !a.classList.contains('open'); closeAsks(); a.classList.toggle('open', on); b.blur(); return; }
+  if (!e.target.closest('.ask')) closeAsks();
+});
+function toggleAsk() { const a = $('.ask', slides[cur]); if (!a) { toast('На этом слайде нет вопроса'); return; } const on = !a.classList.contains('open'); closeAsks(); a.classList.toggle('open', on); }
+
+/* keyboard */
+addEventListener('keydown', e => {
+  if (e.target.matches && e.target.matches('input, textarea, select')) return;
+  if (e.metaKey || e.ctrlKey || e.altKey) return;
+  if ((e.key === 'Enter' || e.key === ' ') && e.target.closest('a, button')) return;
+  const k = e.key, c = e.code;
+  if (k === 'Escape') { if ($('.ask.open')) { closeAsks(); return; } if (ovOpen()) closeOv(); else if (drawOn) setDraw(false); else if (laserOn) setLaser(false); else if (spot.classList.contains('on')) spot.classList.remove('on'); $('#blank').classList.remove('on'); return; }
+  if (k === '?' || c === 'KeyH') { toggleOv('ovHelp'); return; }
+  if (c === 'KeyG') { toggleOv('ovToc'); return; }
+  if (ovOpen()) return;
+  if (k === 'ArrowRight' || k === ' ' || k === 'PageDown' || k === 'Enter' || k === 'ArrowDown') { e.preventDefault(); next(); }
+  else if (k === 'ArrowLeft' || k === 'PageUp' || k === 'Backspace' || k === 'ArrowUp') { e.preventDefault(); prev(); }
+  else if (k === 'Home') show(0, 0, -1);
+  else if (k === 'End') show(N - 1, stepsOf(N - 1), 1);
+  else if (c === 'KeyF') fullscreen();
+  else if (c === 'KeyN') setNotes(!notesOpen);
+  else if (c === 'KeyQ') toggleAsk();
+  else if (c === 'KeyL') setLaser(!laserOn);
+  else if (c === 'KeyD') setDraw(!drawOn);
+  else if (c === 'KeyC') { clearInk(); toast('Рисунок стёрт'); }
+  else if (c === 'KeyS') { spot.classList.toggle('on'); toast(spot.classList.contains('on') ? 'Прожектор · веди мышью' : 'Прожектор выключен'); }
+  else if (c === 'KeyB') $('#blank').classList.toggle('on');
+  else if (c === 'KeyR') { show(cur, 0, -1); toast('Слайд сначала'); }
+});
+
+/* wheel & swipe */
+let wheelT = 0, wheelAcc = 0;
+deck.addEventListener('wheel', e => {
+  const sc = e.target.closest('.scrollable');
+  if (sc && sc.scrollHeight > sc.clientHeight) return;
+  e.preventDefault();
+  const now = Date.now(); if (now - wheelT < 700) return;
+  wheelAcc += e.deltaY;
+  if (Math.abs(wheelAcc) > 40) { wheelAcc > 0 ? next() : prev(); wheelAcc = 0; wheelT = now; }
+}, { passive: false });
+let tx = null;
+deck.addEventListener('touchstart', e => { tx = e.touches[0].clientX; }, { passive: true });
+deck.addEventListener('touchend', e => { if (tx === null) return; const dx = e.changedTouches[0].clientX - tx; if (Math.abs(dx) > 60) dx < 0 ? next() : prev(); tx = null; });
+
+/* start */
+try { if (localStorage.getItem('ion4_notes') === '1' && notesDock()) { notesOpen = true; BC.add('notes-open'); fit(); } } catch (e) {}
+function openFromHash() {
+  const m = location.hash.match(/^#(\d+)(?:\.(\d+))?$/);
+  show(m ? +m[1] - 1 : 0, m && m[2] ? +m[2] : 0, 1);
+}
+addEventListener('hashchange', openFromHash);
+openFromHash();
+requestAnimationFrame(() => requestAnimationFrame(() => BC.add('ready')));
+window.__deck = { show, next, prev, setNotes, get cur() { return cur; }, get step() { return step; }, N };
 })();
