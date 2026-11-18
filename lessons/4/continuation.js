@@ -83,21 +83,13 @@ function ctabHTML(codes, o = {}) {
     `<div class="crow${o.newL === L ? ' new' : ''}" data-l="${L}" style="${cv(L)}"><b>${L}</b><span class="mono">${c}</span><small>${c.length} ${znak(c.length)}</small></div>`).join('');
 }
 
-/* ---- КИМ-страница (камера) ---- */
-const offIn = (e, root) => { let x = 0, y = 0; while (e && e !== root) { x += e.offsetLeft; y += e.offsetTop; e = e.offsetParent; } return { x, y }; };
+/* Highlight each clause without moving the rest of the statement off screen. */
 W.kim = {
   step(el, s) {
-    const view = $('.kimv', el), page = $('.kimp', el), zones = $$('.kz', page);
-    const VW = view.clientWidth, VH = view.clientHeight, PW = page.offsetWidth, PH = page.offsetHeight;
-    let k, tx, ty, rot = 0;
-    if (!s) { k = Math.min(VH * 0.95 / PH, VW * 0.95 / PW, 1.3); tx = (VW - PW * k) / 2; ty = (VH - PH * k) / 2 + 4; rot = -0.9; }
-    else {
-      const z = zones[Math.min(s, zones.length) - 1], p = offIn(z, page), w = z.offsetWidth, h = z.offsetHeight;
-      k = Math.min(VW * 0.92 / w, VH * 0.86 / h, 1.75); tx = VW / 2 - (p.x + w / 2) * k; ty = VH / 2 - (p.y + h / 2) * k;
-      ty = Math.min(18, Math.max(ty, VH - PH * k - 18));
-    }
-    page.style.transform = `translate(${tx}px,${ty}px) scale(${k}) rotate(${rot}deg)`;
-    zones.forEach((z, i) => { z.classList.toggle('on', i === s - 1); z.classList.toggle('read', i < s); });
+    $$('.kz', el).forEach((zone, i) => {
+      zone.classList.toggle('on', i === s - 1);
+      zone.classList.toggle('read', i < s);
+    });
   }
 };
 
