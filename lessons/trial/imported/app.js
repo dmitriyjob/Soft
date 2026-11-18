@@ -34,7 +34,7 @@ function mountScene(n,direction=1){
  document.body.dataset.scene=scene.id;document.body.dataset.tone=scene.tone||'light';
  $('#chapter-label').textContent=`0${scene.chapter+1} / ${chapters[scene.chapter]}`;$('#scene-count').textContent=`${String(index+1).padStart(2,'0')} / ${String(scenes.length).padStart(2,'0')}`;$('#progress-fill').style.width=`${(index+1)/scenes.length*100}%`;
  $('#previous').disabled=index===0;$('#next').disabled=index===scenes.length-1;$('#next').textContent=index===scenes.length-1?'Готово':'Дальше';
- document.querySelectorAll('.chapters button').forEach((b,i)=>{if(i===scene.chapter)b.setAttribute('aria-current','step');else b.removeAttribute('aria-current')});
+ document.querySelectorAll('.chapters button').forEach((b,i)=>{if(Number(b.dataset.chapter)===scene.chapter)b.setAttribute('aria-current','step');else b.removeAttribute('aria-current')});
  document.querySelectorAll('.overview-item').forEach((b,i)=>{b.classList.toggle('current',i===index);b.setAttribute('aria-current',i===index?'step':'false')});
  stage.querySelectorAll('[data-zoom]').forEach(b=>{const im=b.querySelector('img');if(!im.hidden&&!b.hasAttribute('aria-label'))b.setAttribute('aria-label',`Увеличить: ${b.dataset.zoom}`);b.addEventListener('click',()=>{disposeZoomImages();$('#zoom-image').src=im.src;$('#zoom-image').alt=im.alt;$('#image-title').textContent=b.dataset.zoom;$('#image-dialog').dataset.kind=b.dataset.zoomKind||(b.dataset.zoom.startsWith('Полное')?'condition':'image');disposeZoomImages=bindImages($('.image-scroll'));$('#image-dialog').showModal();$('.image-scroll').scrollTop=0;$('.image-scroll').scrollLeft=0})});
  $('#announcer').textContent=`Экран ${index+1}. ${scene.title}`;
@@ -50,7 +50,7 @@ function mountScene(n,direction=1){
 // Keep navigation locked only until the actual scene transition finishes.
 export function renderScene(n,direction=1){
  if(n<0||n>=scenes.length)return Promise.resolve();
- if(busy)return sceneTransition;
+ if(busy)return sceneTransition.then(()=>renderScene(n,direction));
  busy=true;stage.setAttribute('aria-busy','true');
  sceneTransition=(async()=>{
   const old=stage.querySelector('.scene');

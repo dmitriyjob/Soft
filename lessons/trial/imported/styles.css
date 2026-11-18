@@ -429,3 +429,14 @@ body[data-scene=welcome] .scene-grid{grid-template-columns:.92fr 1.08fr;gap:58px
  .website-scene h2{font-size:34px}
  .website-scene .website-qr img{width:200px}
 }
+/* Introduction: personal portrait and four conversational prompts. */
+.dmitriy-scene h2{font-size:clamp(36px,4vw,64px)}
+.dmitriy-portrait{display:block;width:100%;max-height:590px;object-fit:cover;object-position:center 35%;border-radius:48% 48% 36% 36%;border:3px solid #f4c5a5;box-shadow:0 0 0 12px #f9e1cc}
+.goals-scene{background:#c0e0f3;border-radius:24px;text-align:center;cursor:pointer;overflow:hidden}
+.goals-content{width:100%;padding:20px 2%;position:relative}
+.goal-symbol{font-size:clamp(80px,10vw,150px);line-height:1.1;margin-bottom:30px}
+.goals-scene h2{font-size:clamp(32px,4.5vw,64px);margin-bottom:45px;color:#111}
+.goal-question{display:flex;align-items:center;justify-content:center;min-height:150px;padding:25px 35px;border-radius:24px;background:white;box-shadow:7px 9px 0 #96bce055;font-size:clamp(24px,3vw,44px);line-height:1.25;color:#111}
+.goal-counter{margin:24px 0 8px;font-variant-numeric:tabular-nums;color:#426579}
+.goal-hint{font-size:14px;color:#426579}
+@media(max-width:700px){.dmitriy-portrait{max-height:400px;width:min(100%,350px);margin:auto}.goals-content{padding:12px 0}.goal-symbol{margin-bottom:24px}.goals-scene h2{margin-bottom:28px}.goal-question{padding:22px 18px;min-height:180px}.goal-hint{font-size:12px}}
