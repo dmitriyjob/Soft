@@ -431,15 +431,16 @@ body[data-scene=welcome] .scene-grid{grid-template-columns:.92fr 1.08fr;gap:58px
 }
 /* Introduction: personal portrait and four conversational prompts. */
 .dmitriy-scene h2{font-size:clamp(36px,4vw,64px)}
-.dmitriy-portrait{display:block;width:100%;max-height:590px;object-fit:cover;object-position:center 35%;border-radius:48% 48% 36% 36%;border:3px solid #f4c5a5;box-shadow:0 0 0 12px #f9e1cc}
-.goals-scene{background:var(--bg);border-radius:24px;text-align:center;cursor:pointer;overflow:hidden}
+.dmitriy-portrait{display:block;width:100%;height:auto;max-height:none;object-fit:contain;border-radius:20px;border:1px solid var(--line);box-shadow:none}
+.dmitriy-scene .teacher-figure{width:min(100%,390px);justify-self:center;margin:0}
+.goals-scene{background:var(--bg);border-radius:0;text-align:left;cursor:pointer;overflow:hidden}
 .goals-content{width:100%;padding:20px 2%;position:relative}
 .goal-symbol{font-size:clamp(80px,10vw,150px);line-height:1.1;margin-bottom:30px}
 .goals-scene h2{font-size:clamp(32px,4.5vw,64px);margin-bottom:45px;color:#111}
-.goal-question{display:flex;align-items:center;justify-content:center;min-height:150px;padding:25px 35px;border-radius:24px;background:white;border:1px solid var(--line);box-shadow:0 8px 30px #00000005;font-size:clamp(24px,3vw,44px);line-height:1.25;color:#111}
+.goal-question{display:flex;align-items:center;justify-content:flex-start;min-height:150px;padding:25px 35px;border-radius:24px;background:white;border:1px solid var(--line);box-shadow:0 8px 30px #00000005;font-size:clamp(24px,3vw,44px);line-height:1.25;color:#111}
 .goal-counter{margin:24px 0 8px;font-variant-numeric:tabular-nums;color:var(--muted)}
 .goal-hint{font-size:14px;color:var(--muted)}
-@media(max-width:700px){.dmitriy-portrait{max-height:400px;width:min(100%,350px);margin:auto}.goals-content{padding:12px 0}.goal-symbol{margin-bottom:24px}.goals-scene h2{margin-bottom:28px}.goal-question{padding:22px 18px;min-height:180px}.goal-hint{font-size:12px}}
+@media(max-width:700px){.dmitriy-portrait{max-height:none;width:100%;margin:auto}.goals-content{padding:12px 0}.goal-symbol{margin-bottom:24px}.goals-scene h2{margin-bottom:28px}.goal-question{padding:22px 18px;min-height:180px}.goal-hint{font-size:12px}}
 
 /* Consistent lesson palette and responsive binary explanation. */
 .goals-scene h2,.goal-question{color:var(--ink)}
@@ -460,3 +461,5 @@ body[data-scene=welcome] .scene-grid{grid-template-columns:.92fr 1.08fr;gap:58px
 @media(max-width:700px){.binary-heading{flex-wrap:wrap;gap:8px}.binary-table{min-width:560px}.binary-description{margin:20px 0}.binary-result{gap:24px}.binary-note{font-size:20px}}
 
 .binary-result p{font-size:inherit;line-height:1.4;color:var(--ink)}
+
+.goals-content{padding:20px 0}.goals-content .eyebrow{margin-bottom:28px}.goal-question{justify-content:flex-start}.goal-counter{font-size:18px;font-weight:600}.goal-hint{margin-top:14px}
