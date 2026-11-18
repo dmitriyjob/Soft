@@ -331,3 +331,6 @@ body[data-tone=dark] .fx-spot::after{background:radial-gradient(380px circle at 
 @media(max-width:760px){.tg-layout{grid-template-columns:1fr;gap:28px}.tg-device{margin:0 auto}.tg-points button{opacity:.8}.lx-viewport{height:clamp(220px,58vw,420px)}.lx-tabs button{font-size:13px;padding:8px 11px 10px}.fx-pill{display:none}}
 
 @media(prefers-reduced-motion:reduce){.brand::after,.website-qr a::before,.format-columns>[data-format-step]:not(.revealed)::after,.lk-wire path,.tg-typing i{animation:none}.fx-wi,.fx-l,.fx-acc{animation:none!important;color:inherit}.fx-acc{color:var(--accent)}}
+/* The format cards themselves fade in; no question-mark placeholders. */
+.format-cards-scene .format-columns>[data-format-step]:not(.revealed){opacity:0;border:0!important}
+.format-cards-scene .format-columns>[data-format-step]:not(.revealed)::after{display:none}
