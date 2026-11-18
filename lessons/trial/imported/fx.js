@@ -57,6 +57,7 @@ function stagger(section,base){
  const items=[...section.querySelectorAll(STAGGER)].filter(el=>!el.closest('.lesson-demos,.tg-phone,.machine-root,[data-format-step],.agenda'));
  let k=0;
  for(const el of items){
+  if(el.querySelector('.dmitriy-portrait'))continue;
   const tiles=el.classList.contains('task-tile');const d=base+(tiles?Number([...el.parentElement.children].indexOf(el))*22+120:Math.min(k++,16)*70);
   const a=el.animate(tiles?[{opacity:0,transform:'scale(.6)'},{opacity:1,transform:'none'}]:[{opacity:0,transform:'translateY(22px)',filter:'blur(6px)'},{opacity:1,transform:'none',filter:'blur(0)'}],{duration:tiles?520:820,delay:d,easing:tiles?'cubic-bezier(.34,1.5,.55,1)':EASE,fill:'backwards'});
   sceneCleanup.push(()=>a.cancel());
