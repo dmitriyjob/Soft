@@ -1,4 +1,4 @@
-import {scenes as original} from './content.js?v=5d396cabb411';
+import {scenes as original} from './content.js?v=c10203d6c68a';
 const questions=[
  'К какому результату хочешь прийти?',
  'Как готовишься сейчас?',
@@ -19,6 +19,6 @@ function bindGoals(section,{direction}){
 }
 export const introduction=[
  {...original[0],html:original[0].html.replace('<p class="eyebrow">Групповое пробное</p>','')},
- {id:'about-dmitriy',chapter:0,title:'Дмитрий Валерьевич',className:'about-scene dmitriy-scene',html:`<div class="scene-grid"><div><p class="eyebrow">Твой преподаватель</p><h2>По эту сторону<br>экрана — <span class="accent">Дмитрий<br>Валерьевич</span></h2><p class="about-description">Преподаватель информатики</p><ul class="plus-list"><li>Сдал ЕГЭ на <strong>100 баллов</strong></li><li>Выпустил <strong>100+ высокобалльников (80+)</strong></li><li>Разработал <strong>собственную программу подготовки</strong></li></ul><div class="stats-inline"><div><strong class="accent">4</strong><span>года преподавания</span></div><div><strong>4,8</strong><span>средний балл ОГЭ</span></div><div><strong>85</strong><span>средний балл ЕГЭ</span></div></div></div><figure class="teacher-figure"><img class="dmitriy-portrait" src="LIZ04641-retouched.jpg?v=5d396cabb411" width="4000" height="6000" fetchpriority="high" alt="Дмитрий Валерьевич за ноутбуком"></figure></div>`},
+ {id:'about-dmitriy',chapter:0,title:'Дмитрий Валерьевич',className:'about-scene dmitriy-scene',html:`<div class="scene-grid"><div><p class="eyebrow">Твой преподаватель</p><h2>По эту сторону<br>экрана — <span class="accent">Дмитрий<br>Валерьевич</span></h2><p class="about-description">Преподаватель информатики</p><ul class="plus-list"><li>Сдал ЕГЭ на <strong>100 баллов</strong></li><li>Выпустил <strong>100+ высокобалльников (80+)</strong></li><li>Разработал <strong>собственную программу подготовки</strong></li></ul><div class="stats-inline"><div><strong class="accent">4</strong><span>года преподавания</span></div><div><strong>4,8</strong><span>средний балл ОГЭ</span></div><div><strong>85</strong><span>средний балл ЕГЭ</span></div></div></div><figure class="teacher-figure"><img class="dmitriy-portrait" src="LIZ04641-retouched.jpg?v=c10203d6c68a" width="4000" height="6000" fetchpriority="high" alt="Дмитрий Валерьевич за ноутбуком"></figure></div>`},
  {id:'goals',chapter:0,title:'Давай поговорим о целях',className:'goals-scene',html:`<div class="goals-content"><p class="eyebrow">Твои цели и ожидания</p><h2>Давай поговорим о целях.</h2><div class="goal-question" aria-live="polite"></div><p class="goal-counter"></p><p class="goal-hint">Нажми на слайд или «Показать», чтобы перейти к следующему вопросу</p></div>`,bind:bindGoals}
 ];
