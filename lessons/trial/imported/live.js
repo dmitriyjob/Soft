@@ -284,7 +284,7 @@ const winBar=url=>`<div class="win-bar"><i></i><i></i><i></i><span>${url}</span>
 
 /* ================= 1. класс из 30 (сцена «Сложность в цифрах») ================= */
 export function classMarkup(){
- return `<div class="lv-klass"><div class="lv-kstats"><div class="lv-kstat" data-ks="1"><strong>1 из 6</strong><p>не преодолел<br> минимальный порог</p></div><div class="lv-kstat" data-ks="2"><strong>1 из 5</strong><p>набирает<br> 80+ баллов</p></div><div class="lv-krank"><img src="imported/assets/slide-04-2.png" alt="Грустный бегемотик"><div><strong>2-е место</strong><p>по сложности*</p></div></div></div><div class="klass-stage" data-state="-1" aria-hidden="true"><p class="klass-cap">Класс из 30 выпускников</p><div class="klass-grid"></div><p class="klass-count"><b data-klass-n>30</b><span data-klass-unit>выпускников сдают информатику</span></p></div></div>`;
+ return `<div class="lv-klass"><div class="lv-kstats"><div class="lv-kstat" data-ks="1"><strong>1 из 6</strong><p>не преодолел<br> минимальный порог</p></div><div class="lv-kstat" data-ks="2"><strong>1 из 5</strong><p>набирает<br> 80+ баллов</p></div><div class="lv-krank"><div><strong>2-е место</strong><p>по сложности*</p></div></div></div><div class="klass-stage" data-state="-1" aria-hidden="true"><p class="klass-cap">Класс из 30 выпускников</p><div class="klass-grid"></div><p class="klass-count"><b data-klass-n>30</b><span data-klass-unit>выпускников сдают информатику</span></p></div></div>`;
 }
 export function bindClass(section,{direction=1}={}){
  const grid=$('.klass-grid',section),stage=$('.klass-stage',section),num=$('[data-klass-n]',section),unit=$('[data-klass-unit]',section),stats=$$('[data-ks]',section);
