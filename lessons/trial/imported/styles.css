@@ -458,3 +458,5 @@ body[data-scene=welcome] .scene-grid{grid-template-columns:.92fr 1.08fr;gap:58px
 .binary-result sub{font-size:.45em}
 .machine-head,.tape-world{transition:transform 120ms ease-out!important}
 @media(max-width:700px){.binary-heading{flex-wrap:wrap;gap:8px}.binary-table{min-width:560px}.binary-description{margin:20px 0}.binary-result{gap:24px}.binary-note{font-size:20px}}
+
+.binary-result p{font-size:inherit;line-height:1.4;color:var(--ink)}
