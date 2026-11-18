@@ -1,1 +1,40 @@
-<!doctype html><html lang="ru"><head><meta charset="utf-8"><meta name="viewport" content="width=device-width,initial-scale=1"><meta name="theme-color" content="#bfddf3"><meta name="description" content="Пробное занятие по информатике: знакомство, экзамен, машина Тьюринга и форматы подготовки."><title>Пробное занятие · Информатика</title><link rel="stylesheet" href="./style.css?v=68d264b56a70"><script defer src="./lesson.js?v=b6735f68804f"></script></head><body><button id="menu" aria-controls="sidebar" aria-expanded="false" aria-label="Открыть содержание">☷</button><aside id="sidebar" hidden inert><div class="brand">Пробное занятие</div><nav id="outline" aria-label="Содержание презентации"></nav></aside><main id="main"><div id="canvas-wrap"><article id="screen" tabindex="-1" aria-label="Слайд презентации"><p class="loading">Загружаем презентацию…</p></article></div><footer><div id="status" aria-live="polite"></div><div class="actions"><button id="replay" title="Начать слайд заново" aria-label="Начать слайд заново">↺</button><button id="play" hidden>Проиграть такты</button><button id="fullscreen" aria-label="Полный экран" title="Полный экран (F)">⛶</button><button id="prev" aria-label="Предыдущий шаг">←</button><button id="next">Следующий шаг →</button></div></footer></main><div id="transcript" class="sr-only"></div><noscript>Для пошаговой презентации включите JavaScript.</noscript></body></html>
+<!doctype html>
+<html lang="ru">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <meta name="theme-color" content="#F5F5F7">
+  <title>Пробное занятие · Информатика</title>
+  <meta name="description" content="Пробное занятие по информатике с Ионом. Знакомство, ЕГЭ, пошаговая машина Тьюринга, интерактивные уроки и подготовка.">
+  <link rel="icon" type="image/svg+xml" href="data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 32 32'%3E%3Crect width='32' height='32' rx='8' fill='%23B9521D'/%3E%3Ctext x='16' y='23' text-anchor='middle' font-family='Arial' font-size='23' font-weight='700' fill='white'%3Ei%3C/text%3E%3C/svg%3E">
+  <link rel="preload" as="image" href="imported/assets/slide-05-2.png">
+  <link rel="stylesheet" href="imported/styles.css">
+  <link rel="stylesheet" href="imported/fx.css">
+  <link rel="stylesheet" href="imported/live.css">
+  <script type="module" src="imported/app.js"></script>
+</head>
+<body>
+  <a class="skip-link" href="#stage">К занятию</a>
+  <div class="lesson-shell">
+    <header class="topbar">
+      <button class="brand" id="home" aria-label="В начало занятия">Пробное занятие</button>
+      <nav class="chapters" aria-label="Разделы занятия"></nav>
+      <div class="tools">
+        <button class="icon-button" id="help-open" aria-label="Как управлять" title="Как управлять"><svg viewBox="0 0 24 24" aria-hidden="true"><circle cx="12" cy="12" r="8"/><path d="M9.5 9a2.5 2.5 0 0 1 5 0c0 2-2.5 2-2.5 4m0 3v.1"/></svg></button>
+        <button class="icon-button" id="overview-open" aria-label="Оглавление" title="Оглавление (G)"><svg viewBox="0 0 24 24" aria-hidden="true"><rect x="4" y="4" width="6" height="6" rx="1"/><rect x="14" y="4" width="6" height="6" rx="1"/><rect x="4" y="14" width="6" height="6" rx="1"/><rect x="14" y="14" width="6" height="6" rx="1"/></svg></button>
+        <button class="icon-button" id="fullscreen" aria-label="Полный экран" title="Полный экран (F)"><svg viewBox="0 0 24 24" aria-hidden="true"><path d="M9 4H4v5m11-5h5v5M4 15v5h5m11-5v5h-5"/></svg></button>
+      </div>
+    </header>
+    <main id="stage" tabindex="-1" aria-label="Экран занятия"></main>
+    <footer class="bottom-bar">
+      <div class="scene-meta"><span id="chapter-label"></span><span id="next-scene" class="next-scene"></span></div>
+      <div class="progress-group"><div class="progress-track"><div id="progress-fill"></div></div><span id="scene-count"></span></div>
+      <div class="navigation"><button id="previous" class="back-button" aria-label="Назад"><svg viewBox="0 0 24 24" aria-hidden="true"><path d="m14 6-6 6 6 6"/></svg></button><button id="next" class="primary-button">Дальше</button></div>
+    </footer>
+  </div>
+  <dialog id="overview-dialog" class="overview-dialog"><div class="dialog-top"><h2>План занятия</h2><button class="icon-button dialog-close" aria-label="Закрыть">×</button></div><div id="overview-list"></div></dialog>
+  <dialog id="help-dialog" class="help-dialog"><div class="dialog-top"><h2>Ты управляешь темпом</h2><button class="icon-button dialog-close" aria-label="Закрыть">×</button></div><dl class="shortcut-list"><dt>→ / Пробел</dt><dd>Следующий экран или один такт</dd><dt>←</dt><dd>Назад или предыдущий такт</dd><dt>G</dt><dd>Оглавление</dd><dt>F</dt><dd>Полный экран</dd><dt>Esc</dt><dd>Закрыть окно</dd></dl><p>Можно переключать экраны прокруткой. В сцене с машиной используй кнопку — один клик выполняет одну команду.</p></dialog>
+  <dialog id="image-dialog" class="image-dialog"><div class="dialog-top"><h2 id="image-title"></h2><button class="icon-button dialog-close" aria-label="Закрыть">×</button></div><div class="image-scroll"><img id="zoom-image" alt=""></div></dialog>
+  <p class="sr-only" id="announcer" aria-live="polite" aria-atomic="true"></p>
+</body>
+</html>
