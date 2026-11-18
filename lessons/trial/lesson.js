@@ -1,30 +1,175 @@
-'use strict';
-const $=q=>document.querySelector(q),screen=$('#screen');
-let slides=[],current=0,step=0,pending=0,timer=null;
-const reduced=()=>matchMedia('(prefers-reduced-motion: reduce)').matches;
-const maxSteps=s=>s.states.length>1?s.states.length-1:s.states[0].parts.length;
-function fit(){const host=$('#canvas-wrap'),style=getComputedStyle(host),width=host.clientWidth-parseFloat(style.paddingLeft)-parseFloat(style.paddingRight),height=host.clientHeight-parseFloat(style.paddingTop)-parseFloat(style.paddingBottom);screen.style.width=Math.max(1,Math.min(width,height*16/9))+'px';}
-new ResizeObserver(fit).observe($('#canvas-wrap'));
-function toggleMenu(open){document.body.classList.toggle('menu-open',open);$('#sidebar').hidden=!open;$('#sidebar').inert=!open;$('#menu').setAttribute('aria-expanded',String(open));$('#menu').ariaLabel=open?'Скрыть содержание':'Открыть содержание';}
-$('#menu').onclick=()=>toggleMenu(!document.body.classList.contains('menu-open'));
-function stop(){clearInterval(timer);timer=null;$('#play').textContent='Проиграть такты';}
-function place(el,part){Object.assign(el.style,{left:part.x+'%',top:part.y+'%',width:part.w+'%',height:part.h+'%'});}
-function image(src,cls){const e=document.createElement('img');e.src=src;e.alt='';e.className=cls;e.draggable=false;return e;}
-function preload(){const s=slides[current],next=s.states[Math.min(step+1,s.states.length-1)];[next.image,next.head?.image,...next.parts.map(p=>p.image)].filter(Boolean).forEach(src=>{const im=new Image();im.src=src;});}
-function controls(){const s=slides[current],max=maxSteps(s);$('#prev').disabled=current===0&&step===0;$('#next').disabled=current===slides.length-1&&step===max;$('#next').textContent=step<max?'Следующий шаг →':'Следующий слайд →';$('#replay').disabled=step===0;$('#play').hidden=!s.states[0].head;$('#status').textContent=s.title;document.title=s.title+' · Пробное занятие';$('#transcript').textContent=s.states[s.states.length>1?step:0].text;preload();}
-function update(){const s=slides[current];if(s.states.length===1){screen.querySelectorAll('.part').forEach((p,i)=>p.classList.toggle('visible',i<step));controls();return;}
- const state=s.states[step],base=screen.querySelector('.base');const old=base.cloneNode();old.classList.add('leaving');screen.append(old);base.src=state.image;
- if(reduced())old.remove();else old.animate([{opacity:1},{opacity:0}],{duration:550,easing:'ease-in-out',fill:'forwards'}).finished.catch(()=>{}).finally(()=>old.remove());
- const head=screen.querySelector('.pointer');if(head&&state.head){head.src=state.head.image;place(head,state.head);}controls();}
-function render(){stop();let n=Number(location.hash.slice(1));if(!Number.isInteger(n)||n<1||n>slides.length)n=1;current=n-1;step=Math.min(pending,maxSteps(slides[current]));pending=0;history.replaceState(null,'','#'+n);screen.replaceChildren();const s=slides[current],state=s.states[s.states.length>1?step:0];screen.append(image(state.image,'base'));
- state.parts.forEach((p,i)=>{const im=image(p.image,'part'+(i<step?' visible':''));place(im,p);screen.append(im);});if(state.head){const head=image(state.head.image,'pointer');place(head,state.head);screen.append(head);}
- screen.setAttribute('aria-label',s.title);$('#outline').querySelectorAll('a').forEach(a=>{const active=Number(a.dataset.slide)===n;a.classList.toggle('active',active);if(active)a.setAttribute('aria-current','page');else a.removeAttribute('aria-current');});controls();fit();if(!reduced())screen.animate([{opacity:.1},{opacity:1}],{duration:500,easing:'ease-in-out'});}
-function go(dir){if(!slides.length)return;stop();const max=maxSteps(slides[current]);if(dir>0&&step<max){step++;update();return;}if(dir<0&&step>0){step--;update();return;}const next=current+dir;if(next<0||next>=slides.length)return;pending=dir<0?maxSteps(slides[next]):0;location.hash='#'+(next+1);}
-$('#next').onclick=()=>go(1);$('#prev').onclick=()=>go(-1);$('#replay').onclick=()=>{stop();step=0;update();};$('#play').onclick=()=>{if(timer){stop();return;}if(step===maxSteps(slides[current])){step=0;update();}$('#play').textContent='Пауза';timer=setInterval(()=>{if(step>=maxSteps(slides[current])){stop();return;}step++;update();},1400);};
-screen.onclick=()=>{if(slides.length&&step<maxSteps(slides[current]))go(1);};
-$('#outline').onclick=e=>{if(e.target.closest('a')&&matchMedia('(max-width:700px)').matches)toggleMenu(false);};
-async function fullscreen(){try{if(document.fullscreenElement)await document.exitFullscreen();else await document.documentElement.requestFullscreen();}catch{}}
-$('#fullscreen').onclick=fullscreen;
-addEventListener('hashchange',()=>{if(slides.length)render();});
-document.addEventListener('keydown',e=>{if(e.ctrlKey||e.metaKey||e.altKey||e.target.closest('input,textarea,select'))return;if(['ArrowRight','PageDown'].includes(e.key)||([' ','Enter'].includes(e.key)&&!e.target.closest('button,a'))){e.preventDefault();go(1);}if(['ArrowLeft','PageUp'].includes(e.key)){e.preventDefault();go(-1);}if(e.key==='Escape'){toggleMenu(false);stop();}if(e.key.toLowerCase()==='f')fullscreen();});
-fetch('./slides.json').then(r=>{if(!r.ok)throw Error('Не удалось загрузить слайды');return r.json();}).then(data=>{slides=data;$('#outline').innerHTML=slides.map((s,i)=>`${i===0||slides[i-1].group!==s.group?`<div class="group">${s.group}</div>`:''}<a href="#${i+1}" data-slide="${i+1}">${s.title}</a>`).join('');render();}).catch(()=>{screen.textContent='Не удалось загрузить презентацию. Обновите страницу.';});
+import { prepareMachine } from './machine.js';
+
+const stage = document.querySelector('#stage');
+const sections = [...stage.querySelectorAll('section[data-page]')];
+const chapters = [
+  { first: 1, title: 'Знакомство' },
+  { first: 8, title: 'Экзамен' },
+  { first: 18, title: 'Машина Тьюринга' },
+  { first: 48, title: 'Подготовка' },
+  { first: 55, title: 'Занятия' },
+  { first: 61, title: 'Форматы и вопросы' }
+];
+const total = Number(sections.at(-1).dataset.page);
+const machines = new Map();
+const toc = document.querySelector('#toc');
+const contents = document.querySelector('#contents');
+const back = document.querySelector('#back');
+const forward = document.querySelector('#forward');
+const pad = n => String(n).padStart(2, '0');
+let page;
+let current;
+
+function addScoreScale() {
+  const values = [7,14,20,27,34,40,43,46,48,51,54,56,59,62,64,67,70,72,75,78,80,83,85,88,90,93,95,98,100];
+  const root = document.querySelector('#score-scale');
+  for (let start = 0; start < values.length; start += 10) {
+    const table = document.createElement('table');
+    table.setAttribute('aria-label', `Перевод первичных баллов с ${start + 1} до ${Math.min(start + 10, values.length)}`);
+    table.innerHTML = '<thead><tr><th>Первичный</th><th>Тестовый</th></tr></thead><tbody>' +
+      values.slice(start, start + 10).map((score, i) => {
+        const style = score === 85 ? 'target' : score >= 80 ? 'high' : '';
+        return `<tr class="${style}"><td>${start + i + 1}</td><td>${score}</td></tr>`;
+      }).join('') + '</tbody>';
+    root.append(table);
+  }
+}
+
+function addPrices(section) {
+  const monthly = section.dataset.price === 'month';
+  const unit = monthly ? 'в месяц' : 'за занятие';
+  const duration = monthly ? '4 занятия по 90–120 минут' : 'Одно занятие 90–120 минут';
+  const extra = monthly ? '4 мини-занятия один на один по необходимости.' : 'Мини-занятие один на один по необходимости.';
+  section.insertAdjacentHTML('beforeend', `
+    <div class="cards"><article><h3>Индивидуально-групповой</h3>
+    <p class="tariff">${monthly ? '8 000' : '2 000'} ₽ <small>${unit}</small></p><p>${duration}.</p></article>
+    <article class="tint"><h3>Расширенный</h3>
+    <p class="tariff">${monthly ? '10 000' : '2 500'} ₽ <small>${unit}</small></p><p>${duration}. ${extra}</p></article></div>
+    <p class="included"><b>В обоих форматах</b> — теория в группе, индивидуальная практика,
+    ${monthly ? 'от четырёх домашних работ с видеоразборами' : 'домашняя работа с видеоразбором'},
+    авторский пробник каждый месяц, поддержка, помощь с поступлением и доступ ко всем сервисам.</p>`);
+}
+
+function prepareSections() {
+  for (const section of sections) {
+    const first = Number(section.dataset.page);
+    const chapter = chapters.findLast(item => item.first <= first);
+    if (first !== 1) {
+      const label = document.createElement('p');
+      label.className = 'chapter-label';
+      label.textContent = chapter.title;
+      section.prepend(label);
+    }
+    if (section.hasAttribute('data-question')) {
+      section.insertAdjacentHTML('beforeend', '<label class="question-box">Заметка для обсуждения<textarea placeholder="Можно ответить устно или записать пару слов"></textarea></label>');
+    }
+    if (section.dataset.price) addPrices(section);
+    if (section.dataset.input) machines.set(section, prepareMachine(section));
+  }
+  addScoreScale();
+}
+
+function prepareNavigation() {
+  for (const chapter of chapters) {
+    const details = document.createElement('details');
+    const summary = document.createElement('summary');
+    summary.textContent = chapter.title;
+    details.append(summary);
+    const end = chapters[chapters.indexOf(chapter) + 1]?.first ?? total + 1;
+    for (const section of sections) {
+      const first = Number(section.dataset.page);
+      if (first < chapter.first || first >= end) continue;
+      const length = machines.get(section)?.length ?? 1;
+      const range = length === 1 ? pad(first) : `${first}–${first + length - 1}`;
+      const link = document.createElement('a');
+      link.href = '#' + first;
+      link.innerHTML = `<span>${range}</span>${section.dataset.name}`;
+      details.append(link);
+    }
+    details.dataset.first = chapter.first;
+    toc.append(details);
+    const marker = document.createElement('a');
+    marker.href = '#' + chapter.first;
+    marker.title = chapter.title;
+    marker.setAttribute('aria-label', chapter.title);
+    document.querySelector('#chapter-links').append(marker);
+  }
+}
+
+function render() {
+  const hash = location.hash.slice(1);
+  const requested = /^\d+$/.test(hash) ? Number(hash) : 1;
+  const next = Math.max(1, Math.min(total, requested));
+  if (hash && hash !== String(next)) history.replaceState(null, '', '#' + next);
+  if (page === next) return;
+  const previousPage = page;
+  page = next;
+  const section = sections.findLast(s => Number(s.dataset.page) <= page);
+  const chapter = chapters.findLast(item => item.first <= page);
+  if (contents.open) contents.close();
+  if (current !== section) {
+    if (current) current.hidden = true;
+    section.hidden = false;
+    current = section;
+    window.scrollTo(0, 0);
+  }
+  machines.get(section)?.render(page - Number(section.dataset.page));
+  const position = `${pad(page)} / ${total}`;
+  document.querySelector('#page-count').textContent = position;
+  document.querySelector('#chapter-name').textContent = chapter.title;
+  document.querySelector('#announcement').textContent = `Слайд ${page} из ${total}. ${section.dataset.name}`;
+  document.title = `${section.dataset.name} · Пробный урок`;
+  back.disabled = page === 1;
+  forward.disabled = page === total;
+  for (const marker of document.querySelectorAll('#chapter-links a, #toc a')) {
+    const active = marker.hash === '#' + (toc.contains(marker) ? section.dataset.page : chapter.first);
+    if (active) marker.setAttribute('aria-current', 'page');
+    else marker.removeAttribute('aria-current');
+  }
+  if (previousPage && (document.activeElement === document.body || document.activeElement.closest('section[hidden]'))) {
+    stage.focus({ preventScroll: true });
+  }
+}
+
+function turn(delta) {
+  const target = page + delta;
+  if (target >= 1 && target <= total) location.hash = String(target);
+}
+
+prepareSections();
+prepareNavigation();
+for (const form of document.querySelectorAll('.example-check')) {
+  form.addEventListener('submit', event => {
+    event.preventDefault();
+    const correct = form.elements.answer.value.trim() === form.dataset.answer;
+    form.querySelector('.feedback').textContent = correct ? 'Верно.' : 'Пока не совпало. Проверь вычисление и попробуй ещё раз.';
+  });
+}
+render();
+window.addEventListener('hashchange', render);
+back.addEventListener('click', () => turn(-1));
+forward.addEventListener('click', () => turn(1));
+document.querySelector('#open-menu').addEventListener('click', () => {
+  const currentLink = toc.querySelector('[aria-current]');
+  for (const group of toc.querySelectorAll('details')) group.open = group.contains(currentLink);
+  contents.showModal();
+  currentLink.scrollIntoView({ block: 'nearest' });
+});
+toc.addEventListener('click', event => {
+  if (event.target.closest('a')) contents.close();
+});
+contents.querySelector('[data-close]').addEventListener('click', () => contents.close());
+contents.addEventListener('click', event => {
+  if (event.target !== contents) return;
+  const r = contents.getBoundingClientRect();
+  if (event.clientX < r.left || event.clientX > r.right || event.clientY < r.top || event.clientY > r.bottom) contents.close();
+});
+document.addEventListener('keydown', event => {
+  if (event.defaultPrevented || event.altKey || event.ctrlKey || event.metaKey || event.shiftKey ||
+    contents.open || event.target.closest('textarea,input,select,[contenteditable="true"]')) return;
+  if (event.key === ' ' && event.target.closest('button,a')) return;
+  const changes = { ArrowRight: 1, PageDown: 1, ' ': 1, ArrowLeft: -1, PageUp: -1, Home: 1 - page, End: total - page };
+  if (!Object.hasOwn(changes, event.key)) return;
+  event.preventDefault();
+  turn(changes[event.key]);
+});

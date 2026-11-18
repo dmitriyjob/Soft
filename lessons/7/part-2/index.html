@@ -1,0 +1,334 @@
+<!doctype html>
+<html lang="ru">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Задание 7 · Кодирование звука — Soft</title>
+<meta name="description" content="Интерактивный урок: задание 7 ЕГЭ по информатике, кодирование звука. Частота дискретизации, битовая глубина, каналы, формула объёма, задачи ЕГЭ.">
+<meta name="theme-color" content="#F5F5F7">
+<link rel="icon" href="data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 32 32'%3E%3Crect width='32' height='32' rx='8' fill='%23B9521D'/%3E%3Ctext x='16' y='23' text-anchor='middle' font-family='Arial' font-size='23' font-weight='700' fill='white'%3Ei%3C/text%3E%3C/svg%3E">
+<link rel="stylesheet" href="./styles.css?v=efc3f98612a9">
+<link rel="stylesheet" href="./au.css?v=cd8dfe7bb951">
+<link rel="stylesheet" href="./viewer.css?v=00a77e6ecef2">
+</head>
+<body data-home="../" data-lesson-part="2">
+
+<div id="app">
+
+
+  <main id="deck">
+
+  <!-- ============ 01 · ЗВУК ============ -->
+  <section class="slide title-slide" data-sec="1" data-id="title" data-title="Что будет сегодня?" data-w="hero">
+    <div class="row" style="align-items:center;height:100%;gap:48px">
+      <div class="col" style="flex:1">
+        <div class="tbadge"><b>№7</b><span>ЕГЭ по информатике · часть 2 из 3</span></div>
+        <h1 style="font-size:96px">Кодирование<br><em>звука</em></h1>
+        <p class="lead" style="max-width:520px">Как живая волна превращается в нули и единицы — и сколько места займёт голосовое сообщение.</p>
+        <div class="tplan">
+          <span><i>01</i>Звук</span><span><i>02</i>Оцифровка</span><span><i>03</i>Формула</span><span><i>04</i>Задачи ЕГЭ</span><span><i>05</i>Во сколько раз</span><span><i>06</i>Итог</span>
+        </div>
+        <div class="kbhint"><span><kbd>→</kbd>листать</span><span><kbd>N</kbd>пояснения</span><span><kbd>?</kbd>все клавиши</span></div>
+      </div>
+      <div class="col" style="flex:none">
+        <div class="scope" id="hero">
+          <div class="scope-top"><span class="led"></span><span id="heroCap">аналоговый звук</span><span class="scope-r" id="heroR"></span></div>
+          <canvas id="heroCv"></canvas>
+          <div class="scope-ft"><button class="play" id="heroPlay"><i></i>Включить трек</button><span>волна → срезы → числа</span></div>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <section class="slide" data-sec="1" data-id="wave" data-title="Звук — это волна" data-steps="2" data-w="wave">
+    <div class="eyebrow">Звук</div>
+    <h1 id="wvHead">Звук в природе — это <em>волна</em></h1>
+    <div class="row" style="gap:30px;align-items:flex-start">
+      <div class="scope wv-scope">
+        <div class="scope-top"><span class="led"></span><span>VILLIAN, madk1d — «ДИНАСТИЯ» · фрагмент</span></div>
+        <canvas id="wvCv"></canvas>
+        <div class="scope-ft"><button class="play" id="wvPlay"><i></i>Послушать</button><span>сверху весь фрагмент · снизу под лупой</span></div>
+      </div>
+      <div class="col wv-parts" data-s="1">
+        <div class="wvp"><span class="wvp-ic tx">Ж</span><div><b>Текст</b><i>делим на <u>символы</u></i></div></div>
+        <div class="wvp"><span class="wvp-ic px"><s></s><s></s><s></s><s></s><s></s><s></s><s></s><s></s><s></s></span><div><b>Картинка</b><i>делим на <u>пиксели</u></i></div></div>
+        <div class="wvp q" id="wvQ"><span class="wvp-ic wv"><svg viewBox="0 0 60 40"><path d="M2 20 C 10 2, 18 2, 24 20 S 38 38, 44 20 S 54 6, 58 14" fill="none" stroke="currentColor" stroke-width="3.5" stroke-linecap="round"/><g class="knife"><path d="M20 0 V40 M30 0 V40 M40 0 V40" stroke="currentColor" stroke-width="2" stroke-dasharray="3 3"/></g></svg></span><div><b>Звук</b><i class="qq">делим на… <u>?</u></i><i class="cc">частей нет — <u>режем сами</u></i></div></div>
+      </div>
+    </div>
+    <div class="cap" id="wvCap"></div>
+  </section>
+
+  <!-- ============ 02 · ОЦИФРОВКА ============ -->
+  <section class="slide" data-sec="2" data-id="cuts" data-title="Частота дискретизации" data-steps="3" data-w="cuts">
+    <div class="eyebrow">Оцифровка · по времени</div>
+    <h1 id="ctHead">Берём <em>одну секунду</em> звука</h1>
+    <div class="row" style="gap:28px;align-items:flex-start">
+      <div class="gw">
+        <div class="gw-tag" id="ctTag"></div>
+        <canvas id="ctCv"></canvas>
+        <div class="gw-sec"><span>1 секунда</span></div>
+        <div class="gw-ctl" id="ctCtl"><label>срезов за 1 секунду</label><input type="range" min="2" max="64" value="32" id="ctNu"><div class="qm"><span>похоже на волну</span><div class="qbar" id="ctQ"><i></i></div><b id="ctQv"></b></div></div>
+      </div>
+      <div class="col side" id="ctSide"></div>
+    </div>
+  </section>
+
+  <section class="slide" data-sec="2" data-id="depth" data-title="Битовая глубина" data-steps="2" data-w="depth">
+    <div class="eyebrow">Оцифровка · по высоте</div>
+    <h1 id="dpHead">Теперь режем <em>по высоте</em></h1>
+    <div class="row" style="gap:28px;align-items:flex-start">
+      <div class="gw">
+        <div class="gw-tag on" id="dpTag"></div>
+        <canvas id="dpCv"></canvas>
+        <div class="gw-sec"><span>1 секунда</span></div>
+        <div class="gw-ctl two" id="dpCtl">
+          <label>ν <b id="dpNuV"></b><input type="range" min="4" max="48" value="16" id="dpNu"></label>
+          <label>i <b id="dpBitsV"></b><input type="range" min="1" max="6" value="3" id="dpBits"></label>
+          <div class="qm"><span>похоже</span><div class="qbar" id="dpQ"><i></i></div><b id="dpQv"></b></div>
+        </div>
+      </div>
+      <div class="col side" id="dpSide"></div>
+    </div>
+  </section>
+
+  <section class="slide" data-sec="2" data-id="lab" data-title="Послушай цифровой звук" data-steps="0" data-w="lab">
+    <div class="eyebrow">Лаборатория · «Династия» · лучше в наушниках</div>
+    <h1>Послушай, как звучит <em>оцифровка</em></h1>
+    <div class="row" style="gap:28px;align-items:flex-start">
+      <div class="scope lb-scope"><canvas id="lbCv"></canvas></div>
+      <div class="col lb-ctl">
+        <div class="lb-btns"><button class="play" id="lbOrig"><i></i>Оригинал</button><button class="play hot" id="lbDig"><i></i>Цифровой</button></div>
+        <div class="lb-s"><div><span>Частота дискретизации <b>ν</b></span><label class="lb-v"><input id="lbNuIn" type="number" min="300" max="48000" step="50" aria-label="Частота в герцах"><i>Гц</i></label></div><input type="range" min="0" max="1000" id="lbNu"><div class="lb-rng"><span>300 Гц</span><span>48 кГц</span></div></div>
+        <div class="lb-s"><div><span>Битовая глубина <b>i</b></span><label class="lb-v"><input id="lbBitsIn" type="number" min="1" max="24" aria-label="Глубина в битах"><i id="lbBitsU">бит</i></label></div><input type="range" min="1" max="24" id="lbBits"><div class="lb-rng"><span>1 бит</span><span>24 бита</span></div></div>
+        <div class="lb-pre" id="lbPre"></div>
+        <div class="lb-size" id="lbSize"></div>
+      </div>
+    </div>
+  </section>
+
+  <section class="slide" data-sec="2" data-id="secs" data-title="Время в секундах" data-steps="2" data-w="secs">
+    <div class="eyebrow">Оцифровка · время · весь трек «Династия»</div>
+    <h1 id="scHead">Время <em>t</em> — в секундах</h1>
+    <div class="sc-stage" id="scStage">
+      <div class="sc-lb" id="scLb"></div>
+      <div class="sc-tiles" id="scTiles"></div>
+      <div class="sc-ruler" id="scRuler"></div>
+    </div>
+    <div class="sc-bot">
+      <div class="sc-in"><label><input type="number" id="scM" min="0" max="4" value="2"><span>мин</span></label><label><input type="number" id="scS" min="0" max="59" value="30"><span>с</span></label></div>
+      <div class="sc-mid"><div class="sc-eq" id="scEq"></div><div class="sc-cnt" id="scCnt"></div></div>
+      <div class="sc-btns"><button class="btn sc-b" id="scCut">✂ Разрезать на секунды</button><button class="btn sc-b" id="scGlue">Склеить в запись</button></div>
+    </div>
+    <div class="cap sc-cap" id="scCap"></div>
+  </section>
+
+  <section class="slide" data-sec="2" data-id="chan" data-title="Каналы: моно, стерео, квадро" data-steps="3" data-w="chan">
+    <div class="eyebrow">Оцифровка · каналы</div>
+    <h1 id="chHead">Моно — <em>одна волна</em></h1>
+    <div class="row" style="gap:34px;align-items:flex-start">
+      <div class="ch-stage" id="chStage" data-mode="mono">
+        <svg viewBox="0 0 520 440">
+          <rect x="8" y="8" width="504" height="424" rx="26" class="room"/>
+          <g class="spk" data-sp="l" transform="translate(96 110)"><rect x="-30" y="-38" width="60" height="76" rx="12"/><circle r="17" cy="4"/><circle r="6" cy="-24" class="tw"/><path class="wv" d="M40 -16 q10 16 0 32 M52 -26 q16 26 0 52"/></g>
+          <g class="spk" data-sp="r" transform="translate(424 110)"><rect x="-30" y="-38" width="60" height="76" rx="12"/><circle r="17" cy="4"/><circle r="6" cy="-24" class="tw"/><path class="wv" d="M-40 -16 q-10 16 0 32 M-52 -26 q-16 26 0 52"/></g>
+          <g class="spk q4" data-sp="bl" transform="translate(96 340)"><rect x="-30" y="-38" width="60" height="76" rx="12"/><circle r="17" cy="4"/><circle r="6" cy="-24" class="tw"/><path class="wv" d="M40 -16 q10 16 0 32 M52 -26 q16 26 0 52"/></g>
+          <g class="spk q4" data-sp="br" transform="translate(424 340)"><rect x="-30" y="-38" width="60" height="76" rx="12"/><circle r="17" cy="4"/><circle r="6" cy="-24" class="tw"/><path class="wv" d="M-40 -16 q-10 16 0 32 M-52 -26 q-16 26 0 52"/></g>
+          <g class="head" transform="translate(260 220)"><ellipse rx="56" ry="64" class="hd"/><path d="M-12 -62 L0 -84 L12 -62 Z" class="ns"/><ellipse cx="-58" rx="10" ry="20" class="ear l"/><ellipse cx="58" rx="10" ry="20" class="ear r"/><text y="8">ты</text></g>
+          <circle id="chSrc" r="14" cx="260" cy="85" class="srcdot"/>
+        </svg>
+      </div>
+      <div class="col">
+        <div class="ch-seg" id="chSeg"><button>Моно</button><button>Стерео</button><button>Квадро</button></div>
+        <div class="ch-n" id="chN"></div>
+        <p class="ch-d" id="chD"></p>
+        <div class="ch-sc" id="chSc"><div><span id="chLt">левый канал</span><canvas id="chL"></canvas></div><div><span id="chRt">правый канал</span><canvas id="chR"></canvas></div><div class="q4c"><span>левый задний</span><canvas id="chBL"></canvas></div><div class="q4c"><span>правый задний</span><canvas id="chBR"></canvas></div></div>
+        <div class="ch-play"><button class="play" id="chPlay"><i></i>Послушать</button><small id="chHint">лучше в наушниках — услышишь, как звук ходит слева направо</small></div>
+        <div class="ch-sum" id="chSum"><span>моно <b>n = 1</b></span><span>стерео <b>n = 2</b></span><span>квадро <b>n = 4</b></span><em>Если каналов больше — в задаче скажут, сколько.</em></div>
+      </div>
+    </div>
+  </section>
+
+  <!-- ============ 03 · ФОРМУЛА ============ -->
+  <section class="slide" data-sec="3" data-id="formula" data-title="Формула объёма звука" data-steps="2" data-w="formula">
+    <div class="eyebrow">Формула</div>
+    <h1 id="fmHead">Четыре буквы — <em>одна формула</em></h1>
+    <div class="fm-cards" id="fmCards">
+      <div class="fmc"><b>ν</b><span>частота дискретизации</span><small>Гц — срезов в секунду</small></div><i class="fm-x">·</i>
+      <div class="fmc"><b>i</b><span>битовая глубина</span><small>бит</small></div><i class="fm-x">·</i>
+      <div class="fmc"><b>t</b><span>время</span><small>в секундах</small></div><i class="fm-x">·</i>
+      <div class="fmc"><b>n</b><span>каналы</span><small>моно 1 · стерео 2 · квадро 4</small></div>
+    </div>
+    <div class="fm-eq" id="fmEq"><span class="mth"><b>V</b> = ν · i · t · n</span><small>объём звука в <b>битах</b> — ничего лишнего, просто перемножаем</small></div>
+    <div class="fm-calc" id="fmCalc"><div class="fm-in" id="fmIn"></div><div class="fm-out" id="fmOut"></div></div>
+  </section>
+
+  <section class="slide" data-sec="3" data-id="units" data-title="Биты, байты, Кбайты" data-steps="1" data-w="units">
+    <div class="eyebrow">Формула · единицы</div>
+    <h1 id="unHead">Биты → байты → <em>Кбайты</em> → Мбайты</h1>
+    <div class="un-row">
+      <div class="un"><small>бит</small><b class="un-v"></b></div><i class="un-a">÷ 8</i>
+      <div class="un"><small>байт</small><b class="un-v"></b></div><i class="un-a">÷ 1024</i>
+      <div class="un hot"><small>Кбайт</small><b class="un-v"></b></div><i class="un-a">÷ 1024</i>
+      <div class="un"><small>Мбайт</small><b class="un-v"></b></div>
+    </div>
+    <div class="un-inp"><label>Объём в битах <input type="number" id="unIn" value="114624000"></label><small>Это объём из задачи ЕГЭ на следующем экране.</small></div>
+    <div class="un-tip" id="unTip"><div><b>в Кбайты</b><span class="mono">V / (1024 · 8)</span></div><div><b>в Мбайты</b><span class="mono">V / (1024 · 1024 · 8)</span></div><p>Формула даёт <b>биты</b>. Делим сразу, одним выражением — на калькуляторе это одна строка.</p></div>
+  </section>
+
+  <!-- ============ 04 · ЗАДАЧИ ЕГЭ ============ -->
+  <section class="slide" data-sec="4" data-id="t31114" data-title="№31114 — ЕГЭ 18 июня" data-steps="6" data-w="t31114">
+    <div class="eyebrow">№31114 · основная волна 18.06.26 · базовый уровень</div>
+    <h1 id="t1Head">Задача с ЕГЭ <em>18 июня</em></h1>
+    <div class="task">Лена записывает голосовое сообщение для своей подруги. Перед отправкой сообщение оцифровывается в формате <span class="tx-hl" data-k="1">стерео</span> с частотой дискретизации <span class="tx-hl" data-k="2">12 000 Гц</span> и глубиной кодирования <span class="tx-hl" data-k="2">24 бит</span>. Определите <span class="tx-hl k6" data-k="6">наименьшее количество</span> <span class="tx-hl" data-k="4">Кбайт</span>, <span class="tx-hl k6" data-k="6">необходимое для сохранения</span> сообщения в памяти (без учёта заголовка), если его длительность — <span class="tx-hl" data-k="3">3 минуты 19 секунд</span>. В ответе укажите только число.</div>
+    <div class="row t-row">
+      <div class="given"><h3>Дано</h3>
+        <div class="gv" data-s="1"><b>n</b> = 2<small>стерео</small></div>
+        <div class="gv" data-s="2"><b>ν</b> = 12 000 Гц</div>
+        <div class="gv" data-s="2"><b>i</b> = 24 бит<small>видим биты — это глубина</small></div>
+        <div class="gv" data-s="3"><b>t</b> = 3 · 60 + 19 = 199 с</div>
+      </div>
+      <div class="t-f" id="t1F"><small>V в Кбайтах</small><div class="frac"><span>2 · 12 000 · 24 · 199</span><span>1024 · 8</span></div></div>
+      <div class="calc" id="t1Calc"><div class="calc-top"><span>Калькулятор</span><i></i></div><div class="calc-s"><small>114 624 000 ÷ 8 ÷ 1 024 =</small><b id="t1Scr">0</b></div></div>
+    </div>
+    <div class="t-ans" id="t1Ans"><span>13 992,1875</span><i>→</i><span>«наименьшее, <b>необходимое для сохранения</b>» — округляем <b>вверх</b></span><i>→</i><b class="big-a">13 993</b></div>
+  </section>
+
+  <section class="slide" data-sec="4" data-id="round" data-title="Как округлять ответ" data-steps="3" data-w="round">
+    <div class="eyebrow">Ловушка ЕГЭ · округление</div>
+    <h1 id="rdHead">Почему <em>13 993</em>, а не 13 992?</h1>
+    <div class="rd-stage" id="rdStage">
+      <div class="rd-l">
+        <div class="drive"><div class="dv-h"><b>Флешка на 13 992 Кбайт</b><span class="bad">не влезло ✕</span></div><div class="dv-bar"><i class="fill"></i><i class="over"></i><em class="tick a">13 991</em><em class="tick b">13 992</em></div><small>Кусочек <b>0,18 Кбайт</b> — конец голосового — <b>потерялся</b>. А вдруг там самое важное?</small></div>
+        <div class="drive ok"><div class="dv-h"><b>Флешка на 13 993 Кбайт</b><span class="good">влезло ✓</span></div><div class="dv-bar"><i class="fill"></i><i class="free"></i><em class="tick a">13 991</em><em class="tick b">13 992</em><em class="tick c">13 993</em></div><small>Всё поместилось, ещё и место осталось. Берём <b>с запасом</b>.</small></div>
+        <div class="rd-quote" data-s="3">«Перед тем как записать ответ — <b>всегда перечитывай</b>, что спрашивают. Номер простой, а на ЕГЭ на этом многие ошиблись».</div>
+      </div>
+      <div class="rd-r">
+        <div class="rd-cmp" data-s="1">
+          <div class="rc"><small>Задача 31114</small><p>«…наименьшее количество Кбайт, <b>необходимое для сохранения</b>… В ответе укажите только число»</p><div class="rc-a up">13 992,18 → <b>13 993</b><span>вверх</span></div></div>
+          <div class="rc"><small>Задача 31353</small><p>«…В ответе укажите <b>только целую часть</b> полученного числа»</p><div class="rc-a down">13 992,18 → <b>13 992</b><span>отбросить дробь</span></div></div>
+        </div>
+        <div class="rd-task" data-s="2">
+          <small>№31353 · пересдача 08.07.26</small>
+          <p>Лена записывает голосовое сообщение… в формате <b>моно</b>, частота дискретизации <b>20 000 Гц</b>, глубина кодирования <b>16 бит</b>. Наименьшее количество <b>Мбайт</b>… длительность <b>4 минуты 18 секунд</b>. В ответе укажите <b>только целую часть</b>.</p>
+          <div class="rt-sol"><span>n = 1 · ν = 20 000 · i = 16 · t = 4 · 60 + 18 = 258</span><div class="frac sm"><span>1 · 20 000 · 16 · 258</span><span>1024 · 1024 · 8</span></div><span>= 9,84…</span><i>→</i><b>9</b></div>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- ============ 05 · ВО СКОЛЬКО РАЗ ============ -->
+  <section class="slide" data-sec="5" data-id="t160" data-title="№160 — перезаписали файл" data-steps="4" data-w="t160">
+    <div class="eyebrow">№160 · базовый уровень · модуль 2</div>
+    <h1 id="t6Head">Файл <em>перезаписали</em></h1>
+    <div class="task sm">Музыкальный фрагмент был записан в формате <span class="tx-hl" data-k="1">моно</span>, оцифрован и сохранён в виде файла без использования сжатия данных. Размер полученного файла — <span class="tx-hl" data-k="1">24 Мбайт</span>. Затем тот же музыкальный фрагмент был записан повторно в формате <span class="tx-hl" data-k="2">стерео</span> (двухканальная запись) и оцифрован с <span class="tx-hl" data-k="2">разрешением в 4 раза выше</span> и <span class="tx-hl" data-k="2">частотой дискретизации в 1,5 раза меньше</span>, чем в первый раз. Сжатие данных не производилось. Укажите размер файла в Мбайт, полученного при повторной записи.</div>
+    <div class="row pr-row">
+      <div class="pr-col"><h3>Было</h3><div><b>n</b> = 1</div><div><b>ν</b> = x</div><div><b>i</b> = y</div><div><b>t</b> = z</div><div class="v"><b>V</b> = 24</div></div>
+      <div class="pr-col st"><h3>Стало</h3><div><b>n</b> = 2</div><div><b>ν</b> = x / 1,5</div><div><b>i</b> = 4y</div><div><b>t</b> = z<small>про время ничего — не менялось</small></div><div class="v"><b>V</b> = ?</div></div>
+      <div class="pr-frac" id="t6Frac">
+        <div class="pf"><div class="frac big"><span>1 · <s>x</s> · <s>y</s> · <s>z</s></span><span>2 · <s>x</s>/1,5 · 4<s>y</s> · <s>z</s></span></div><i>=</i><div class="frac big"><span>24</span><span>V</span></div></div>
+        <div class="pr-res" id="t6Res"><span>Сокращаем x, y, z и крест-накрест:</span><b>V = 24 · 2 · 4 / 1,5 = 128</b></div>
+      </div>
+    </div>
+  </section>
+
+  <section class="slide" data-sec="5" data-id="mix" data-title="Пульт: во сколько раз" data-steps="0" data-w="mix">
+    <div class="eyebrow">Во сколько раз · пульт</div>
+    <h1>Покрути — объём <em>изменится во столько же раз</em></h1>
+    <div class="row" style="gap:36px;align-items:stretch">
+      <div class="col mx-l">
+        <div class="mx-rows" id="mxRows"></div>
+        <div class="mx-btns"><button class="btn pri" id="mx160">Как в задаче 160</button><button class="btn" id="mxReset">Сбросить</button></div>
+        <div class="mx-eq" id="mxEq"></div>
+        <p class="small">Что во сколько раз выросло — во столько же раз вырос и объём. Время, частота, глубина и каналы просто <b>перемножаются</b>.</p>
+      </div>
+      <div class="mx-side">
+        <div class="mx-bars"><div class="mxb" id="mxB1"><i></i><span>было<br><b>24 Мбайт</b></span></div><div class="mxb hot" id="mxB2"><i></i><span>стало<br><b id="mxB2v"></b></span></div></div>
+        <div class="mx-f" id="mxF"></div>
+      </div>
+    </div>
+  </section>
+
+  <!-- ============ 06 · ИТОГ ============ -->
+  <section class="slide" data-sec="6" data-id="quiz" data-title="Проверь себя" data-steps="6" data-w="quiz" data-btn="Следующий вопрос">
+    <div style="display:flex;align-items:center;justify-content:space-between">
+      <div class="eyebrow" id="qzNum">Вопрос 1 из 6</div>
+      <div class="dots" id="qzDots"></div>
+    </div>
+    <div id="qzBox"></div>
+  </section>
+
+  <section class="slide" data-sec="6" data-id="cheat" data-title="Шпаргалка" data-steps="0">
+    <h1>Шпаргалка №7 · <em>звук</em></h1>
+    <div class="csg">
+      <div class="csc dark"><h3>Формула</h3><p class="cs-formula mth">V = ν · i · t · n</p><p>Получаем <b>биты</b>. Всё перемножаем.</p></div>
+      <div class="csc"><h3>ν — частота</h3><p>Срезов за 1 секунду. <b>Гц</b>. 1 кГц = 1000 Гц.</p></div>
+      <div class="csc"><h3>i — глубина</h3><p>Видишь <b>биты</b> — это она. Ещё «разрешение», «глубина кодирования».</p></div>
+      <div class="csc"><h3>t — время</h3><p>Сразу в <b>секунды</b>: 3 мин 19 с = 199 с.</p></div>
+      <div class="csc"><h3>n — каналы</h3><p>Моно <b>1</b> · стерео <b>2</b> · квадро <b>4</b>. «Стерео» любят прятать в тексте.</p></div>
+      <div class="csc"><h3>Единицы</h3><p>Кбайт: <span class="mono">V / (1024·8)</span>. Мбайт: <span class="mono">V / (1024·1024·8)</span>.</p></div>
+      <div class="csc hot"><h3>«Необходимое для сохранения»</h3><p>Округляем <b>вверх</b>: 13 992,18 → 13 993.</p></div>
+      <div class="csc hot"><h3>«Только целую часть»</h3><p><b>Отбрасываем</b> дробь: 9,84 → 9.</p></div>
+      <div class="csc"><h3>Во сколько раз</h3><p>Было / стало = V₁ / V₂. Иксы сокращаются, остаются <b>множители</b>.</p></div>
+    </div>
+  </section>
+
+  </main>
+
+  <div class="pline"><i id="pBar"></i></div>
+
+  <div hidden><b id="fSec"></b><span id="fNext"></span><i id="fBar"></i></div>
+
+  <canvas id="ink" width="1600" height="900"></canvas>
+  <div id="spot"></div>
+  <div id="blank">Экран скрыт · нажми B</div>
+  <div class="toast" id="toast"></div>
+
+  <div class="ov" id="ovToc"><div class="panel"><button class="x" data-close>✕</button><h2 style="font-size:34px;margin-bottom:6px">План занятия</h2><div class="toc" id="tocList"></div></div></div>
+  <div class="ov" id="ovHelp"><div class="panel" style="width:1020px"><button class="x" data-close>✕</button><h2 style="font-size:34px;margin-bottom:18px">Управление</h2>
+    <div class="keys">
+      <div><kbd>→</kbd><kbd>Пробел</kbd> следующий шаг / экран</div>
+      <div><kbd>←</kbd> назад</div>
+      <div><kbd>N</kbd> пояснение к слайду</div>
+      <div><kbd>G</kbd> оглавление</div>
+      <div><kbd>F</kbd> полный экран</div>
+      <div><kbd>L</kbd> лазерная указка</div>
+      <div><kbd>D</kbd> рисовать поверх слайда</div>
+      <div><kbd>C</kbd> стереть рисунок</div>
+      <div><kbd>S</kbd> прожектор</div>
+      <div><kbd>B</kbd> скрыть экран</div>
+      <div><kbd>R</kbd> заново этот слайд</div>
+      <div><kbd>Home</kbd><kbd>End</kbd> в начало / в конец</div>
+      <div><kbd>Esc</kbd> закрыть окно / инструмент</div>
+    </div>
+
+  </div></div>
+</div>
+
+<aside class="top lesson-menu" id="lessonMenu" aria-label="Меню презентации" aria-hidden="true" inert>
+  <div class="menu-heading"><a class="home" id="homeLink" href="../">Все части · №7</a><button id="menuClose" class="chrome-icon" aria-label="Закрыть меню"><svg viewBox="0 0 24 24"><path d="m6 6 12 12M18 6 6 18"/></svg></button></div>
+  <nav class="tabs" id="tabs" aria-label="Разделы урока"></nav>
+  <div class="menu-materials"><a href="../part-1/">Часть 1 · Изображения</a><a href="../part-3/">Часть 3 · Передача данных</a><a href="#5">Звуковая лаборатория</a><a href="#15">Шпаргалка</a><a href="#1">С начала</a></div>
+  <div class="menu-tools"><button id="bToc">Все слайды</button><button id="bHelp">Управление</button></div>
+</aside>
+<div id="viewerDock" class="viewer-dock" aria-label="Управление презентацией">
+  <div class="dock-left"><button id="hTop" class="dock-button" aria-controls="lessonMenu" aria-expanded="false"><svg viewBox="0 0 24 24"><path d="M4 6h16M4 12h16M4 18h16"/></svg><span>Меню</span></button><button id="bHideDock" class="chrome-icon dock-hide" aria-label="Скрыть панель" aria-controls="viewerDock" title="Скрыть панель"><svg viewBox="0 0 24 24" aria-hidden="true"><path d="m6 9 6 6 6-6"/></svg></button></div>
+  <div class="dock-navigation"><button id="bPrev" class="chrome-icon" aria-label="Предыдущий шаг"><svg viewBox="0 0 24 24"><path d="m14 6-6 6 6 6"/></svg></button><span id="fCnt">01 / 15</span><button id="bNext" class="dock-next">Дальше</button></div>
+  <div class="dock-right"><button id="nTab" class="dock-button" aria-controls="notes" aria-expanded="false"><svg viewBox="0 0 24 24"><path d="M5 5h14v14H5zM9 5v14M12 9h4M12 13h4"/></svg><span>Пояснения</span></button><button id="bFull" class="chrome-icon" aria-label="Полный экран" aria-pressed="false" title="Полный экран (F)"><svg viewBox="0 0 24 24"><path d="M4 9V4h5M20 9V4h-5M4 15v5h5M20 15v5h-5"/></svg></button></div>
+</div>
+<button id="dockRestore" class="dock-restore" aria-controls="viewerDock" aria-expanded="false" aria-label="Показать панель" hidden><svg viewBox="0 0 24 24" aria-hidden="true"><path d="m6 15 6-6 6 6"/></svg><span>Панель</span></button>
+<aside class="notes" id="notes" aria-label="Пояснение к слайду" aria-hidden="true" inert>
+  <div class="nhd"><div><small id="nSec"></small><b id="nTitle"></b></div><button class="nx" id="nClose" aria-label="Закрыть пояснения"><svg viewBox="0 0 24 24"><path d="m6 6 12 12M18 6 6 18"/></svg></button></div>
+  <div class="nbody" id="nBody"></div>
+  <div class="nft"><button id="nPrev" title="Назад">←</button><span id="nCnt"></span><button id="nNext" title="Дальше">→</button></div>
+</aside>
+
+
+
+
+
+<div id="laser"></div>
+<script src="./notes.js?v=c022a2d9b088"></script>
+<script src="./au.js?v=2e1553a47448"></script>
+<script src="./deck.js?v=e9816bd94103"></script>
+</body>
+</html>

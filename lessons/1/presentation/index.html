@@ -1,0 +1,389 @@
+<!doctype html>
+<html lang="ru">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Задание 1 · Графы — Soft</title>
+<meta name="description" content="Интерактивный урок: задание 1 ЕГЭ по информатике. Граф и таблица, степени вершин, сопоставление, симметричные графы, тренажёр.">
+<meta name="theme-color" content="#F5F5F7">
+<link rel="icon" href="data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 32 32'%3E%3Crect width='32' height='32' rx='8' fill='%23B9521D'/%3E%3Ctext x='16' y='23' text-anchor='middle' font-family='Arial' font-size='23' font-weight='700' fill='white'%3Ei%3C/text%3E%3C/svg%3E">
+<link rel="stylesheet" href="./styles.css?v=efc3f98612a9">
+<link rel="stylesheet" href="./g1.css?v=83af7f25a754">
+<link rel="stylesheet" href="./viewer.css?v=00a77e6ecef2">
+</head>
+<body data-home="../../">
+
+<div id="app">
+
+
+  <main id="deck">
+
+  <!-- ============ 01 · ГРАФ ============ -->
+  <section class="slide title-slide" data-sec="1" data-id="title" data-title="Что будет сегодня?" data-w="hero">
+    <div class="row" style="align-items:center;height:100%;gap:40px">
+      <div class="col" style="flex:1">
+        <div class="tbadge"><b>№1</b><span>ЕГЭ по информатике · графы</span></div>
+        <h1 style="font-size:88px">Схема<br>и <em>таблица</em></h1>
+        <p class="lead" style="max-width:480px">Один и тот же граф нарисовали два раза — буквами и номерами. Сегодня научимся понимать, кто есть кто.</p>
+        <div class="tplan">
+          <span><i>01</i>Граф</span><span><i>02</i>Степень</span><span><i>03</i>Таблица</span><span><i>04</i>Задание</span><span><i>05</i>Симметрия</span><span><i>06</i>Практика</span>
+        </div>
+        <div class="kbhint"><span><kbd>→</kbd>листать</span><span><kbd>N</kbd>пояснения</span><span><kbd>?</kbd>все клавиши</span></div>
+      </div>
+      <div class="col" style="flex:none">
+        <div class="hero1" id="hero">
+          <svg class="gx hero-g" id="heroG"></svg>
+          <div class="hero-m" id="heroM"></div>
+          <svg class="beams" id="heroB"></svg>
+          <div class="hero-cap" id="heroCap">&nbsp;</div>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <section class="slide" data-sec="1" data-id="struct" data-title="Зачем структура данных" data-steps="2" data-w="struct">
+    <div class="eyebrow">С чего всё начинается</div>
+    <h1 id="sdHead">Информации <em>очень много</em></h1>
+    <div class="row" style="gap:40px;align-items:flex-start">
+      <div class="sd-stage" id="sdStage"></div>
+      <div class="col sd-side" id="sdSide"></div>
+    </div>
+  </section>
+
+  <section class="slide" data-sec="1" data-id="kinds" data-title="Структуры данных" data-steps="3" data-w="kinds">
+    <div class="eyebrow">Структуры данных</div>
+    <h1 id="kdHead">Как раскладывают <em>информацию</em></h1>
+    <div class="kd-row">
+      <div class="kd">
+        <svg class="kd-vis" viewBox="0 0 280 190"><rect class="kd-now" x="14" y="12" width="252" height="32" rx="9"/>
+          <g class="kd-list"><g transform="translate(0 12)"><circle cx="32" cy="16" r="6"/><rect x="48" y="10" width="150" height="12" rx="6"/><text x="250" y="21">3:24</text></g><g transform="translate(0 45)"><circle cx="32" cy="16" r="6"/><rect x="48" y="10" width="118" height="12" rx="6"/><text x="250" y="21">2:58</text></g><g transform="translate(0 78)"><circle cx="32" cy="16" r="6"/><rect x="48" y="10" width="164" height="12" rx="6"/><text x="250" y="21">4:10</text></g><g transform="translate(0 111)"><circle cx="32" cy="16" r="6"/><rect x="48" y="10" width="96" height="12" rx="6"/><text x="250" y="21">3:02</text></g><g transform="translate(0 144)"><circle cx="32" cy="16" r="6"/><rect x="48" y="10" width="138" height="12" rx="6"/><text x="250" y="21">3:47</text></g></g></svg>
+        <b class="kd-t">Список</b><p>Элементы <b>по порядку</b>: первый, второй, третий…</p><div class="kd-ex">плейлист · очередь · история браузера</div>
+      </div>
+      <div class="kd" data-s="1">
+        <svg class="kd-vis kd-tab" id="kdV2" viewBox="0 0 280 190"></svg>
+        <b class="kd-t">Таблица</b><p>Строки и столбцы. Нашёл строку и столбец — нашёл ответ.</p><div class="kd-ex">журнал · расписание · Excel</div>
+      </div>
+      <div class="kd" data-s="2">
+        <svg class="kd-vis kd-tree" id="kdV3" viewBox="0 0 280 190"></svg>
+        <b class="kd-t">Дерево</b><p>Каждый элемент вложен в <b>родителя</b>: папка в папке.</p><div class="kd-ex">папки на компьютере · родословная</div>
+      </div>
+      <div class="kd" data-s="3" id="kdGraph">
+        <svg class="kd-vis kd-graph" id="kdV4" viewBox="0 0 280 190"></svg>
+        <b class="kd-t">Граф</b><p>Что угодно связано с чем угодно. Главное — <b>связи</b>.</p><div class="kd-ex">дороги · метро · друзья · интернет</div>
+      </div>
+    </div>
+  </section>
+
+  <section class="slide" data-sec="1" data-id="basic" data-title="Вершины и рёбра" data-steps="6" data-w="basic">
+    <div class="eyebrow" id="bsEye">Граф</div>
+    <h1 id="bsHead">Что такое <em>граф</em>?</h1>
+    <div class="row" style="gap:48px;align-items:flex-start">
+      <svg class="gx bs-g" id="bsG" width="820" height="500"></svg>
+      <div class="col bs-side" id="bsSide"></div>
+    </div>
+    <div class="asks"><div class="ask"><button><i>?</i>Ребро или дорога?</button><div class="ans">Это одно и то же. В учебниках — <b>ребро</b>, в задачах ЕГЭ — <b>дорога</b>. Вершину в задаче называют <b>пунктом</b>.</div></div></div>
+  </section>
+
+  <section class="slide" data-sec="1" data-id="taxi" data-title="Такси: кратчайший путь" data-steps="4" data-w="taxi">
+    <div class="eyebrow">Графы вокруг нас · навигатор</div>
+    <h1 id="txHead">Как такси находит <em>дорогу</em>?</h1>
+    <div class="row" style="gap:40px;align-items:flex-start">
+      <svg id="txG" class="tx"></svg>
+      <div class="col tx-side" id="txSide"></div>
+    </div>
+    <div class="asks"><div class="ask"><button><i>?</i>Это будет на ЕГЭ?</button><div class="ans">Сам поиск кратчайшего пути — большая отдельная тема. Для первого номера нужно другое: понимать, <b>что такое граф</b>, вершины и дороги.</div></div></div>
+  </section>
+
+  <section class="slide" data-sec="1" data-id="social" data-title="Где живут графы" data-steps="4" data-w="social">
+    <div class="eyebrow">Графы вокруг нас</div>
+    <h1 id="soHead">Откуда соцсеть знает твоих <em>друзей</em>?</h1>
+    <div class="row" style="gap:40px;align-items:flex-start">
+      <div class="so-stage">
+        <svg class="gx so-g" id="soG" width="760" height="500"></svg>
+      </div>
+      <div class="phone" id="soPhone">
+        <div class="ph-top"><span>9:41</span><span class="ph-isl"></span><span>●●●</span></div>
+        <div class="ph-h">Друзья</div>
+        <div class="ph-me"><i class="av a1">Д</i><div><b>Дмитрий</b>это ты</div></div>
+        <div class="ph-feed" id="soFeed">
+          <div class="ph-row"><i class="av a2">А</i><div><b>Артём</b><small>друг</small></div></div>
+          <div class="ph-row"><i class="av a3">И</i><div><b>Ион</b><small>друг</small></div></div>
+        </div>
+        <div class="ph-note" id="soNote">
+          <small>Возможно, вы знакомы</small>
+          <div class="ph-row"><i class="av a4">А</i><div><b>Артур</b><small>2 общих друга</small></div><button>Добавить</button></div>
+        </div>
+        <div class="ph-tabs"><i></i><i class="on"></i><i></i><i></i></div>
+      </div>
+      <div class="so-more" id="soMore">
+        <div class="mini"><svg viewBox="0 0 120 80" class="mini-ic"><path class="road" d="M14 40 L60 12 L106 40 L60 68 Z M14 40 L106 40"/><circle cx="14" cy="40" r="6"/><circle cx="60" cy="12" r="6"/><circle cx="106" cy="40" r="6"/><circle cx="60" cy="68" r="6"/></svg><b>Интернет</b><p>Сайты — вершины, ссылки — рёбра. Поисковик по этому графу решает, какой сайт важнее.</p></div>
+        <div class="mini"><svg viewBox="0 0 120 80" class="mini-ic"><path class="road" d="M8 40 H112"/><circle cx="8" cy="40" r="7"/><circle cx="34" cy="40" r="7"/><circle cx="60" cy="40" r="7"/><circle cx="86" cy="40" r="7"/><circle cx="112" cy="40" r="7"/></svg><b>Шесть рукопожатий</b><p>От тебя до любого человека на Земле — цепочка из нескольких знакомых.</p></div>
+      </div>
+    </div>
+    <div class="asks"><div class="ask"><button><i>?</i>Это будет на ЕГЭ?</button><div class="ans">Нет. Для первого номера нужна только <b>база</b>: как граф записывают в таблицу и что такое <b>степень вершины</b>. Алгоритмы соцсетей — это уже институт.</div></div></div>
+  </section>
+
+  <section class="slide" data-sec="1" data-id="maze" data-title="Лабиринт — тоже граф" data-steps="3" data-w="maze">
+    <div class="eyebrow">Ещё пример · игры и роботы</div>
+    <h1 id="mzHead">Лабиринт — это тоже <em>граф</em></h1>
+    <div class="row" style="gap:40px;align-items:flex-start">
+      <div class="mz-l"><svg id="mzG" class="mz"></svg><div class="mz-btns"><button class="btn" id="mzNew">Новый лабиринт</button></div></div>
+      <div class="col mz-side" id="mzSide"></div>
+    </div>
+  </section>
+
+  <!-- ============ 02 · СТЕПЕНЬ ============ -->
+  <section class="slide" data-sec="2" data-id="degree" data-title="Степень вершины" data-steps="4" data-w="degree">
+    <div class="eyebrow">Главный инструмент №1</div>
+    <h1 id="dgHead">Степень <em>вершины</em></h1>
+    <div class="row" style="gap:56px;align-items:flex-start">
+      <svg class="gx dg-g" id="dgG" width="660" height="480"></svg>
+      <div class="col dg-side" id="dgSide"></div>
+    </div>
+  </section>
+
+  <!-- ============ 03 · ТАБЛИЦА ============ -->
+  <section class="slide" data-sec="3" data-id="matrix" data-title="Граф в таблице" data-steps="6" data-w="matrix">
+    <div class="eyebrow" id="mxEye">Как граф хранит компьютер</div>
+    <h1 id="mxHead">Компьютер не видит <em>картинку</em></h1>
+    <div class="row" style="gap:44px;align-items:flex-start;margin-top:10px">
+      <svg class="gx mx-g" id="mxG" width="440" height="420"></svg>
+      <div class="mx-wrap" id="mxM"></div>
+      <div class="col mx-side" id="mxSide"></div>
+    </div>
+    <div class="asks"><div class="ask"><button><i>?</i>Как это называется по-научному?</button><div class="ans"><b>Матрица смежности</b>. Матрица — это та же таблица. На ЕГЭ её называют просто таблицей.</div></div></div>
+  </section>
+
+  <section class="slide" data-sec="3" data-id="sandbox" data-title="Песочница: граф ⇄ таблица" data-steps="0" data-w="sandbox">
+    <div class="eyebrow">Попробуй сам</div>
+    <h1>Граф <em>⇄</em> таблица</h1>
+    <div class="row" style="gap:56px;align-items:flex-start">
+      <div class="sb-l">
+        <svg class="gx sb-g" id="sbG" width="600" height="440"></svg>
+        <p class="small sb-hint">Кликни вершину, потом другую — появится дорога. Кликни клетку таблицы — тоже.</p>
+      </div>
+      <div class="col">
+        <div class="mx-wrap" id="sbM"></div>
+        <div class="sb-stats" id="sbStats"></div>
+        <div class="sb-btns"><button class="btn" id="sbRand">Случайный граф</button><button class="btn" id="sbClear">Очистить</button></div>
+      </div>
+    </div>
+  </section>
+
+  <!-- ============ 04 · ЗАДАНИЕ ============ -->
+  <section class="slide" data-sec="4" data-id="story" data-title="Два сотрудника" data-steps="3" data-w="story">
+    <div class="eyebrow">Откуда берётся задача</div>
+    <h1 id="stHead">Два сотрудника <em>не договорились</em></h1>
+    <div class="st-row">
+      <div class="st-card" id="stA">
+        <div class="st-who"><svg viewBox="0 0 80 80" class="st-av"><circle cx="40" cy="40" r="40" fill="#DCE9F8"/><circle cx="40" cy="31" r="13" fill="#1D1D1F"/><path d="M14 74c4-16 15-23 26-23s22 7 26 23" fill="#2B6CB0"/><path d="M52 18l10-8 3 4-10 8z" fill="#B9521D"/></svg><div><b>Сотрудник 1</b><small>рисует схему и подписывает <em>буквами</em></small></div></div>
+        <svg class="gx st-g" id="stG" width="560" height="300"></svg>
+      </div>
+      <div class="st-mid" id="stMid"><b>≠</b><span>не договорились</span></div>
+      <div class="st-card" id="stB">
+        <div class="st-who"><svg viewBox="0 0 80 80" class="st-av"><circle cx="40" cy="40" r="40" fill="#FFE3D0"/><circle cx="40" cy="31" r="13" fill="#1D1D1F"/><path d="M14 74c4-16 15-23 26-23s22 7 26 23" fill="#B9521D"/><rect x="50" y="46" width="22" height="7" rx="2" fill="#B7791F"/></svg><div><b>Сотрудник 2</b><small>меряет дороги и пишет <em>номерами</em></small></div></div>
+        <div class="mx-wrap st-m" id="stM"></div>
+      </div>
+    </div>
+    <div class="st-goal" id="stGoal" data-s="3">Наша работа — понять, <b>какая буква</b> прячется за каким <b>номером</b>. Названия бесполезны — нужен признак, который не зависит от подписей.</div>
+  </section>
+
+  <section class="slide" data-sec="4" data-id="kim1" data-title="Задание как на ЕГЭ" data-steps="3" data-w="kim">
+    <div class="kimv"><div class="kimp">
+      <div class="kim-hd"><span>ЕГЭ · ИНФОРМАТИКА, 11 класс</span><span>Задание 1</span></div>
+      <div class="kim-task"><div class="kim-n">1</div><div class="kim-body">
+        <div class="kz"><p>На рисунке справа схема дорог Н-ского района изображена в виде графа, в таблице содержатся <span class="kmark">сведения о длинах этих дорог</span> (в километрах).</p></div>
+        <div class="kz kz-pic"><div class="kim-pic"><div id="k1T"></div><svg id="k1G" class="kg"></svg></div></div>
+        <div class="kz"><p>Так как таблицу и схему рисовали независимо друг от друга, то <span class="kmark">нумерация населённых пунктов в таблице никак не связана с буквенными обозначениями на графе</span>. Определите, какова <span class="kmark">длина дороги из пункта В в пункт Г</span>.</p>
+        <p class="kans">Ответ: <i></i></p></div>
+      </div></div>
+    </div></div>
+    <div class="asks"><div class="ask"><button><i>?</i>Почему на рисунке нет чисел?</button><div class="ans">Числа — только в таблице. Длины линий на рисунке <b>ничего не значат</b>: дорогу в 10 км могут нарисовать длиннее дороги в 60 км.</div></div></div>
+  </section>
+
+  <section class="slide" data-sec="4" data-id="solve1" data-title="Решаем: уникальные степени" data-steps="7" data-w="solve1">
+    <div class="eyebrow" id="s1Eye">Разбор</div>
+    <h1 id="s1Head">Длина дороги <em>В–Г</em></h1>
+    <div class="sv">
+      <div class="sv-l"><svg class="gx sv-g" id="s1G"></svg><div class="cap" id="s1Cap"></div></div>
+      <div class="sv-r"><div class="mx-wrap" id="s1M"></div><div class="chain" id="s1Ch"></div></div>
+    </div>
+    <svg class="beams" id="s1B"></svg>
+  </section>
+
+  <section class="slide" data-sec="4" data-id="kim2" data-title="Задача ЕГЭ-2022" data-steps="3" data-w="kim">
+    <div class="kimv"><div class="kimp">
+      <div class="kim-hd"><span>ЕГЭ-2022 · ИНФОРМАТИКА</span><span>Задание 1 (132)</span></div>
+      <div class="kim-task"><div class="kim-n">1</div><div class="kim-body">
+        <div class="kz"><p>На рисунке схема дорог Н-ского района изображена в виде графа, в таблице содержатся данные о протяжённости дорог между населёнными пунктами (в километрах).</p></div>
+        <div class="kz kz-pic"><div class="kim-pic"><div id="k2T"></div><svg id="k2G" class="kg"></svg></div></div>
+        <div class="kz"><p>Так как таблицу и схему рисовали независимо друг от друга, то нумерация населённых пунктов в таблице никак не связана с буквенными обозначениями на графе. Определите, какова <span class="kmark">сумма протяжённостей дорог из пункта A в пункт B и из пункта H в пункт D</span>.</p>
+        <p class="kans">Ответ: <i></i></p></div>
+      </div></div>
+    </div></div>
+    <div class="asks"><div class="ask"><button><i>?</i>Это старая задача?</button><div class="ans">Она с ЕГЭ-2022, но первый номер почти не меняется <b>год от года</b>. Решается точно так же.</div></div></div>
+  </section>
+
+  <section class="slide" data-sec="4" data-id="solve2" data-title="Решаем: перебор с проверкой" data-steps="10" data-w="solve2">
+    <div class="eyebrow" id="s2Eye">Разбор · ЕГЭ-2022</div>
+    <h1 id="s2Head">Сумма <em>A–B</em> + <em>H–D</em></h1>
+    <div class="sv">
+      <div class="sv-l"><svg class="gx sv-g" id="s2G"></svg><div class="cap" id="s2Cap"></div></div>
+      <div class="sv-r"><div class="mx-wrap" id="s2M"></div><div class="chain" id="s2Ch"></div></div>
+    </div>
+    <svg class="beams" id="s2B"></svg>
+    <div class="asks"><div class="ask"><button><i>?</i>А можно быстрее?</button><div class="ans">Можно. На рисунке дорога <b>H–D</b> — единственная, где встретились две «двойки». В таблице такая тоже одна: <b>П1–П6 = 13</b>. Половина ответа — за секунду. Но полный перебор надёжнее: он проверяет каждую дорогу.</div></div></div>
+  </section>
+
+  <!-- ============ 05 · СИММЕТРИЯ ============ -->
+  <section class="slide" data-sec="5" data-id="sym" data-title="Симметричный граф" data-steps="4" data-w="sym">
+    <div class="eyebrow" id="syEye">Модуль 2</div>
+    <h1 id="syHead">Симметричный граф — <em>бабочка</em></h1>
+    <div class="sv">
+      <div class="sv-l">
+        <svg class="bfly" id="syFly" viewBox="0 0 400 300"></svg>
+        <svg class="gx sv-g" id="syG"></svg><div class="cap" id="syCap"></div>
+      </div>
+      <div class="sv-r" style="position:relative"><div class="mx-wrap" id="syM"></div><div class="chain" id="syCh"></div>
+        <div class="sydemo" id="syDemo">
+          <div class="sd-row"><svg viewBox="0 0 300 70"><line x1="40" y1="35" x2="260" y2="35"/><text class="w" x="150" y="22">10 км</text><circle cx="40" cy="35" r="26"/><text x="40" y="36">1</text><circle cx="260" cy="35" r="26"/><text x="260" y="36">2</text></svg></div>
+          <div class="sd-sw">⇅ поменяли номера</div>
+          <div class="sd-row"><svg viewBox="0 0 300 70"><line x1="40" y1="35" x2="260" y2="35"/><text class="w" x="150" y="22">10 км</text><circle cx="40" cy="35" r="26"/><text x="40" y="36">2</text><circle cx="260" cy="35" r="26"/><text x="260" y="36">1</text></svg></div>
+          <p>Дорога та же — и длина та же. Симметричные вершины можно менять местами: <b>ответ не меняется</b>.</p>
+        </div>
+      </div>
+    </div>
+    <svg class="beams" id="syB"></svg>
+    <div class="asks"><div class="ask"><button><i>?</i>А если спросят Г–Е?</button><div class="ans">Тогда ответ зависит от того, кто Е: <b>11 или 9</b>. Поэтому в таких задачах всегда есть <b>дополнительное условие</b> — как на следующем слайде.</div></div></div>
+  </section>
+
+  <section class="slide" data-sec="5" data-id="cond" data-title="Дополнительное условие" data-steps="4" data-w="cond">
+    <div class="eyebrow" id="cdEye">Модуль 2 · задача Е. Джобса</div>
+    <h1 id="cdHead">Длина <em>А–Б</em>, если <span class="nw">ГД &lt; ГЕ</span></h1>
+    <div class="sv">
+      <div class="sv-l"><svg class="gx sv-g" id="cdG"></svg><div class="cap" id="cdCap"></div></div>
+      <div class="sv-r"><div class="mx-wrap" id="cdM"></div><div class="chain" id="cdCh"></div></div>
+    </div>
+    <svg class="beams" id="cdB"></svg>
+    <div class="asks"><div class="ask"><button><i>?</i>«Откуда — куда»: это важно?</button><div class="ans">В этой задаче таблица симметрична — каждая дорога записана дважды, туда и обратно. Значит, дороги двусторонние, и «откуда — куда» ничего не меняет.</div></div></div>
+  </section>
+
+  <!-- ============ 06 · ПРАКТИКА ============ -->
+  <section class="slide" data-sec="6" data-id="trainer" data-title="Тренажёр: сопоставь сам" data-steps="0" data-w="trainer">
+    <div class="tr-top">
+      <div><div class="eyebrow">Тренажёр · задачи бесконечные</div><h1 id="trHead">Найди длину дороги <em>?</em></h1></div>
+      <div class="tr-mode" id="trMode"><button data-m="easy">Разминка</button><button data-m="exam">Как на ЕГЭ</button></div>
+    </div>
+    <div class="sv tr-sv">
+      <div class="sv-l"><svg class="gx sv-g" id="trG"></svg><div class="tr-msg" id="trMsg"></div></div>
+      <div class="sv-r">
+        <div class="mx-wrap" id="trM"></div>
+        <div class="tr-ans"><input id="trIn" inputmode="numeric" autocomplete="off" placeholder="Ответ"><button class="btn pri" id="trCheck">Проверить</button></div>
+        <div class="tr-btns"><button class="btn" id="trDeg">Степени</button><button class="btn" id="trHint">Подсказка</button><button class="btn" id="trSolve">Решение</button><button class="btn" id="trNew">Новая задача</button><span class="tr-score" id="trScore"></span></div>
+      </div>
+    </div>
+    <svg class="beams" id="trB"></svg>
+  </section>
+
+  <section class="slide" data-sec="6" data-id="quiz" data-title="Проверь себя" data-steps="6" data-w="quiz" data-btn="Следующий вопрос">
+    <div style="display:flex;align-items:center;justify-content:space-between">
+      <div class="eyebrow" id="qzNum">Вопрос 1 из 6</div>
+      <div class="dots" id="qzDots"></div>
+    </div>
+    <div id="qzBox"></div>
+  </section>
+
+  <section class="slide" data-sec="6" data-id="cheat" data-title="Шпаргалка" data-steps="0">
+    <h1>Шпаргалка №1</h1>
+    <div class="csg">
+      <div class="csc"><h3>Граф</h3><p>Вершины (пункты) и дороги. Рисунок <b>не в масштабе</b>: длины линий ничего не значат.</p></div>
+      <div class="csc"><h3>Таблица</h3><p>Строка × столбец = дорога. Симметрична, серая диагональ — пусто.</p></div>
+      <div class="csc"><h3>Степень</h3><p>Дорог у вершины = заполненных клеток <b>в её строке</b>.</p></div>
+      <div class="csc dark"><h3>Шаг 1</h3><p>Выпиши степени справа от таблицы и подпиши на рисунке.</p></div>
+      <div class="csc dark"><h3>Шаг 2</h3><p>Уникальные степени — сопоставляй сразу.</p></div>
+      <div class="csc dark"><h3>Шаг 3</h3><p>Остальные — через соседей. Каждую дорогу <b>проверяй</b> в таблице.</p></div>
+      <div class="csc hot"><h3>Симметрия</h3><p>Зеркальные вершины не различить. Если ответ одинаковый — и не нужно.</p></div>
+      <div class="csc hot"><h3>Доп. условие</h3><p>Выбирает одну из двух зеркальных расстановок.</p></div>
+      <div class="csc"><h3>Проверка</h3><p>Заполненных клеток = <b>2 × дорог</b>. Не сошлось — ошибка в подсчёте.</p></div>
+    </div>
+  </section>
+
+  <section class="slide" data-sec="6" data-id="algo" data-title="Алгоритм на экзамене" data-steps="6">
+    <div class="row" style="gap:80px;height:100%">
+      <div class="col" style="flex:1.1">
+        <div class="eyebrow">На экзамене</div>
+        <h1>Алгоритм <em>№1</em></h1>
+        <ol class="algo">
+          <li data-s="1"><i>1</i><div><b>Прочитай вопрос</b><span>Какие пункты? Длина, сумма или номера?</span></div></li>
+          <li data-s="2"><i>2</i><div><b>Степени в таблице</b><span>Справа от каждой строки — число заполненных клеток.</span></div></li>
+          <li data-s="3"><i>3</i><div><b>Степени на рисунке</b><span>Подпиши у каждой вершины.</span></div></li>
+          <li data-s="4"><i>4</i><div><b>Уникальные — сразу</b><span>Потом соседи. Каждую дорогу проверяй.</span></div></li>
+          <li data-s="5"><i>5</i><div><b>Число на пересечении</b><span>Ответь именно на тот вопрос, что задан.</span></div></li>
+        </ol>
+      </div>
+      <div class="col algo-r" data-s="6">
+        <div class="quote">«Номер очень простой. Главное — внимательность и&nbsp;<em>фул&nbsp;фокус</em>»</div>
+        <p class="lead">Поначалу перебор будет долгим — это нормально. Как с ходьбой: сначала думаешь над каждым шагом, потом делаешь не задумываясь. Нужно просто нарешать.</p>
+      </div>
+    </div>
+  </section>
+
+  </main>
+
+  <div class="pline"><i id="pBar"></i></div>
+
+  <div hidden><b id="fSec"></b><span id="fNext"></span><i id="fBar"></i></div>
+
+  <canvas id="ink" width="1600" height="900"></canvas>
+  <div id="spot"></div>
+  <div id="blank">Экран скрыт · нажми B</div>
+  <div class="toast" id="toast"></div>
+
+  <div class="ov" id="ovToc"><div class="panel"><button class="x" data-close>✕</button><h2 style="font-size:34px;margin-bottom:6px">План занятия</h2><div class="toc" id="tocList"></div></div></div>
+  <div class="ov" id="ovHelp"><div class="panel" style="width:1020px"><button class="x" data-close>✕</button><h2 style="font-size:34px;margin-bottom:18px">Управление</h2>
+    <div class="keys">
+      <div><kbd>→</kbd><kbd>Пробел</kbd> следующий шаг / экран</div>
+      <div><kbd>←</kbd> назад</div>
+      <div><kbd>N</kbd> пояснение к слайду</div>
+      <div><kbd>Q</kbd> вопрос на слайде</div>
+      <div><kbd>G</kbd> оглавление</div>
+      <div><kbd>F</kbd> полный экран</div>
+      <div><kbd>L</kbd> лазерная указка</div>
+      <div><kbd>D</kbd> рисовать поверх слайда</div>
+      <div><kbd>C</kbd> стереть рисунок</div>
+      <div><kbd>S</kbd> прожектор</div>
+      <div><kbd>B</kbd> скрыть экран</div>
+      <div><kbd>R</kbd> заново этот слайд</div>
+      <div><kbd>Home</kbd><kbd>End</kbd> в начало / в конец</div>
+      <div><kbd>Esc</kbd> закрыть окно / инструмент</div>
+    </div>
+
+  </div></div>
+</div>
+
+<aside class="top lesson-menu" id="lessonMenu" aria-label="Меню презентации" aria-hidden="true" inert>
+  <div class="menu-heading"><a class="home" id="homeLink" href="../../">Все уроки</a><button id="menuClose" class="chrome-icon" aria-label="Закрыть меню"><svg viewBox="0 0 24 24"><path d="m6 6 12 12M18 6 6 18"/></svg></button></div>
+  <nav class="tabs" id="tabs" aria-label="Разделы урока"></nav>
+  <div class="menu-materials"><a href="#18">Практика</a><a href="#20">Шпаргалка</a><a href="#1">С начала</a></div>
+  <div class="menu-tools"><button id="bToc">Все слайды</button><button id="bHelp">Управление</button></div>
+</aside>
+<div id="viewerDock" class="viewer-dock" aria-label="Управление презентацией">
+  <div class="dock-left"><button id="hTop" class="dock-button" aria-controls="lessonMenu" aria-expanded="false"><svg viewBox="0 0 24 24"><path d="M4 6h16M4 12h16M4 18h16"/></svg><span>Меню</span></button><button id="bHideDock" class="chrome-icon dock-hide" aria-label="Скрыть панель" aria-controls="viewerDock" title="Скрыть панель"><svg viewBox="0 0 24 24" aria-hidden="true"><path d="m6 9 6 6 6-6"/></svg></button></div>
+  <div class="dock-navigation"><button id="bPrev" class="chrome-icon" aria-label="Предыдущий шаг"><svg viewBox="0 0 24 24"><path d="m14 6-6 6 6 6"/></svg></button><span id="fCnt">01 / 21</span><button id="bNext" class="dock-next">Дальше</button></div>
+  <div class="dock-right"><button id="nTab" class="dock-button" aria-controls="notes" aria-expanded="false"><svg viewBox="0 0 24 24"><path d="M5 5h14v14H5zM9 5v14M12 9h4M12 13h4"/></svg><span>Пояснения</span></button><button id="bFull" class="chrome-icon" aria-label="Полный экран" aria-pressed="false" title="Полный экран (F)"><svg viewBox="0 0 24 24"><path d="M4 9V4h5M20 9V4h-5M4 15v5h5M20 15v5h-5"/></svg></button></div>
+</div>
+<button id="dockRestore" class="dock-restore" aria-controls="viewerDock" aria-expanded="false" aria-label="Показать панель" hidden><svg viewBox="0 0 24 24" aria-hidden="true"><path d="m6 15 6-6 6 6"/></svg><span>Панель</span></button>
+<aside class="notes" id="notes" aria-label="Пояснение к слайду" aria-hidden="true" inert>
+  <div class="nhd"><div><small id="nSec"></small><b id="nTitle"></b></div><button class="nx" id="nClose" aria-label="Закрыть пояснения"><svg viewBox="0 0 24 24"><path d="m6 6 12 12M18 6 6 18"/></svg></button></div>
+  <div class="nbody" id="nBody"></div>
+  <div class="nft"><button id="nPrev" title="Назад">←</button><span id="nCnt"></span><button id="nNext" title="Дальше">→</button></div>
+</aside>
+
+
+<div id="laser"></div>
+<script src="./notes.js?v=d0ea005568b3"></script>
+<script src="./g1.js?v=6c6b6a12bc49"></script>
+<script src="./g1-intro.js?v=69050ed23ca6"></script>
+<script src="./deck.js?v=cdc7ea35f773"></script>
+</body>
+</html>
