@@ -72,3 +72,5 @@ h2 { font-size: 22px; line-height: 1.22; letter-spacing: -.6px; font-weight: 700
   .lesson-links { column-gap: 13px; }
 }
 @media (prefers-reduced-motion: reduce) { *, *::before, *::after { transition: none !important; } }
+
+.trial-preview { display: grid; grid-auto-flow: column; place-content: center; gap: .32em; color: #573017; background: #f5d4b8; font: 600 clamp(13px, 2vw, 20px) monospace; }
