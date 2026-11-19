@@ -45,14 +45,14 @@
     <h1 id="wvHead">Звук в природе — это <em>волна</em></h1>
     <div class="row" style="gap:30px;align-items:flex-start">
       <div class="scope wv-scope">
-        <div class="scope-top"><span class="led"></span><span>VILLIAN, madk1d — «ДИНАСТИЯ» · фрагмент</span></div>
+        <div class="scope-top"><span class="led"></span><span>IILLIAN, madk1d — «ДИНАСТИЯ» · фрагмент</span></div>
         <canvas id="wvCv"></canvas>
         <div class="scope-ft"><button class="play" id="wvPlay"><i></i>Послушать</button><span>сверху весь фрагмент · снизу под лупой</span></div>
       </div>
       <div class="col wv-parts" data-s="1">
         <div class="wvp"><span class="wvp-ic tx">Ж</span><div><b>Текст</b><i>делим на <u>символы</u></i></div></div>
         <div class="wvp"><span class="wvp-ic px"><s></s><s></s><s></s><s></s><s></s><s></s><s></s><s></s><s></s></span><div><b>Картинка</b><i>делим на <u>пиксели</u></i></div></div>
-        <div class="wvp q" id="wvQ"><span class="wvp-ic wv"><svg viewBox="0 0 60 40"><path d="M2 20 C 10 2, 18 2, 24 20 S 38 38, 44 20 S 54 6, 58 14" fill="none" stroke="currentColor" stroke-width="3.5" stroke-linecap="round"/><g class="knife"><path d="M20 0 V40 M30 0 V40 M40 0 V40" stroke="currentColor" stroke-width="2" stroke-dasharray="3 3"/></g></svg></span><div><b>Звук</b><i class="qq">делим на… <u>?</u></i><i class="cc">частей нет — <u>режем сами</u></i></div></div>
+        <div class="wvp q" id="wvQ"><span class="wvp-ic wv"><svg viewBox="0 0 60 40"><path d="M2 20 C 10 2, 18 2, 24 20 S 38 38, 44 20 S 54 6, 58 14" fill="none" stroke="currentColor" stroke-width="3.5" stroke-linecap="round"/><g class="knife"><path d="M20 0 I40 M30 0 I40 M40 0 I40" stroke="currentColor" stroke-width="2" stroke-dasharray="3 3"/></g></svg></span><div><b>Звук</b><i class="qq">делим на… <u>?</u></i><i class="cc">частей нет — <u>режем сами</u></i></div></div>
       </div>
     </div>
     <div class="cap" id="wvCap"></div>
@@ -158,7 +158,7 @@
       <div class="fmc"><b>t</b><span>время</span><small>в секундах</small></div><i class="fm-x">·</i>
       <div class="fmc"><b>n</b><span>каналы</span><small>моно 1 · стерео 2 · квадро 4</small></div>
     </div>
-    <div class="fm-eq" id="fmEq"><span class="mth"><b>V</b> = ν · i · t · n</span><small>объём звука в <b>битах</b> — ничего лишнего, просто перемножаем</small></div>
+    <div class="fm-eq" id="fmEq"><span class="mth"><b>I</b> = ν · i · t · n</span><small>объём звука в <b>битах</b> — ничего лишнего, просто перемножаем</small></div>
     <div class="fm-calc" id="fmCalc"><div class="fm-in" id="fmIn"></div><div class="fm-out" id="fmOut"></div></div>
   </section>
 
@@ -172,7 +172,7 @@
       <div class="un"><small>Мбайт</small><b class="un-v"></b></div>
     </div>
     <div class="un-inp"><label>Объём в битах <input type="number" id="unIn" value="114624000"></label><small>Это объём из задачи ЕГЭ на следующем экране.</small></div>
-    <div class="un-tip" id="unTip"><div><b>в Кбайты</b><span class="unit-fraction" aria-label="V, делённое на 1024 умножить на 8"><span>V</span><span>1024 · 8</span></span></div><div><b>в Мбайты</b><span class="unit-fraction" aria-label="V, делённое на 1024 умножить на 1024 умножить на 8"><span>V</span><span>1024 · 1024 · 8</span></span></div><p>Формула даёт <b>биты</b>. Делим сразу, одним выражением — на калькуляторе это одна строка.</p></div>
+    <div class="un-tip" id="unTip"><div><b>в Кбайты</b><span class="unit-fraction" aria-label="I, делённое на 1024 умножить на 8"><span>I</span><span>1024 · 8</span></span></div><div><b>в Мбайты</b><span class="unit-fraction" aria-label="I, делённое на 1024 умножить на 1024 умножить на 8"><span>I</span><span>1024 · 1024 · 8</span></span></div><p>Формула даёт <b>биты</b>. Делим сразу, одним выражением — на калькуляторе это одна строка.</p></div>
   </section>
 
   <!-- ============ 04 · ЗАДАЧИ ЕГЭ ============ -->
@@ -187,7 +187,7 @@
         <div class="gv" data-s="2"><b>i</b> = 24 бит<small>видим биты — это глубина</small></div>
         <div class="gv" data-s="3"><b>t</b> = 3 · 60 + 19 = 199 с</div>
       </div>
-      <div class="t-f" id="t1F"><small>V в Кбайтах</small><div class="frac"><span>2 · 12 000 · 24 · 199</span><span>1024 · 8</span></div></div>
+      <div class="t-f" id="t1F"><small>I в Кбайтах</small><div class="frac"><span>2 · 12 000 · 24 · 199</span><span>1024 · 8</span></div></div>
       <div class="calc" id="t1Calc"><div class="calc-top"><span>Калькулятор</span><i></i></div><div class="calc-s"><small>114 624 000 ÷ 8 ÷ 1 024 =</small><b id="t1Scr">0</b></div></div>
     </div>
     <div class="t-ans" id="t1Ans"><span>13 992,1875</span><i>→</i><span>«наименьшее, <b>необходимое для сохранения</b>» — округляем <b>вверх</b></span><i>→</i><b class="big-a">13 993</b></div>
@@ -257,15 +257,15 @@
   <section class="slide" data-sec="6" data-id="cheat" data-title="Шпаргалка" data-steps="0">
     <h1>Шпаргалка №7 · <em>звук</em></h1>
     <div class="csg">
-      <div class="csc dark"><h3>Формула</h3><p class="cs-formula mth">V = ν · i · t · n</p><p>Получаем <b>биты</b>. Всё перемножаем.</p></div>
+      <div class="csc dark"><h3>Формула</h3><p class="cs-formula mth">I = ν · i · t · n</p><p>Получаем <b>биты</b>. Всё перемножаем.</p></div>
       <div class="csc"><h3>ν — частота</h3><p>Срезов за 1 секунду. <b>Гц</b>. 1 кГц = 1000 Гц.</p></div>
       <div class="csc"><h3>i — глубина</h3><p>Видишь <b>биты</b> — это она. Ещё «разрешение», «глубина кодирования».</p></div>
       <div class="csc"><h3>t — время</h3><p>Сразу в <b>секунды</b>: 3 мин 19 с = 199 с.</p></div>
       <div class="csc"><h3>n — каналы</h3><p>Моно <b>1</b> · стерео <b>2</b> · квадро <b>4</b>. «Стерео» любят прятать в тексте.</p></div>
-      <div class="csc"><h3>Единицы</h3><p>Кбайт: <span class="mono">V / (1024·8)</span>. Мбайт: <span class="mono">V / (1024·1024·8)</span>.</p></div>
+      <div class="csc"><h3>Единицы</h3><p>Кбайт: <span class="mono">I / (1024·8)</span>. Мбайт: <span class="mono">I / (1024·1024·8)</span>.</p></div>
       <div class="csc hot"><h3>«Необходимое для сохранения»</h3><p>Округляем <b>вверх</b>: 13 992,18 → 13 993.</p></div>
       <div class="csc hot"><h3>«Только целую часть»</h3><p><b>Отбрасываем</b> дробь: 9,84 → 9.</p></div>
-      <div class="csc"><h3>Во сколько раз</h3><p>Было / стало = V₁ / V₂. Иксы сокращаются, остаются <b>множители</b>.</p></div>
+      <div class="csc"><h3>Во сколько раз</h3><p>Было / стало = I₁ / I₂. Одинаковые параметры сокращаются, остаются <b>множители</b>.</p></div>
     </div>
   </section>
 
@@ -325,7 +325,7 @@
 
 <div id="laser"></div>
 <script src="./notes.js?v=0306f6a97d30"></script>
-<script src="./au.js?v=c8e9a76a4ae7"></script>
+<script src="./au.js?v=2331276ba4ba"></script>
 <script src="./deck.js?v=e9816bd94103"></script>
 </body>
 </html>

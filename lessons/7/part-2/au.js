@@ -709,7 +709,7 @@ W.mix = {
     MX.forEach((m, mi) => { const o = m.opts[this.sel[mi]]; f *= o[1]; const lab = MXLAB[m.k][this.sel[mi]]; if (lab) parts.push(lab); });
     $$('.mx-r', el).forEach((r, mi) => $$('.mx-seg button', r).forEach((b, oi) => b.classList.toggle('cur', oi === this.sel[mi])));
     const v = 24 * f;
-    $('#mxEq', el).innerHTML = `V₂ = 24 ${parts.join(' ')} = <b>${fmt(v, 2)}</b> Мбайт`;
+    $('#mxEq', el).innerHTML = `I₂ = 24 ${parts.join(' ')} = <b>${fmt(v, 2)}</b> Мбайт`;
     const raz = x => Number.isInteger(Math.round(x * 100) / 100) ? plural(Math.round(x), 'раз', 'раза', 'раз') : 'раза';
     $('#mxF', el).innerHTML = f === 1 ? 'объём не изменился' : f > 1 ? `объём вырос в <b>${fmt(f, 2)}</b> ${raz(f)}` : `объём уменьшился в <b>${fmt(1 / f, 2)}</b> ${raz(1 / f)}`;
     const top = Math.max(24, v), sc = x => Math.max(2, 86 * x / top);
