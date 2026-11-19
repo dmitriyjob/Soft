@@ -1,1 +1,235 @@
-<!doctype html><html lang="ru" data-lesson-part="3"><head><meta charset="utf-8"><meta name="viewport" content="width=device-width,initial-scale=1"><meta name="description" content="Задание 7 ЕГЭ: передача данных. Скорость, время, объём файла и разбор пакета снимков."><meta name="theme-color" content="#F5F5F7"><title>Задание 7 · Передача данных</title><link rel="stylesheet" href="../style.css?v=62c8df6fe26e"><script defer src="../lesson.js?v=9bbeed929ada"></script><link rel="stylesheet" href="../part.css?v=3520b311e419"><script defer src="../progress.js?v=c2d4da88046b"></script></head><body><a class="part-back" href="../">← Все части</a><a class="skip" href="#slide">К содержимому слайда</a><button id="menu" class="menu-toggle" aria-label="Показать боковое меню" aria-controls="sidebar" aria-expanded="false" title="Показать боковое меню"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.6" aria-hidden="true"><rect x="3" y="4" width="18" height="16" rx="2"/><path d="M9 4v16M5.5 8h1M5.5 12h1M5.5 16h1"/></svg></button><aside id="sidebar" hidden inert><div class="course-heading"><span class="eyebrow">ЗАДАНИЕ ЕГЭ</span><div class="lesson-number">07<span>Передача данных</span></div></div><div class="sidebar-label">СОДЕРЖАНИЕ УРОКА</div><nav id="outline" aria-label="Слайды урока"></nav><p class="sidebar-hint">← → &nbsp; Слайды и шаги</p></aside><main id="stage"><div id="slide-frame"><article id="slide" tabindex="-1" aria-label="Слайд урока"></article><footer class="slide-footer"><div class="footer-actions"><button id="prev" class="nav-btn" aria-label="Предыдущий шаг или слайд">←</button><button id="next" class="nav-btn next">Далее <span>→</span></button></div></footer></div></main><div id="status" class="sr-only" aria-live="polite"></div></body></html>
+<!doctype html>
+<html lang="ru">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Ион · Задание 7 — передача данных</title>
+<meta name="description" content="Интерактивный урок: задание 7 ЕГЭ по информатике, передача данных. Скорость, время и объём, формула t = V / v, задачи ЕГЭ про аудиофайл и пакеты снимков.">
+<meta name="theme-color" content="#F5F5F7">
+<link rel="icon" href="data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 32 32'%3E%3Crect width='32' height='32' rx='8' fill='%23B9521D'/%3E%3Ctext x='16' y='23' text-anchor='middle' font-family='Arial' font-size='23' font-weight='700' fill='white'%3Ei%3C/text%3E%3C/svg%3E">
+<link rel="stylesheet" href="styles.css?v=efc3f98612a9">
+<link rel="stylesheet" href="tr.css?v=4b2da166f8c4">
+<link rel="stylesheet" href="viewer.css?v=00a77e6ecef2">
+</head>
+<body data-home="../">
+
+<div id="app">
+  
+
+  <main id="deck">
+
+  <!-- ============ 01 · СКОРОСТЬ ============ -->
+  <section class="slide title-slide" data-sec="1" data-id="title" data-title="Что будет сегодня?" data-w="hero">
+    <div class="row" style="align-items:center;height:100%;gap:48px">
+      <div class="col" style="flex:1">
+        <div class="tbadge"><b>№7</b><span>ЕГЭ по информатике · часть 3 из 3</span></div>
+        <h1 style="font-size:96px">Передача<br><em>данных</em></h1>
+        <p class="lead" style="max-width:520px">Файл едет по каналу, как машина по трассе. Сколько ехать — считаем той же формулой, что в школе.</p>
+        <div class="tplan">
+          <span><i>01</i>Скорость</span><span><i>02</i>Формула</span><span><i>03</i>Задачи ЕГЭ</span><span><i>04</i>Песочница</span><span><i>05</i>Итог</span>
+        </div>
+        <div class="kbhint"><span><kbd>→</kbd>листать</span><span><kbd>N</kbd>пояснения</span><span><kbd>?</kbd>все клавиши</span></div>
+      </div>
+      <div class="col" style="flex:none">
+        <div class="scope" id="hero">
+          <div class="scope-top"><span class="led"></span><span>канал связи</span><span class="scope-r">V / v = t</span></div>
+          <canvas id="heroCv"></canvas>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <section class="slide" data-sec="1" data-id="road" data-title="Скорость, время, расстояние" data-steps="2" data-w="road">
+    <div class="eyebrow">Вспоминаем школу · физика и математика</div>
+    <h1 id="rdHead">Расстояние = <em>скорость · время</em></h1>
+    <div class="road">
+      <div class="road-l"></div>
+      <div class="rd-car" id="rdCar"><svg viewBox="0 0 132 56"><g class="rd-fx"><path d="M2 24 H-22 M6 31 H-30 M2 38 H-18" stroke="#A1A1AA" stroke-width="3" stroke-linecap="round"/></g><g transform="translate(124 0) scale(-1 1)"><path d="M8 38 V28 Q8 22 16 20 L34 16 L48 4 Q52 2 58 2 H84 Q92 2 96 8 L106 20 Q114 22 114 30 V38 Z" fill="#B9521D"/><path d="M52 8 H70 V18 H40 Z M76 8 H86 Q90 8 92 12 L97 18 H76 Z" fill="#DCEBFA"/><rect x="7" y="24" width="7" height="5" rx="2" fill="#FDE68A"/><rect x="110" y="25" width="5" height="5" rx="1.5" fill="#F87171"/><circle cx="32" cy="40" r="11" fill="#1D1D1F"/><circle cx="32" cy="40" r="4.5" fill="#A1A1AA"/><circle cx="92" cy="40" r="11" fill="#1D1D1F"/><circle cx="92" cy="40" r="4.5" fill="#A1A1AA"/></g></svg><span id="rdOdo">0 км</span></div>
+      <div class="road-km" id="rdKm"></div>
+    </div>
+    <div class="row rd-row">
+      <div class="rd-ms"><div class="rd-m" data-k="S"><small>расстояние S</small><b></b><input type="range" class="rd-r" aria-label="Расстояние"><i class="rd-x">ищем</i></div><div class="rd-m" data-k="v"><small>скорость <span class="spd">v</span></small><b></b><input type="range" class="rd-r" aria-label="Скорость"><i class="rd-x">ищем</i></div><div class="rd-m" data-k="t"><small>время t</small><b></b><input type="range" class="rd-r" aria-label="Время"><i class="rd-x">ищем</i></div></div>
+      <div class="rd-f"><div class="mth" id="rdF"></div><div class="rd-sub" id="rdSub"></div></div>
+    </div>
+    <div class="cap" id="rdCap"></div>
+  </section>
+
+  <section class="slide" data-sec="1" data-id="dl" data-title="Объём — как расстояние" data-steps="2" data-w="dl">
+    <div class="eyebrow">Скорость · передача</div>
+    <h1 id="dlHead">Объём — как <em>расстояние</em></h1>
+    <div class="row" style="gap:28px;align-items:flex-start">
+      <div class="scope pipe"><canvas id="dlCv"></canvas></div>
+      <div class="col dl-side">
+        <div class="map">
+          <div><span>расстояние</span><i>→</i><b>объём <span class="mth">V</span></b></div>
+          <div><span>скорость машины</span><i>→</i><b>скорость передачи <span class="mth spd">v</span></b></div>
+          <div><span>время в пути</span><i>→</i><b>время передачи <span class="mth">t</span></b></div>
+        </div>
+        <div class="dl-eq mth" id="dlEq"></div>
+        <div class="dl-ctl" id="dlCtl">
+          <label><span>Объём</span><b id="dlVv"></b><input type="range" id="dlV" min="10" max="1000" step="10" value="100"></label>
+          <label><span>Скорость</span><b id="dlSv"></b><input type="range" id="dlS" min="1" max="100" value="20"></label>
+          <button class="btn pri" id="dlGo">▶ Скачать</button>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- ============ 02 · ФОРМУЛА ============ -->
+  <section class="slide" data-sec="2" data-id="tri" data-title="Формула передачи" data-steps="3" data-w="tri">
+    <div class="eyebrow">Формула</div>
+    <h1 id="triHead">Одна формула — <em>три вида</em></h1>
+    <div class="row" style="gap:70px;align-items:center;margin-top:10px">
+      <div class="tri" id="triBox">
+        <svg viewBox="0 0 560 480"><path d="M280 20 L540 460 L20 460 Z" class="tri-p"/><line x1="152" y1="240" x2="408" y2="240" class="tri-l"/><line x1="280" y1="240" x2="280" y2="460" class="tri-l"/><text x="280" y="380" class="tri-x">·</text></svg>
+        <button class="tri-k mth" data-k="V" style="left:280px;top:160px">V<small>объём</small></button>
+        <button class="tri-k mth spd" data-k="v" style="left:180px;top:360px">v<small>скорость</small></button>
+        <button class="tri-k mth" data-k="t" style="left:380px;top:360px">t<small>время</small></button>
+      </div>
+      <div class="col">
+        <div class="tri-f mth" id="triF"></div>
+        <div class="fcard"><h3>Как пользоваться</h3>Кликни по букве, которую ищешь, — она закроется, а оставшиеся покажут формулу. Сверху над чертой — делим, рядом внизу — умножаем.</div>
+        <div class="fcard dark"><h3>Единицы</h3>Скорость в <b>бит/с</b> → объём в <b>битах</b>, время получится в <b>секундах</b>. Спросили минуты — делим на <b>60</b>.</div>
+      </div>
+    </div>
+  </section>
+
+  <!-- ============ 03 · ЗАДАЧИ ЕГЭ ============ -->
+  <section class="slide" data-sec="3" data-id="t166" data-title="№166 — стереоаудиофайл" data-steps="5" data-w="t166">
+    <div class="eyebrow">№166 · базовый уровень · модуль 3</div>
+    <h1 id="t6Head">Стереоаудиофайл <em>передаётся</em></h1>
+    <div class="task"><span class="tx-hl k5" data-k="1">Стерео</span>аудиофайл передаётся со скоростью <span class="tx-hl" data-k="2">32000 бит/с</span>. Файл был записан с такими параметрами: глубина кодирования — <span class="tx-hl" data-k="2">16 бит</span> на отсчёт, частота дискретизации — <span class="tx-hl" data-k="2">48000 отсчётов в секунду</span>, время записи — <span class="tx-hl" data-k="2">90 с</span>. Сколько <span class="tx-hl k5" data-k="5">минут</span> будет передаваться файл?</div>
+    <div class="row t-row">
+      <div class="given"><h3>Дано</h3>
+        <div class="gv" data-s="1"><b>n</b> = 2<small>«стерео» спрятали прямо в слове</small></div>
+        <div class="gv" data-s="2"><b class="spd">v</b> = 32 000 бит/с<small>скорость передачи</small></div>
+        <div class="gv" data-s="2"><b>i</b> = 16 бит</div>
+        <div class="gv" data-s="2"><b>ν</b> = 48 000 Гц<small>ню — частота: «отсчётов в секунду»</small></div>
+        <div class="gv" data-s="2"><b>t</b><sub>зап</sub> = 90 с</div>
+      </div>
+      <div class="col t-mid">
+        <div class="t-warn" data-s="2-2"><b>Не перепутай!</b> «бит в секунду» — это <b>скорость передачи <span class="spd mth">v</span></b>. «Отсчётов в секунду» — это <b>частота ν (ню)</b>. И время тут два: записи (90 с) и передачи — его ищем.</div>
+        <div class="t-f" id="t6V"><small>объём файла, бит</small><div class="t-line mth">V = n · i · ν · t<sub>зап</sub></div><div class="t-line">= 2 · 16 · 48 000 · 90 = <b>138 240 000</b></div></div>
+        <div class="t-f" id="t6T"><small>время передачи</small><div class="frac"><span>138 240 000</span><span>32 000</span></div></div>
+      </div>
+      <div class="calc" id="t6Calc"><div class="calc-top"><span>Калькулятор</span><i></i></div><div class="calc-s"><small>138 240 000 ÷ 32 000 =</small><b id="t6Scr">0</b></div><div class="calc-u">секунд</div></div>
+    </div>
+    <div class="t-ans" id="t6Ans"><span>4 320 с</span><i>→</i><span>спрашивают <b>минуты</b>: делим на 60</span><i>→</i><b class="big-a">72</b></div>
+  </section>
+
+  <section class="slide" data-sec="3" data-id="pack" data-title="№17520 — пакеты снимков" data-steps="4" data-w="pack">
+    <div class="eyebrow">№17520 · основная волна 07.06.24 · базовый уровень</div>
+    <h1 id="pkHead">Камера шлёт <em>пакеты</em> фото</h1>
+    <div class="task sm">Прибор автоматической фиксации нарушений правил дорожного движения делает цветные фотографии размером <span class="tx-hl" data-k="1">1024×960 пикселей</span>, используя палитру из <span class="tx-hl" data-k="1">8192 цветов</span>. Снимки сохраняются в памяти камеры, группируются в пакеты по несколько штук, затем передаются в центр обработки информации со скоростью передачи данных <span class="tx-hl" data-k="3">1 474 560 бит/с</span>. Каково <span class="tx-hl k5" data-k="4">максимально возможное число снимков</span> в одном пакете, если на передачу одного пакета отводится <span class="tx-hl" data-k="3">не более 280 секунд</span>? В ответе запишите целое число.</div>
+    <div class="row pk-row">
+      <div class="col pk-l">
+        <div class="pk-st" data-s="1"><small>одно фото</small><p>1024 × 960 пикселей, палитра <b>8192</b> цвета.<br>8192 = 2<sup>13</sup> → на пиксель <b class="mth">i</b> = <b>13 бит</b></p></div>
+        <div class="pk-st" data-s="2"><small>объём одного снимка</small><p class="mono">V<sub>1</sub> = 1024 · 960 · 13 = <b>12 779 520</b> бит</p></div>
+        <div class="pk-st" data-s="3"><small>за 280 секунд успеем передать</small><p class="mono"><span class="spd">v</span> · t = 1 474 560 · 280 = <b>412 876 800</b> бит</p></div>
+      </div>
+      <div class="pk-box" id="pkBox"><div class="pk-h"><b>Пакет</b><span>на передачу — не более 280 с</span></div><div class="pk-grid" id="pkGrid"></div><div class="pk-ft"><span><i class="ok"></i>успевает</span><span><i class="x"></i>33-й уже не успеет</span></div></div>
+    </div>
+    <div class="t-ans" id="pkAns"><div class="frac sm"><span>412 876 800</span><span>12 779 520</span></div><span>= 32,3…</span><i>→</i><span>снимок целиком или никак — <b>округляем вниз</b></span><b class="big-a">32</b></div>
+  </section>
+
+  <!-- ============ 04 · ПЕСОЧНИЦА ============ -->
+  <section class="slide" data-sec="4" data-id="lab" data-title="Песочница: передай файл" data-steps="0" data-w="lab">
+    <div class="eyebrow">Песочница</div>
+    <h1>Что передаём и <em>сколько ждать</em>?</h1>
+    <div class="row" style="gap:28px;align-items:flex-start">
+      <div class="col lb-l">
+        <div class="seg" id="lbKind"><button>Голосовое</button><button>Фото</button><button>Файл</button></div>
+        <div class="lb-in"><label><b class="mth">ν</b><input id="lA1" type="number" value="48000"><small>Гц</small></label><label><b class="mth">i</b><input id="lA2" type="number" value="16"><small>бит</small></label><label><b class="mth">t</b><input id="lA3" type="number" value="90"><small>секунд</small></label><label><b class="mth">n</b><input id="lA4" type="number" value="2"><small>каналов</small></label></div>
+        <div class="lb-in"><label><b>ширина</b><input id="lB1" type="number" value="1024"><small>пикс.</small></label><label><b>высота</b><input id="lB2" type="number" value="960"><small>пикс.</small></label><label><b>цветов</b><input id="lB3" type="number" value="8192"><small>в палитре</small></label><label><b>снимков</b><input id="lB4" type="number" value="32"><small>в пакете</small></label></div>
+        <div class="lb-in"><label class="wide"><b>размер</b><input id="lC1" type="number" value="100"><small>Мбайт</small></label></div>
+        <p class="lb-note" id="lbNote"></p>
+        <div class="lb-sp"><span>Скорость канала <b class="mth spd">v</b>, бит/с</span><input id="lbSpeed" type="number" value="32000"><div class="chips" id="lbSp"></div></div>
+      </div>
+      <div class="lb-r"><div class="scope pipe sm"><canvas id="lbCv"></canvas></div><div class="lb-res" id="lbRes"></div><button class="btn pri" id="lbGo">▶ Передать</button></div>
+    </div>
+  </section>
+
+  <!-- ============ 05 · ИТОГ ============ -->
+  <section class="slide" data-sec="5" data-id="quiz" data-title="Проверь себя" data-steps="5" data-w="quiz" data-btn="Следующий вопрос">
+    <div style="display:flex;align-items:center;justify-content:space-between">
+      <div class="eyebrow" id="qzNum">Вопрос 1 из 5</div>
+      <div class="dots" id="qzDots"></div>
+    </div>
+    <div id="qzBox"></div>
+  </section>
+
+  <section class="slide" data-sec="5" data-id="cheat" data-title="Шпаргалка" data-steps="0">
+    <h1>Шпаргалка №7 · <em>передача</em></h1>
+    <div class="csg">
+      <div class="csc dark"><h3>Главная формула</h3><p class="cs-formula mth">t = V / v</p><p>Как в школе: время = расстояние / скорость.</p></div>
+      <div class="csc"><h3>Объём</h3><p class="mth" style="font-size:30px">V = v · t</p><p>Скорость умножить на время.</p></div>
+      <div class="csc"><h3>Скорость</h3><p class="mth" style="font-size:30px">v = V / t</p><p>Объём делить на время.</p></div>
+      <div class="csc"><h3>Звук</h3><p><span class="mth">V = ν · i · t · n</span> — из второй части урока.</p></div>
+      <div class="csc"><h3>Фото</h3><p><span class="mth">V</span> = ширина · высота · <span class="mth">i</span>. Цветов N = 2<sup>i</sup>: 8192 → 13 бит.</p></div>
+      <div class="csc"><h3>Единицы</h3><p>Скорость в <b>бит/с</b> → объём в <b>битах</b> → время в <b>секундах</b>.</p></div>
+      <div class="csc hot"><h3>Спросили минуты</h3><p>Секунды <b>÷ 60</b>: 4320 с → 72 мин.</p></div>
+      <div class="csc hot"><h3>Сколько снимков влезет</h3><p>n = v · t / V<sub>1</sub> → округляем <b>вниз</b>: 32,3 → 32.</p></div>
+      <div class="csc"><h3>Читай внимательно</h3><p>«<b>Стерео</b>аудиофайл» — n = 2. «Отсчётов в секунду» — это частота, а не скорость.</p></div>
+    </div>
+  </section>
+
+  </main>
+
+  <div class="pline"><i id="pBar"></i></div>
+
+  <div hidden><b id="fSec"></b><span id="fNext"></span><i id="fBar"></i></div>
+
+  <canvas id="ink" width="1600" height="900"></canvas>
+  <div id="spot"></div>
+  <div id="blank">Экран скрыт · нажми B</div>
+  <div class="toast" id="toast"></div>
+
+  <div class="ov" id="ovToc"><div class="panel"><button class="x" data-close>✕</button><h2 style="font-size:34px;margin-bottom:6px">План занятия</h2><div class="toc" id="tocList"></div></div></div>
+  <div class="ov" id="ovHelp"><div class="panel" style="width:1020px"><button class="x" data-close>✕</button><h2 style="font-size:34px;margin-bottom:18px">Управление</h2>
+    <div class="keys">
+      <div><kbd>→</kbd><kbd>Пробел</kbd> следующий шаг / экран</div>
+      <div><kbd>←</kbd> назад</div>
+      <div><kbd>N</kbd> пояснение к слайду</div>
+      <div><kbd>G</kbd> оглавление</div>
+      <div><kbd>F</kbd> полный экран</div>
+      <div><kbd>L</kbd> лазерная указка</div>
+      <div><kbd>D</kbd> рисовать поверх слайда</div>
+      <div><kbd>C</kbd> стереть рисунок</div>
+      <div><kbd>S</kbd> прожектор</div>
+      <div><kbd>B</kbd> скрыть экран</div>
+      <div><kbd>R</kbd> заново этот слайд</div>
+      <div><kbd>Home</kbd><kbd>End</kbd> в начало / в конец</div>
+      <div><kbd>Esc</kbd> закрыть окно / инструмент</div>
+    </div>
+
+  </div></div>
+</div>
+
+<aside class="top lesson-menu" id="lessonMenu" aria-label="Меню презентации" aria-hidden="true" inert>
+  <div class="menu-heading"><a class="home" id="homeLink" href="../">Задание №7</a><button id="menuClose" class="chrome-icon" aria-label="Закрыть меню"><svg viewBox="0 0 24 24"><path d="m6 6 12 12M18 6 6 18"/></svg></button></div>
+  <nav class="tabs" id="tabs" aria-label="Разделы урока"></nav>
+  <div class="menu-materials"><a href="../part-1/">Часть 1 · Изображения</a><a href="../part-2/">Часть 2 · Звук</a><a href="#7">Песочница</a><a href="#9">Шпаргалка</a><a href="#1">С начала</a></div>
+  <div class="menu-tools"><button id="bToc">Все слайды</button><button id="bHelp">Управление</button></div>
+</aside>
+<div id="viewerDock" class="viewer-dock" aria-label="Управление презентацией">
+  <div class="dock-left"><button id="hTop" class="dock-button" aria-controls="lessonMenu" aria-expanded="false"><svg viewBox="0 0 24 24"><path d="M4 6h16M4 12h16M4 18h16"/></svg><span>Меню</span></button><button id="bHideDock" class="chrome-icon dock-hide" aria-label="Скрыть панель" aria-controls="viewerDock" title="Скрыть панель"><svg viewBox="0 0 24 24" aria-hidden="true"><path d="m6 9 6 6 6-6"/></svg></button></div>
+  <div class="dock-navigation"><button id="bPrev" class="chrome-icon" aria-label="Предыдущий шаг"><svg viewBox="0 0 24 24"><path d="m14 6-6 6 6 6"/></svg></button><span id="fCnt">01 / 09</span><button id="bNext" class="dock-next">Дальше</button></div>
+  <div class="dock-right"><button id="nTab" class="dock-button" aria-controls="notes" aria-expanded="false"><svg viewBox="0 0 24 24"><path d="M5 5h14v14H5zM9 5v14M12 9h4M12 13h4"/></svg><span>Пояснения</span></button><button id="bFull" class="chrome-icon" aria-label="Полный экран" aria-pressed="false" title="Полный экран (F)"><svg viewBox="0 0 24 24"><path d="M4 9V4h5M20 9V4h-5M4 15v5h5M20 15v5h-5"/></svg></button></div>
+</div>
+<button id="dockRestore" class="dock-restore" aria-controls="viewerDock" aria-expanded="false" aria-label="Показать панель" hidden><svg viewBox="0 0 24 24" aria-hidden="true"><path d="m6 15 6-6 6 6"/></svg><span>Панель</span></button>
+<aside class="notes" id="notes" aria-label="Пояснение к слайду" aria-hidden="true" inert>
+  <div class="nhd"><div><small id="nSec"></small><b id="nTitle"></b></div><button class="nx" id="nClose" aria-label="Закрыть пояснения"><svg viewBox="0 0 24 24"><path d="m6 6 12 12M18 6 6 18"/></svg></button></div>
+  <div class="nbody" id="nBody"></div>
+  <div class="nft"><button id="nPrev" title="Назад">←</button><span id="nCnt"></span><button id="nNext" title="Дальше">→</button></div>
+</aside>
+
+
+
+
+
+<div id="laser"></div>
+<script src="notes.js?v=824fa6b98d91"></script>
+<script src="tr.js?v=b5b0048b74c7"></script>
+<script src="deck.js?v=5488fb943bb9"></script>
+</body>
+</html>
