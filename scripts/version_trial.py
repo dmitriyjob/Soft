@@ -4,7 +4,7 @@ Run after changing trial sources and commit the updated URLs with the changes.
 from pathlib import Path
 import hashlib
 import re
-root = Path(__file__).resolve().parents[1] / 'lessons/trial'
+root = Path(__file__).resolve().parents[1] / 'trial'
 files = sorted((root / 'imported').glob('*.js')) + sorted((root / 'imported').glob('*.css')) + [root / 'index.html']
 def clean(text):
     return re.sub(r'\?v=[a-f0-9]+', '', text)
