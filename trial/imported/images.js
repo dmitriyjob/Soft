@@ -1,4 +1,4 @@
-import {imageSizes} from './image-sizes.js?v=c10203d6c68a';
+import {imageSizes} from './image-sizes.js?v=d4d85e83151d';
 
 function imageKey(source){
  return new URL(source,document.baseURI).pathname.replace(/^\//,'');
