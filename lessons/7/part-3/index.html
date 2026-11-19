@@ -3,7 +3,7 @@
 <head>
 <meta charset="utf-8">
 <meta name="viewport" content="width=device-width, initial-scale=1">
-<title>Ион · Задание 7 — передача данных</title>
+<title>Задание 7 — передача данных</title>
 <meta name="description" content="Интерактивный урок: задание 7 ЕГЭ по информатике, передача данных. Скорость, время и объём, формула t = V / v, задачи ЕГЭ про аудиофайл и пакеты снимков.">
 <meta name="theme-color" content="#F5F5F7">
 <link rel="icon" href="data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 32 32'%3E%3Crect width='32' height='32' rx='8' fill='%23B9521D'/%3E%3Ctext x='16' y='23' text-anchor='middle' font-family='Arial' font-size='23' font-weight='700' fill='white'%3Ei%3C/text%3E%3C/svg%3E">
@@ -101,7 +101,7 @@
     <div class="task"><span class="tx-hl k5" data-k="1">Стерео</span>аудиофайл передаётся со скоростью <span class="tx-hl" data-k="2">32000 бит/с</span>. Файл был записан с такими параметрами: глубина кодирования — <span class="tx-hl" data-k="2">16 бит</span> на отсчёт, частота дискретизации — <span class="tx-hl" data-k="2">48000 отсчётов в секунду</span>, время записи — <span class="tx-hl" data-k="2">90 с</span>. Сколько <span class="tx-hl k5" data-k="5">минут</span> будет передаваться файл?</div>
     <div class="row t-row">
       <div class="given"><h3>Дано</h3>
-        <div class="gv" data-s="1"><b>n</b> = 2<small>«стерео» спрятали прямо в слове</small></div>
+        <div class="gv" data-s="1"><b>k</b> = 2<small>«стерео» спрятали прямо в слове</small></div>
         <div class="gv" data-s="2"><b class="spd">v</b> = 32 000 бит/с<small>скорость передачи</small></div>
         <div class="gv" data-s="2"><b>i</b> = 16 бит</div>
         <div class="gv" data-s="2"><b>ν</b> = 48 000 Гц<small>ню — частота: «отсчётов в секунду»</small></div>
@@ -109,7 +109,7 @@
       </div>
       <div class="col t-mid">
         <div class="t-warn" data-s="2-2"><b>Не перепутай!</b> «бит в секунду» — это <b>скорость передачи <span class="spd mth">v</span></b>. «Отсчётов в секунду» — это <b>частота ν (ню)</b>. И время тут два: записи (90 с) и передачи — его ищем.</div>
-        <div class="t-f" id="t6V"><small>объём файла, бит</small><div class="t-line mth">V = n · i · ν · t<sub>зап</sub></div><div class="t-line">= 2 · 16 · 48 000 · 90 = <b>138 240 000</b></div></div>
+        <div class="t-f" id="t6V"><small>объём файла, бит</small><div class="t-line mth">V = k · i · ν · t<sub>зап</sub></div><div class="t-line">= 2 · 16 · 48 000 · 90 = <b>138 240 000</b></div></div>
         <div class="t-f" id="t6T"><small>время передачи</small><div class="frac"><span>138 240 000</span><span>32 000</span></div></div>
       </div>
       <div class="calc" id="t6Calc"><div class="calc-top"><span>Калькулятор</span><i></i></div><div class="calc-s"><small>138 240 000 ÷ 32 000 =</small><b id="t6Scr">0</b></div><div class="calc-u">секунд</div></div>
@@ -139,7 +139,7 @@
     <div class="row" style="gap:28px;align-items:flex-start">
       <div class="col lb-l">
         <div class="seg" id="lbKind"><button>Голосовое</button><button>Фото</button><button>Файл</button></div>
-        <div class="lb-in"><label><b class="mth">ν</b><input id="lA1" type="number" value="48000"><small>Гц</small></label><label><b class="mth">i</b><input id="lA2" type="number" value="16"><small>бит</small></label><label><b class="mth">t</b><input id="lA3" type="number" value="90"><small>секунд</small></label><label><b class="mth">n</b><input id="lA4" type="number" value="2"><small>каналов</small></label></div>
+        <div class="lb-in"><label><b class="mth">ν</b><input id="lA1" type="number" value="48000"><small>Гц</small></label><label><b class="mth">i</b><input id="lA2" type="number" value="16"><small>бит</small></label><label><b class="mth">t</b><input id="lA3" type="number" value="90"><small>секунд</small></label><label><b class="mth">k</b><input id="lA4" type="number" value="2"><small>каналов</small></label></div>
         <div class="lb-in"><label><b>ширина</b><input id="lB1" type="number" value="1024"><small>пикс.</small></label><label><b>высота</b><input id="lB2" type="number" value="960"><small>пикс.</small></label><label><b>цветов</b><input id="lB3" type="number" value="8192"><small>в палитре</small></label><label><b>снимков</b><input id="lB4" type="number" value="32"><small>в пакете</small></label></div>
         <div class="lb-in"><label class="wide"><b>размер</b><input id="lC1" type="number" value="100"><small>Мбайт</small></label></div>
         <p class="lb-note" id="lbNote"></p>
@@ -164,12 +164,12 @@
       <div class="csc dark"><h3>Главная формула</h3><p class="cs-formula mth">t = V / v</p><p>Как в школе: время = расстояние / скорость.</p></div>
       <div class="csc"><h3>Объём</h3><p class="mth" style="font-size:30px">V = v · t</p><p>Скорость умножить на время.</p></div>
       <div class="csc"><h3>Скорость</h3><p class="mth" style="font-size:30px">v = V / t</p><p>Объём делить на время.</p></div>
-      <div class="csc"><h3>Звук</h3><p><span class="mth">V = ν · i · t · n</span> — из второй части урока.</p></div>
+      <div class="csc"><h3>Звук</h3><p><span class="mth">V = ν · i · t · k</span> — из второй части урока.</p></div>
       <div class="csc"><h3>Фото</h3><p><span class="mth">V</span> = ширина · высота · <span class="mth">i</span>. Цветов N = 2<sup>i</sup>: 8192 → 13 бит.</p></div>
       <div class="csc"><h3>Единицы</h3><p>Скорость в <b>бит/с</b> → объём в <b>битах</b> → время в <b>секундах</b>.</p></div>
       <div class="csc hot"><h3>Спросили минуты</h3><p>Секунды <b>÷ 60</b>: 4320 с → 72 мин.</p></div>
-      <div class="csc hot"><h3>Сколько снимков влезет</h3><p>n = v · t / V<sub>1</sub> → округляем <b>вниз</b>: 32,3 → 32.</p></div>
-      <div class="csc"><h3>Читай внимательно</h3><p>«<b>Стерео</b>аудиофайл» — n = 2. «Отсчётов в секунду» — это частота, а не скорость.</p></div>
+      <div class="csc hot"><h3>Сколько снимков влезет</h3><p>k = v · t / V<sub>1</sub> → округляем <b>вниз</b>: 32,3 → 32.</p></div>
+      <div class="csc"><h3>Читай внимательно</h3><p>«<b>Стерео</b>аудиофайл» — k = 2. «Отсчётов в секунду» — это частота, а не скорость.</p></div>
     </div>
   </section>
 
@@ -228,8 +228,8 @@
 
 
 <div id="laser"></div>
-<script src="notes.js?v=824fa6b98d91"></script>
-<script src="tr.js?v=b5b0048b74c7"></script>
+<script src="notes.js?v=651e4648e0f7"></script>
+<script src="tr.js?v=34dd156087a8"></script>
 <script src="deck.js?v=5488fb943bb9"></script>
 </body>
 </html>
