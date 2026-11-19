@@ -117,15 +117,15 @@
     <div class="t-ans" id="t6Ans"><span>4 320 с</span><i>→</i><span>спрашивают <b>минуты</b>: делим на 60</span><i>→</i><b class="big-a">72</b></div>
   </section>
 
-  <section class="slide" data-sec="3" data-id="pack" data-title="№17520 — пакеты снимков" data-steps="4" data-w="pack">
+  <section class="slide" data-sec="3" data-id="pack" data-title="№17520 — пакеты снимков" data-steps="6" data-w="pack">
     <div class="eyebrow">№17520 · основная волна 07.06.24 · базовый уровень</div>
     <h1 id="pkHead">Камера шлёт <em>пакеты</em> фото</h1>
-    <div class="task sm">Прибор автоматической фиксации нарушений правил дорожного движения делает цветные фотографии размером <span class="tx-hl" data-k="1">1024×960 пикселей</span>, используя палитру из <span class="tx-hl" data-k="1">8192 цветов</span>. Снимки сохраняются в памяти камеры, группируются в пакеты по несколько штук, затем передаются в центр обработки информации со скоростью передачи данных <span class="tx-hl" data-k="3">1 474 560 бит/с</span>. Каково <span class="tx-hl k5" data-k="4">максимально возможное число снимков</span> в одном пакете, если на передачу одного пакета отводится <span class="tx-hl" data-k="3">не более 280 секунд</span>? В ответе запишите целое число.</div>
+    <div class="task sm">Прибор автоматической фиксации нарушений правил дорожного движения делает цветные фотографии размером <span class="tx-hl" data-k="1">1024×960 пикселей</span>, используя палитру из <span class="tx-hl" data-k="1">8192 цветов</span>. Снимки сохраняются в памяти камеры, группируются в пакеты по несколько штук, затем передаются в центр обработки информации со скоростью передачи данных <span class="tx-hl" data-k="5">1 474 560 бит/с</span>. Каково <span class="tx-hl k5" data-k="6">максимально возможное число снимков</span> в одном пакете, если на передачу одного пакета отводится <span class="tx-hl" data-k="5">не более 280 секунд</span>? В ответе запишите целое число.</div>
     <div class="row pk-row">
       <div class="col pk-l">
-        <div class="pk-st" data-s="1"><small>одно фото</small><p>1024 × 960 пикселей, палитра <b>8192</b> цвета.<br>8192 = 2<sup>13</sup> → на пиксель <b class="mth">i</b> = <b>13 бит</b></p></div>
-        <div class="pk-st" data-s="2"><small>объём одного снимка</small><p class="mono">V<sub>1</sub> = 1024 · 960 · 13 = <b>12 779 520</b> бит</p></div>
-        <div class="pk-st" data-s="3"><small>за 280 секунд успеем передать</small><p class="mono"><span class="spd">v</span> · t = 1 474 560 · 280 = <b>412 876 800</b> бит</p></div>
+        <div class="pk-st" data-s="1"><small>бит на пиксель</small><p class="mono">2<sup>i</sup> ≥ N</p><p data-s="2">N = 8192 = 2<sup>13</sup> → i = <b>13 бит</b></p></div>
+        <div class="pk-st" data-s="3"><small>объём одного снимка</small><p class="mono">I = a · b · i</p><p class="mono" data-s="4">I = 1024 · 960 · 13 = <b>12 779 520</b> бит</p></div>
+        <div class="pk-st" data-s="5"><small>за 280 секунд успеем передать</small><p class="mono"><span class="spd">v</span> · t = 1 474 560 · 280 = <b>412 876 800</b> бит</p></div>
       </div>
       <div class="pk-box" id="pkBox"><div class="pk-h"><b>Пакет</b><span>на передачу — не более 280 с</span></div><div class="pk-grid" id="pkGrid"></div><div class="pk-ft"><span><i class="ok"></i>успевает</span><span><i class="x"></i>33-й уже не успеет</span></div></div>
     </div>
@@ -228,8 +228,8 @@
 
 
 <div id="laser"></div>
-<script src="notes.js?v=651e4648e0f7"></script>
-<script src="tr.js?v=34dd156087a8"></script>
+<script src="notes.js?v=0dc8537bf479"></script>
+<script src="tr.js?v=3507f4bc496f"></script>
 <script src="deck.js?v=5488fb943bb9"></script>
 </body>
 </html>
