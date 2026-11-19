@@ -1,8 +1,8 @@
-import {scenes,chapters} from './selected.js?v=d4d85e83151d';
-import {createMachine} from './machine.js?v=d4d85e83151d';
-import {bindScoreGallery} from './gallery.js?v=d4d85e83151d';
-import {bindImages,createImagePreloader} from './images.js?v=d4d85e83151d';
-import * as fx from './fx.js?v=d4d85e83151d';
+import {scenes,chapters} from './selected.js?v=350c1ec5e9f8';
+import {createMachine} from './machine.js?v=350c1ec5e9f8';
+import {bindScoreGallery} from './gallery.js?v=350c1ec5e9f8';
+import {bindImages,createImagePreloader} from './images.js?v=350c1ec5e9f8';
+import * as fx from './fx.js?v=350c1ec5e9f8';
 const $=s=>document.querySelector(s);const stage=$('#stage');let index=0;let busy=false;let machine=null;let wheelTotal=0;let wheelAt=0;let formatStep=0;let sceneTransition=Promise.resolve();
 const rating={value:0,tags:new Set(),tip:'none'};
 let disposeGallery=()=>{};
