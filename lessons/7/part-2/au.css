@@ -298,3 +298,5 @@ h1 em { font-style: normal; color: var(--accent); }
 .wv-parts .wvp { padding: 22px 22px; } .wvp b { font-size: 27px; } .wvp i { font-size: 21px; }
 
 .un-tip .unit-fraction{display:inline-flex;flex-direction:column;align-items:stretch;text-align:center;vertical-align:middle;font-family:var(--mono);line-height:1.25}.un-tip .unit-fraction>span:first-child{border-bottom:2px solid currentColor;padding:0 12px 5px}.un-tip .unit-fraction>span:last-child{padding:5px 12px 0}
+
+.un-a{display:inline-flex;align-items:center;gap:8px}.conversion-fraction{display:inline-flex;flex-direction:column;text-align:center;line-height:1.1}.conversion-fraction>span:first-child{border-bottom:2px solid currentColor;padding:0 4px 4px}.conversion-fraction>span:last-child{padding-top:4px}
