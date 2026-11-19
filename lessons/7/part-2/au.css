@@ -296,3 +296,5 @@ h1 em { font-style: normal; color: var(--accent); }
 .fm-eq { margin-top: 36px; } .fm-calc { margin-top: 30px; }
 .ch-stage svg { width: 540px; height: 460px; } .ch-stage { width: 540px; }
 .wv-parts .wvp { padding: 22px 22px; } .wvp b { font-size: 27px; } .wvp i { font-size: 21px; }
+
+.un-tip .unit-fraction{display:inline-flex;flex-direction:column;align-items:stretch;text-align:center;vertical-align:middle;font-family:var(--mono);line-height:1.25}.un-tip .unit-fraction>span:first-child{border-bottom:2px solid currentColor;padding:0 12px 5px}.un-tip .unit-fraction>span:last-child{padding:5px 12px 0}
