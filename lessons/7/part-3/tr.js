@@ -273,10 +273,10 @@ W.pack = {
     const k = this.T.next(), alive = () => this.T.alive(k), anim = animOf(o);
     $$('.tx-hl', el).forEach(h => h.classList.toggle('on', +h.dataset.k <= s && s >= 1));
     $$('.pk-st', el).forEach(c => c.classList.toggle('on', +c.dataset.s <= s));
-    $('#pkAns', el).classList.toggle('on', s >= 4);
-    $('#pkHead', el).innerHTML = ['Камера шлёт <em>пакеты</em> фото', 'Одно фото: <em>i = 13</em>', 'Объём <em>одного снимка</em>', 'Сколько бит <em>успеем за 280 с</em>', 'Ответ: <em>32</em> снимка'][s];
+    $('#pkAns', el).classList.toggle('on', s >= 6);
+    $('#pkHead', el).innerHTML = ['Камера шлёт <em>пакеты</em> фото', 'Сначала: <em>2ⁱ ≥ N</em>', 'На пиксель: <em>i = 13 бит</em>', 'Объём снимка: <em>I = a · b · i</em>', 'Подставляем <em>числа</em>', 'Сколько бит <em>успеем за 280 с</em>', 'Ответ: <em>32</em> снимка'][s];
     const show = n => this.tiles.forEach((t, i) => t.classList.toggle('on', i < n));
-    if (s < 4) { show(s >= 2 ? 1 : 0); $('#pkBox', el).classList.toggle('on', s >= 3); return; }
+    if (s < 6) { show(s >= 4 ? 1 : 0); $('#pkBox', el).classList.toggle('on', s >= 5); return; }
     $('#pkBox', el).classList.add('on');
     if (anim) { show(0); for (let i = 1; i <= 33; i++) { await wait(55); if (!alive()) return; show(i); } }
     else show(33);
