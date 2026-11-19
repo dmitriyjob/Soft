@@ -300,3 +300,8 @@ h1 em { font-style: normal; color: var(--accent); }
 .un-tip .unit-fraction{display:inline-flex;flex-direction:column;align-items:stretch;text-align:center;vertical-align:middle;font-family:var(--mono);line-height:1.25}.un-tip .unit-fraction>span:first-child{border-bottom:2px solid currentColor;padding:0 12px 5px}.un-tip .unit-fraction>span:last-child{padding:5px 12px 0}
 
 .un-a{display:inline-flex;align-items:center;gap:8px}.conversion-fraction{display:inline-flex;flex-direction:column;text-align:center;line-height:1.1}.conversion-fraction>span:first-child{border-bottom:2px solid currentColor;padding:0 4px 4px}.conversion-fraction>span:last-child{padding-top:4px}
+
+/* Indexed before/after comparison and nested mathematical fractions. */
+[data-id=t160] .pr-col{width:270px}[data-id=t160] .pr-col>div{font-size:27px}[data-id=t160] sub{font-size:.6em}
+.cmp-fraction{display:inline-flex;flex-direction:column;align-items:stretch;text-align:center;vertical-align:middle;line-height:1.2;margin:0 4px;white-space:nowrap}.cmp-fraction>span:first-child{border-bottom:2px solid currentColor;padding:0 5px 5px}.cmp-fraction>span:last-child{padding:5px 5px 0}.cmp-fraction .cmp-fraction{font-size:.8em}.cmp-small{font-size:22px}
+.cmp-equation{font:700 23px var(--mono);justify-content:center;gap:6px;white-space:nowrap}.cmp-simplified{font:700 28px var(--mono);text-align:center}.cmp-answer{font:700 27px var(--mono);text-align:center;color:var(--accent);padding-top:14px;border-top:1px solid var(--line2)}.cmp-answer strong{display:block;font-size:36px;margin-top:14px}.cmp-equation s::after{height:2px}
