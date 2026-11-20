@@ -1,9 +1,9 @@
-import {previewMarkup,bindPreviews} from './lesson-previews.js?v=351055f9d852';
-import {programTable,machineMarkup} from './machine.js?v=351055f9d852';
-import {taskGroups,scoreScale,scoreTrend} from './exam-data.js?v=351055f9d852';
-import {telegramMarkup,bindTelegram} from './tg.js?v=351055f9d852';
-import {lessonsMarkup,bindLessons} from './demos.js?v=351055f9d852';
-import {classMarkup,bindClass,ringMarkup,bindRing,ctMarkup,bindCt,softMarkup,bindSoft,scheduleMarkup,bindSchedule,theoryStage,bindTheory,practiceStage,bindPractice} from './live.js?v=351055f9d852';
+import {previewMarkup,bindPreviews} from './lesson-previews.js?v=dbde2104825e';
+import {programTable,machineMarkup} from './machine.js?v=dbde2104825e';
+import {taskGroups,scoreScale,scoreTrend} from './exam-data.js?v=dbde2104825e';
+import {telegramMarkup,bindTelegram} from './tg.js?v=dbde2104825e';
+import {lessonsMarkup,bindLessons} from './demos.js?v=dbde2104825e';
+import {classMarkup,bindClass,ringMarkup,bindRing,ctMarkup,bindCt,softMarkup,bindSoft,scheduleMarkup,bindSchedule,theoryStage,bindTheory,practiceStage,bindPractice} from './live.js?v=dbde2104825e';
 const external='target="_blank" rel="noopener"';
 const scorePhotos=[98,95,90,88,85,80,80,80,85,95,80,95,93,88,90].map((score,i)=>({score,src:`imported/assets/score-${String(i+1).padStart(2,'0')}.${i===14?'jpg':'png'}`}));
 const resultScreens=[1,2,3,4,5,6,7,8,9,10,11,12,13,14,15,1,2,3,4,5,10,12,13,15,2].map(id=>scorePhotos[id-1]);
