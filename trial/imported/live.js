@@ -65,7 +65,7 @@ function fakeCursor(root){
 
 /* ---------- говорящие головы ---------- */
 const PEOPLE={
- ion:{name:'Ион',skin:'#E8C0A2',hair:'#1D1916',shirt:'#1E2433',bg:'#FFE2CF',style:'curly',beard:true},
+ ion:{name:'Дмитрий',skin:'#E8C0A2',hair:'#1D1916',shirt:'#1E2433',bg:'#FFE2CF',style:'curly',beard:true},
  anya:{name:'Аня',skin:'#F3D0B6',hair:'#7A4A2A',shirt:'#2F855A',bg:'#DDF3E4',style:'long'},
  misha:{name:'Миша',skin:'#EBC6A8',hair:'#D7A13E',shirt:'#2B6CB0',bg:'#DCE8F7',style:'short'},
  katya:{name:'Катя',skin:'#F5D5BF',hair:'#A23B2A',shirt:'#B83280',bg:'#F8DDEB',style:'bob'},
@@ -180,7 +180,7 @@ function theoryScene(view,narrow,call,W,H){
  svg('rect',{width:W,height:H,fill:'#FBFBFC'},s);svg('rect',{width:W,height:H,fill:gridFill},s);
  const P=narrow?{x:12,y:12,w:376,h:536,head:40}:{x:40,y:22,w:720,h:456,head:44};
  svg('rect',{x:P.x,y:P.y,width:P.w,height:P.h,class:'bd-page'},s);svg('rect',{x:P.x,y:P.y,width:P.w,height:P.head,class:'bd-page-head'},s);
- const title=svg('text',{x:P.x+18,y:P.y+P.head/2+5,class:'bd-title'},s);title.textContent=narrow?'Ион · Задание 7':'Ион  ·  Задание 7  ·  Кодирование звука';
+ const title=svg('text',{x:P.x+18,y:P.y+P.head/2+5,class:'bd-title'},s);title.textContent=narrow?'Дмитрий · Задание 7':'Дмитрий  ·  Задание 7  ·  Кодирование звука';
  const TX=P.x+(narrow?16:24);
  printed(s,TX,P.y+P.head+(narrow?28:34),'Звук записан в моно с частотой 8 кГц и глубиной кодирования 16 бит. Запись длится 10 секунд. Сколько Кбайт занимает файл?',narrow?P.w-32:470,narrow?17:21,'bd-print'+(narrow?' bd-print-sm':''));
  svg('path',{d:`M${P.x} ${narrow?150:158}H${P.x+P.w}`,class:'bd-rule'},s);
@@ -188,7 +188,7 @@ function theoryScene(view,narrow,call,W,H){
   :[[TX,206,'V = ν · i · t · k','bd-ink',30],[440,200,'ν = 8000 Гц,  i = 16 бит','bd-navy',18],[440,228,'t = 10 с,  k = 1','bd-navy',18],[TX,278,'V = 8000 · 16 · 10 · 1 = 1 280 000 бит','bd-ink',22],[TX,320,'1 280 000 бит : 8 = 160 000 байт','bd-ink',22],[TX,362,'160 000 байт : 1024 ≈ 156 Кбайт','bd-ink',22],[TX+12,432,'Ответ: 156','bd-orange',28]];
  const lines=L.map(([x,y,t,c,z])=>hand(s,defs,x,y,t,c,z));const ans=L[L.length-1];
  const box=stroke(s,narrow?`M${ans[0]-12} ${ans[1]-30}h150v44h-150z`:`M${ans[0]-14} ${ans[1]-34}h176v50h-176z`,'bd-pen bd-orange bd-thick');
- const ion=cursor(s,'Ион','#B9521D','is-ion');
+ const ion=cursor(s,'Дмитрий','#B9521D','is-ion');
  function reset(){view.classList.add('act-pres');view.classList.remove('act-board');setVal(0);presCur.show(false);lines.forEach(hideHand);hidePath(box);ion.show(false);ion.at(W+20,120)}
  async function play(tk,cap){
   reset();cap('Теорию рассказываю на интерактивной презентации');
@@ -241,7 +241,7 @@ function practiceScene(view,narrow,call,W,H){
  const stuck=cols.find(c=>c.p.stuck);
  const hint=hand(stuck.g,defs,8,SY[1]+2,'2^6 = 64 ≥ 36 → 6 бит','bd-orange',14.5);
  const hintBox=stroke(stuck.g,`M4 ${SY[1]-16}h${cw-10}v24h${-(cw-10)}z`,'bd-pen bd-orange');
- const ion=cursor(world,'Ион','#B9521D','is-ion');
+ const ion=cursor(world,'Дмитрий','#B9521D','is-ion');
  const scaleTo=narrow?1.6:1.85;
  function setZoom(k){const s1=1+(scaleTo-1)*k;const fx=stuck.gx+cw/2,fy=y0+196;const tx=(W/2-fx*s1)*k,ty=((BAR+(H-BAR)/2)-fy*s1)*k;world.setAttribute('transform',`translate(${tx.toFixed(2)} ${ty.toFixed(2)}) scale(${s1.toFixed(4)})`)}
  const abs=(c,x,y)=>[c.gx+x,y0+y];const via=c=>({at:(x,y)=>c.cur.at(c.gx+x,y0+y)});const viaIon=c=>({at:(x,y)=>ion.at(c.gx+x,y0+y)});
