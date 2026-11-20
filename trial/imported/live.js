@@ -65,7 +65,7 @@ function fakeCursor(root){
 
 /* ---------- говорящие головы ---------- */
 const PEOPLE={
- ion:{name:'Дмитрий',skin:'#E8C0A2',hair:'#1D1916',shirt:'#1E2433',bg:'#FFE2CF',style:'curly',beard:true},
+ ion:{name:'Дмитрий',skin:'#E8C0A2',hair:'#D9B56F',shirt:'#1E2433',bg:'#FFE2CF',style:'wavy',beard:false},
  anya:{name:'Аня',skin:'#F3D0B6',hair:'#7A4A2A',shirt:'#2F855A',bg:'#DDF3E4',style:'long'},
  misha:{name:'Миша',skin:'#EBC6A8',hair:'#D7A13E',shirt:'#2B6CB0',bg:'#DCE8F7',style:'short'},
  katya:{name:'Катя',skin:'#F5D5BF',hair:'#A23B2A',shirt:'#B83280',bg:'#F8DDEB',style:'bob'},
@@ -81,6 +81,7 @@ function face(p,parent){
  svg('rect',{x:20.5,y:28,width:7,height:9,rx:3,fill:p.skin},g);
  svg('ellipse',{cx:24,cy:21,rx:10,ry:11.5,fill:p.skin},g);
  if(p.style==='curly')[[14.5,13],[18,9.2],[22.5,7.4],[27.5,7.6],[31.5,9.6],[34.2,13.4],[16,15.6],[32.6,16.6],[20.4,11.6],[26,10.6]].forEach(([x,y])=>svg('circle',{cx:x,cy:y,r:4.4,fill:p.hair},g));
+ if(p.style==='wavy'){svg('path',{d:'M13 20C10 16 12 11 16 10C17 5 22 5 25 7C29 4 34 7 34 11C39 13 37 19 34 21L33 16C29 19 27 13 24 15C20 18 18 13 15 17L14 22Z',fill:p.hair},g);svg('path',{d:'M16 12Q20 8 24 11T32 11M16 16Q20 12 24 14T33 15',fill:'none',stroke:'#F3D79D','stroke-width':1.6,'stroke-linecap':'round'},g);}
  if(p.style==='short')svg('path',{d:'M13.6 19C13 9.5 19 6.6 24 6.6C30 6.6 35.4 9.5 34.6 19C32 13.6 28 12.4 24 12.4C20 12.4 16 13.4 13.6 19Z',fill:p.hair},g);
  if(p.style==='long'||p.style==='bob')svg('path',{d:'M13 18C14 9.5 20 7.6 24 7.6C29 7.6 34 10 35 18C31 14 22.5 12.5 13 18Z',fill:p.hair},g);
  if(p.beard){svg('path',{d:'M14.2 21.5C14.6 30 19.6 33.6 24 33.6C28.4 33.6 33.4 30 33.8 21.5C31.6 26.6 28.2 28 24 28C19.8 28 16.4 26.6 14.2 21.5Z',fill:p.hair},g);svg('path',{d:'M19.6 25.4Q24 23.4 28.4 25.4Q24 26.4 19.6 25.4Z',fill:p.hair},g)}
