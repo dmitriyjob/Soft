@@ -1,0 +1,18 @@
+.presenter-layer { position:fixed; inset:0; pointer-events:none; z-index:10000 }
+.presenter-layer [hidden] { display:none }
+.presenter-ink { position:fixed; overflow:hidden; pointer-events:none }
+.drawing .presenter-ink { pointer-events:auto; cursor:crosshair; touch-action:none }
+.presenter-ink polyline { fill:none; stroke:#e5484d; stroke-width:4; stroke-linecap:round; stroke-linejoin:round }
+.presenter-laser { position:absolute; top:var(--py); left:var(--px); transform:translate(-50%,-50%); width:13px; height:13px; border-radius:50%; background:#ff3848; box-shadow:0 0 15px 3px #f4475399 }
+.presenter-spot,.presenter-blank { position:absolute; inset:0 }
+.presenter-spot { background:radial-gradient(circle 125px at var(--px) var(--py),transparent 72%,#000b 100%) }
+.presenter-blank { background:#101114; pointer-events:auto }
+.presenter-notice { position:fixed; z-index:10001; bottom:13%; left:50%; transform:translateX(-50%); padding:8px 16px; border-radius:16px; background:#202328; color:white; font:15px system-ui; pointer-events:none }
+.presenter-notice:empty { display:none }
+.presenter-help { border:0; border-radius:18px; padding:24px; width:min(490px,90vw); color:#252a33; background:#fafafa }
+.presenter-help header { display:flex; justify-content:space-between; align-items:center }
+.presenter-help h2 { margin:0 }.presenter-help button,.presenter-help-button { cursor:pointer }
+.presenter-help dl { display:grid; grid-template-columns:auto 1fr; gap:7px 18px }
+.presenter-help dt { font-weight:650 }.presenter-help dd { margin:0 }
+.presenter-help::backdrop { background:#171b2288 }
+#help-dialog,.presenter-help { max-height:85dvh; overflow:auto }
