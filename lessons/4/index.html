@@ -201,16 +201,10 @@
     <div class="asks"><div class="ask"><button><i>?</i>Это сложное задание?</button><div class="ans">Это базовый уровень, номер с резерва 2025 года. На экзамене может быть сложнее, но алгоритм тот же — <b>дерево</b>.</div></div></div>
   </section>
 
-  <section class="slide" data-sec="3" data-id="rules" data-title="Как строить дерево" data-steps="4">
-    <div class="eyebrow">Алгоритм</div>
-    <h1>Как строить дерево</h1>
-    <div class="rules">
-      <div class="rule" data-s="1"><i>1</i><div class="rc"><code>старт: 0 и 1</code><span>Дерево всегда начинается с двух веток — нолика и единички.</span></div><div class="rx"><span class="cn-mini">0</span><span class="cn-mini">1</span></div></div>
-      <div class="rule" data-s="2"><i>2</i><div class="rc"><code>влево +0 · вправо +1</code><span>Идём влево — дописываем в конец 0, вправо — дописываем 1.</span></div><div class="rx"><span class="cn-mini">10</span><span class="rx-a">→</span><span class="cn-mini">100</span><span class="cn-mini">101</span></div></div>
-      <div class="rule" data-s="3"><i>3</i><div class="rc"><code>сразу обе ветки</code><span>Раскрыл узел — рисуй обоих детей: и влево, и вправо.</span></div><div class="rx"><span class="cn-mini">11</span><span class="rx-a">→</span><span class="cn-mini">110</span><span class="cn-mini">111</span></div></div>
-      <div class="rule" data-s="4"><i>4</i><div class="rc"><code>нашёл код — подпиши</code><span>Нашёл данное кодовое слово — подчеркни, подпиши букву, а в условии зачеркни.</span></div><div class="rx"><span class="cn-mini let">1000<em>В</em></span></div></div>
-    </div>
-    <div class="asks"><div class="ask"><button><i>?</i>Зачем зачёркивать?</button><div class="ans">Чтобы не потерять букву. Если не зачёркивать, рано или поздно по невнимательности ошибёшься — и потеряешь балл.</div></div></div>
+  <section class="slide" data-sec="3" data-id="rules" data-title="Как строить дерево" data-steps="4" data-w="ctree" data-tree="rules">
+    <div class="eyebrow">Алгоритм · дерево кодов</div>
+    <h1 class="th"></h1>
+    <div class="tlay"><div class="tside"><div class="given"></div><div class="tnote"></div></div><div class="treebox ctb"></div></div>
   </section>
 
   <section class="slide" data-sec="3" data-id="tree1" data-title="Строим дерево" data-steps="4" data-w="ctree" data-tree="t1">
@@ -437,7 +431,7 @@
   <div class="nft"><button id="nPrev" title="Назад">←</button><span id="nCnt"></span><button id="nNext" title="Дальше">→</button><span class="nk"><kbd>N</kbd> закрыть</span></div>
 </aside>
 <div id="laser"></div>
-<script src="./notes.js?v=019e8ef70c02"></script>
-<script src="./app.js?v=f3d46b2f8c36"></script>
+<script src="./notes.js?v=26e4173c5957"></script>
+<script src="./app.js?v=56d363c24249"></script>
 </body>
 </html>
