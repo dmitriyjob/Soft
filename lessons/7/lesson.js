@@ -104,7 +104,27 @@ if(lessonPart==='1')slides.splice(6,0,{
  <li data-algo-step="2"><span class="algo-number">02</span><h3>Отмечаем, что дано</h3></li>
  <li data-algo-step="3"><span class="algo-number">03</span><h3>Отмечаем, что найти</h3></li>
  <li data-algo-step="4"><span class="algo-number">04</span><div><h3>Выводим переменную<br>из формулы</h3><p>Например, для i</p></div></li>
- </ol><div class="algo-math"><div class="algo-main-formulas build-in" data-reveal="1"><div class="algo-formula-row"><span class="algo-formula-label">Объём изображения</span><div class="algo-equation"><span data-algo-known>I</span> = <span data-algo-known>a</span> · <span data-algo-known>b</span> · <span data-algo-target>i</span></div></div><div class="algo-formula-row"><span class="algo-formula-label">Количество цветов</span><div class="algo-equation">2<sup><span data-algo-target>i</span></sup> ≥ N</div></div></div><div class="algo-legend"><span class="build-in algo-known-key" data-reveal="2">Дано: I, a, b</span><span class="build-in algo-target-key" data-reveal="3">Найти: i</span></div><div class="algo-derived build-in" data-reveal="4"><span>Выразили искомое</span><div><span data-algo-target>i</span> = <span class="algo-fraction"><span data-algo-known>I</span><span><span data-algo-known>a</span> · <span data-algo-known>b</span></span></span></div></div></div></div>`
+ </ol>
+ <section class="student-board" aria-label="Доска одного ученика">
+   <header class="board-bar"><strong>Доска ученика</strong><span>Ученик</span></header>
+   <div class="board-task">Рисунок размером <b>512 на 256 пикселей</b> занимает в памяти <b>80 Кбайт</b> (без учёта сжатия). Найдите максимально возможное количество цветов в палитре изображения.</div>
+   <div class="board-answer">Ответ <span data-reveal="4"><b class="ink-line">32 цвета ✓</b></span></div>
+   <div class="board-paper">
+     <div class="board-givens">
+       <div data-reveal="2"><small>Дано</small><span class="ink-line">a = 512 пикс.</span><span class="ink-line">b = 256 пикс.</span><span class="ink-line">I = 80 Кбайт</span></div>
+       <div data-reveal="3"><small>Найти</small><span class="ink-line">i → N<sub>макс</sub> — ?</span></div>
+     </div>
+     <div class="board-work">
+       <small>Решение</small>
+       <div data-reveal="1"><span class="ink-line"><em>I</em> = <em>a</em> · <em>b</em> · <i>i</i></span><span class="ink-line">2<sup><i>i</i></sup> ≥ N</span></div>
+       <div data-reveal="4">
+         <span class="ink-line">i = <span class="board-frac"><span>I</span><span>a · b</span></span> = <span class="board-frac"><span>80 · 1024 · 8</span><span>512 · 256</span></span></span>
+         <span class="ink-line">i = 5 бит/пикс.</span>
+         <span class="ink-line">N<sub>макс</sub> = 2<sup>5</sup> = 32</span>
+       </div>
+     </div>
+   </div>
+ </section></div>`
 });
 
 if(lessonPart==='3'){
