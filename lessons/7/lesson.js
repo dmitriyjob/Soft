@@ -97,6 +97,16 @@ slides.splice(5,0,{group:'Графика',title:'Сколько цветов м�
 // Select the course part without duplicating presentation sources.
 const lessonPart=document.documentElement.dataset.lessonPart;
 if(lessonPart==='1')slides=slides.filter(s=>!['transfer','packet'].includes(s.type));
+if(lessonPart==='1')slides.splice(6,0,{
+ group:'Графика',title:'Алгоритм решения',type:'solution-algorithm',
+ body:steps([
+  '<strong>Выписываем формулы</strong><div class="algorithm-formulas">I = a · b · i <span>и</span> 2<sup>i</sup> ≥ N</div>',
+  '<strong>Отмечаем, что нам дано</strong>',
+  '<strong>Отмечаем, что надо найти</strong>',
+  '<strong>Выводим формулу для того, что надо найти</strong>'
+ ])
+});
+
 if(lessonPart==='3'){
  slides=slides.filter(s=>['transfer','packet'].includes(s.type));
  slides.push({group:'Итоги',title:'Шпаргалка: передача данных',type:'summary',body:`<p class="lead">Объём и скорость приводим к одинаковым единицам. Время — в секундах.</p><div class="grid2">${panel('Объём, скорость и время','<div class="formula">I = v · t</div><p>t = I / v &nbsp; · &nbsp; v = I / t</p>')}${panel('Пакет одинаковых файлов','<div class="formula">N = ⌊v · t / I₁⌋</div><p>I₁ — объём одного файла. Число целых файлов округляем вниз.</p>')}${panel('Единицы','<p>1 байт = 8 бит<br>1 Кбайт = 1024 байта<br>1 Мбайт = 1024 Кбайта</p>')}${panel('Сжатие и заголовки','<p>Уменьшили на 25% → осталось 75%.<br>Уменьшили в 4 раза → делим на 4.<br>Заголовок учитываем по условию.</p>')}</div>`});
