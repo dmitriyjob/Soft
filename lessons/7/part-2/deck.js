@@ -99,7 +99,6 @@ function toggleOv(id) { setMenu(false); const o = $('#' + id), on = !o.classList
 function closeOv() { $$('.ov').forEach(o => o.classList.remove('open')); }
 $$('.ov').forEach(o => o.addEventListener('click', e => { if (e.target === o || e.target.closest('[data-close]')) closeOv(); }));
 $('#bToc').addEventListener('click', e => { e.currentTarget.blur(); toggleOv('ovToc'); });
-$('#bHelp').addEventListener('click', e => { e.currentTarget.blur(); toggleOv('ovHelp'); });
 async function fullscreen() { try { if (!document.fullscreenElement) await document.documentElement.requestFullscreen?.(); else await document.exitFullscreen?.(); } catch {} }
 addEventListener('fullscreenchange', () => { $('#bFull').setAttribute('aria-pressed', String(!!document.fullscreenElement)); fit(); });
 $('#bFull').addEventListener('click', e => { e.currentTarget.blur(); fullscreen(); });

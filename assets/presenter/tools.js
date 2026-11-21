@@ -162,7 +162,7 @@
     renderNotes();
   }).observe(slide,{childList:true,subtree:true,attributes:true,attributeFilter:['data-step']});
 
-  if (!find('#help-open')) {
+  if (!find('#help-open') && !document.currentScript.hasAttribute('data-hide-help-button')) {
     const button=document.createElement('button');
     button.textContent='Управление'; button.onclick=()=>toggleOverlay('#ovHelp');
     find('.sidebar-hint').before(button);
