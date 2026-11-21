@@ -756,7 +756,7 @@ addEventListener('keydown', e => {
   if (e.metaKey || e.ctrlKey || e.altKey) return;
   if ((e.key === 'Enter' || e.key === ' ') && e.target.closest('a, button')) return;
   const k = e.key, c = e.code;
-  if (k === 'Escape') { if ($('.ask.open')) { closeAsks(); return; } if (ovOpen()) closeOv(); else if (drawOn) setDraw(false); else if (laserOn) setLaser(false); else if (spot.classList.contains('on')) spot.classList.remove('on'); $('#blank').classList.remove('on'); return; }
+  if (k === 'Escape') { if (notesOpen) { setNotes(false); $('#nTab').focus(); return; } if ($('.ask.open')) { closeAsks(); return; } if (ovOpen()) closeOv(); else if (drawOn) setDraw(false); else if (laserOn) setLaser(false); else if (spot.classList.contains('on')) spot.classList.remove('on'); $('#blank').classList.remove('on'); return; }
   if (k === '?' || c === 'KeyH') { toggleOv('ovHelp'); return; }
   if (c === 'KeyG') { toggleOv('ovToc'); return; }
   if (ovOpen()) return;
