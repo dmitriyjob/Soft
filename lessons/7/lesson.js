@@ -98,13 +98,13 @@ slides.splice(5,0,{group:'Графика',title:'Сколько цветов м�
 const lessonPart=document.documentElement.dataset.lessonPart;
 if(lessonPart==='1')slides=slides.filter(s=>!['transfer','packet'].includes(s.type));
 if(lessonPart==='1')slides.splice(6,0,{
- group:'Графика',title:'Алгоритм решения',type:'solution-algorithm',bare:true,
- body:`<div class="algo-heading"><p class="algo-eyebrow">КОДИРОВАНИЕ ИЗОБРАЖЕНИЙ</p><h2>Алгоритм <span>решения</span></h2><p>Четыре шага — от условия к ответу.</p></div><div class="algo-grid">
- <section class="algo-card algo-card-formulas"><div class="algo-card-heading"><span class="algo-number">01</span><h3>Выписываем формулы</h3></div><p>Связываем объём, размеры и палитру.</p><div class="algo-equations"><span>I = a · b · i</span><span>2<sup>i</sup> ≥ N</span></div></section>
- <section class="algo-card"><div class="algo-card-heading"><span class="algo-number">02</span><h3>Отмечаем, что дано</h3></div><p>Выписываем значения из условия<br>и их единицы измерения.</p><div class="algo-symbols" aria-hidden="true"><span>a</span><span>b</span><span>i</span><span>N</span><span>I</span></div></section>
- <section class="algo-card"><div class="algo-card-heading"><span class="algo-number">03</span><h3>Отмечаем, что найти</h3></div><p>Выделяем искомую величину,<br>чтобы понимать цель решения.</p><div class="algo-target"><span>Искомое</span><strong>?</strong></div></section>
- <section class="algo-card algo-card-result"><div class="algo-card-heading"><span class="algo-number">04</span><h3>Выводим нужную формулу</h3></div><p>Выражаем искомое через известные величины.</p><div class="algo-derived"><span>Например, для i</span><strong>i = <span class="algo-fraction"><span>I</span><span>a · b</span></span></strong></div></section>
- </div>`
+ group:'Графика',title:'Алгоритм решения',type:'solution-algorithm',steps:4,bare:true,
+ body:`<div class="algo-heading"><p class="algo-eyebrow">КОДИРОВАНИЕ ИЗОБРАЖЕНИЙ</p><h2>Алгоритм <span>решения</span></h2></div><div class="algo-workspace"><ol class="algo-timeline">
+ <li data-algo-step="1"><span class="algo-number">01</span><h3>Выписываем формулы</h3></li>
+ <li data-algo-step="2"><span class="algo-number">02</span><h3>Отмечаем, что дано</h3></li>
+ <li data-algo-step="3"><span class="algo-number">03</span><h3>Отмечаем, что найти</h3></li>
+ <li data-algo-step="4"><span class="algo-number">04</span><div><h3>Выводим переменную<br>из формулы</h3><p>Например, для i</p></div></li>
+ </ol><div class="algo-math"><div class="algo-main-formulas build-in" data-reveal="1"><div class="algo-formula-row"><span class="algo-formula-label">Объём изображения</span><div class="algo-equation"><span data-algo-known>I</span> = <span data-algo-known>a</span> · <span data-algo-known>b</span> · <span data-algo-target>i</span></div></div><div class="algo-formula-row"><span class="algo-formula-label">Количество цветов</span><div class="algo-equation">2<sup><span data-algo-target>i</span></sup> ≥ N</div></div></div><div class="algo-legend"><span class="build-in algo-known-key" data-reveal="2">Дано: I, a, b</span><span class="build-in algo-target-key" data-reveal="3">Найти: i</span></div><div class="algo-derived build-in" data-reveal="4"><span>Выразили искомое</span><div><span data-algo-target>i</span> = <span class="algo-fraction"><span data-algo-known>I</span><span><span data-algo-known>a</span> · <span data-algo-known>b</span></span></span></div></div></div></div>`
 });
 
 if(lessonPart==='3'){
@@ -182,6 +182,7 @@ function updateBuild(){
  el.querySelectorAll('[data-reveal]').forEach(part=>{const show=buildStep>=Number(part.dataset.reveal)&&(!part.dataset.until||buildStep<=Number(part.dataset.until));part.classList.toggle('is-visible',show);part.setAttribute('aria-hidden',String(!show));part.inert=!show;});
  if(['worked','percent','packet'].includes(s.type)&&answer){const visible=answer.classList.contains('is-visible');if(visible&&!answerWasVisible)celebrate();else if(!visible)document.querySelectorAll('.confetti-burst').forEach(e=>e.remove());}
  if(sourceBox&&!matchMedia('(prefers-reduced-motion: reduce)').matches){const destination=el.querySelector('.divide-target');const end=destination?.getBoundingClientRect();if(end){const moving=source.cloneNode(true);Object.assign(moving.style,{position:'fixed',left:sourceBox.left+'px',top:sourceBox.top+'px',width:sourceBox.width+'px',zIndex:'100',pointerEvents:'none',color:'#E46E50',transformOrigin:'0 0'});document.body.append(moving);destination.style.visibility='hidden';moving.animate([{transform:'translate(0,0)'},{transform:`translate(${end.left-sourceBox.left}px,${end.top-sourceBox.top}px)`}],{duration:750,easing:'ease-in-out'}).finished.catch(()=>{}).finally(()=>{moving.remove();destination.style.visibility='';});}}
+ if(s.type==='solution-algorithm'){el.classList.toggle('algo-show-known',buildStep>=2);el.classList.toggle('algo-show-target',buildStep>=3);el.querySelectorAll('[data-algo-step]').forEach(item=>{const n=Number(item.dataset.algoStep);item.classList.toggle('is-active',n===buildStep);item.classList.toggle('is-done',n<buildStep);});}
  if(s.type==='diagram')el.querySelectorAll('[data-factor]').forEach(f=>f.classList.toggle('highlight',f.dataset.factor===['','a','b','i','i'][buildStep]));
  el.querySelectorAll('.find-target').forEach(e=>e.classList.toggle('find-marked',buildStep>=(s.type==='worked'?8:s.type==='percent'?21:s.type==='packet'?8:Infinity)));
  el.classList.toggle('conversion-open',s.type==='conversion'&&buildStep>=1);
