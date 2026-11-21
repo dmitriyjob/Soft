@@ -98,13 +98,13 @@ slides.splice(5,0,{group:'Графика',title:'Сколько цветов м�
 const lessonPart=document.documentElement.dataset.lessonPart;
 if(lessonPart==='1')slides=slides.filter(s=>!['transfer','packet'].includes(s.type));
 if(lessonPart==='1')slides.splice(6,0,{
- group:'Графика',title:'Алгоритм решения',type:'solution-algorithm',
- body:steps([
-  '<strong>Выписываем формулы</strong><div class="algorithm-formulas">I = a · b · i <span>и</span> 2<sup>i</sup> ≥ N</div>',
-  '<strong>Отмечаем, что нам дано</strong>',
-  '<strong>Отмечаем, что надо найти</strong>',
-  '<strong>Выводим формулу для того, что надо найти</strong>'
- ])
+ group:'Графика',title:'Алгоритм решения',type:'solution-algorithm',bare:true,
+ body:`<div class="algo-heading"><p class="algo-eyebrow">КОДИРОВАНИЕ ИЗОБРАЖЕНИЙ</p><h2>Алгоритм <span>решения</span></h2><p>Четыре шага — от условия к ответу.</p></div><div class="algo-grid">
+ <section class="algo-card algo-card-formulas"><div class="algo-card-heading"><span class="algo-number">01</span><h3>Выписываем формулы</h3></div><p>Связываем объём, размеры и палитру.</p><div class="algo-equations"><span>I = a · b · i</span><span>2<sup>i</sup> ≥ N</span></div></section>
+ <section class="algo-card"><div class="algo-card-heading"><span class="algo-number">02</span><h3>Отмечаем, что дано</h3></div><p>Выписываем значения из условия<br>и их единицы измерения.</p><div class="algo-symbols" aria-hidden="true"><span>a</span><span>b</span><span>i</span><span>N</span><span>I</span></div></section>
+ <section class="algo-card"><div class="algo-card-heading"><span class="algo-number">03</span><h3>Отмечаем, что найти</h3></div><p>Выделяем искомую величину,<br>чтобы понимать цель решения.</p><div class="algo-target"><span>Искомое</span><strong>?</strong></div></section>
+ <section class="algo-card algo-card-result"><div class="algo-card-heading"><span class="algo-number">04</span><h3>Выводим нужную формулу</h3></div><p>Выражаем искомое через известные величины.</p><div class="algo-derived"><span>Например, для i</span><strong>i = <span class="algo-fraction"><span>I</span><span>a · b</span></span></strong></div></section>
+ </div>`
 });
 
 if(lessonPart==='3'){
