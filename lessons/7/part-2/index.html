@@ -169,7 +169,7 @@
     <div class="task">Лена записывает голосовое сообщение для своей подруги. Перед отправкой сообщение оцифровывается в формате <span class="tx-hl" data-k="1">стерео</span> с частотой дискретизации <span class="tx-hl" data-k="2">12 000 Гц</span> и глубиной кодирования <span class="tx-hl" data-k="2">24 бит</span>. Определите <span class="tx-hl k6" data-k="6">наименьшее количество</span> <span class="tx-hl" data-k="4">Кбайт</span>, <span class="tx-hl k6" data-k="6">необходимое для сохранения</span> сообщения в памяти (без учёта заголовка), если его длительность — <span class="tx-hl" data-k="3">3 минуты 19 секунд</span>. В ответе укажите только число.</div>
     <div class="row t-row">
       <div class="given"><h3>Дано</h3>
-        <div class="gv" data-s="1"><b>n</b> = 2<small>стерео</small></div>
+        <div class="gv" data-s="1"><b>k</b> = 2<small>стерео</small></div>
         <div class="gv" data-s="2"><b>ν</b> = 12 000 Гц</div>
         <div class="gv" data-s="2"><b>i</b> = 24 бит<small>видим биты — это глубина</small></div>
         <div class="gv" data-s="3"><b>t</b> = 3 · 60 + 19 = 199 с</div>
@@ -197,7 +197,7 @@
         <div class="rd-task" data-s="2">
           <small>№31353 · пересдача 08.07.26</small>
           <p>Лена записывает голосовое сообщение… в формате <b>моно</b>, частота дискретизации <b>20 000 Гц</b>, глубина кодирования <b>16 бит</b>. Наименьшее количество <b>Мбайт</b>… длительность <b>4 минуты 18 секунд</b>. В ответе укажите <b>только целую часть</b>.</p>
-          <div class="rt-sol"><span>n = 1 · ν = 20 000 · i = 16 · t = 4 · 60 + 18 = 258</span><div class="frac sm"><span>1 · 20 000 · 16 · 258</span><span>1024 · 1024 · 8</span></div><span>= 9,84…</span><i>→</i><b>9</b></div>
+          <div class="rt-sol"><span>k = 1 · ν = 20 000 · i = 16 · t = 4 · 60 + 18 = 258</span><div class="frac sm"><span>1 · 20 000 · 16 · 258</span><span>1024 · 1024 · 8</span></div><span>= 9,84…</span><i>→</i><b>9</b></div>
         </div>
       </div>
     </div>
@@ -244,11 +244,11 @@
   <section class="slide" data-sec="6" data-id="cheat" data-title="Шпаргалка" data-steps="0">
     <h1>Шпаргалка №7 · <em>звук</em></h1>
     <div class="csg">
-      <div class="csc dark"><h3>Формула</h3><p class="cs-formula mth">I = ν · i · t · n</p><p>Получаем <b>биты</b>. Всё перемножаем.</p></div>
+      <div class="csc dark"><h3>Формула</h3><p class="cs-formula mth">I = k · ν · i · t</p><p>Получаем <b>биты</b>. Всё перемножаем.</p></div>
       <div class="csc"><h3>ν — частота</h3><p>Срезов за 1 секунду. <b>Гц</b>. 1 кГц = 1000 Гц.</p></div>
       <div class="csc"><h3>i — глубина</h3><p>Видишь <b>биты</b> — это она. Ещё «разрешение», «глубина кодирования».</p></div>
       <div class="csc"><h3>t — время</h3><p>Сразу в <b>секунды</b>: 3 мин 19 с = 199 с.</p></div>
-      <div class="csc"><h3>n — каналы</h3><p>Моно <b>1</b> · стерео <b>2</b> · квадро <b>4</b>. «Стерео» любят прятать в тексте.</p></div>
+      <div class="csc"><h3>k — каналы</h3><p>Моно <b>1</b> · стерео <b>2</b> · квадро <b>4</b>. «Стерео» любят прятать в тексте.</p></div>
       <div class="csc"><h3>Единицы</h3><p>Кбайт: <span class="mono">I / (1024·8)</span>. Мбайт: <span class="mono">I / (1024·1024·8)</span>.</p></div>
       <div class="csc hot"><h3>«Необходимое для сохранения»</h3><p>Округляем <b>вверх</b>: 13 992,18 → 13 993.</p></div>
       <div class="csc hot"><h3>«Только целую часть»</h3><p><b>Отбрасываем</b> дробь: 9,84 → 9.</p></div>
@@ -312,8 +312,8 @@
 
 
 <div id="laser"></div>
-<script src="./notes.js?v=af63ef6499ad"></script>
-<script src="./au.js?v=35b12046f2c2"></script>
+<script src="./notes.js?v=6f31d87a0f70"></script>
+<script src="./au.js?v=b43481fbae2c"></script>
 <script src="./deck.js?v=56bd5e2af909"></script>
 </body>
 </html>
