@@ -652,22 +652,39 @@ W.round = {
 
 /* ================= во сколько раз: задача 160 ================= */
 W.t160 = {
-  init(el) { this.el = el; },
-  step(el, s) {
+  init(el) {
     const frac = (top, bottom) => `<span class="cmp-fraction"><span>${top}</span><span>${bottom}</span></span>`;
     const sub = (x, n) => `${x}<sub>${n}</sub>`;
     const I1 = sub('I', 1), I2 = sub('I', 2);
     const f1 = ['k', 'ν', 'i', 't'].map(x => sub(x, 1)).join(' · ');
     const f2 = ['k', 'ν', 'i', 't'].map(x => sub(x, 2)).join(' · ');
-    const cancel = x => s >= 5 ? `<s>${sub(x,1)}</s>` : sub(x,1);
+    const cancel = x => `<span class="cmp-factor" data-factor="${x}">${sub(x,1)}</span>`;
     const numerator = `1 · ${cancel('ν')} · ${cancel('i')} · ${cancel('t')}`;
     const denominator = `2 · ${frac(cancel('ν'), '1,5')} · 4 · ${cancel('i')} · ${cancel('t')}`;
+    $('#t6Frac', el).innerHTML = `
+      <div class="cmp-stages">
+        <div class="cmp-equation pf" data-form="ratio">${frac(I1,I2)} = ${frac(f1,f2)}</div>
+        <div class="cmp-equation pf" data-form="substitution">${frac(I1,I2)} = ${frac('24',I2)} = ${frac(numerator,denominator)}</div>
+      </div>
+      <div class="cmp-simplified">${frac('24',I2)} = ${frac('1,5','2 · 4')} = ${frac('3','16')}</div>
+      <div class="cmp-answer">${I2} = ${frac('24 · 16','3')} = <strong>128 Мбайт</strong></div>`;
+  },
+  step(el, s) {
     $('#t6Head', el).innerHTML = ['Файл <em>перезаписали</em>', 'Что <em>было</em>', 'Что <em>стало</em>', 'Составляем <em>отношение объёмов</em>', 'Подставляем <em>параметры</em>', 'Сокращаем <em>одинаковые множители</em>', 'Вычисляем <em>I₂</em>'][s];
     $$('.pr-col', el).forEach((c, i) => c.classList.toggle('on', s >= i + 1));
-    const host = $('#t6Frac', el);host.classList.toggle('on', s >= 3);host.classList.toggle('cut', s >= 5);
-    let equation = `${frac(I1,I2)} = ${frac(f1,f2)}`;
-    if(s >= 4) equation = `${frac(I1,I2)} = ${frac('24',I2)} = ${frac(numerator,denominator)}`;
-    host.innerHTML = `<div class="cmp-equation pf">${equation}</div>` + (s >= 5 ? `<div class="cmp-simplified">${frac('24',I2)} = ${frac('1,5','2 · 4')} = ${frac('3','16')}</div>` : '') + (s >= 6 ? `<div class="cmp-answer">${I2} = ${frac('24 · 16','3')} = <strong>128 Мбайт</strong></div>` : '');
+    const host = $('#t6Frac', el);
+    host.classList.toggle('on', s >= 3);
+    host.classList.toggle('cut', s >= 5);
+    host.dataset.step = s;
+    const reveal = (selector, visible) => {
+      const line = $(selector, host);
+      line.classList.toggle('shown', visible);
+      line.setAttribute('aria-hidden', String(!visible));
+    };
+    reveal('[data-form="ratio"]', s === 3);
+    reveal('[data-form="substitution"]', s >= 4);
+    reveal('.cmp-simplified', s >= 5);
+    reveal('.cmp-answer', s >= 6);
     $$('.tx-hl', el).forEach(h => h.classList.toggle('on', +h.dataset.k <= s && s >= 2));
   }
 };

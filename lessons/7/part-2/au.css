@@ -252,8 +252,6 @@ h1 em { font-style: normal; color: var(--accent); }
 .pr-frac { flex: 1; display: flex; flex-direction: column; justify-content: center; gap: 18px; background: #fff; border: 1px solid var(--line2); border-radius: 20px; padding: 16px 22px; opacity: 0; transform: translateY(12px); transition: .5s var(--ease); }
 .pr-frac.on { opacity: 1; transform: none; }
 .pf { display: flex; align-items: center; gap: 18px; } .pf > i { font-style: normal; font: 800 40px var(--sans); }
-.pf s { text-decoration: none; position: relative; } .pf s::after { content: ""; position: absolute; left: -3px; right: -3px; top: 50%; height: 4px; background: var(--bad); border-radius: 2px; transform: scaleX(0) rotate(-20deg); transition: transform .4s var(--ease); }
-.pr-frac.cut .pf s::after { transform: scaleX(1) rotate(-20deg); }
 .pr-res { font-size: 19px; color: var(--muted); opacity: 0; transition: opacity .5s .3s; } .pr-res.on { opacity: 1; }
 .pr-res b { display: block; font: 800 46px var(--mono); color: var(--ink); margin-top: 6px; }
 
@@ -304,4 +302,30 @@ h1 em { font-style: normal; color: var(--accent); }
 /* Indexed before/after comparison and nested mathematical fractions. */
 [data-id=t160] .pr-col{width:270px}[data-id=t160] .pr-col>div{font-size:27px}[data-id=t160] sub{font-size:.6em}
 .cmp-fraction{display:inline-flex;flex-direction:column;align-items:stretch;text-align:center;vertical-align:middle;line-height:1.2;margin:0 4px;white-space:nowrap}.cmp-fraction>span:first-child{border-bottom:2px solid currentColor;padding:0 5px 5px}.cmp-fraction>span:last-child{padding:5px 5px 0}.cmp-fraction .cmp-fraction{font-size:.8em}.cmp-small{font-size:22px}
-.cmp-equation{font:700 23px var(--mono);justify-content:center;gap:6px;white-space:nowrap}.cmp-simplified{font:700 28px var(--mono);text-align:center}.cmp-answer{font:700 27px var(--mono);text-align:center;color:var(--accent);padding-top:14px;border-top:1px solid var(--line2)}.cmp-answer strong{display:block;font-size:36px;margin-top:14px}.cmp-equation s::after{height:2px}
+.cmp-equation{font:700 23px var(--mono);justify-content:center;gap:6px;white-space:nowrap}.cmp-simplified{font:700 28px var(--mono);text-align:center}.cmp-answer{font:700 27px var(--mono);text-align:center;color:var(--accent);padding-top:14px;border-top:1px solid var(--line2)}.cmp-answer strong{display:block;font-size:36px;margin-top:14px}
+
+.cmp-stages { display: grid; align-items: center; }
+.cmp-stages > * { grid-area: 1 / 1; }
+#t6Frac :is(.cmp-equation, .cmp-simplified, .cmp-answer) {
+  opacity: 0;
+  transform: translateY(5px);
+  transition: opacity .24s ease, transform .3s var(--ease);
+}
+#t6Frac .shown { opacity: 1; transform: none; }
+.cmp-factor { position: relative; display: inline-block; }
+.cmp-factor::after {
+  content: ""; position: absolute; left: -2px; right: -2px; top: 63%;
+  height: 2px; background: var(--bad); border-radius: 2px;
+  transform-origin: left center; transform: rotate(-20deg) scaleX(0);
+  transition: transform .32s ease-in-out;
+}
+.pr-frac.cut .cmp-factor::after {
+  transform: rotate(-20deg) scaleX(1);
+  transition-delay: var(--strike-delay, 0s);
+}
+.cmp-factor[data-factor="i"] { --strike-delay: .17s; }
+.cmp-factor[data-factor="t"] { --strike-delay: .34s; }
+#t6Frac[data-step="5"] .cmp-simplified.shown { transition-delay: .68s; }
+@media (prefers-reduced-motion: reduce) {
+  #t6Frac, #t6Frac :is(.cmp-equation, .cmp-simplified, .cmp-answer), #t6Frac .cmp-factor::after { transition: none; }
+}
