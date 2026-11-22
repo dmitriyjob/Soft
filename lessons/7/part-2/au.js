@@ -548,7 +548,7 @@ W.chan = {
     this.mode = i; const el = this.el, c = CH[i];
     $$('#chSeg button', el).forEach((b, k) => b.classList.toggle('cur', k === i));
     $('#chStage', el).dataset.mode = c.k; $('#chSc', el).classList.toggle('quad', i === 2);
-    $('#chN', el).innerHTML = `n = <b>${c.n}</b>`; $('#chD', el).innerHTML = c.d;
+    $('#chN', el).innerHTML = `k = <b>${c.n}</b>`; $('#chD', el).innerHTML = c.d;
     $('#chLt', el).textContent = i === 2 ? 'левый передний' : 'левый канал';
     $('#chRt', el).textContent = i === 0 ? 'правый — тот же звук' : i === 2 ? 'правый передний' : 'правый канал';
     $('#chHint', el).textContent = i === 2 ? 'звук идёт по кругу. В наушниках слышно лево-право, а перёд-зад — только на четырёх колонках' : i === 1 ? 'лучше в наушниках — услышишь, как звук ходит слева направо' : 'в обоих ушах — одно и то же';
@@ -587,7 +587,7 @@ W.chan = {
     });
   },
   step(el, s) {
-    $('#chHead', el).innerHTML = ['Моно — <em>одна волна</em>', 'Стерео — <em>две волны</em>', 'Квадро — <em>четыре волны</em>', 'Каналы — буква <em>n</em>'][s];
+    $('#chHead', el).innerHTML = ['Моно — <em>одна волна</em>', 'Стерео — <em>две волны</em>', 'Квадро — <em>четыре волны</em>', 'Каналы — буква <em>k</em>'][s];
     $('#chSum', el).classList.toggle('on', s >= 3);
     AU.stop(); this.setMode(Math.min(2, s));
   }
