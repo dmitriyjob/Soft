@@ -22,13 +22,13 @@ const loop = () => { let id = 0; return { start(fn) { cancelAnimationFrame(id); 
 const setupCv = (cv, w, h) => { const d = 2; cv.width = w * d; cv.height = h * d; cv.style.width = w + 'px'; cv.style.height = h + 'px'; const g = cv.getContext('2d'); g.setTransform(d, 0, 0, d, 0, 0); return g; };
 const W = {};
 const toast = msg => { const t = $('#toast'); if (!t) return; t.textContent = msg; t.classList.add('on'); clearTimeout(t._h); t._h = setTimeout(() => t.classList.remove('on'), 2100); };
-const confetti = (n = 90) => {
+const confetti = (n = 90, parent = $('#app')) => {
   if (reduced()) return;
-  const cols = ['#B9521D', '#FFD8BE', '#2F855A', '#1F6FEB', '#6B46C1', '#B7791F', '#1D1D1F'], A = $('#app');
+  const cols = ['#B9521D', '#FFD8BE', '#2F855A', '#1F6FEB', '#6B46C1', '#B7791F', '#1D1D1F'];
   for (let i = 0; i < n; i++) {
     const d = document.createElement('div'); d.className = 'confetti';
     d.style.left = (Math.random() * 1600) + 'px'; d.style.background = cols[i % cols.length];
-    A.appendChild(d);
+    parent.appendChild(d);
     const dx = (Math.random() - .5) * 300, rot = Math.random() * 720;
     d.animate([{ transform: 'translate(0,0) rotate(0)' }, { transform: `translate(${dx}px, ${920 + Math.random() * 120}px) rotate(${rot}deg)` }],
       { duration: 1800 + Math.random() * 1400, easing: 'cubic-bezier(.2,.6,.4,1)', delay: Math.random() * 300 }).onfinish = () => d.remove();
@@ -656,15 +656,17 @@ W.t160 = {
     const frac = (top, bottom) => `<span class="cmp-fraction"><span>${top}</span><span>${bottom}</span></span>`;
     const sub = (x, n) => `${x}<sub>${n}</sub>`;
     const I1 = sub('I', 1), I2 = sub('I', 2);
-    const f1 = ['k', 'ν', 'i', 't'].map(x => sub(x, 1)).join(' · ');
-    const f2 = ['k', 'ν', 'i', 't'].map(x => sub(x, 2)).join(' · ');
     const cancel = x => `<span class="cmp-factor" data-factor="${x}">${sub(x,1)}</span>`;
-    const numerator = `1 · ${cancel('ν')} · ${cancel('i')} · ${cancel('t')}`;
-    const denominator = `2 · ${frac(cancel('ν'), '1,5')} · 4 · ${cancel('i')} · ${cancel('t')}`;
+    const terms = (index, values) => ['k', 'ν', 'i', 't'].map((x, j) =>
+      `<span class="cmp-term" style="--order:${j}"><span data-form="ratio">${sub(x,index)}</span><span data-form="substitution">${values[j]}</span></span>`
+    ).join(' · ');
+    const numerator = terms(1, ['1', cancel('ν'), cancel('i'), cancel('t')]);
+    const denominator = terms(2, ['2', frac(cancel('ν'), '1,5'), '4 · '+cancel('i'), cancel('t')]);
     $('#t6Frac', el).innerHTML = `
-      <div class="cmp-stages">
-        <div class="cmp-equation pf" data-form="ratio">${frac(I1,I2)} = ${frac(f1,f2)}</div>
-        <div class="cmp-equation pf" data-form="substitution">${frac(I1,I2)} = ${frac('24',I2)} = ${frac(numerator,denominator)}</div>
+      <div class="cmp-equation pf">
+        ${frac(I1,I2)} =
+        <span class="cmp-insertion" data-form="substitution"><span>${frac('24',I2)} = </span></span>
+        ${frac(numerator,denominator)}
       </div>
       <div class="cmp-simplified">${frac('24',I2)} = ${frac('1,5','2 · 4')} = ${frac('3','16')}</div>
       <div class="cmp-answer">${I2} = ${frac('24 · 16','3')} = <strong>128 Мбайт</strong></div>`;
@@ -675,17 +677,29 @@ W.t160 = {
     const host = $('#t6Frac', el);
     host.classList.toggle('on', s >= 3);
     host.classList.toggle('cut', s >= 5);
+    if (host.dataset.step !== String(s)) {
+      this.leave(el);
+      if (s === 6 && !reduced()) this.celebration = setTimeout(() => confetti(76, el), 350);
+    }
     host.dataset.step = s;
     const reveal = (selector, visible) => {
       const line = $(selector, host);
       line.classList.toggle('shown', visible);
       line.setAttribute('aria-hidden', String(!visible));
     };
-    reveal('[data-form="ratio"]', s === 3);
-    reveal('[data-form="substitution"]', s >= 4);
+    reveal('.cmp-equation', s >= 3);
+    for (const term of host.querySelectorAll('[data-form]')) {
+      const visible = term.dataset.form === 'ratio' ? s === 3 : s >= 4;
+      term.setAttribute('aria-hidden', String(!visible));
+    }
     reveal('.cmp-simplified', s >= 5);
     reveal('.cmp-answer', s >= 6);
     $$('.tx-hl', el).forEach(h => h.classList.toggle('on', +h.dataset.k <= s && s >= 2));
+  },
+  leave(el) {
+    clearTimeout(this.celebration);
+    $$('.confetti', el).forEach(piece => piece.remove());
+    delete $('#t6Frac', el).dataset.step;
   }
 };
 
