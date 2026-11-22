@@ -594,7 +594,7 @@ W.chan = {
 };
 
 /* ================= формула ================= */
-const FPARTS = [['ν', 'частота дискретизации', 'Гц', 12000], ['i', 'битовая глубина', 'бит', 24], ['t', 'время', 'секунд', 199], ['n', 'каналы', 'моно 1 · стерео 2', 2]];
+const FPARTS = [['k', 'каналы', 'моно 1 · стерео 2', 2], ['v', 'частота дискретизации', 'Гц', 12000], ['i', 'битовая глубина', 'бит', 24], ['t', 'время', 'секунд', 199]];
 W.formula = {
   init(el) {
     this.el = el; const host = $('#fmIn', el);
@@ -613,20 +613,6 @@ W.formula = {
     $('#fmCards', el).classList.toggle('in', s >= 1);
     $('#fmCalc', el).classList.toggle('on', s >= 2);
     if (s >= 2) this.calc();
-  }
-};
-
-/* ================= единицы ================= */
-W.units = {
-  init(el) { this.el = el; const inp = $('#unIn', el); inp.addEventListener('input', () => this.calc(+inp.value || 0)); },
-  calc(bits) {
-    const v = [bits, bits / 8, bits / 8 / 1024, bits / 8 / 1024 / 1024];
-    $$('.un-v', this.el).forEach((e, i) => { e.textContent = fmt(v[i], i === 0 ? 0 : 4); });
-  },
-  step(el, s) {
-    $('#unHead', el).innerHTML = ['Биты → байты → <em>Кбайты</em> → Мбайты', 'Короче: делим на <em>8 · 1024</em>'][s];
-    $('#unTip', el).classList.toggle('on', s >= 1);
-    const inp = $('#unIn', el); if (!inp.value) inp.value = 114624000; this.calc(+inp.value);
   }
 };
 

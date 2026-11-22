@@ -245,7 +245,7 @@ addEventListener('hashchange', () => {
  if(target) { setMenu(false); show(+target[1]-1, +(target[2]||0)); }
 });
 /* Keep the course hub's Continue button in sync with this presentation. */
-const PART_LAYOUT = 'sound-original-v1';
+const PART_LAYOUT = 'sound-v2';
 function rememberPart() {
  try {
   let parts = JSON.parse(localStorage.getItem('soft-lesson7-progress-v1') || '{}');

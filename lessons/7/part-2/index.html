@@ -153,26 +153,13 @@
     <div class="eyebrow">Формула</div>
     <h1 id="fmHead">Четыре буквы — <em>одна формула</em></h1>
     <div class="fm-cards" id="fmCards">
-      <div class="fmc"><b>ν</b><span>частота дискретизации</span><small>Гц — срезов в секунду</small></div><i class="fm-x">·</i>
+      <div class="fmc"><b>k</b><span>каналы</span><small>моно 1 · стерео 2 · квадро 4</small></div><i class="fm-x">·</i>
+      <div class="fmc"><b>v</b><span>частота дискретизации</span><small>Гц — срезов в секунду</small></div><i class="fm-x">·</i>
       <div class="fmc"><b>i</b><span>битовая глубина</span><small>бит</small></div><i class="fm-x">·</i>
-      <div class="fmc"><b>t</b><span>время</span><small>в секундах</small></div><i class="fm-x">·</i>
-      <div class="fmc"><b>n</b><span>каналы</span><small>моно 1 · стерео 2 · квадро 4</small></div>
+      <div class="fmc"><b>t</b><span>время</span><small>в секундах</small></div>
     </div>
-    <div class="fm-eq" id="fmEq"><span class="mth"><b>I</b> = ν · i · t · n</span><small>объём звука в <b>битах</b> — ничего лишнего, просто перемножаем</small></div>
+    <div class="fm-eq" id="fmEq"><span class="mth"><b>I</b> = k · v · i · t</span><small>объём звука в <b>битах</b> — ничего лишнего, просто перемножаем</small></div>
     <div class="fm-calc" id="fmCalc"><div class="fm-in" id="fmIn"></div><div class="fm-out" id="fmOut"></div></div>
-  </section>
-
-  <section class="slide" data-sec="3" data-id="units" data-title="Биты, байты, Кбайты" data-steps="1" data-w="units">
-    <div class="eyebrow">Формула · единицы</div>
-    <h1 id="unHead">Биты → байты → <em>Кбайты</em> → Мбайты</h1>
-    <div class="un-row">
-      <div class="un"><small>бит</small><b class="un-v"></b></div><span class="un-a" aria-label="умножить на одну восьмую"><span>×</span><span class="conversion-fraction"><span>1</span><span>8</span></span></span>
-      <div class="un"><small>байт</small><b class="un-v"></b></div><span class="un-a" aria-label="умножить на одну тысяча двадцать четвёртую"><span>×</span><span class="conversion-fraction"><span>1</span><span>1024</span></span></span>
-      <div class="un hot"><small>Кбайт</small><b class="un-v"></b></div><span class="un-a" aria-label="умножить на одну тысяча двадцать четвёртую"><span>×</span><span class="conversion-fraction"><span>1</span><span>1024</span></span></span>
-      <div class="un"><small>Мбайт</small><b class="un-v"></b></div>
-    </div>
-    <div class="un-inp"><label>Объём в битах <input type="number" id="unIn" value="114624000"></label><small>Это объём из задачи ЕГЭ на следующем экране.</small></div>
-    <div class="un-tip" id="unTip"><div><b>в Кбайты</b><span class="unit-fraction" aria-label="I, делённое на 1024 умножить на 8"><span>I</span><span>1024 · 8</span></span></div><div><b>в Мбайты</b><span class="unit-fraction" aria-label="I, делённое на 1024 умножить на 1024 умножить на 8"><span>I</span><span>1024 · 1024 · 8</span></span></div><p>Формула даёт <b>биты</b>. Делим сразу, одним выражением — на калькуляторе это одна строка.</p></div>
   </section>
 
   <!-- ============ 04 · ЗАДАЧИ ЕГЭ ============ -->
@@ -305,7 +292,7 @@
 <aside class="top lesson-menu" id="lessonMenu" aria-label="Меню презентации" aria-hidden="true" inert>
   <div class="menu-heading"><a class="home" id="homeLink" href="../">Все части · №7</a><button id="menuClose" class="chrome-icon" aria-label="Закрыть меню"><svg viewBox="0 0 24 24"><path d="m6 6 12 12M18 6 6 18"/></svg></button></div>
   <nav class="tabs" id="tabs" aria-label="Разделы урока"></nav>
-  <div class="menu-materials"><a href="../part-1/">Часть 1 · Изображения</a><a href="../part-3/">Часть 3 · Передача данных</a><a href="#5">Звуковая лаборатория</a><a href="#15">Шпаргалка</a><a href="#1">С начала</a></div>
+  <div class="menu-materials"><a href="../part-1/">Часть 1 · Изображения</a><a href="../part-3/">Часть 3 · Передача данных</a><a href="#5">Звуковая лаборатория</a><a href="#14">Шпаргалка</a><a href="#1">С начала</a></div>
   <div class="menu-tools"><button id="bToc">Все слайды</button></div>
 </aside>
 <div id="viewerDock" class="viewer-dock" aria-label="Управление презентацией">
@@ -325,8 +312,8 @@
 
 
 <div id="laser"></div>
-<script src="./notes.js?v=0306f6a97d30"></script>
-<script src="./au.js?v=2331276ba4ba"></script>
-<script src="./deck.js?v=6a060943d36d"></script>
+<script src="./notes.js?v=1c4dae8bc032"></script>
+<script src="./au.js?v=c3a98159c16e"></script>
+<script src="./deck.js?v=56bd5e2af909"></script>
 </body>
 </html>
