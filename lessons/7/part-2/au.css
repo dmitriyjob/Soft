@@ -145,7 +145,7 @@ h1 em { font-style: normal; color: var(--accent); }
 .ch-play { display: flex; align-items: center; gap: 14px; margin-top: 14px; } .ch-play small { font-size: 15px; color: var(--muted); }
 .ch-sum { display: flex; flex-wrap: wrap; gap: 10px; margin-top: 14px; opacity: 0; transform: translateY(8px); transition: .45s var(--ease); }
 .ch-sum.on { opacity: 1; transform: none; }
-.ch-sum span { background: var(--ink); color: #fff; border-radius: 12px; padding: 8px 14px; font-size: 18px; } .ch-sum b { color: #FDBA74; font-family: var(--mono); }
+.ch-sum > span { background: var(--ink); color: #fff; border-radius: 12px; padding: 8px 14px; font-size: 18px; } .ch-sum b { color: #FDBA74; font-family: var(--mono); }
 .ch-sum em { font-style: normal; font-size: 16px; color: var(--muted); flex-basis: 100%; }
 
 /* ---------- формула ---------- */
@@ -153,7 +153,7 @@ h1 em { font-style: normal; color: var(--accent); }
 .fm-cards.in { gap: 10px; }
 .fmc { flex: 1; background: #fff; border: 1px solid var(--line2); border-radius: 24px; padding: 20px 22px; display: flex; flex-direction: column; gap: 6px; animation: rise .5s var(--ease) both; }
 .fmc:nth-child(3) { animation-delay: .1s; } .fmc:nth-child(5) { animation-delay: .2s; } .fmc:nth-child(7) { animation-delay: .3s; }
-.fmc b { font: 800 76px/1 var(--sans); color: var(--accent); } .fmc span { font-size: 22px; font-weight: 700; } .fmc small { font-size: 16px; color: var(--muted); }
+.fmc b { font: 800 76px/1 var(--sans); color: var(--accent); } .fmc > span { font-size: 22px; font-weight: 700; } .fmc small { font-size: 16px; color: var(--muted); }
 .fm-x { font-style: normal; align-self: center; font: 800 54px var(--sans); color: var(--ink); width: 0; opacity: 0; overflow: hidden; transition: width .5s var(--ease), opacity .4s; text-align: center; }
 .fm-cards.in .fm-x { width: 30px; opacity: 1; }
 .fm-eq { margin-top: 26px; font: 800 82px var(--sans); letter-spacing: -0.03em; display: flex; align-items: baseline; gap: 26px; flex-wrap: wrap; opacity: 0; transform: translateY(14px); transition: .6s var(--ease); }
@@ -290,7 +290,7 @@ h1 em { font-style: normal; color: var(--accent); }
 .fmc b, .gv b, .pr-col b, .fm-eq .mth { font-family: "Iowan Old Style", "Palatino Linotype", Georgia, "Times New Roman", serif; font-style: italic; }
 .fmc b { font-size: 84px; }
 .fm-eq .mth { font-weight: 700; font-size: 92px; }
-.fm-cards { margin-top: 40px; } .fmc { padding: 26px 24px; } .fmc span { font-size: 24px; }
+.fm-cards { margin-top: 40px; } .fmc { padding: 26px 24px; } .fmc > span { font-size: 24px; }
 .fm-eq { margin-top: 36px; } .fm-calc { margin-top: 30px; }
 .ch-stage svg { width: 540px; height: 460px; } .ch-stage { width: 540px; }
 .wv-parts .wvp { padding: 22px 22px; } .wvp b { font-size: 27px; } .wvp i { font-size: 21px; }
@@ -375,15 +375,18 @@ h1 em { font-style: normal; color: var(--accent); }
 @keyframes sound-board-write { from { clip-path:inset(0 100% 0 0); } to { clip-path:inset(0); } }
 @media (prefers-reduced-motion:reduce) { .sound-algorithm .is-visible > .ink-line { animation:none; } }
 
+.sound-k { font-family: var(--mono); font-style: normal; text-transform: none; }
+.board-nu { text-transform: none; }
+
 /* Keep the Greek character in selectable text while drawing its handwritten form. */
 @supports (mask-image: url("")) {
-  .sound-algorithm .board-nu {
+  .board-nu {
     display: inline-block;
     width: .64em;
     position: relative;
     -webkit-text-fill-color: transparent;
   }
-  .sound-algorithm .board-nu::before {
+  .board-nu::before {
     content: "";
     position: absolute;
     left: 0;
