@@ -394,3 +394,5 @@ h1 em { font-style: normal; color: var(--accent); }
     mask: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 23 35'%3E%3Cpath d='M2 16 C3 22 9 28 11 33 C15 28 21 19 21 15 C22 9 16 4 9 2' fill='none' stroke='black' stroke-width='2.3' stroke-linecap='round' stroke-linejoin='round'/%3E%3C/svg%3E") center / contain no-repeat;
   }
 }
+
+[data-id="t31114"] .board-answer .ink-line { --delay: .55s; }

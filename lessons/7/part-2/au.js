@@ -621,9 +621,11 @@ W.soundAlgorithm = {
   step(el, step) {
     el.classList.toggle('algo-show-known', step >= 2);
     el.classList.toggle('algo-show-target', step >= 3);
-    $$('.algo-timeline li', el).forEach((item, index) => {
-      item.classList.toggle('is-active', index + 1 === step);
-      item.classList.toggle('is-done', index + 1 < step);
+    const items = $$('.algo-timeline li', el);
+    const active = Math.min(step, items.length);
+    items.forEach((item, index) => {
+      item.classList.toggle('is-active', index + 1 === active);
+      item.classList.toggle('is-done', index + 1 < active);
     });
     $$('[data-reveal]', el).forEach(line => {
       const visible = step >= Number(line.dataset.reveal);
@@ -639,9 +641,7 @@ W.t31114 = {
   async step(el, s, o) {
     const k = this.T.next(), alive = () => this.T.alive(k), anim = animOf(o);
     $$('.tx-hl', el).forEach(h => h.classList.toggle('on', +h.dataset.k <= s && s >= 1));
-    $$('.gv', el).forEach(g => g.classList.toggle('on', +g.dataset.s <= s));
-    $('#t1F', el).classList.toggle('on', s >= 4); $('#t1Calc', el).classList.toggle('on', s >= 5); $('#t1Ans', el).classList.toggle('on', s >= 6);
-    $('#t1Head', el).innerHTML = ['Задача с ЕГЭ <em>18 июня</em>', 'Стерео — значит <em>k = 2</em>', 'Герцы — <em>ν</em>, биты — <em>i</em>', 'Время — <em>в секунды</em>', 'Килобайты: делим на <em>1024 · 8</em>', 'Считаем на <em>калькуляторе</em>', 'Ответ: <em>13 993</em>'][s];
+    W.soundAlgorithm.step(el, s);
     const scr = $('#t1Scr', el);
     if (s === 5 && anim) {
       const target = 13992.1875; scr.textContent = '0';
