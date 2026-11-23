@@ -1,2 +1,460 @@
-<!doctype html>
-<html lang="ru"><head><meta charset="utf-8"><meta name="viewport" content="width=device-width,initial-scale=1"><title>Урок переехал · Задание 13</title><link rel="canonical" href="../13/"><script>location.replace('../13/' + location.search + location.hash);</script></head><body><p>Презентация перемещена: <a href="../13/">Задание 13 · IP-адреса и маски</a>.</p></body></html>
+<!DOCTYPE html>
+<html lang="ru">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>№10 · Поиск в текстовом документе · часть 1</title>
+<meta name="description" content="ЕГЭ по информатике, задание 10: поиск слов в документе — Ctrl+H, регистр, слово целиком, сноски, главы и дефисы.">
+<link rel="icon" href="data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 32 32'%3E%3Crect width='32' height='32' rx='8' fill='%23B9521D'/%3E%3Ctext x='16' y='23' text-anchor='middle' font-family='Arial' font-size='19' font-weight='700' fill='white'%3E10%3C/text%3E%3C/svg%3E">
+<link rel="stylesheet" href="writer.css">
+</head>
+<body>
+<header id="top">
+  <a id="lesson-home" class="brand" href="../" aria-label="Все уроки">← Все уроки<small>№10 · часть 1</small></a>
+  <nav id="tabs" aria-label="Разделы урока"></nav>
+  <div class="tools">
+    <button id="bDraw" title="Рисовать поверх слайда (D)" aria-label="Рисование"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"><path d="M4 20l4.5-1 10-10a2.1 2.1 0 0 0-3-3l-10 10L4 20z"/><path d="M14 7l3 3"/></svg></button>
+    <button id="bHelp" title="Горячие клавиши (?)" aria-label="Горячие клавиши"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8"><circle cx="12" cy="12" r="9.5"/><path d="M9.6 9.3a2.5 2.5 0 1 1 3.4 2.3c-.7.3-1 .8-1 1.5v.6M12 16.9v.1" stroke-linecap="round"/></svg></button>
+    <button id="bToc" title="Оглавление (G)" aria-label="Оглавление"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8"><rect x="4" y="4" width="6.5" height="6.5" rx="1.5"/><rect x="13.5" y="4" width="6.5" height="6.5" rx="1.5"/><rect x="4" y="13.5" width="6.5" height="6.5" rx="1.5"/><rect x="13.5" y="13.5" width="6.5" height="6.5" rx="1.5"/></svg></button>
+    <button id="bFull" title="Полный экран (F)" aria-label="Полный экран"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round"><path d="M4 9V4h5M20 9V4h-5M4 15v5h5M20 15v5h-5"/></svg></button>
+  </div>
+</header>
+
+<div id="stage">
+  <main id="deck">
+<!-- №10 · поиск в текстовом документе · часть 1 -->
+
+<!-- ===================== 01 · ТИТУЛ ===================== -->
+<section class="slide" data-sec="1" data-id="start" data-title="Сколько раз встречается «суд»?" data-w="hero">
+  <div class="hero-row">
+    <div class="col" style="gap:0;flex:1;min-width:0">
+      <div class="tbadge"><b>№10</b><span>ЕГЭ по информатике · часть 1</span></div>
+      <h1 class="hero-h">Сколько раз встречается <em>«суд»</em>?</h1>
+      <p class="lead" style="max-width:660px">Поиск в текстовом документе. Одна комбинация клавиш, две галочки и три ловушки: сноски, главы и дефисы.</p>
+      <div class="kbhint" style="margin-top:40px"><span><kbd>→</kbd>листать</span><span><kbd>N</kbd>пояснения</span><span><kbd>Q</kbd>вопрос</span><span><kbd>?</kbd>все клавиши</span></div>
+    </div>
+    <div class="hero-vis">
+      <div class="hv-bar"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round"><circle cx="10.5" cy="10.5" r="6"/><path d="M15 15l5 5"/></svg><span class="hv-q">суд</span><span class="hv-chip">Слова целиком</span><b class="hv-n">0</b></div>
+      <div class="hv-pg"></div>
+    </div>
+  </div>
+</section>
+
+<!-- ===================== 01 · ПРО ЧТО ===================== -->
+<section class="slide vc" data-sec="1" data-id="about" data-title="Про что номер 10" data-steps="4" data-btns="Что ищем?|Где ищем?|Что пишем в ответ?|Что нужно уметь?">
+  <div class="eyebrow"><span class="tag">Задача</span><span>о чём номер</span></div>
+  <h1>Про что <em>номер 10</em></h1>
+  <div class="ab-row">
+    <div class="fc" data-r="1"><div class="fc-in">
+      <div class="fc-f"><span class="fc-n">Что ищем?</span><b class="fc-q">?</b><span class="fc-h">нажми, чтобы открыть</span></div>
+      <div class="fc-b card"><div class="label acc">что ищем</div><h3>Слово или сочетание букв</h3><p>Сколько раз оно встречается в тексте.</p><div class="ab-ex">Пусть решает <mark>суд</mark>! · по<mark>суд</mark>у · <mark>Суд</mark>ья</div></div>
+    </div></div>
+    <div class="fc" data-r="2"><div class="fc-in">
+      <div class="fc-f"><span class="fc-n">Где ищем?</span><b class="fc-q">?</b><span class="fc-h">нажми, чтобы открыть</span></div>
+      <div class="fc-b card"><div class="label acc">где</div><h3>В файле <span class="q">.docx</span></h3><p>Это текстовый документ: рассказ или глава романа. Открываем в LibreOffice Writer или в Word.</p></div>
+    </div></div>
+    <div class="fc" data-r="3"><div class="fc-in">
+      <div class="fc-f"><span class="fc-n">Что в ответе?</span><b class="fc-q">?</b><span class="fc-h">нажми, чтобы открыть</span></div>
+      <div class="fc-b card"><div class="label acc">ответ</div><h3>Одно число</h3><p>Сколько раз нашлось. Считать руками не нужно — считает компьютер. Наша задача — правильно его настроить.</p></div>
+    </div></div>
+  </div>
+  <div class="ab-key">
+    <div class="qc" data-r="4"><div class="qc-h"><b class="qc-q">Что нужно уметь технически?</b><i class="qc-i">?</i></div><div class="qc-b"><div class="qc-in">
+      <div class="row" style="gap:34px;align-items:center">
+        <div class="keys2"><kbd class="kc">Ctrl</kbd><b>+</b><kbd class="kc">H</kbd></div>
+        <p class="qc-p" style="font-size:20px">Одна комбинация: открывает панель <b>«Найти и заменить»</b>. Всё остальное — понимать, <b>как её настроить</b> под задание.</p>
+      </div>
+    </div></div></div>
+  </div>
+</section>
+
+<!-- ===================== 01 · CTRL+H ===================== -->
+<section class="slide" data-sec="1" data-id="ctrlh" data-title="Ctrl + H — панель поиска" data-w="ctrlh" data-steps="5" data-btns="Как открыть поиск?|Где пишем, что ищем?|Что за первая галочка?|А вторая?|Как посчитать?">
+  <div class="wrow">
+    <div class="lcol">
+      <div class="eyebrow"><span class="tag">Задача</span><span>инструмент</span></div>
+      <h1 class="h1s"><em>Ctrl + H</em> — панель поиска</h1>
+      <div class="keys2 ch-keys"><kbd class="kc k-ctrl">Ctrl</kbd><b>+</b><kbd class="kc k-h">H</kbd></div>
+      <div class="qc" data-r="2" data-pin="1"><div class="qc-h"><b class="qc-q wn"><span class="num">1</span>Поле «Найти»</b><i class="qc-i">?</i></div><div class="qc-b"><div class="qc-in"><p class="qc-p">Пишем слово или сочетание букв, которое ищем. Без лишних пробелов.</p></div></div></div>
+      <div class="qc" data-r="3" data-pin="2"><div class="qc-h"><b class="qc-q wn"><span class="num">2</span>«Учитывать регистр»</b><i class="qc-i">?</i></div><div class="qc-b"><div class="qc-in"><p class="qc-p">Различать <b>большие и маленькие</b> буквы или нет.</p></div></div></div>
+      <div class="qc" data-r="4" data-pin="3"><div class="qc-h"><b class="qc-q wn"><span class="num">3</span>«Слова целиком»</b><i class="qc-i">?</i></div><div class="qc-b"><div class="qc-in"><p class="qc-p">Искать только <b>отдельные слова</b> или ещё и кусочки других слов.</p></div></div></div>
+      <div class="qc" data-r="5" data-pin="4"><div class="qc-h"><b class="qc-q wn"><span class="num">4</span>«Найти все»</b><i class="qc-i">?</i></div><div class="qc-b"><div class="qc-in"><p class="qc-p">Выделяет все совпадения и пишет, <b>сколько их</b>. Это число нам и нужно.</p></div></div></div>
+    </div>
+    <div class="wr" data-doc="mini" data-file="10-0.docx"></div>
+  </div>
+</section>
+
+<!-- ===================== 02 · РЕГИСТР ===================== -->
+<section class="slide vc" data-sec="2" data-id="case" data-title="Строчные и прописные" data-steps="5" data-btns="Какие буквы строчные?|А прописные?|Почему «прописные»?|Галочка стоит — что ищет?|А если галочки нет?">
+  <div class="eyebrow"><span class="tag">Регистр</span><span>большие и маленькие буквы</span></div>
+  <h1>Регистр: <em>маленькие</em> и <em>большие</em></h1>
+  <div class="row" style="gap:40px;align-items:flex-start">
+    <div class="col" style="gap:18px;flex:none">
+      <div class="cs-row">
+        <div class="fc" data-r="1"><div class="fc-in">
+          <div class="fc-f"><span class="fc-n">Строчные — это?</span><b class="fc-q">?</b><span class="fc-h">нажми, чтобы открыть</span></div>
+          <div class="fc-b card"><div class="label acc">строчные</div><h3>Маленькие буквы</h3><div class="tiles"><span class="lt c2">а</span><span class="lt c2">б</span><span class="lt c2">в</span><span class="lt c2">г</span></div></div>
+        </div></div>
+        <div class="fc" data-r="2"><div class="fc-in">
+          <div class="fc-f"><span class="fc-n">Прописные — это?</span><b class="fc-q">?</b><span class="fc-h">нажми, чтобы открыть</span></div>
+          <div class="fc-b card"><div class="label acc">прописные</div><h3>Большие буквы</h3><div class="tiles"><span class="lt c1">А</span><span class="lt c1">Б</span><span class="lt c1">В</span><span class="lt c1">Г</span></div></div>
+        </div></div>
+      </div>
+      <div class="qc" data-r="3" style="width:682px"><div class="qc-h"><b class="qc-q">Почему «прописные»?</b><i class="qc-i">?</i></div><div class="qc-b"><div class="qc-in"><p class="qc-p">От слова <b>прописывать</b>: большую букву выводят красиво и старательно. А строчные — обычные, «в строчку».</p></div></div></div>
+    </div>
+    <div class="cs-cmd">
+      <div class="label">галочка «Учитывать регистр» — это приказ компьютеру</div>
+      <div class="qc" data-r="4"><div class="qc-h"><b class="qc-q wn"><label class="chk"><input type="checkbox" checked><i></i></label>&nbsp;Галочка стоит</b><i class="qc-i">?</i></div><div class="qc-b"><div class="qc-in">
+        <div class="say">«Найди <b>ровно так</b>, как я написал». Пишу <b>суд</b> — найдёт только маленькими, «Суд» пропустит.</div>
+      </div></div></div>
+      <div class="qc" data-r="5"><div class="qc-h"><b class="qc-q wn"><label class="chk"><input type="checkbox"><i></i></label>&nbsp;Галочки нет</b><i class="qc-i">?</i></div><div class="qc-b"><div class="qc-in">
+        <div class="say">«Регистр <b>не важен</b>, ищи любые». Найдёт и <b>суд</b>, и <b>Суд</b>, и <b>СУД</b>.</div>
+      </div></div></div>
+    </div>
+  </div>
+</section>
+
+<!-- ===================== 02 · РЕГИСТР НА ТЕКСТЕ ===================== -->
+<section class="slide" data-sec="2" data-id="case-live" data-title="Регистр на тексте" data-w="caseLive" data-steps="4" data-btns="Ищем «суд» без галочки|Ставим «Учитывать регистр»|А если написать «Суд»?|Что заметили?">
+  <div class="wrow">
+    <div class="lcol">
+      <div class="eyebrow"><span class="tag">Регистр</span><span>проверим</span></div>
+      <h1 class="h1s">Проверим <em>на тексте</em></h1>
+      <p class="hint" style="font-size:17px">Текст короткий — можно пересчитать глазами и убедиться, что компьютер прав.</p>
+      <div class="cl-res">
+        <div class="cl-r" data-k="1"><span class="mini-chk"><i></i>регистр</span><span class="q">суд</span><span class="arr">→</span><b class="rv" data-r="1">6</b></div>
+        <div class="cl-r" data-k="2"><span class="mini-chk"><i class="on"></i>регистр</span><span class="q">суд</span><span class="arr">→</span><b class="rv" data-r="2">3</b></div>
+        <div class="cl-r" data-k="3"><span class="mini-chk"><i class="on"></i>регистр</span><span class="q">Суд</span><span class="arr">→</span><b class="rv" data-r="3">3</b></div>
+      </div>
+      <div class="qc" data-r="4"><div class="qc-h"><b class="qc-q">Что заметили?</b><i class="qc-i">?</i></div><div class="qc-b"><div class="qc-in"><p class="qc-p"><b>3 + 3 = 6</b>: маленькие плюс большие — это все. А «Подсудимый» нашёлся с галочкой, потому что <b>«суд» внутри него маленькими</b>: регистр смотрит на сами буквы, а не на начало слова.</p></div></div></div>
+    </div>
+    <div class="wr" data-doc="mini" data-file="10-0.docx"></div>
+  </div>
+</section>
+
+<!-- ===================== 02 · КОГДА СТАВИТЬ ===================== -->
+<section class="slide vc" data-sec="2" data-id="case-rule" data-title="Когда ставить галочку регистра" data-steps="4" data-btns="«суд» или «Суд» — ставим?|«регистр не имеет значения»?|«со строчной буквы»?|«с заглавной буквы»?">
+  <div class="eyebrow"><span class="tag">Регистр</span><span>читаем задание</span></div>
+  <h1>Когда ставить <em>галочку</em>?</h1>
+  <div class="ph-map" style="max-width:1260px">
+    <div class="ph"><div class="ph-t">«…сочетание букв <b>«суд» или «Суд»</b>…»<i>в задании перечислены оба варианта</i></div><div class="ph-a rv" data-r="1"><label class="chk"><input type="checkbox"><i></i><span>не ставим</span></label> — подходят любые</div></div>
+    <div class="ph"><div class="ph-t">«…<b>регистр не имеет значения</b>…»<i>или «регистр написания не важен»</i></div><div class="ph-a rv" data-r="2"><label class="chk"><input type="checkbox"><i></i><span>не ставим</span></label></div></div>
+    <div class="ph"><div class="ph-t">«…слово «суд», записанное <b>со строчной буквы</b>…»<i>только маленькими</i></div><div class="ph-a rv" data-r="3"><label class="chk"><input type="checkbox" checked><i></i><span>ставим</span></label> и пишем <span class="q">суд</span></div></div>
+    <div class="ph"><div class="ph-t">«…слово «Суд» <b>с заглавной (прописной) буквы</b>…»<i>только с большой</i></div><div class="ph-a rv" data-r="4"><label class="chk"><input type="checkbox" checked><i></i><span>ставим</span></label> и пишем <span class="q">Суд</span></div></div>
+  </div>
+  <div class="note" data-s="4" style="margin-top:22px;max-width:1260px">Про регистр в задании <b>ничего не сказано</b> — галочку не ставим.</div>
+</section>
+
+<!-- ===================== 03 · СЛОВО ЦЕЛИКОМ ===================== -->
+<section class="slide vc" data-sec="3" data-id="whole" data-title="Слово целиком или в составе" data-steps="6" data-btns="Что значит «слово целиком»?|А «в составе слова»?|«Суд» — куда?|«суду» — куда?|«рассудок»?|«сударь»?">
+  <div class="eyebrow"><span class="tag">Слово целиком</span><span>как «суд» может встретиться в тексте</span></div>
+  <h1>Суд — <em>слово</em> или <em>кусочек</em>?</h1>
+  <div class="wh-wrap" style="grid-template-columns:300px 1fr">
+    <div class="wh-root"><small>ищем</small>СУД</div>
+    <div class="wh-two">
+      <div class="qc w" data-r="1"><div class="qc-h"><b class="qc-q wn"><span class="num" style="background:var(--p2)">1</span>Слово целиком</b><i class="qc-i">?</i></div><div class="qc-b"><div class="qc-in">
+        <p class="qc-p">Отдельное слово, само по себе: здание или процесс. <b style="color:var(--p2)">Рядом нет никаких букв.</b></p>
+        <div class="wex"><span class="wd w"><u>суд</u></span><span class="wd w">Пусть решает <u>суд</u>!</span></div>
+      </div></div></div>
+      <div class="qc p" data-r="2"><div class="qc-h"><b class="qc-q wn"><span class="num">2</span>В составе слова</b><i class="qc-i">?</i></div><div class="qc-b"><div class="qc-in">
+        <p class="qc-p">Буквы «суд» — <b>часть другого слова</b>. Слово целиком уже не «суд».</p>
+        <div class="wex"><span class="wd p">по<u>суд</u>а</span><span class="wd p">под<u>суд</u>имый</span><span class="wd p"><u>суд</u>ья</span></div>
+      </div></div></div>
+    </div>
+  </div>
+  <div class="label" style="margin-top:22px">а эти куда? <span class="lbl-hint">нажми на слово</span></div>
+  <div class="chips">
+    <div class="chip rvc w" data-r="3"><span><u>Суд</u></span><small>целиком</small><em>большая буква — всё равно отдельное слово</em></div>
+    <div class="chip rvc p" data-r="4"><span><u>суд</u>у</span><small>в составе</small><em>для компьютера «суду» — уже другое слово</em></div>
+    <div class="chip rvc p" data-r="5"><span>рас<u>суд</u>ок</span><small>в составе</small></div>
+    <div class="chip rvc p" data-r="6"><span><u>суд</u>арь</span><small>в составе</small><em>к суду отношения не имеет, но буквы те же</em></div>
+  </div>
+</section>
+
+<!-- ===================== 03 · ДВА РЕЖИМА ===================== -->
+<section class="slide vc" data-sec="3" data-id="modes" data-title="Компьютер ищет двумя способами" data-w="modes" data-steps="4" data-btns="Галочка стоит — что найдёт?|Галочки нет — что найдёт?|Как найти только «в составе»?|Запишем формулу">
+  <div class="eyebrow"><span class="tag">Слово целиком</span><span>вторая галочка — самая важная</span></div>
+  <h1>Компьютер ищет <em>только двумя способами</em></h1>
+  <div class="md-row">
+    <div class="md" data-k="1">
+      <div class="md-h"><label class="chk"><input type="checkbox" checked><i></i></label>Слова целиком</div>
+      <div class="md-words"><span class="wd">Суд</span><span class="wd">Судья</span><span class="wd">посуду</span><span class="wd">суд</span><span class="wd">Подсудимый</span><span class="wd">Суд</span></div>
+      <div class="md-say rv" data-r="1">Находит <b>только 1)</b> — отдельные слова. Здесь их <b>3</b>.</div>
+    </div>
+    <div class="md" data-k="2">
+      <div class="md-h"><label class="chk"><input type="checkbox"><i></i></label>Без галочки</div>
+      <div class="md-words"><span class="wd">Суд</span><span class="wd">Судья</span><span class="wd">посуду</span><span class="wd">суд</span><span class="wd">Подсудимый</span><span class="wd">Суд</span></div>
+      <div class="md-say rv" data-r="2">Находит <b>и 1), и 2)</b> вместе — всё, где есть буквы «суд». Здесь <b>6</b>.</div>
+    </div>
+  </div>
+  <div class="row" style="gap:28px;margin-top:22px;align-items:center">
+    <div class="qc" data-r="3" style="flex:1"><div class="qc-h"><b class="qc-q">Режима «только в составе» нет. Как найти 2)?</b><i class="qc-i">?</i></div><div class="qc-b"><div class="qc-in"><p class="qc-p">Найти <b>всё</b>, потом найти <b>только целиком</b> и вычесть. Останутся слова, где «суд» — кусочек.</p></div></div></div>
+  </div>
+  <div class="row" style="gap:28px;margin-top:18px;align-items:center" data-s="3">
+    <div class="mbar" style="flex:1"><i>Суд</i><i>Судья</i><i>посуду</i><i>суд</i><i>Подсудимый</i><i>Суд</i></div>
+  </div>
+  <div class="formula" data-s="4" style="margin-top:18px"><span class="fp">в составе</span> = всего − <span class="fw">целиком</span> <span style="color:var(--faint);font-weight:500">·</span> <b class="rv" data-r="4">6 − 3 = 3</b></div>
+</section>
+
+<!-- ===================== 03 · НА ТЕКСТЕ ===================== -->
+<section class="slide" data-sec="3" data-id="whole-live" data-title="Всего минус целиком" data-w="wholeLive" data-steps="4" data-btns="Ищем «суд» без галочек|Ставим «Слова целиком»|Сколько в составе?|Раскрасим проверку">
+  <div class="wrow">
+    <div class="lcol">
+      <div class="eyebrow"><span class="tag">Слово целиком</span><span>проверим</span></div>
+      <h1 class="h1s">Всего <em>минус</em> целиком</h1>
+      <div class="sol">
+        <div class="srow" data-k="1"><span class="n">1</span><span>Без галочек: <span class="q">суд</span></span><b class="rv" data-r="1">6</b></div>
+        <div class="srow" data-k="2"><span class="n">2</span><span>☑ Слова целиком</span><b class="rv" data-r="2">3</b></div>
+        <div class="srow ans" data-k="3"><span class="n">3</span><span>В составе</span><span class="eq">6 − 3 =<b class="rv" data-r="3">3</b></span></div>
+      </div>
+      <div class="qc" data-r="4"><div class="qc-h"><b class="qc-q">Как проверить глазами?</b><i class="qc-i">?</i></div><div class="qc-b"><div class="qc-in"><p class="qc-p">Раскрасим совпадения: <span class="tag-w">синие</span> — слово целиком, <span class="tag-p">оранжевые</span> — в составе. Оранжевых ровно 3: Судья, посуду, Подсудимый.</p></div></div></div>
+    </div>
+    <div class="wr" data-doc="mini" data-file="10-0.docx"></div>
+  </div>
+</section>
+
+<!-- ===================== 04 · ЗАДАЧА 1 ===================== -->
+<section class="slide vc" data-sec="4" data-id="task1" data-title="Задача 1: «суд» в составе слов" data-steps="3" data-btns="Какой вариант нужен?|Ставим «Учитывать регистр»?|Что за «не считая сносок»?">
+  <div class="eyebrow"><span class="tag">Задача 1</span><span>как в ЕГЭ</span></div>
+  <h1>Разберём <em>задание</em></h1>
+  <div class="task-row">
+    <div class="card task"><p>В файле <span class="q">10-1.docx</span> приведён текст рассказа «Дело о разбитой посуде». Определите, сколько раз, <mark data-m="3">не считая сносок</mark>, встречаются в тексте <mark data-m="1">слова с сочетанием букв</mark> <mark data-m="2">«суд» или «Суд»</mark>, например «судья», «посуда». <mark data-m="1">Отдельные слова «суд» и «Суд» учитывать не следует.</mark> В ответе запишите только число.</p></div>
+    <div class="col" style="gap:16px">
+      <div class="qc" data-r="1"><div class="qc-h"><b class="qc-q">Какой вариант нужен: 1) или 2)?</b><i class="qc-i">?</i></div><div class="qc-b"><div class="qc-in"><p class="qc-p"><b>2) — в составе слова.</b> Отдельные «суд» и «Суд» не считаем. Значит, ответ = <b>всего − целиком</b>.</p></div></div></div>
+      <div class="qc" data-r="2"><div class="qc-h"><b class="qc-q">Ставим «Учитывать регистр»?</b><i class="qc-i">?</i></div><div class="qc-b"><div class="qc-in"><p class="qc-p"><b>Нет.</b> Подходят и «суд», и «Суд» — регистр не важен.</p></div></div></div>
+      <div class="qc" data-r="3"><div class="qc-h"><b class="qc-q">Что за «не считая сносок»?</b><i class="qc-i">?</i></div><div class="qc-b"><div class="qc-in"><p class="qc-p">Сноска — пояснение внизу страницы. Поиск её <b>тоже находит</b>, а считать нельзя. Смотрим дальше.</p></div></div></div>
+    </div>
+  </div>
+</section>
+
+<!-- ===================== 04 · СНОСКИ ===================== -->
+<section class="slide" data-sec="4" data-id="footnote" data-title="Что такое сноска и как её удалить" data-w="footnote" data-steps="4" data-btns="Где тут сноска?|Найдёт ли поиск «суд» в сноске?|Как удалить сноски?|Проверим счёт">
+  <div class="wrow">
+    <div class="lcol">
+      <div class="eyebrow"><span class="tag">Сноски</span><span>не считая сносок</span></div>
+      <h1 class="h1s">Что такое <em>сноска</em></h1>
+      <div class="qc" data-r="1"><div class="qc-h"><b class="qc-q">Где тут сноска?</b><i class="qc-i">?</i></div><div class="qc-b"><div class="qc-in"><p class="qc-p">Маленькая цифра в тексте <b>¹</b> и пояснение с той же цифрой <b>внизу страницы</b>. Часто это перевод иностранной фразы.</p></div></div></div>
+      <div class="qc" data-r="2"><div class="qc-h"><b class="qc-q">Найдёт ли поиск «суд» в сноске?</b><i class="qc-i">?</i></div><div class="qc-b"><div class="qc-in"><p class="qc-p"><b>Да.</b> «сударь», «судья» в сносках — лишние совпадения. Поэтому сноски <b>удаляем до поиска</b>.</p></div></div></div>
+      <div class="qc" data-r="3"><div class="qc-h"><b class="qc-q">Как удалить все сноски?</b><i class="qc-i">?</i></div><div class="qc-b"><div class="qc-in"><p class="qc-p"><b>Навигатор</b> (<kbd>F5</kbd> или значок в боковой панели) → строка <b>«Сноски»</b> → правая кнопка мыши → <b>«Удалить все сноски»</b>.</p></div></div></div>
+      <div class="srow" data-k="4" style="margin-top:2px"><span class="n">✓</span><span>«суд»: было <b class="v fn-a">31</b> → стало</span><b class="rv" data-r="4">29</b></div>
+    </div>
+    <div class="wr" data-doc="book" data-file="10-1.docx"></div>
+  </div>
+</section>
+
+<!-- ===================== 04 · РЕШЕНИЕ 1 ===================== -->
+<section class="slide" data-sec="4" data-id="task1-solve" data-title="Решаем задачу 1" data-w="solve1" data-steps="4" data-btns="Ищем всё|Только слова целиком|Ответ?|А если забыть про сноски?">
+  <div class="wrow">
+    <div class="lcol">
+      <div class="eyebrow"><span class="tag">Задача 1</span><span>решение</span></div>
+      <h1 class="h1s">Решаем <em>задачу 1</em></h1>
+      <div class="tk">«…сколько раз, не считая сносок, встречаются слова с сочетанием букв <b>«суд» или «Суд»</b>… Отдельные слова «суд» и «Суд» учитывать не следует.»</div>
+      <div class="sol">
+        <div class="srow done"><span class="n">✓</span><span>Сноски удалены</span></div>
+        <div class="srow" data-k="1"><span class="n">1</span><span>Без галочек: <span class="q">суд</span></span><b class="rv" data-r="1">29</b></div>
+        <div class="srow" data-k="2"><span class="n">2</span><span>☑ Слова целиком</span><b class="rv" data-r="2">7</b></div>
+        <div class="srow ans" data-k="3"><span class="n">3</span><span>Ответ</span><span class="eq">29 − 7 =<b class="rv" data-r="3">22</b></span></div>
+      </div>
+      <div class="qc" data-r="4"><div class="qc-h"><b class="qc-q">А если забыть про сноски?</b><i class="qc-i">?</i></div><div class="qc-b"><div class="qc-in"><p class="qc-p">Будет <b>31 − 7 = 24</b> — неверно. Две лишние: «сударь» и «судья» в сносках.</p></div></div></div>
+    </div>
+    <div class="wr" data-doc="book" data-file="10-1.docx"></div>
+  </div>
+</section>
+
+<!-- ===================== 04 · ГЛАВЫ ===================== -->
+<section class="slide" data-sec="4" data-id="chapters" data-title="Задача 2: только нужные главы" data-w="chapters" data-steps="6" data-btns="Как оставить нужные главы?|Удаляем лишнее|Ищем «он»|Только слова целиком|Ответ?|Можно удалить «Часть первая»?">
+  <div class="wrow">
+    <div class="lcol">
+      <div class="eyebrow"><span class="tag">Задача 2</span><span>главы</span></div>
+      <h1 class="h1s">Нужные <em>главы</em></h1>
+      <div class="tk">Определите, сколько раз <b>в тексте глав III и IV</b> встречается сочетание букв <b>«он» или «Он»</b> в составе других слов, но не как отдельное слово.</div>
+      <div class="qc" data-r="1"><div class="qc-h"><b class="qc-q">Как оставить только главы III и IV?</b><i class="qc-i">?</i></div><div class="qc-b"><div class="qc-in"><p class="qc-p"><b>Навигатор → Заголовки.</b> Лишнее удаляем: правая кнопка → <b>«Удалить заголовок»</b> или клавиша <kbd>Delete</kbd>. Глава удаляется вместе с текстом.</p></div></div></div>
+      <div class="sol">
+        <div class="srow" data-k="2"><span class="n">1</span><span>Удалить: название, I, II, V</span></div>
+        <div class="srow" data-k="3"><span class="n">2</span><span>Без галочек: <span class="q">он</span></span><b class="rv" data-r="3">7</b></div>
+        <div class="srow" data-k="4"><span class="n">3</span><span>☑ Слова целиком</span><b class="rv" data-r="4">2</b></div>
+        <div class="srow ans" data-k="5"><span class="n">4</span><span>Ответ</span><span class="eq">7 − 2 =<b class="rv" data-r="5">5</b></span></div>
+      </div>
+      <div class="qc" data-r="6"><div class="qc-h"><b class="qc-q">Можно удалить «Часть первая»?</b><i class="qc-i">?</i></div><div class="qc-b"><div class="qc-in"><p class="qc-p"><b>Нет!</b> Вместе с частью удалятся все её главы — и нужная III. Удалил по ошибке — <kbd>Ctrl</kbd>+<kbd>Z</kbd>.</p></div></div></div>
+    </div>
+    <div class="wr" data-doc="book" data-file="10-2.docx"></div>
+  </div>
+</section>
+
+<!-- ===================== 05 · ДЕФИС-ЛОВУШКА ===================== -->
+<section class="slide" data-sec="5" data-id="hyphen" data-title="Ловушка: как-то" data-w="hyphen" data-steps="3" data-btns="Ищем «как» целиком|Всё ли тут «как»?|Как видит компьютер?">
+  <div class="wrow">
+    <div class="lcol">
+      <div class="eyebrow"><span class="tag">Дефисы</span><span>ловушка</span></div>
+      <h1 class="h1s">Ловушка: <em>как-то</em></h1>
+      <div class="srow" data-k="1"><span class="n">1</span><span>☑ Слова целиком: <span class="q">как</span></span><b class="rv" data-r="1">5</b></div>
+      <div class="qc" data-r="2"><div class="qc-h"><b class="qc-q">Всё ли тут отдельные «как»?</b><i class="qc-i">?</i></div><div class="qc-b"><div class="qc-in"><p class="qc-p"><b>Нет.</b> «как-то» — это <b>одно слово</b> с дефисом. А компьютер нашёл в нём отдельное «как».</p></div></div></div>
+      <div class="qc" data-r="3"><div class="qc-h"><b class="qc-q">Как видит компьютер?</b><i class="qc-i">?</i></div><div class="qc-b"><div class="qc-in">
+        <p class="qc-p">Дефис для него — <b>граница слова</b>, как пробел:</p>
+        <div class="cv" style="margin-top:10px"><span class="wd">как-то</span><span class="arr">→</span><span class="wd w"><u>как</u></span><span class="gap">дефис = пробел</span><span class="wd">то</span></div>
+        <p class="qc-p" style="margin-top:10px">С дефисами компьютер <b>считает неправильно</b>. И в задании про это могут даже не предупредить.</p>
+      </div></div></div>
+    </div>
+    <div class="wr" data-doc="book" data-file="10-3.docx"></div>
+  </div>
+</section>
+
+<!-- ===================== 05 · ДЕФИС → К ===================== -->
+<section class="slide" data-sec="5" data-id="dehyph" data-title="Приём: дефис меняем на букву" data-w="dehyph" data-steps="4" data-btns="Что на что меняем?|Заменить все|Ищем «как» снова|Правило">
+  <div class="wrow">
+    <div class="lcol">
+      <div class="eyebrow"><span class="tag">Дефисы</span><span>приём</span></div>
+      <h1 class="h1s">Дефис → <em>буква</em></h1>
+      <div class="qc" data-r="1"><div class="qc-h"><b class="qc-q">Что на что меняем?</b><i class="qc-i">?</i></div><div class="qc-b"><div class="qc-in"><p class="qc-p">Найти: <span class="q">-</span> Заменить: <span class="q">к</span> — любую русскую букву. Тогда слово с дефисом точно станет одним словом.</p></div></div></div>
+      <div class="card" data-s="2" style="padding:16px 20px">
+        <div class="label">что стало с текстом</div>
+        <div class="tf"><div><span class="w">как<s>-</s>то</span><span class="arr">→</span><span class="w">как<u>к</u>то</span></div><div><span class="w">что<s>-</s>нибудь</span><span class="arr">→</span><span class="w">что<u>к</u>нибудь</span></div><div><span class="w">Мухин<s>-</s>то</span><span class="arr">→</span><span class="w">Мухин<u>к</u>то</span></div></div>
+      </div>
+      <div class="srow" data-k="3"><span class="n">✓</span><span>☑ Слова целиком: <span class="q">как</span> было 5, стало</span><b class="rv" data-r="3">4</b></div>
+      <div class="rule" data-s="4"><b>Правило:</b> перед поиском <b>всегда</b> меняем дефис на букву. Даже если про дефисы в задании ничего нет.</div>
+    </div>
+    <div class="wr" data-doc="book" data-file="10-3.docx"></div>
+  </div>
+  <div class="asks left"><div class="ask"><button><i>?</i>А если ищем «кто»?</button><div class="ans">Тогда «к» не подойдёт: <code>что-то</code> → <code>чтокто</code> — появится лишнее «кто». Бери букву, которой <b>нет в искомом слове</b>, например <b>«ж»</b>.</div></div></div>
+</section>
+
+<!-- ===================== 05 · ЗАДАЧА 3 ===================== -->
+<section class="slide" data-sec="5" data-id="task3" data-title="Задача 3: «как» и «что»" data-w="task3" data-steps="6" data-btns="Какие галочки?|Сначала дефисы|Считаем «как»|Считаем «что»|Ответ?|А без замены дефисов?">
+  <div class="wrow">
+    <div class="lcol">
+      <div class="eyebrow"><span class="tag">Задача 3</span><span>дефисы</span></div>
+      <h1 class="h1s">«как» <em>и</em> «что»</h1>
+      <div class="tk">Сколько раз встречаются <b>отдельные слова «как» и «что»</b> (регистр не важен; слова с дефисами, такие как «что-нибудь» и «как-то», учитывать не следует)? Укажите <b>суммарное</b> количество.</div>
+      <div class="qc" data-r="1"><div class="qc-h"><b class="qc-q">Какие галочки?</b><i class="qc-i">?</i></div><div class="qc-b"><div class="qc-in"><p class="qc-p">Регистр не важен — <b>не ставим</b>. Нужны отдельные слова — <b>☑ Слова целиком</b>.</p></div></div></div>
+      <div class="sol">
+        <div class="srow" data-k="2"><span class="n">1</span><span>Дефис → <span class="q">к</span>, Заменить все</span></div>
+        <div class="srow" data-k="3"><span class="n">2</span><span>☑ целиком: <span class="q">как</span></span><b class="rv" data-r="3">4</b></div>
+        <div class="srow" data-k="4"><span class="n">3</span><span>☑ целиком: <span class="q">что</span></span><b class="rv" data-r="4">5</b></div>
+        <div class="srow ans" data-k="5"><span class="n">4</span><span>Ответ</span><span class="eq">4 + 5 =<b class="rv" data-r="5">9</b></span></div>
+      </div>
+      <div class="qc" data-r="6"><div class="qc-h"><b class="qc-q">А без замены дефисов?</b><i class="qc-i">?</i></div><div class="qc-b"><div class="qc-in"><p class="qc-p">Было бы <b>5 + 8 = 13</b> — неверно. Лишние: как-то, что-то (два раза) и что-нибудь.</p></div></div></div>
+    </div>
+    <div class="wr" data-doc="book" data-file="10-3.docx"></div>
+  </div>
+</section>
+
+<!-- ===================== 06 · АЛГОРИТМ ===================== -->
+<section class="slide vc" data-sec="6" data-id="algo" data-title="Алгоритм решения" data-steps="5" data-btns="Шаг 1|Шаг 2|Шаг 3|Шаг 4|Шаг 5">
+  <div class="eyebrow"><span class="tag">Шпаргалка</span><span>по порядку</span></div>
+  <h1>Алгоритм <em>на любое задание</em></h1>
+  <div class="algo">
+    <div class="qc" data-r="1"><div class="qc-h"><b class="big-n">1</b><b class="qc-q">Читаем задание</b><i class="qc-i">?</i></div><div class="qc-b"><div class="qc-in"><p class="qc-p">Что ищем? <b>Регистр</b> важен? <b>Целиком</b> или в составе? Есть ли <b>сноски</b> и <b>главы</b>?</p></div></div></div>
+    <div class="qc" data-r="2"><div class="qc-h"><b class="big-n">2</b><b class="qc-q">Сноски</b><i class="qc-i">?</i></div><div class="qc-b"><div class="qc-in"><p class="qc-p">Если «не считая сносок»: <b>Навигатор → Сноски → Удалить все сноски</b>.</p></div></div></div>
+    <div class="qc" data-r="3"><div class="qc-h"><b class="big-n">3</b><b class="qc-q">Главы</b><i class="qc-i">?</i></div><div class="qc-b"><div class="qc-in"><p class="qc-p">Если названы главы: <b>Навигатор → Заголовки</b>, лишние — <kbd>Delete</kbd>. Части с нужными главами не трогаем.</p></div></div></div>
+    <div class="qc" data-r="4"><div class="qc-h"><b class="big-n">4</b><b class="qc-q">Дефисы</b><i class="qc-i">?</i></div><div class="qc-b"><div class="qc-in"><div class="keys2 sm"><kbd class="kc">Ctrl</kbd><b>+</b><kbd class="kc">H</kbd></div><p class="qc-p"><span class="q">-</span> → <span class="q">к</span>, <b>Заменить все</b>. Всегда.</p></div></div></div>
+    <div class="qc" data-r="5"><div class="qc-h"><b class="big-n">5</b><b class="qc-q">Поиск</b><i class="qc-i">?</i></div><div class="qc-b"><div class="qc-in"><p class="qc-p">Галочки по заданию → <b>Найти все</b>. Нужно «в составе» — <b>всего − целиком</b>.</p></div></div></div>
+  </div>
+</section>
+
+<!-- ===================== 06 · ФРАЗЫ ===================== -->
+<section class="slide vc" data-sec="6" data-id="phrases" data-title="Фраза из задания → действие" data-steps="8" data-btns="«…или «Суд»»?|«со строчной буквы»?|«отдельное слово»?|«в составе других слов»?|«не считая сносок»?|«в тексте глав…»?|«слова с дефисом не учитывать»?|«ход», но не «приход»?">
+  <div class="eyebrow"><span class="tag">Шпаргалка</span><span>переводим задание на язык галочек</span></div>
+  <h1 class="h1s" style="margin-bottom:16px">Фраза из задания <em>→ действие</em></h1>
+  <div class="ph-map">
+    <div class="ph compact"><div class="ph-t">«суд» или «Суд» · регистр не важен</div><div class="ph-a rv" data-r="1"><label class="chk"><input type="checkbox"><i></i><span>Учитывать регистр</span></label></div></div>
+    <div class="ph compact"><div class="ph-t">со строчной (заглавной) буквы</div><div class="ph-a rv" data-r="2"><label class="chk"><input type="checkbox" checked><i></i><span>Учитывать регистр</span></label> и пишем нужной буквой</div></div>
+    <div class="ph compact"><div class="ph-t">отдельное слово · как отдельное слово</div><div class="ph-a rv" data-r="3"><label class="chk"><input type="checkbox" checked><i></i><span>Слова целиком</span></label></div></div>
+    <div class="ph compact"><div class="ph-t">в составе других слов, но не как отдельное слово</div><div class="ph-a rv" data-r="4">всего − целиком</div></div>
+    <div class="ph compact"><div class="ph-t">не считая сносок</div><div class="ph-a rv" data-r="5">Навигатор → Сноски → Удалить все сноски</div></div>
+    <div class="ph compact"><div class="ph-t">в тексте глав VIII и IX · в первой части</div><div class="ph-a rv" data-r="6">Навигатор → удалить остальные главы</div></div>
+    <div class="ph compact"><div class="ph-t">слова с дефисами учитывать не следует</div><div class="ph-a rv" data-r="7">дефис → «к» (а лучше всегда)</div></div>
+    <div class="ph compact"><div class="ph-t">«ход», не содержащие «приход»; отдельное «ход» не считать</div><div class="ph-a rv" data-r="8">всего «ход» − целиком «ход» − «приход»</div></div>
+  </div>
+</section>
+
+<!-- ===================== 06 · ОШИБКИ ===================== -->
+<section class="slide vc" data-sec="6" data-id="mistakes" data-title="Типичные ошибки" data-steps="4" data-btns="Ошибка 1|Ошибка 2|Ошибка 3|Ошибка 4">
+  <div class="eyebrow"><span class="tag">Шпаргалка</span><span>на чём теряют балл</span></div>
+  <h1>Типичные <em>ошибки</em></h1>
+  <div class="mk-grid">
+    <div class="fc" data-r="1"><div class="fc-in"><div class="fc-f"><span class="fc-n">Ошибка 1</span><div class="mk-f">Не удалил сноски</div><span class="fc-h">что получится?</span></div>
+      <div class="fc-b card bad"><div class="label">задача 1</div><div class="eqx">31 − 7 = 24 вместо 22</div><p class="fix">«сударь» и «судья» из сносок попали в счёт. <b>Сноски удаляем до поиска.</b></p></div></div></div>
+    <div class="fc" data-r="2"><div class="fc-in"><div class="fc-f"><span class="fc-n">Ошибка 2</span><div class="mk-f">Поставил «Учитывать регистр», хотя «суд» или «Суд»</div><span class="fc-h">что получится?</span></div>
+      <div class="fc-b card bad"><div class="label">задача 1</div><div class="eqx">22 − 4 = 18 вместо 22</div><p class="fix">Пропали все «Суд…» с большой буквы. <b>Регистр не указан — галочку не ставим.</b></p></div></div></div>
+    <div class="fc" data-r="3"><div class="fc-in"><div class="fc-f"><span class="fc-n">Ошибка 3</span><div class="mk-f">Не заменил дефисы</div><span class="fc-h">что получится?</span></div>
+      <div class="fc-b card bad"><div class="label">задача 3</div><div class="eqx">5 + 8 = 13 вместо 9</div><p class="fix">«как-то», «что-то» посчитались отдельными словами. <b>Дефис → «к» всегда.</b></p></div></div></div>
+    <div class="fc" data-r="4"><div class="fc-in"><div class="fc-f"><span class="fc-n">Ошибка 4</span><div class="mk-f">Удалил заголовок части, а не глав</div><span class="fc-h">что получится?</span></div>
+      <div class="fc-b card bad"><div class="label">задача 2</div><div class="eqx">нужная глава пропала</div><p class="fix">Часть удаляется вместе со всеми главами. <b>Удаляем только лишние главы, ошибся — Ctrl+Z.</b></p></div></div></div>
+  </div>
+</section>
+
+<!-- ===================== 07 · ТРЕНАЖЁР ===================== -->
+<section class="slide" data-sec="7" data-id="trainer" data-title="Тренажёр" data-w="trainer">
+  <div class="wrow">
+    <div class="lcol" style="gap:12px">
+      <div class="eyebrow"><span class="tag">Практика</span><span>реши сам в редакторе справа</span></div>
+      <h1 class="h1s" style="margin-bottom:6px">Тренажёр</h1>
+      <div class="card tr-task"><div class="tt"><span class="tr-no">задача 1</span><span class="tr-score"></span></div><div class="tr-text"></div></div>
+      <div class="tr-ans"><input class="tr-in" inputmode="numeric" placeholder="ответ" aria-label="Ответ"><button class="btn acc tr-check">Проверить</button><button class="btn tr-new">Новая задача</button></div>
+      <div class="tr-msg">Открой поиск <kbd>Ctrl</kbd>+<kbd>H</kbd> и навигатор <kbd>F5</kbd> — кнопки есть и на панели редактора.</div>
+      <div class="tr-btns"><button class="btn sm tr-solve">Показать решение</button><button class="btn sm tr-reset">Файл заново</button></div>
+      <div class="tr-sol scrollable"></div>
+    </div>
+    <div class="wr" data-doc="book" data-file="10-trainer.docx"></div>
+  </div>
+</section>
+
+<!-- ===================== 07 · ИТОГ ===================== -->
+<section class="slide vc" data-sec="7" data-id="summary" data-title="Итог" data-steps="4" data-btns="Вывод 1|Вывод 2|Вывод 3|Вывод 4">
+  <div class="eyebrow"><span>итог</span></div>
+  <h1>Что <em>забираем</em> с собой</h1>
+  <div class="sum-grid">
+    <div class="fc" data-r="1"><div class="fc-in"><div class="fc-f"><span class="fc-n">Вывод 1</span><b class="fc-q">?</b><span class="fc-h">вспомни сам, потом нажми</span></div><div class="fc-b card"><div class="label acc">инструмент</div><div class="keys2 sm"><kbd class="kc">Ctrl</kbd><b>+</b><kbd class="kc">H</kbd></div><p>«Найти и заменить». <b>Найти все</b> пишет, сколько совпадений.</p></div></div></div>
+    <div class="fc" data-r="2"><div class="fc-in"><div class="fc-f"><span class="fc-n">Вывод 2</span><b class="fc-q">?</b><span class="fc-h">вспомни сам, потом нажми</span></div><div class="fc-b card"><div class="label acc">регистр</div><h3>Галочка = «ищи ровно так»</h3><p>Регистр не указан или «суд» или «Суд» — не ставим.</p></div></div></div>
+    <div class="fc" data-r="3"><div class="fc-in"><div class="fc-f"><span class="fc-n">Вывод 3</span><b class="fc-q">?</b><span class="fc-h">вспомни сам, потом нажми</span></div><div class="fc-b card"><div class="label acc">слово целиком</div><h3>в составе = всего − целиком</h3><p>Компьютер умеет «только целиком» или «всё вместе». Третье получаем вычитанием.</p></div></div></div>
+    <div class="fc" data-r="4"><div class="fc-in"><div class="fc-f"><span class="fc-n">Вывод 4</span><b class="fc-q">?</b><span class="fc-h">вспомни сам, потом нажми</span></div><div class="fc-b card"><div class="label acc">подготовка файла</div><h3>Сноски, главы, дефисы</h3><p>Сноски и лишние главы удаляем в навигаторе. Дефис всегда меняем на «к».</p></div></div></div>
+  </div>
+</section>
+
+  </main>
+  <canvas id="ink" width="1600" height="900"></canvas>
+</div>
+
+<footer id="dock">
+  <div class="d-left"><b id="dSec"></b><span id="dNext"></span></div>
+  <div class="d-mid"><button class="dbtn" id="bMenu" title="Оглавление (G)" aria-label="Оглавление"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round"><path d="M4 7h16M4 12h16M4 17h10"/></svg></button><div id="bar"><i></i></div><span id="cnt"></span></div>
+  <div class="d-right">
+    <button class="dbtn" id="bNotes" title="Пояснения (N)"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round"><rect x="4" y="3.5" width="16" height="17" rx="3"/><path d="M8 8.5h8M8 12h8M8 15.5h5"/></svg>Пояснения</button>
+    <button class="dbtn" id="bPrev" title="Назад (←)" aria-label="Назад"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round"><path d="M15 6l-6 6 6 6"/></svg></button>
+    <button class="dbtn" id="bNext" title="Дальше (→ или пробел)"></button>
+  </div>
+</footer>
+
+<aside id="notes" aria-label="Пояснения">
+  <header><b>Пояснения</b><span id="nTitle"></span><button id="nClose" aria-label="Закрыть пояснения">✕</button></header>
+  <div id="nBody"></div>
+</aside>
+
+<div class="ov" id="ovHelp"><div class="ov-box"><h3>Управление<button data-close aria-label="Закрыть">✕</button></h3>
+  <div class="keys">
+    <div><span>Дальше / назад</span><span><kbd>→</kbd> <kbd>Пробел</kbd> · <kbd>←</kbd></span></div>
+    <div><span>Пояснения к шагу</span><kbd>N</kbd></div>
+    <div><span>Вопрос на слайде</span><kbd>Q</kbd></div>
+    <div><span>Оглавление</span><kbd>G</kbd></div>
+    <div><span>Рисовать / стереть</span><span><kbd>D</kbd> · <kbd>C</kbd></span></div>
+    <div><span>Лазерная указка</span><kbd>L</kbd></div>
+    <div><span>Прожектор</span><kbd>S</kbd></div>
+    <div><span>Чёрный экран</span><kbd>B</kbd></div>
+    <div><span>Экран сначала</span><kbd>R</kbd></div>
+    <div><span>Полный экран</span><kbd>F</kbd></div>
+    <div><span>Первый / последний</span><span><kbd>Home</kbd> · <kbd>End</kbd></span></div>
+    <div><span>Закрыть всё</span><kbd>Esc</kbd></div>
+  </div>
+  <p style="margin-top:18px;color:var(--muted);font-size:14px;line-height:1.5">Кнопка справа внизу подсказывает, что случится дальше: открыть следующий шаг, показать ответ или запустить анимацию. В песочнице код запускается <kbd>Ctrl</kbd>+<kbd>Enter</kbd>.</p>
+</div></div>
+<div class="ov" id="ovToc"><div class="ov-box"><h3>Оглавление<button data-close aria-label="Закрыть">✕</button></h3><div id="tocList"></div></div></div>
+
+<div id="laser"></div>
+<div id="spot"></div>
+<div id="blank">B — вернуть экран</div>
+<div id="toast" role="status"></div>
+<button id="resume"><span></span><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round"><path d="M5 12h14M13 6l6 6-6 6"/></svg></button>
+
+<script src="writer.js"></script>
+</body>
+</html>
