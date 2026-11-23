@@ -8,6 +8,10 @@
       if (sound.slide === 9) sound.step = 0;
       if (sound.slide > 9) sound.slide--;
       sound.layout = 'sound-v2';
+    }
+    if (sound?.layout === 'sound-v2') {
+      if (sound.slide >= 9) sound.slide++;
+      sound.layout = 'sound-v3';
       try { localStorage.setItem('soft-lesson7-progress-v1', JSON.stringify(progress)); } catch {}
     }
     document.querySelectorAll('.part-card').forEach(card => {
@@ -15,7 +19,7 @@
       const start = card.querySelector('.part-start');
       const part = card.dataset.part;
       const saved = progress[part];
-      const valid = saved && (part !== '2' || saved.layout === 'sound-v2') && Number.isInteger(saved.slide) && saved.slide >= 1 &&
+      const valid = saved && (part !== '2' || saved.layout === 'sound-v3') && Number.isInteger(saved.slide) && saved.slide >= 1 &&
         saved.slide <= Number(link.dataset.max) && Number.isInteger(saved.step) && saved.step >= 0;
       const action = valid ? 'Продолжить' : 'Смотреть';
       link.textContent = `${action} часть ${part}`;

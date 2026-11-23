@@ -617,6 +617,22 @@ W.formula = {
 };
 
 /* ================= задача 31114 ================= */
+W.soundAlgorithm = {
+  step(el, step) {
+    el.classList.toggle('algo-show-known', step >= 2);
+    el.classList.toggle('algo-show-target', step >= 3);
+    $$('.algo-timeline li', el).forEach((item, index) => {
+      item.classList.toggle('is-active', index + 1 === step);
+      item.classList.toggle('is-done', index + 1 < step);
+    });
+    $$('[data-reveal]', el).forEach(line => {
+      const visible = step >= Number(line.dataset.reveal);
+      line.classList.toggle('is-visible', visible);
+      line.setAttribute('aria-hidden', String(!visible));
+    });
+  }
+};
+
 W.t31114 = {
   init(el) { this.T = task(); this.el = el; },
   leave() { this.T.stop(); },

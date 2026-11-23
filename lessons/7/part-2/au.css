@@ -335,3 +335,7 @@ h1 em { font-style: normal; color: var(--accent); }
 @media (prefers-reduced-motion: reduce) {
   #t6Frac, #t6Frac :is(.cmp-equation, .cmp-simplified, .cmp-answer), #t6Frac .cmp-factor::after, #t6Frac .cmp-term > span, #t6Frac .cmp-insertion { transition: none; }
 }
+
+/* The sound viewer scales a fixed-size stage, including on phones. */
+[data-id="sound-algorithm"] .algo-workspace { grid-template-columns: 405px minmax(0, 1fr); gap: 40px; }
+[data-id="sound-algorithm"] .ink-line { font-size: 28px; }
