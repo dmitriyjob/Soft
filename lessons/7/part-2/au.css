@@ -336,6 +336,41 @@ h1 em { font-style: normal; color: var(--accent); }
   #t6Frac, #t6Frac :is(.cmp-equation, .cmp-simplified, .cmp-answer), #t6Frac .cmp-factor::after, #t6Frac .cmp-term > span, #t6Frac .cmp-insertion { transition: none; }
 }
 
-/* The sound viewer scales a fixed-size stage, including on phones. */
-[data-id="sound-algorithm"] .algo-workspace { grid-template-columns: 405px minmax(0, 1fr); gap: 40px; }
-[data-id="sound-algorithm"] .ink-line { font-size: 28px; }
+/* Algorithm board, on the same fixed-size stage as the worked examples. */
+.sound-algorithm .algo-workspace { display:grid; grid-template-columns:390px 1fr; gap:22px; margin-top:22px; }
+.sound-algorithm .algo-timeline, .sound-algorithm .student-board {
+  margin:0; padding:22px 26px; border:1px solid var(--line2); border-radius:20px; background:var(--white);
+}
+.sound-algorithm .algo-timeline { list-style:none; align-self:start; }
+.sound-algorithm .algo-timeline li { display:flex; align-items:baseline; gap:16px; padding:20px 0; color:var(--muted); }
+.sound-algorithm .algo-timeline li + li { border-top:1px solid var(--line2); }
+.sound-algorithm .algo-timeline h3 { font-size:23px; line-height:1.25; margin:0; letter-spacing:-.025em; }
+.sound-algorithm .algo-number { font:700 16px var(--mono); }
+.sound-algorithm li.is-done { color:var(--ink); }
+.sound-algorithm li.is-active { color:var(--accent); }
+.sound-algorithm .board-bar, .sound-algorithm .board-paper small {
+  display:block; font:700 14px var(--sans); letter-spacing:.09em; text-transform:uppercase; color:var(--muted);
+}
+.sound-algorithm .board-bar { padding-bottom:16px; border-bottom:1px solid var(--line2); color:var(--ink); }
+.sound-algorithm .board-paper { display:grid; grid-template-columns:29% 1fr; gap:22px; margin:20px 0; }
+.sound-algorithm .board-givens { border-right:1px solid var(--line2); }
+.sound-algorithm .board-givens > div + div { margin-top:18px; }
+.sound-algorithm .ink-line { display:block; padding:5px 0; font:650 22px/1.4 var(--mono); }
+.sound-algorithm .ink-line :is(em,i) { font-style:normal; }
+.sound-algorithm .board-work [data-reveal="1"] { margin:8px 0 12px; }
+.sound-algorithm .board-work [data-reveal="1"] .ink-line { font-size:34px; }
+.sound-algorithm.algo-show-known .ink-line em, .sound-algorithm .board-givens [data-reveal="2"] .ink-line { color:var(--accent); }
+.sound-algorithm.algo-show-target .ink-line i, .sound-algorithm .board-givens [data-reveal="3"] .ink-line { color:var(--ok); }
+.sound-algorithm .board-frac { display:inline-grid; vertical-align:middle; text-align:center; font-size:.9em; }
+.sound-algorithm .board-frac > :first-child { padding:0 4px; border-bottom:2px solid currentColor; }
+.sound-algorithm .board-answer {
+  display:flex; align-items:center; gap:20px; min-height:58px; padding:8px 18px;
+  border-radius:14px; background:var(--ink); color:white; font-weight:650;
+}
+.sound-algorithm .board-answer .ink-line { color:#FDBA74; font-size:28px; --delay:1.65s; }
+.sound-algorithm [data-reveal]:not(.is-visible) { visibility:hidden; }
+.sound-algorithm .is-visible > .ink-line { animation:sound-board-write .55s linear var(--delay,0s) both; }
+.sound-algorithm .ink-line:nth-of-type(2) { --delay:.55s; }
+.sound-algorithm .ink-line:nth-of-type(3) { --delay:1.1s; }
+@keyframes sound-board-write { from { clip-path:inset(0 100% 0 0); } to { clip-path:inset(0); } }
+@media (prefers-reduced-motion:reduce) { .sound-algorithm .is-visible > .ink-line { animation:none; } }

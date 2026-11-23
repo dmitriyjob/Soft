@@ -8,8 +8,7 @@
 <meta name="theme-color" content="#F5F5F7">
 <link rel="icon" href="data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 32 32'%3E%3Crect width='32' height='32' rx='8' fill='%23B9521D'/%3E%3Ctext x='16' y='23' text-anchor='middle' font-family='Arial' font-size='23' font-weight='700' fill='white'%3Ei%3C/text%3E%3C/svg%3E">
 <link rel="stylesheet" href="./styles.css?v=efc3f98612a9">
-<link rel="stylesheet" href="../part-1/algorithm.css?v=28f429c4540c">
-<link rel="stylesheet" href="./au.css?v=ecafd8a8bb5f">
+<link rel="stylesheet" href="./au.css?v=f8ddca9d9fea">
 <link rel="stylesheet" href="./viewer.css?v=00a77e6ecef2">
 </head>
 <body data-home="../" data-lesson-part="2">
@@ -163,8 +162,10 @@
     <div class="fm-calc" id="fmCalc"><div class="fm-in" id="fmIn"></div><div class="fm-out" id="fmOut"></div></div>
   </section>
 
-  <section class="slide slide-solution-algorithm" data-sec="3" data-id="sound-algorithm" data-w="soundAlgorithm" data-title="Алгоритм решения" data-steps="4">
-    <div class="algo-heading"><p class="algo-eyebrow">КОДИРОВАНИЕ ЗВУКА</p><h2>Алгоритм <span>решения</span></h2></div>
+  <section class="slide sound-algorithm" data-sec="3" data-id="sound-algorithm" data-w="soundAlgorithm" data-title="Алгоритм решения" data-steps="4">
+    <div class="eyebrow">Кодирование звука</div>
+    <h1>Алгоритм <em>решения</em></h1>
+    <div class="task">Запись в формате <b>квадро</b> длится <b>8 секунд</b>. Частота дискретизации — <b>12 000 Гц</b>, глубина кодирования — <b>8 бит</b>. Сколько Кбайт потребуется для хранения записи без сжатия и заголовка?</div>
     <div class="algo-workspace">
       <ol class="algo-timeline">
         <li><span class="algo-number">01</span><h3>Выписываем формулу</h3></li>
@@ -173,9 +174,7 @@
         <li><span class="algo-number">04</span><h3>Подставляем значения<br>и переводим в Кбайты</h3></li>
       </ol>
       <section class="student-board" aria-label="Доска одного ученика">
-        <header class="board-bar"><strong>Доска ученика</strong><span>Ученик</span></header>
-        <div class="board-task">Запись в формате <b>квадро</b> длится <b>8 секунд</b>. Частота дискретизации — <b>12 000 Гц</b>, глубина кодирования — <b>8 бит</b>. Сколько Кбайт потребуется для хранения записи без сжатия и заголовка?</div>
-        <div class="board-answer">Ответ <span data-reveal="4"><b class="ink-line">375 Кбайт ✓</b></span></div>
+        <header class="board-bar"><strong>Доска ученика</strong></header>
         <div class="board-paper">
           <div class="board-givens">
             <div data-reveal="2"><small>Дано</small>
@@ -197,6 +196,7 @@
             </div>
           </div>
         </div>
+        <div class="board-answer">Ответ <span data-reveal="4"><b class="ink-line">375 Кбайт</b></span></div>
       </section>
     </div>
   </section>
