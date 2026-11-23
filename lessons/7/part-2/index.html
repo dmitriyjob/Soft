@@ -170,21 +170,21 @@
         <li><span class="algo-number">01</span><h3>Выписываем формулы</h3></li>
         <li><span class="algo-number">02</span><h3>Отмечаем, что дано</h3></li>
         <li><span class="algo-number">03</span><h3>Отмечаем, что найти</h3></li>
-        <li><span class="algo-number">04</span><h3>Подставляем значения<br>и округляем ответ</h3></li>
+        <li><span class="algo-number">04</span><h3>Подставляем значения<br>и переводим в Кбайты</h3></li>
       </ol>
       <section class="student-board" aria-label="Доска одного ученика">
         <header class="board-bar"><strong>Доска ученика</strong><span>Ученик</span></header>
-        <div class="board-task">Стереозапись длится <b>3 минуты 19 секунд</b>. Частота дискретизации — <b>12 000 Гц</b>, глубина кодирования — <b>24 бита</b>. Сколько целых Кбайт потребуется для хранения записи без сжатия и заголовка?</div>
-        <div class="board-answer">Ответ <span data-reveal="4"><b class="ink-line">13 993 Кбайт ✓</b></span></div>
+        <div class="board-task">Запись в формате <b>квадро</b> длится <b>8 секунд</b>. Частота дискретизации — <b>12 000 Гц</b>, глубина кодирования — <b>8 бит</b>. Сколько Кбайт потребуется для хранения записи без сжатия и заголовка?</div>
+        <div class="board-answer">Ответ <span data-reveal="4"><b class="ink-line">375 Кбайт ✓</b></span></div>
         <div class="board-paper">
           <div class="board-givens">
             <div data-reveal="2"><small>Дано</small>
-              <span class="ink-line">k = 2 (стерео)</span>
+              <span class="ink-line">k = 4 (квадро)</span>
               <span class="ink-line">v = 12 000 Гц</span>
-              <span class="ink-line">i = 24 бита</span>
-              <span class="ink-line" style="--delay:1.65s">t = 3 · 60 + 19 = 199 с</span>
+              <span class="ink-line">i = 8 бит</span>
+              <span class="ink-line" style="--delay:1.65s">t = 8 с</span>
             </div>
-            <div data-reveal="3"><small>Найти</small><span class="ink-line">I в целых Кбайтах — ?</span></div>
+            <div data-reveal="3"><small>Найти</small><span class="ink-line">I в Кбайтах — ?</span></div>
           </div>
           <div class="board-work"><small>Решение</small>
             <div data-reveal="1">
@@ -192,9 +192,9 @@
               <span class="ink-line"><i>I</i><sub>Кбайт</sub> = <span class="board-frac"><span>I<sub>бит</sub></span><span>8 · 1024</span></span></span>
             </div>
             <div data-reveal="4">
-              <span class="ink-line">2 · 12 000 · 24 · 199 = 114 624 000 бит</span>
-              <span class="ink-line"><span class="board-frac"><span>114 624 000</span><span>8 · 1024</span></span> = 13 992,1875 Кбайт</span>
-              <span class="ink-line">Округляем вверх → 13 993 Кбайт</span>
+              <span class="ink-line">4 · 12 000 · 8 · 8 = 3 072 000 бит</span>
+              <span class="ink-line"><span class="board-frac"><span>3 072 000</span><span>8</span></span> = 384 000 байт</span>
+              <span class="ink-line"><span class="board-frac"><span>384 000</span><span>1024</span></span> = 375 Кбайт</span>
             </div>
           </div>
         </div>
@@ -352,7 +352,7 @@
 
 
 <div id="laser"></div>
-<script src="./notes.js?v=e9a622ce5ead"></script>
+<script src="./notes.js?v=61c6d0bf80cf"></script>
 <script src="./au.js?v=3ca92a0026fb"></script>
 <script src="./deck.js?v=0c85dbcf7079"></script>
 </body>
