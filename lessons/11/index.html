@@ -1,0 +1,210 @@
+<!doctype html>
+<html lang="ru">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Задание 11 · Пароли и идентификаторы — Soft</title>
+<meta name="description" content="Интерактивный урок: задание 11 ЕГЭ по информатике. Длина пароля, мощность алфавита, биты на символ и объём записей в базе данных.">
+<meta name="theme-color" content="#F5F5F7">
+<link rel="icon" href="data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 32 32'%3E%3Crect width='32' height='32' rx='8' fill='%23B9521D'/%3E%3Ctext x='16' y='23' text-anchor='middle' font-family='Arial' font-size='23' font-weight='700' fill='white'%3Ei%3C/text%3E%3C/svg%3E">
+<link rel="stylesheet" href="../1/presentation/styles.css?v=efc3f98612a9">
+<link rel="stylesheet" href="./passwords.css">
+<link rel="stylesheet" href="../1/presentation/viewer.css?v=00a77e6ecef2">
+</head>
+<body data-home="../">
+
+<div id="app">
+
+
+  <main id="deck">
+
+  <section class="slide cover" data-sec="1" data-id="start" data-title="Пароли и идентификаторы">
+    <div class="two">
+      <div>
+        <div class="eyebrow">Задание 11 · ЕГЭ по информатике</div>
+        <h1>Сколько памяти занимает <em>пароль?</em></h1>
+        <p class="lead">Разберём путь от одного символа до записи в базе данных.</p>
+        <p class="key-hint"><kbd>→</kbd> следующий шаг　 <kbd>N</kbd> пояснения</p>
+      </div>
+      <div class="paper cover-card">
+        <div class="label">Пароль из букв A и B</div>
+        <div class="tiles" aria-label="Пароль ABBA"><b>A</b><b>B</b><b>B</b><b>A</b></div>
+        <div class="mapping"><span>код A → 0</span><span>код B → 1</span></div>
+        <div class="byte-strip" aria-label="Коды символов 0 1 1 0 и четыре свободных бита"><b>0</b><b>1</b><b>1</b><b>0</b><i></i><i></i><i></i><i></i></div>
+        <div class="caption">4 бита кода · 1 байт под пароль</div>
+      </div>
+    </div>
+  </section>
+
+  <section class="slide" data-sec="1" data-id="length" data-title="Длина пароля" data-steps="2">
+    <div class="eyebrow">Пароль и алфавит</div>
+    <h1>Что такое <em>длина пароля?</em></h1>
+    <p class="lead">Пароль — последовательность символов для входа в систему. Его длина L — количество позиций в этой последовательности.</p>
+    <div class="paper example">
+      <div class="label">Пример пароля</div>
+      <div class="tiles numbered"><b>A<small data-s="1">1</small></b><b>a<small data-s="1">2</small></b><b>7<small data-s="1">3</small></b><b>!<small data-s="1">4</small></b><b>7<small data-s="1">5</small></b></div>
+      <p class="formula" data-s="1">L = 5 <small>символов</small></p>
+      <p class="caption" data-s="2">Цифра 7 встречается дважды и занимает две позиции. Знак ! тоже занимает одну позицию.</p>
+    </div>
+  </section>
+
+  <section class="slide" data-sec="1" data-id="alphabet" data-title="Мощность алфавита" data-steps="2">
+    <div class="eyebrow">Пароль и алфавит</div>
+    <h1>Какие символы <em>разрешены?</em></h1>
+    <p class="lead">Алфавит — набор всех разрешённых символов. Его мощность N равна числу разных символов в этом наборе.</p>
+    <div class="alphabet-grid">
+      <div class="paper"><h2>Десятичные цифры</h2><p class="sample">0 1 2 3 4 5 6 7 8 9</p><b class="value">10</b></div>
+      <div class="paper"><h2>Латинские буквы</h2><p class="sample">A…Z · a…z</p><p>Без учёта регистра A и a считаются одной буквой.</p><b class="value">26</b></div>
+      <div class="paper" data-s="1"><h2>С учётом регистра</h2><p class="sample">A ≠ a</p><p>26 прописных и 26 строчных букв получают разные коды.</p><b class="value">52</b></div>
+    </div>
+    <p class="band" data-s="2">Если разрешены латинские буквы обоих регистров, цифры и три знака !, ?, #, то <strong>N = 52 + 10 + 3 = 65.</strong></p>
+  </section>
+
+  <section class="slide" data-sec="2" data-id="bits" data-title="Биты на один символ" data-steps="2">
+    <div class="eyebrow">Посимвольное кодирование</div>
+    <h1>Сколько бит нужно <em>одному символу?</em></h1>
+    <div class="two">
+      <div><p class="lead">Каждому символу алфавита нужен свой двоичный код. В задачах № 11 все коды одной длины.</p>
+        <div class="formula main-formula">2<sup>i</sup> ≥ N</div><p class="caption">Выбираем наименьшее целое i, при котором кодов хватает на весь алфавит.</p></div>
+      <div class="paper"><div class="label">Алфавит из четырёх букв</div><p class="sample">A　B　C　D</p>
+        <p data-s="1">1 бит даёт два кода, 0 и 1. Для четырёх букв их мало.</p>
+        <div data-s="2"><div class="code-grid"><b>A<small>00</small></b><b>B<small>01</small></b><b>C<small>10</small></b><b>D<small>11</small></b></div><p class="caption">2² = 4. Достаточно двух бит на букву.</p></div>
+      </div>
+    </div>
+  </section>
+
+  <section class="slide" data-sec="2" data-id="trainer" data-title="Подбери число бит" data-w="trainer">
+    <div class="eyebrow">Тренажёр · мощность алфавита</div>
+    <h1>Подбери <em>минимальное i</em></h1>
+    <p class="lead">Выбери мощность алфавита и укажи, сколько бит нужно на один символ.</p>
+    <div class="two trainer-layout">
+      <div class="paper"><div class="label">Мощность N</div><div id="sizes" class="choices" role="group" aria-label="Мощность алфавита"></div>
+        <div class="formula main-formula">2<sup>i</sup> ≥ <span id="target-size">10</span></div></div>
+      <div class="paper"><div class="label">Бит на один символ</div><div id="widths" class="choices" role="group" aria-label="Число бит"></div><p id="feedback" class="feedback" role="status"></p></div>
+    </div>
+  </section>
+
+  <section class="slide" data-sec="2" data-id="bytes" data-title="Целые байты на пароль" data-steps="3">
+    <div class="eyebrow">От битов к байтам</div>
+    <h1>Символу — биты. <em>Паролю — байты.</em></h1>
+    <p class="lead">Для пяти символов алфавита мощности 8 берём по 3 бита. Сначала соединяем коды всего пароля.</p>
+    <div class="paper example"><div class="label">Пять кодов по три бита</div>
+      <div class="codes">010 · 111 · 000 · 011 · 101</div>
+      <div class="memory" data-s="1"><div><div class="byte-strip"><b>0</b><b>1</b><b>0</b><b>1</b><b>1</b><b>1</b><b>0</b><b>0</b></div><small>1-й байт</small></div>
+        <div><div class="byte-strip"><b>0</b><b>0</b><b>1</b><b>1</b><b>1</b><b>0</b><b>1</b><i aria-label="Свободный бит"></i></div><small>2-й байт · один бит свободен</small></div></div>
+      <p class="formula" data-s="2">5 × 3 = 15 бит → <em>2 байта</em></p>
+      <p class="caption" data-s="3">Делим число бит на 8 и округляем вверх. Если получилось ровно 16 бит, это тоже 2 байта.</p>
+    </div>
+  </section>
+
+  <section class="slide" data-sec="3" data-id="record" data-title="Запись о пользователе" data-steps="2">
+    <div class="eyebrow">Запись в базе данных</div>
+    <h1>Что хранится <em>кроме пароля?</em></h1>
+    <p class="lead">В условии могут выделить место под дополнительные сведения о каждом пользователе. Их объём прибавляем к размеру одного пароля в байтах.</p>
+    <div class="record-grid"><div class="paper"><div class="label">Пароль</div><b class="value">2 байта</b></div><span>+</span><div class="paper"><div class="label">Дополнительные сведения</div><b class="value">6 байт</b></div><span>=</span><div class="paper" data-s="1"><div class="label">Один пользователь</div><b class="value">8 байт</b></div></div>
+    <p class="band" data-s="2">Для десяти пользователей понадобится <strong>10 × (2 + 6) = 80 байт.</strong></p>
+  </section>
+
+  <section class="slide practice" data-sec="4" data-id="identifiers" data-title="Практика 1 · Идентификаторы" data-steps="5">
+    <div class="eyebrow">Практика · задача 1</div>
+    <h1>Сколько памяти займут <em>16 384 идентификатора?</em></h1>
+    <div class="problem-grid">
+      <div class="paper condition">
+        <p>При регистрации в компьютерной системе каждому объекту присваивается идентификатор, состоящий из <b>115 символов</b> и содержащий только десятичные цифры и символы из <b>1020-символьного специального алфавита</b>.</p>
+        <p>В базе данных для хранения каждого идентификатора отведено одинаковое и минимально возможное целое число байт. При этом используют посимвольное кодирование идентификаторов, все символы кодируют одинаковым и минимально возможным количеством бит.</p>
+        <p>Определите объём памяти (в Кбайт), необходимый для хранения 16 384 идентификаторов.</p>
+        <p><strong>В ответе запишите только целое число — количество Кбайт.</strong></p>
+      </div>
+      <ol class="work"><li data-s="1"><small>Мощность алфавита</small>N = 10 + 1020 = 1030</li><li data-s="2"><small>Бит на символ</small>2¹⁰ = 1024 &lt; 1030 ≤ 2048 = 2¹¹<br><b>i = 11 бит</b></li>
+        <li data-s="3"><small>Один идентификатор</small>115 × 11 = 1265 бит<br>158 байт и ещё 1 бит → <b>159 байт</b></li>
+        <li data-s="4"><small>Общий объём в Кбайтах</small>159 × 16 384 / 1024 = 159 × 16</li>
+        <li class="result" data-s="5"><small>Ответ</small>2544</li></ol>
+    </div>
+  </section>
+
+  <section class="slide practice" data-sec="4" data-id="users" data-title="Практика 2 · Сведения о пользователях" data-steps="5">
+    <div class="eyebrow">Практика · задача 2</div>
+    <h1>Сколько памяти нужно <em>для 20 пользователей?</em></h1>
+    <div class="problem-grid">
+      <div class="paper condition">
+        <p>При регистрации в компьютерной системе каждому пользователю выдаётся пароль, состоящий из <b>7 символов</b> и содержащий только символы из 10-символьного набора: А, В, C, D, Е, F, G, H, К, L.</p>
+        <p>В базе данных для хранения сведений о каждом пользователе отведено одинаковое и минимально возможное целое число байт. При этом используют посимвольное кодирование паролей, все символы кодируют одинаковым и минимально возможным количеством бит.</p>
+        <p>Кроме собственно пароля, для каждого пользователя в системе хранятся дополнительные сведения, для чего отведено <b>16 байт на одного пользователя</b>.</p>
+        <p><strong>Определите объём памяти (в байтах), необходимый для хранения сведений о 20 пользователях.</strong></p>
+      </div>
+      <ol class="work"><li data-s="1"><small>Бит на символ</small>2³ = 8 &lt; 10 ≤ 16 = 2⁴ → <b>i = 4 бита</b></li>
+        <li data-s="2"><small>Один пароль</small>7 × 4 = 28 бит<br>28 / 8 = 3,5 → <b>4 байта</b></li>
+        <li data-s="3"><small>Запись о пользователе</small>4 + 16 = 20 байт</li>
+        <li data-s="4"><small>Все пользователи</small>20 × 20 = 400 байт</li><li class="result" data-s="5"><small>Ответ</small>400</li></ol>
+    </div>
+  </section>
+
+  <section class="slide" data-sec="4" data-id="summary" data-title="Алгоритм решения">
+    <div class="eyebrow">Задание 11 · шпаргалка</div>
+    <h1>От алфавита <em>к ответу</em></h1>
+    <ol class="summary-list">
+      <li><b>Алфавит</b><span>Сосчитай все разрешённые символы. Учти регистр и пересечения наборов.</span><strong>N</strong></li>
+      <li><b>Один символ</b><span>Найди минимальное целое число бит, при котором хватает кодов.</span><strong>2<sup>i</sup> ≥ N</strong></li>
+      <li><b>Один пароль</b><span>Умножь длину на i. Раздели на 8 и округли вверх до целого байта.</span><strong>B = ⌈L · i / 8⌉</strong></li>
+      <li><b>Одна запись</b><span>Прибавь D байт дополнительных сведений. Если их нет, D = 0.</span><strong>B + D</strong></li>
+      <li><b>Вся база</b><span>Умножь на число записей M. Если нужны Кбайты, раздели на 1024.</span><strong>M · (B + D)</strong></li>
+    </ol>
+  </section>
+
+  </main>
+
+  <div class="pline"><i id="pBar"></i></div>
+
+  <div hidden><b id="fSec"></b><span id="fNext"></span><i id="fBar"></i></div>
+
+  <canvas id="ink" width="1600" height="900"></canvas>
+  <div id="spot"></div>
+  <div id="blank">Экран скрыт · нажми B</div>
+  <div class="toast" id="toast"></div>
+
+  <div class="ov" id="ovToc"><div class="panel"><button class="x" data-close>✕</button><h2 style="font-size:34px;margin-bottom:6px">План занятия</h2><div class="toc" id="tocList"></div></div></div>
+  <div class="ov" id="ovHelp"><div class="panel" style="width:1020px"><button class="x" data-close>✕</button><h2 style="font-size:34px;margin-bottom:18px">Управление</h2>
+    <div class="keys">
+      <div><kbd>→</kbd><kbd>Пробел</kbd> следующий шаг / экран</div>
+      <div><kbd>←</kbd> назад</div>
+      <div><kbd>N</kbd> пояснение к слайду</div>
+      <div><kbd>Q</kbd> вопрос на слайде</div>
+      <div><kbd>G</kbd> оглавление</div>
+      <div><kbd>F</kbd> полный экран</div>
+      <div><kbd>L</kbd> лазерная указка</div>
+      <div><kbd>D</kbd> рисовать поверх слайда</div>
+      <div><kbd>C</kbd> стереть рисунок</div>
+      <div><kbd>S</kbd> прожектор</div>
+      <div><kbd>B</kbd> скрыть экран</div>
+      <div><kbd>R</kbd> заново этот слайд</div>
+      <div><kbd>Home</kbd><kbd>End</kbd> в начало / в конец</div>
+      <div><kbd>Esc</kbd> закрыть окно / инструмент</div>
+    </div>
+
+  </div></div>
+</div>
+
+<aside class="top lesson-menu" id="lessonMenu" aria-label="Меню презентации" aria-hidden="true" inert>
+  <div class="menu-heading"><a class="home" id="homeLink" href="../">Все уроки</a><button id="menuClose" class="chrome-icon" aria-label="Закрыть меню"><svg viewBox="0 0 24 24"><path d="m6 6 12 12M18 6 6 18"/></svg></button></div>
+  <nav class="tabs" id="tabs" aria-label="Разделы урока"></nav>
+  <div class="menu-materials"><a href="#8">Практика</a><a href="#10">Шпаргалка</a><a href="#1">С начала</a></div>
+  <div class="menu-tools"><button id="bToc">Все слайды</button><button id="bHelp">Управление</button></div>
+</aside>
+<div id="viewerDock" class="viewer-dock" aria-label="Управление презентацией">
+  <div class="dock-left"><button id="hTop" class="dock-button" aria-controls="lessonMenu" aria-expanded="false"><svg viewBox="0 0 24 24"><path d="M4 6h16M4 12h16M4 18h16"/></svg><span>Меню</span></button><button id="bHideDock" class="chrome-icon dock-hide" aria-label="Скрыть панель" aria-controls="viewerDock" title="Скрыть панель"><svg viewBox="0 0 24 24" aria-hidden="true"><path d="m6 9 6 6 6-6"/></svg></button></div>
+  <div class="dock-navigation"><button id="bPrev" class="chrome-icon" aria-label="Предыдущий шаг"><svg viewBox="0 0 24 24"><path d="m14 6-6 6 6 6"/></svg></button><span id="fCnt">01 / 10</span><button id="bNext" class="dock-next">Дальше</button></div>
+  <div class="dock-right"><button id="nTab" class="dock-button" aria-controls="notes" aria-expanded="false"><svg viewBox="0 0 24 24"><path d="M5 5h14v14H5zM9 5v14M12 9h4M12 13h4"/></svg><span>Пояснения</span></button><button id="bFull" class="chrome-icon" aria-label="Полный экран" aria-pressed="false" title="Полный экран (F)"><svg viewBox="0 0 24 24"><path d="M4 9V4h5M20 9V4h-5M4 15v5h5M20 15v5h-5"/></svg></button></div>
+</div>
+<button id="dockRestore" class="dock-restore" aria-controls="viewerDock" aria-expanded="false" aria-label="Показать панель" hidden><svg viewBox="0 0 24 24" aria-hidden="true"><path d="m6 15 6-6 6 6"/></svg><span>Панель</span></button>
+<aside class="notes" id="notes" aria-label="Пояснение к слайду" aria-hidden="true" inert>
+  <div class="nhd"><div><small id="nSec"></small><b id="nTitle"></b></div><button class="nx" id="nClose" aria-label="Закрыть пояснения"><svg viewBox="0 0 24 24"><path d="m6 6 12 12M18 6 6 18"/></svg></button></div>
+  <div class="nbody" id="nBody"></div>
+  <div class="nft"><button id="nPrev" title="Назад">←</button><span id="nCnt"></span><button id="nNext" title="Дальше">→</button></div>
+</aside>
+
+
+<div id="laser"></div>
+<script src="./passwords.js"></script>
+<script src="../1/presentation/deck.js?v=cdc7ea35f773"></script>
+</body>
+</html>
