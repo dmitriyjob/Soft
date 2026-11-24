@@ -98,6 +98,7 @@ const bitTrainer = {
         feedback.textContent = 'Посчитай разные символы в перечисленных наборах и сложи количества.';
         return;
       }
+      if (bitStage.disabled) celebrate(slide);
       bitStage.disabled = false;
       target.textContent = task.size;
       const sum = task.counts.length > 1 ? task.counts.join(' + ') + ' = ' : '';
