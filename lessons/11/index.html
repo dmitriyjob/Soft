@@ -8,7 +8,7 @@
 <meta name="theme-color" content="#F5F5F7">
 <link rel="icon" href="data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 32 32'%3E%3Crect width='32' height='32' rx='8' fill='%23B9521D'/%3E%3Ctext x='16' y='23' text-anchor='middle' font-family='Arial' font-size='23' font-weight='700' fill='white'%3Ei%3C/text%3E%3C/svg%3E">
 <link rel="stylesheet" href="../1/presentation/styles.css?v=efc3f98612a9">
-<link rel="stylesheet" href="./passwords.css?v=57711c520edb">
+<link rel="stylesheet" href="./passwords.css?v=f3742d87a386">
 <link rel="stylesheet" href="../1/presentation/viewer.css?v=00a77e6ecef2">
 </head>
 <body data-home="../">
@@ -133,17 +133,29 @@
     </ol>
   </section>
 
-  <section class="slide practice" data-sec="4" data-id="identifiers" data-title="Практика 1 · Идентификаторы" data-w="practice" data-steps="5">
-    <div class="eyebrow">Практика · задача 1</div>
-    <h1>Сколько памяти займут <em>16 384 идентификатора?</em></h1>
-    <div class="paper condition">
-        <p>При регистрации в компьютерной системе каждому объекту присваивается идентификатор, состоящий из <b>115 символов</b> и содержащий только десятичные цифры и символы из <b>1020-символьного специального алфавита</b>.</p>
-        <p>В базе данных для хранения каждого идентификатора отведено одинаковое и минимально возможное целое число байт. При этом используют посимвольное кодирование идентификаторов, все символы кодируют одинаковым и минимально возможным количеством бит.</p>
-        <p>Определите объём памяти (в Кбайт), необходимый для хранения 16 384 идентификаторов.</p>
-        <p><strong>В ответе запишите только целое число — количество Кбайт.</strong></p>
-        <form class="try-answer"><label>Твой ответ <input name="answer" type="text" inputmode="numeric" required autocomplete="off"></label><button class="btn">Проверить</button><output aria-live="polite"></output></form>
+  <section class="slide practice" data-sec="4" data-id="identifiers" data-title="Практика 1 · Идентификаторы" data-w="practice" data-steps="9">
+    <div class="condition">
+      <div class="kimv">
+        <div class="kimp">
+          <div class="kim-hd"><span>ЕГЭ · ИНФОРМАТИКА, 11 класс</span><span>Практика · задача 1</span></div>
+          <div class="kim-task"><div class="kim-n">11</div>
+            <div class="kim-body">
+                <p>При регистрации в компьютерной системе каждому объекту присваивается идентификатор, состоящий из <span class="kmark" data-read="1">115 символов</span> и содержащий только <span class="kmark" data-read="1">десятичные цифры</span> и символы из <span class="kmark" data-read="1">1020-символьного специального алфавита</span>.</p>
+                <p>В базе данных для хранения каждого идентификатора отведено одинаковое и <span class="kmark" data-read="2">минимально возможное целое число байт</span>. При этом используют посимвольное кодирование идентификаторов, все символы кодируют <span class="kmark" data-read="2">одинаковым и минимально возможным количеством бит</span>.</p>
+                <p>Определите <span class="kmark" data-read="4">объём памяти (в Кбайт)</span>, необходимый для хранения <span class="kmark" data-read="3">16 384 идентификаторов</span>.</p>
+                <p>В ответе запишите <span class="kmark" data-read="4">только целое число</span> — количество Кбайт.</p>
+                <p class="kans">Ответ: <i></i></p>
+            </div>
+          </div>
+        </div>
       </div>
+      <div class="reading-footer"><p class="reading-stage" aria-live="polite"></p>
+        <form class="try-answer" hidden><label>Твой ответ <input name="answer" type="text" inputmode="numeric" required autocomplete="off"></label><button class="btn">Проверить</button><output aria-live="polite"></output></form>
+      </div>
+    </div>
     <div class="solution-view" hidden>
+      <div class="eyebrow">Практика · задача 1</div>
+      <h1>Сколько памяти займут <em>16 384 идентификатора?</em></h1>
       <p class="board-task">115 символов · цифры 0–9 и 1020 спецсимволов · 16 384 идентификатора</p>
       <div class="board-layout">
         <ol class="timeline paper">
@@ -157,30 +169,42 @@
           <div class="board-paper">
             <div class="givens"><small>Дано</small><p>L = 115 символов<br>M = 16 384<br>D = 0 байт</p><small>Найти</small><p>Объём в Кбайтах</p></div>
             <div class="board-work"><small>Решение</small>
-              <p class="ink-line" data-s="1">N = 10 + 1020 = 1030</p>
-              <p class="ink-line" data-s="2">2¹⁰ &lt; 1030 ≤ 2¹¹ → i = 11 бит</p>
-              <p class="ink-line" data-s="3">115 · 11 = 1265 бит<br>B = ⌈1265 / 8⌉ = 159 байт</p>
-              <p class="ink-line" data-s="4">159 + 0 = 159 байт</p>
-              <p class="ink-line" data-s="5">159 · 16 384 / 1024 = 2544 Кбайт</p>
+              <p class="ink-line" data-s="5">N = 10 + 1020 = 1030</p>
+              <p class="ink-line" data-s="6">2¹⁰ &lt; 1030 ≤ 2¹¹ → i = 11 бит</p>
+              <p class="ink-line" data-s="7">115 · 11 = 1265 бит<br>B = ⌈1265 / 8⌉ = 159 байт</p>
+              <p class="ink-line" data-s="8">159 + 0 = 159 байт</p>
+              <p class="ink-line" data-s="9">159 · 16 384 / 1024 = 2544 Кбайт</p>
             </div>
           </div>
-          <div class="board-answer">Ответ <b data-s="5">2544</b></div>
+          <div class="board-answer">Ответ <b data-s="9">2544</b></div>
         </div>
       </div>
     </div>
   </section>
 
-  <section class="slide practice" data-sec="4" data-id="users" data-title="Практика 2 · Сведения о пользователях" data-w="practice" data-steps="5">
-    <div class="eyebrow">Практика · задача 2</div>
-    <h1>Сколько памяти нужно <em>для 20 пользователей?</em></h1>
-    <div class="paper condition">
-        <p>При регистрации в компьютерной системе каждому пользователю выдаётся пароль, состоящий из <b>7 символов</b> и содержащий только символы из 10-символьного набора: А, В, C, D, Е, F, G, H, К, L.</p>
-        <p>В базе данных для хранения сведений о каждом пользователе отведено одинаковое и минимально возможное целое число байт. При этом используют посимвольное кодирование паролей, все символы кодируют одинаковым и минимально возможным количеством бит.</p>
-        <p>Кроме собственно пароля, для каждого пользователя в системе хранятся дополнительные сведения, для чего отведено <b>16 байт на одного пользователя</b>.</p>
-        <p><strong>Определите объём памяти (в байтах), необходимый для хранения сведений о 20 пользователях.</strong></p>
-        <form class="try-answer"><label>Твой ответ <input name="answer" type="text" inputmode="numeric" required autocomplete="off"></label><button class="btn">Проверить</button><output aria-live="polite"></output></form>
+  <section class="slide practice" data-sec="4" data-id="users" data-title="Практика 2 · Сведения о пользователях" data-w="practice" data-steps="9">
+    <div class="condition">
+      <div class="kimv">
+        <div class="kimp">
+          <div class="kim-hd"><span>ЕГЭ · ИНФОРМАТИКА, 11 класс</span><span>Практика · задача 2</span></div>
+          <div class="kim-task"><div class="kim-n">11</div>
+            <div class="kim-body">
+                <p>При регистрации в компьютерной системе каждому пользователю выдаётся пароль, состоящий из <span class="kmark" data-read="1">7 символов</span> и содержащий только символы из <span class="kmark" data-read="1">10-символьного набора</span>: А, В, C, D, Е, F, G, H, К, L.</p>
+                <p>В базе данных для хранения сведений о каждом пользователе отведено одинаковое и <span class="kmark" data-read="2">минимально возможное целое число байт</span>. При этом используют посимвольное кодирование паролей, все символы кодируют <span class="kmark" data-read="2">одинаковым и минимально возможным количеством бит</span>.</p>
+                <p>Кроме собственно пароля, для каждого пользователя в системе хранятся дополнительные сведения, для чего отведено <span class="kmark" data-read="3">16 байт на одного пользователя</span>.</p>
+                <p>Определите <span class="kmark" data-read="4">объём памяти (в байтах)</span>, необходимый для хранения сведений о <span class="kmark" data-read="3">20 пользователях</span>.</p>
+                <p class="kans">Ответ: <i></i></p>
+            </div>
+          </div>
+        </div>
       </div>
+      <div class="reading-footer"><p class="reading-stage" aria-live="polite"></p>
+        <form class="try-answer" hidden><label>Твой ответ <input name="answer" type="text" inputmode="numeric" required autocomplete="off"></label><button class="btn">Проверить</button><output aria-live="polite"></output></form>
+      </div>
+    </div>
     <div class="solution-view" hidden>
+      <div class="eyebrow">Практика · задача 2</div>
+      <h1>Сколько памяти нужно <em>для 20 пользователей?</em></h1>
       <p class="board-task">7 символов · алфавит из 10 знаков · 16 байт сведений · 20 пользователей</p>
       <div class="board-layout">
         <ol class="timeline paper">
@@ -194,14 +218,14 @@
           <div class="board-paper">
             <div class="givens"><small>Дано</small><p>L = 7 символов<br>M = 20<br>D = 16 байт</p><small>Найти</small><p>Объём в байтах</p></div>
             <div class="board-work"><small>Решение</small>
-              <p class="ink-line" data-s="1">N = 10</p>
-              <p class="ink-line" data-s="2">2³ &lt; 10 ≤ 2⁴ → i = 4 бита</p>
-              <p class="ink-line" data-s="3">7 · 4 = 28 бит<br>B = ⌈28 / 8⌉ = 4 байта</p>
-              <p class="ink-line" data-s="4">4 + 16 = 20 байт</p>
-              <p class="ink-line" data-s="5">20 · 20 = 400 байт</p>
+              <p class="ink-line" data-s="5">N = 10</p>
+              <p class="ink-line" data-s="6">2³ &lt; 10 ≤ 2⁴ → i = 4 бита</p>
+              <p class="ink-line" data-s="7">7 · 4 = 28 бит<br>B = ⌈28 / 8⌉ = 4 байта</p>
+              <p class="ink-line" data-s="8">4 + 16 = 20 байт</p>
+              <p class="ink-line" data-s="9">20 · 20 = 400 байт</p>
             </div>
           </div>
-          <div class="board-answer">Ответ <b data-s="5">400</b></div>
+          <div class="board-answer">Ответ <b data-s="9">400</b></div>
         </div>
       </div>
     </div>
@@ -272,7 +296,7 @@
 
 
 <div id="laser"></div>
-<script src="./passwords.js?v=3bc495e08c9a"></script>
+<script src="./passwords.js?v=340b8d3e11c0"></script>
 <script src="../1/presentation/deck.js?v=cdc7ea35f773"></script>
 </body>
 </html>

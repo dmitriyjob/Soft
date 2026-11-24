@@ -92,6 +92,40 @@ const bitTrainer = {
   }
 };
 
+const readingStages = [
+  'Читаем условие',
+  'Дано · длина и алфавит',
+  'Дано · правила хранения',
+  'Дано · записи в базе',
+  'Найти · объём и единицы ответа'
+];
+
+function focusCondition(slide, step) {
+  const view = slide.querySelector('.kimv');
+  const page = view.querySelector('.kimp');
+  const paragraphs = new Set();
+  for (const mark of page.querySelectorAll('[data-read]')) {
+    const phase = Number(mark.dataset.read);
+    mark.classList.toggle('read', phase <= step);
+    if (phase === step) paragraphs.add(mark.closest('p'));
+  }
+  const width = view.clientWidth, height = view.clientHeight;
+  let scale = Math.min(.95 * width / page.offsetWidth, .95 * height / page.offsetHeight, 1.3);
+  let x = (width - page.offsetWidth * scale) / 2;
+  let y = (height - page.offsetHeight * scale) / 2;
+  if (paragraphs.size) {
+    const zones = [...paragraphs];
+    const top = Math.min(...zones.map(p => p.offsetTop));
+    const bottom = Math.max(...zones.map(p => p.offsetTop + p.offsetHeight));
+    const column = zones[0];
+    scale = Math.min(.92 * width / column.offsetWidth, .86 * height / (bottom - top), 1.75);
+    x = width / 2 - (column.offsetLeft + column.offsetWidth / 2) * scale;
+    y = height / 2 - (top + bottom) / 2 * scale;
+  }
+  page.style.transform = `translate(${x}px, ${y}px) scale(${scale}) rotate(${step ? 0 : -.9}deg)`;
+  slide.querySelector('.reading-stage').textContent = readingStages[step];
+}
+
 const practice = {
   leave: clearConfetti,
   init(slide) {
@@ -107,11 +141,15 @@ const practice = {
     });
   },
   step(slide, step) {
-    slide.querySelector('.condition').hidden = step > 0;
-    slide.querySelector('.solution-view').hidden = step === 0;
+    const solutionStep = step - (readingStages.length - 1);
+    const reading = solutionStep <= 0;
+    slide.querySelector('.condition').hidden = !reading;
+    slide.querySelector('.solution-view').hidden = reading;
+    slide.querySelector('.try-answer').hidden = solutionStep !== 0;
+    if (reading) focusCondition(slide, step);
     slide.querySelectorAll('.timeline li').forEach((item, i) => {
-      item.classList.toggle('active', i + 1 === step);
-      item.classList.toggle('done', i + 1 < step);
+      item.classList.toggle('active', i + 1 === solutionStep);
+      item.classList.toggle('done', i + 1 < solutionStep);
     });
     if (!step) slide.querySelector('.try-answer').reset();
     if (step === Number(slide.dataset.steps)) celebrate(slide);
@@ -133,7 +171,7 @@ window.NOTES = {
   bytes: ['Второй байт берём целиком, даже когда последний бит остался свободным. Округление каждого символа до байта завысило бы объём.'],
   record: ['Уточните единицы. Дополнительные сведения в примере уже заданы в байтах и относятся к каждой записи.'],
   algorithm: ['Попросите ученика назвать единицы после каждого шага: символы, биты на символ, байты на пароль, байты на запись и объём всей базы.'],
-  identifiers: ['Сначала предложите решить самостоятельно. Для 1020 специальных символов и десяти цифр десяти бит уже мало.', [3, '1265 = 158 × 8 + 1. Один оставшийся бит требует ещё одного байта на каждый идентификатор.']],
+  identifiers: ['Сначала предложите решить самостоятельно. Для 1020 специальных символов и десяти цифр десяти бит уже мало.', [7, '1265 = 158 × 8 + 1. Один оставшийся бит требует ещё одного байта на каждый идентификатор.']],
   users: ['Сначала определите размер пароля. 16 байт дополнительных сведений прибавляются для каждого из 20 пользователей.'],
   summary: ['Сверьте единицы в последней строке своего решения с вопросом задачи.']
 };
