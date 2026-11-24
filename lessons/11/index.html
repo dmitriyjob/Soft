@@ -8,7 +8,7 @@
 <meta name="theme-color" content="#F5F5F7">
 <link rel="icon" href="data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 32 32'%3E%3Crect width='32' height='32' rx='8' fill='%23B9521D'/%3E%3Ctext x='16' y='23' text-anchor='middle' font-family='Arial' font-size='23' font-weight='700' fill='white'%3Ei%3C/text%3E%3C/svg%3E">
 <link rel="stylesheet" href="../1/presentation/styles.css?v=efc3f98612a9">
-<link rel="stylesheet" href="./passwords.css?v=948c58912a3c">
+<link rel="stylesheet" href="./passwords.css?v=85bbabc70c6a">
 <link rel="stylesheet" href="../1/presentation/viewer.css?v=00a77e6ecef2">
 </head>
 <body data-home="../">
@@ -73,19 +73,15 @@
     </div>
   </section>
 
-  <section class="slide" data-sec="2" data-id="trainer" data-title="Конструктор алфавита" data-w="trainer">
+  <section class="slide" data-sec="2" data-id="trainer" data-title="Генератор условий" data-w="trainer">
     <div class="eyebrow">Тренажёр · мощность алфавита</div>
-    <h1>Составь <em>свой алфавит</em></h1>
-    <p class="lead">Выбери разрешённые символы. Найди мощность алфавита N, затем определи минимальное число бит i на символ.</p>
+    <h1>Найди <em>мощность алфавита</em></h1>
+    <p class="lead">Прочитай условие и найди N. Затем определи минимальное число бит i на один символ.</p>
     <div class="two trainer-layout">
-      <div class="paper alphabet-controls">
-        <label>Латинские буквы
-          <select id="letters"><option value="0">Без букв</option><option value="26" selected>Без учёта регистра · 26</option><option value="52">С учётом регистра · 52</option></select>
-        </label>
-        <label class="digits-option"><input id="digits" type="checkbox" checked> Десятичные цифры 0–9</label>
-        <label>Специальные символы
-          <select id="special"><option value="0">Без спецсимволов</option><option value="3">Три знака · ! ? #</option><option value="1020">Специальный набор · 1020 знаков</option></select>
-        </label>
+      <div class="paper">
+        <div class="label">Условие</div>
+        <p id="alphabet-task" aria-live="polite"></p>
+        <button id="new-task" type="button" class="btn">Новое условие</button>
       </div>
       <div class="paper trainer-answers">
         <form id="size-form"><label for="size-input">1. Сколько разных символов в алфавите?</label>
@@ -306,7 +302,7 @@
 
 
 <div id="laser"></div>
-<script src="./passwords.js?v=e401317388c2"></script>
+<script src="./passwords.js?v=d272dbdd9849"></script>
 <script src="../1/presentation/deck.js?v=cdc7ea35f773"></script>
 </body>
 </html>

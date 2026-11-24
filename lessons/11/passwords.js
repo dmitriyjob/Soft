@@ -28,15 +28,46 @@ function integerAnswer(input) {
   return /^\d+$/.test(value) ? Number(value) : NaN;
 }
 
+function alphabetTasks() {
+  const letters = [
+    null,
+    { text: 'латинские буквы без учёта регистра', count: 26 },
+    { text: 'латинские буквы обоих регистров', count: 52 }
+  ];
+  const digits = { text: 'десятичные цифры', count: 10 };
+  const signs = [
+    null,
+    { text: 'три знака (!, ?, #)', count: 3 },
+    { text: 'шесть знаков (!, ?, #, @, %, &)', count: 6 },
+    { text: '1020 специальных символов', count: 1020 }
+  ];
+  const tasks = [];
+  const list = new Intl.ListFormat('ru', { type: 'conjunction' });
+  for (const letterSet of letters) {
+    for (const digitSet of [null, digits]) {
+      for (const signSet of signs) {
+        const sets = [letterSet, digitSet, signSet].filter(Boolean);
+        if (!sets.length) continue;
+        tasks.push({
+          condition: 'В пароле разрешены ' + list.format(sets.map(set => set.text)) + '. Какова мощность алфавита N?',
+          counts: sets.map(set => set.count),
+          size: sets.reduce((sum, set) => sum + set.count, 0)
+        });
+      }
+    }
+  }
+  return tasks;
+}
+
 const bitTrainer = {
   leave: clearConfetti,
   init(slide) {
     const get = selector => slide.querySelector(selector);
-    const letters = get('#letters'), digits = get('#digits'), special = get('#special');
     const sizeInput = get('#size-input'), bitInput = get('#bit-input');
     const bitStage = get('#bit-stage'), feedback = get('.feedback'), target = get('#target-size');
-    const components = () => [Number(letters.value), digits.checked ? 10 : 0, Number(special.value)].filter(Boolean);
-    const size = () => components().reduce((sum, count) => sum + count, 0);
+    const tasks = alphabetTasks();
+    let task = tasks.find(example => example.size === 65);
+    let remaining = tasks.filter(example => example !== task);
     let solved = false;
 
     function resetBits() {
@@ -48,25 +79,29 @@ const bitTrainer = {
       feedback.classList.remove('correct');
       clearConfetti(slide);
     }
-    function changeAlphabet() {
+    function showTask() {
       resetBits();
       sizeInput.value = '';
-      const empty = size() === 0;
-      sizeInput.disabled = empty;
-      get('#size-form button').disabled = empty;
-      if (empty) feedback.textContent = 'Добавь в алфавит хотя бы один набор символов.';
+      get('#alphabet-task').textContent = task.condition;
     }
-    get('.alphabet-controls').addEventListener('change', changeAlphabet);
+    get('#new-task').addEventListener('click', () => {
+      if (!remaining.length) remaining = tasks.filter(example => example !== task);
+      const index = Math.floor(Math.random() * remaining.length);
+      task = remaining.splice(index, 1)[0];
+      showTask();
+      sizeInput.focus();
+    });
     sizeInput.addEventListener('input', resetBits);
     get('#size-form').addEventListener('submit', event => {
       event.preventDefault();
-      if (integerAnswer(sizeInput) !== size()) {
-        feedback.textContent = 'Посчитай разные символы в выбранных наборах и сложи количества.';
+      if (integerAnswer(sizeInput) !== task.size) {
+        feedback.textContent = 'Посчитай разные символы в перечисленных наборах и сложи количества.';
         return;
       }
       bitStage.disabled = false;
-      target.textContent = size();
-      feedback.textContent = 'Верно. Теперь найди наименьшее целое i.';
+      target.textContent = task.size;
+      const sum = task.counts.length > 1 ? task.counts.join(' + ') + ' = ' : '';
+      feedback.textContent = `Верно! N = ${sum}${task.size}. Теперь найди наименьшее целое i.`;
       bitInput.focus();
     });
     bitInput.addEventListener('input', () => {
@@ -75,11 +110,11 @@ const bitTrainer = {
     });
     get('#bit-form').addEventListener('submit', event => {
       event.preventDefault();
-      const bits = integerAnswer(bitInput), minimum = Math.ceil(Math.log2(size()));
+      const bits = integerAnswer(bitInput), minimum = Math.ceil(Math.log2(task.size));
       const correct = bits === minimum;
       feedback.classList.toggle('correct', correct);
       if (correct) {
-        feedback.textContent = `Верно! N = ${size()}, i = ${bits}. Проверка: ${2 ** (bits - 1)} < ${size()} ≤ ${2 ** bits}.`;
+        feedback.textContent = `Верно! N = ${task.size}, i = ${bits}. Проверка: ${2 ** (bits - 1)} < ${task.size} ≤ ${2 ** bits}.`;
         if (!solved) celebrate(slide);
         solved = true;
       } else if (!Number.isSafeInteger(bits)) {
@@ -88,7 +123,7 @@ const bitTrainer = {
         feedback.textContent = bits < minimum ? 'Кодов мало. Увеличь число бит.' : 'Кодов хватает и при меньшем числе бит. Попробуй ещё раз.';
       }
     });
-    changeAlphabet();
+    showTask();
   }
 };
 
@@ -167,7 +202,7 @@ window.NOTES = {
   length: ['Спросите, сколько позиций займут два одинаковых символа подряд. Длина меняется с каждым новым символом.'],
   alphabet: ['Даже если в конкретном пароле встретились только две буквы, код должен предусматривать любой символ, разрешённый условием.'],
   bits: ['Дописав один бит, получаем два продолжения каждого старого кода. Поэтому число кодов с каждым битом удваивается.'],
-  trainer: ['Составьте алфавит из двух регистров латинских букв и десяти цифр. Получится 62 символа — хватает 6 бит. Добавьте три спецсимвола: теперь N = 65, понадобится 7 бит.'],
+  trainer: ['Для первого условия складываем 52 буквы, 10 цифр и 3 знака. Для 65 символов шести бит мало: 2⁶ = 64. Берём 7 бит. Кнопка «Новое условие» меняет наборы символов.'],
   bytes: ['Второй байт берём целиком, даже когда последний бит остался свободным. Округление каждого символа до байта завысило бы объём.'],
   record: ['Уточните единицы. Дополнительные сведения в примере уже заданы в байтах и относятся к каждой записи.'],
   algorithm: ['Попросите ученика назвать единицы после каждого шага: символы, биты на символ, байты на пароль, байты на запись и объём всей базы.'],
