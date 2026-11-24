@@ -105,8 +105,13 @@ const bitTrainer = {
       feedback.textContent = `Верно! N = ${sum}${task.size}. Теперь найди наименьшее целое i.`;
       bitInput.focus();
     });
+    function shortfallHint(bits) {
+      if (!Number.isSafeInteger(bits) || bits >= Math.ceil(Math.log2(task.size))) return '';
+      const exponent = String(bits).replace(/\d/g, digit => '⁰¹²³⁴⁵⁶⁷⁸⁹'[digit]);
+      return `2${exponent} = ${2 ** bits} < ${task.size}. Кодов мало. Увеличь число бит.`;
+    }
     bitInput.addEventListener('input', () => {
-      feedback.textContent = '';
+      feedback.textContent = shortfallHint(integerAnswer(bitInput));
       feedback.classList.remove('correct');
     });
     get('#bit-form').addEventListener('submit', event => {
@@ -121,7 +126,7 @@ const bitTrainer = {
       } else if (!Number.isSafeInteger(bits)) {
         feedback.textContent = 'Введи целое число бит.';
       } else {
-        feedback.textContent = bits < minimum ? 'Кодов мало. Увеличь число бит.' : 'Кодов хватает и при меньшем числе бит. Попробуй ещё раз.';
+        feedback.textContent = shortfallHint(bits) || 'Кодов хватает и при меньшем числе бит. Попробуй ещё раз.';
       }
     });
     showTask();
