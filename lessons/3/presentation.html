@@ -1,0 +1,519 @@
+<!doctype html>
+<html lang="ru">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Презентация · Задание №3 · ion_inf</title>
+<meta name="description" content="Интерактивный урок: базы данных, ВПР и фильтры. ЕГЭ по информатике, задание №3.">
+<meta name="theme-color" content="#101316">
+<link rel="icon" type="image/svg+xml" href="favicon.svg">
+<link rel="stylesheet" href="styles.css">
+<link rel="stylesheet" href="presentation-ui.css">
+</head>
+<body data-home="./">
+<div id="app">
+
+
+  <main id="deck">
+
+  <!-- ============ 01 · БАЗА ДАННЫХ ============ -->
+  <section class="slide title-slide" data-sec="1" data-id="title" data-title="Что будет сегодня?">
+    <div class="row" style="align-items:center;height:100%;gap:80px">
+      <div class="col" style="flex:1.25">
+        <div class="tbadge"><b>№3</b><span>ЕГЭ по информатике</span></div>
+        <h1>Базы данных,<br>ВПР и <em>фильтры</em></h1>
+      </div>
+      <div class="col">
+        <ol class="olist big-ol stagger">
+          <li><i>01</i><b>Что такое база данных</b></li>
+          <li><i>02</i><b>Как устроено задание</b></li>
+          <li><i>03</i><b>Функция ВПР</b></li>
+          <li><i>04</i><b>Фильтры и ответ</b></li>
+          <li><i>05</i><b>Второй тип: масса</b></li>
+        </ol>
+      </div>
+    </div>
+  </section>
+
+  <section class="slide" data-sec="1" data-id="db" data-title="Что такое база данных?" data-steps="3" data-w="dbIntro">
+    <h1>Что такое база данных?</h1>
+    <div class="legend">
+      <span class="lg" data-s="1"><i style="background:var(--peach)"></i>Запись = строка</span>
+      <span class="lg" data-s="2"><i style="background:var(--t-bg);border-color:var(--t)"></i>Поле = столбец</span>
+      <span class="lg" data-s="3"><i style="background:var(--k-bg);border-color:var(--k)"></i>Значение = ячейка</span>
+    </div>
+    <div class="sheet" id="dbi" style="margin-top:22px"></div>
+    <div class="asks"><div class="ask"><button><i>?</i>Одна таблица — уже база данных?</button><div class="ans">Да, простейшая. Но обычно база данных — это <b>несколько таблиц, связанных ключами</b>. Как в задании №3: три листа, которые ссылаются друг на друга.</div></div></div>
+  </section>
+
+  <section class="slide" data-sec="1" data-id="dupes" data-title="Всё в одной таблице" data-steps="3" data-w="dupes">
+    <h1>Всё в <em>одной</em> таблице</h1>
+    <div class="legend">
+      <span class="lg" data-s="1"><i style="background:#3B2B21;border-color:#7B4E37"></i>магазин M1</span>
+      <span class="lg" data-s="1"><i style="background:#212D3B;border-color:#37587B"></i>магазин M3</span>
+      <span class="lg" data-s="2"><i style="background:#213B2C;border-color:#377B59"></i>товар 1</span>
+      <span class="lg" data-s="2"><i style="background:#2A213B;border-color:#4C377B"></i>товар 22</span>
+      <span class="lg big-count" data-s="3"><b id="dupN">0</b> повторов</span>
+    </div>
+    <div class="sheet bigtab" id="dup" style="margin-top:18px"></div>
+    <div class="asks tr"><div class="ask"><button><i>?</i>Что плохого в повторах?</button><div class="ans"><b>Лишний объём</b>: адрес и название товара переписаны в каждой строке — а строк тысячи.<br><b>Ошибки</b>: магазин переехал — исправь сотни строк. Пропустишь одну — база сама себе противоречит.</div></div></div>
+  </section>
+
+  <section class="slide" data-sec="1" data-id="split" data-title="Разделяем на таблицы" data-steps="1" data-w="split">
+    <h1><em>Разделяем</em>: каждый факт — один раз</h1>
+    <div class="schema" id="spl" style="height:640px;margin-top:10px"></div>
+    <div class="asks"><div class="ask"><button><i>?</i>Зачем разделяем?</button><div class="ans">Чтобы каждый факт хранился <b>один раз</b>: адрес магазина — только в «Магазине», название товара — только в «Товаре». В «Движении» остаются короткие ссылки — <b>ID магазина</b> и <b>артикул</b>.</div></div></div>
+  </section>
+
+  <section class="slide" data-sec="1" data-id="lshop" data-title="Связь по ID магазина" data-steps="2" data-w="linkShop">
+    <h1>Связь по <em>ID магазина</em></h1>
+    <div class="schema" id="lsh" style="height:640px;margin-top:10px"></div>
+    <div class="asks"><div class="ask"><button><i>?</i>Что такое ключ?</button><div class="ans">Поле, по которому строку можно найти <b>однозначно</b>. В «Магазине» M1 встречается ровно один раз — поэтому по M1 из «Движения» всегда понятно, о каком магазине речь.</div></div></div>
+  </section>
+
+  <section class="slide" data-sec="1" data-id="lart" data-title="Связь по артикулу" data-steps="2" data-w="linkArt">
+    <h1>Связь по <span style="color:var(--n)">артикулу</span></h1>
+    <div class="schema" id="lar" style="height:640px;margin-top:10px"></div>
+    <div class="asks"><div class="ask"><button><i>?</i>Почему артикул, а не название?</button><div class="ans">Название длинное, в нём легко опечататься, и у разных товаров оно может совпадать. Артикул — короткий и <b>уникальный</b>. Идеальный ключ.</div></div></div>
+  </section>
+
+  <section class="slide" data-sec="1" data-id="one" data-title="Поиск: одна таблица" data-steps="1" data-w="one">
+    <div class="row" style="align-items:flex-end;gap:30px">
+      <div class="col"><div class="eyebrow mode1">Одна таблица</div><h1 style="margin-bottom:6px;font-size:48px">Найти гель для стирки в <em>Заречном</em></h1></div>
+      <div class="acount"><span id="oneN">0</span><small>действие</small></div>
+    </div>
+    <div class="sheet bigtab" id="oneT" style="margin-top:34px"></div>
+    <div class="asks"><div class="ask"><button><i>?</i>Так в чём подвох?</button><div class="ans">Искать удобно, а хранить дорого: те самые повторы. Посмотрим, сколько стоит тот же поиск, когда таблиц <b>три</b>.</div></div></div>
+  </section>
+
+  <section class="slide" data-sec="1" data-id="three" data-title="Поиск: три таблицы" data-steps="8" data-w="three" data-btn="Следующее действие">
+    <div class="row" style="align-items:flex-end;gap:30px">
+      <div class="col"><div class="eyebrow mode3">Три таблицы</div><h1 style="margin-bottom:6px;font-size:48px">Найти гель для стирки в <em>Заречном</em></h1><div class="acap" id="acCap">&nbsp;</div></div>
+      <div class="acount"><span id="acN">0</span><small id="acW">действий</small></div>
+    </div>
+    <div class="schema" id="act" style="height:600px;margin-top:6px"></div>
+    <div class="cmp" id="acCmp">
+      <div class="cr"><span>Одна таблица</span><div class="blocks" data-n="1"></div><b>1</b></div>
+      <div class="cr"><span>Три таблицы</span><div class="blocks" data-n="8"></div><b>8</b></div>
+    </div>
+    <div class="asks"><div class="ask"><button><i>?</i>Кто будет делать это за нас?</button><div class="ans">Функция <b>ВПР</b>. Она сама сходит в «Магазин» и «Товар» и принесёт нужное в каждую строку «Движения». Следующий слайд.</div></div></div>
+  </section>
+
+  <section class="slide" data-sec="1" data-id="fix" data-title="Решение: ВПР" data-steps="3" data-w="vfix" data-btn="Дальше">
+    <div class="row" style="align-items:flex-end;gap:30px">
+      <div class="col"><div class="eyebrow modeok">Решение</div><h1 style="margin-bottom:6px" id="vfHead"><em>ВПР</em> приносит район и товар</h1></div>
+      <div class="acount" id="vfCount" style="opacity:0"><span id="vfN">1</span><small>действие</small></div>
+    </div>
+    <div class="schema" id="vfx" style="height:690px;margin-top:10px"></div>
+    <div class="asks tr" style="top:378px"><div class="ask"><button><i>?</i>Мы не вернули повторы?</button><div class="ans">Нет. Исходные таблицы остались без повторов. Столбцы, которые добавила ВПР, — <b>рабочая копия</b> для решения: посчитали ответ и забыли.</div></div></div>
+  </section>
+
+  <!-- ============ 02 · ЗАДАНИЕ ============ -->
+  <section class="slide" data-sec="2" data-id="kim1" data-title="Задание как на ЕГЭ" data-steps="3" data-w="kim">
+    <div class="kimv"><div class="kimp" id="kimPage1">
+      <div class="kim-hd"><span>ЕГЭ · ИНФОРМАТИКА, 11 класс</span><span>Задание 3</span></div>
+      <div class="kim-task"><div class="kim-n">3</div><div class="kim-body">
+        <div class="kz kz-tables">
+          <p>Задание выполняется с использованием прилагаемого файла.</p>
+          <p>В файле приведён фрагмент базы данных о поставках товаров в магазины районов города. База данных состоит из трёх таблиц.</p>
+          <p>Таблица «Движение товаров» содержит записи о поступлении товаров в магазины в течение августа 2021 г., а также информацию о проданных товарах. Поле <i>Тип операции</i> содержит значение <i>Поступление</i> или <i>Продажа</i>, а в соответствующее поле <i>Количество упаковок, шт.</i> внесена информация о том, сколько упаковок товара поступило в магазин или было продано в течение дня. Заголовок таблицы имеет следующий вид.</p>
+          <table class="kt"><tr><td>ID операции</td><td>Дата</td><td>ID магазина</td><td>Артикул</td><td>Количество упаковок, шт.</td><td>Тип операции</td></tr></table>
+          <p>Таблица «Товар» содержит информацию об основных характеристиках каждого товара. Заголовок таблицы имеет следующий вид.</p>
+          <table class="kt"><tr><td>Артикул</td><td>Отдел</td><td>Наименование товара</td><td>Ед_изм</td><td>Количество в упаковке</td><td>Цена за упаковку</td></tr></table>
+          <p>Таблица «Магазин» содержит информацию о местонахождении магазинов. Заголовок таблицы имеет следующий вид.</p>
+          <table class="kt"><tr><td>ID магазина</td><td>Район</td><td>Адрес</td></tr></table>
+        </div>
+        <div class="kz kz-schema">
+          <p>На рисунке приведена схема указанной базы данных.</p>
+          <div class="ksch"></div>
+        </div>
+        <div class="kz kz-q">
+          <p><span class="kmark">Используя информацию из приведённой базы данных, определите, на сколько увеличилось количество упаковок антисептика для рук, имеющихся в наличии в магазинах Центрального района, за период со 2 по 9 августа включительно.</span></p>
+          <p>В ответе запишите только число.</p>
+          <div class="kans">Ответ: <i></i>.</div>
+        </div>
+      </div></div>
+    </div></div>
+    <div class="kimcap" id="kimCap1"></div>
+    <div class="asks"><div class="ask"><button><i>?</i>Что тут читать внимательно?</button><div class="ans">Описание таблиц почти не меняется от варианта к варианту. Внимательно читаем <b>последний абзац</b>: что считать и какие условия.</div></div></div>
+  </section>
+
+  <section class="slide" data-sec="2" data-id="tbl1" data-title="Таблица 1: Движение товаров" data-steps="2" data-w="tbl1">
+    <div class="eyebrow">Таблица 1 из 3 · 4 320 строк</div>
+    <h1>Движение товаров</h1>
+    <div class="sheet bigtab" id="t1"></div>
+    <div class="asks"><div class="ask"><button><i>?</i>Почему строк так много?</button><div class="ans">Каждая строка — одна операция в одном магазине с одним товаром в один день.<br>18 магазинов × 60 товаров × 4 дня = <b>4 320</b>.</div></div></div>
+  </section>
+
+  <section class="slide" data-sec="2" data-id="tbl2" data-title="Таблица 2: Магазин" data-steps="2" data-w="tbl2">
+    <div class="eyebrow">Таблица 2 из 3 · 18 строк</div>
+    <h1>Магазин</h1>
+    <div class="sheet" id="t2" style="width:1000px"></div>
+    <div class="asks"><div class="ask"><button><i>?</i>Зачем отдельная таблица на 18 строк?</button><div class="ans">Чтобы район и адрес магазина были записаны <b>один раз</b>, а не в каждой из его 240 операций.</div></div></div>
+  </section>
+
+  <section class="slide" data-sec="2" data-id="tbl3" data-title="Таблица 3: Товар" data-steps="2" data-w="tbl3">
+    <div class="eyebrow">Таблица 3 из 3 · 60 строк</div>
+    <h1>Товар</h1>
+    <div class="sheet" id="t3"></div>
+    <div class="asks tr"><div class="ask"><button><i>?</i>Что такое «Количество в упаковке»?</button><div class="ans">Сколько миллилитров, граммов или штук в одной упаковке. Понадобится, когда спросят <b>массу или объём</b>, а не число упаковок.</div></div></div>
+  </section>
+
+  <section class="slide" data-sec="2" data-id="question" data-title="Читаем вопрос по кусочкам" data-steps="5" data-w="question">
+    <h1>Читаем вопрос по кусочкам</h1>
+    <div class="kimstrip" id="qText"><div class="kim-n">3</div><p>
+      Используя информацию из приведённой базы данных, определите, <span class="fr" data-f="1">на сколько увеличилось</span> <span class="fr" data-f="2">количество упаковок</span> <span class="fr" data-f="3">антисептика для рук</span>, имеющихся в наличии в магазинах <span class="fr" data-f="4">Центрального района</span>, за период <span class="fr" data-f="5">со 2 по 9 августа включительно</span>. В ответе запишите только число.
+    </p></div>
+    <div class="qmap" id="qMap">
+      <div class="qm" data-f="1"><b>Тип операции</b><span>поступление − продажа</span></div>
+      <div class="qm" data-f="2"><b>Количество упаковок</b><span>Движение товаров</span></div>
+      <div class="qm" data-f="3"><b>Наименование</b><span>лист «Товар»</span></div>
+      <div class="qm" data-f="4"><b>Район</b><span>лист «Магазин»</span></div>
+      <div class="qm" data-f="5"><b>Дата</b><span>02.08 · 07.08 · 09.08</span></div>
+    </div>
+    <div class="asks"><div class="ask"><button><i>?</i>Как понять, что считать?</button><div class="ans">Ищи глагол. «Поступило» — сумма поступлений. «Продано» — сумма продаж. «Увеличилось / изменилось» — <b>поступление − продажа</b>.</div></div></div>
+  </section>
+
+  <section class="slide" data-sec="2" data-id="problem" data-title="Проблема: данные в разных таблицах" data-steps="3" data-w="problem">
+    <h1 id="prHead">Нужные поля — в <em>трёх</em> таблицах</h1>
+    <div class="schema" id="prb" style="height:560px;margin-top:14px">
+      <div class="pcard" id="pcM" style="left:0;top:20px;width:560px">
+        <div class="pt">Движение товаров</div>
+        <div class="pf need">Дата</div><div class="pf">ID магазина</div><div class="pf">Артикул</div><div class="pf need">Количество упаковок</div><div class="pf need">Тип операции</div>
+        <div class="pf add" data-s="2" id="pfR">+ Район</div><div class="pf add" data-s="2" id="pfN">+ Наименование</div>
+      </div>
+      <div class="pcard" id="pcS" style="left:880px;top:0;width:528px">
+        <div class="pt">Магазин</div>
+        <div class="pf">ID магазина</div><div class="pf miss" id="pfR0">Район</div><div class="pf">Адрес</div>
+      </div>
+      <div class="pcard" id="pcT" style="left:880px;top:270px;width:528px">
+        <div class="pt">Товар</div>
+        <div class="pf">Артикул</div><div class="pf">Отдел</div><div class="pf miss" id="pfN0">Наименование</div><div class="pf">Ед_изм · В упаковке · Цена</div>
+      </div>
+      <svg></svg>
+      <div class="vprbadge" data-s="2" id="prBadge">ВПР</div>
+    </div>
+    <div class="planline" data-s="3"><span class="tag kb">ВПР</span><span class="ar">→</span><span class="tag nb">Фильтры</span><span class="ar">→</span><span class="tag tb">Новый лист</span><span class="ar">→</span><span class="tag zb">СУММ</span></div>
+    <div class="asks"><div class="ask"><button><i>?</i>Почему нельзя сразу фильтровать?</button><div class="ans">Фильтр работает внутри одного листа. В «Движении» нет столбцов «Район» и «Наименование» — фильтровать не по чему. Сначала приносим их ВПР.</div></div></div>
+  </section>
+
+  <!-- ============ 03 · ВПР ============ -->
+  <section class="slide" data-sec="3" data-id="anat" data-title="ВПР — вертикальный просмотр" data-steps="4">
+    <h1>ВПР = <em>В</em>ертикальный <em>ПР</em>осмотр</h1>
+    <div class="card" style="margin-top:40px;padding:40px 40px">
+      <div class="formula" style="font-size:50px">
+        <span class="p">=ВПР(</span>
+        <div class="slot s-k ok"><div class="v">ключ</div><div class="c">что ищем</div></div><span class="sep on">;</span>
+        <div class="slot s-t ok"><div class="v">таблица</div><div class="c">где ищем</div></div><span class="sep on">;</span>
+        <div class="slot s-n ok"><div class="v">номер</div><div class="c">какой столбец принести</div></div><span class="sep on">;</span>
+        <div class="slot s-z ok"><div class="v">0</div><div class="c">точное совпадение</div></div><span class="p">)</span>
+      </div>
+    </div>
+    <div class="row" style="margin-top:26px;gap:18px">
+      <div class="col note" style="border-color:var(--k);font-size:20px" data-s="1"><b style="color:var(--k)">Ключ</b> — что ищем</div>
+      <div class="col note" style="border-color:var(--t);font-size:20px" data-s="2"><b style="color:var(--t)">Таблица</b> — где ищем<br>ключ — в 1-м столбце</div>
+      <div class="col note" style="border-color:var(--n);font-size:20px" data-s="3"><b style="color:var(--n)">Номер</b> — какой столбец вернуть</div>
+      <div class="col note" style="border-color:var(--z);font-size:20px" data-s="4"><b style="color:var(--z)">0</b> — точное совпадение</div>
+    </div>
+    <div class="card" data-s="4" style="margin-top:24px;display:flex;align-items:center;gap:24px;padding:20px 26px"><div class="mono" style="font-size:26px;font-weight:600">=ВПР(<span class="k">C2</span>;<span class="t">$Магазин.$A:$C</span>;<span class="n">2</span>;<span class="z">0</span>)</div><div class="result" style="margin-left:auto;font-size:20px">→ Центральный</div></div>
+    <div class="asks"><div class="ask"><button><i>?</i>Почему «вертикальный»?</button><div class="ans">ВПР ищет ключ <b>сверху вниз</b> по первому столбцу таблицы, а потом идёт вправо до нужного столбца.</div></div></div>
+  </section>
+
+  <section class="slide" data-sec="3" data-id="builder" data-title="Собираем ВПР по шагам" data-steps="7" data-w="builder" data-btn="Следующий шаг">
+    <div class="eyebrow" id="bStepTitle">ВПР по шагам</div>
+    <h1 style="font-size:46px;margin-bottom:16px" id="bHead">Встаём в G2 — сюда принесём район</h1>
+    <div class="sheet" id="bSheet"></div>
+    <div class="card" style="margin-top:18px;padding:20px 26px;display:flex;align-items:center;gap:26px">
+      <div class="formula" style="font-size:34px" id="bFormula"></div>
+      <div class="result off" id="bRes" style="margin-left:auto">→ Центральный</div>
+    </div>
+    <div class="asks"><div class="ask"><button><i>?</i>Почему в конце 0?</button><div class="ans">0 — это «ЛОЖЬ», <b>точное совпадение</b>. С единицей ВПР ищет приблизительно и на неотсортированных данных может принести чужую строку.</div></div></div>
+  </section>
+
+  <section class="slide" data-sec="3" data-id="sim" data-title="Как ищет компьютер" data-steps="3" data-w="sim" data-btn="Запустить поиск">
+    <div class="eyebrow">Тренажёр</div>
+    <h1 style="font-size:46px;margin-bottom:14px">Как ищет компьютер</h1>
+    <div class="row" style="gap:34px">
+      <div class="col" style="flex:.92">
+        <div class="card" style="padding:18px 22px">
+          <div class="formula" style="font-size:26px;gap:4px" id="simF"></div>
+        </div>
+        <div style="margin-top:18px" class="ctl"><label>Ключ:</label><div class="keypick" id="simKeys"></div></div>
+        <div style="margin-top:14px" class="ctl"><label>Номер столбца:</label><div class="seg" id="simN"><button data-n="1">1 · ID</button><button data-n="2" class="on">2 · Район</button><button data-n="3">3 · Адрес</button></div></div>
+        <div class="chain" style="margin-top:22px" id="simChain"></div>
+        <div style="margin-top:20px;display:flex;gap:14px;align-items:center">
+          <button class="btn pri" id="simGo">Найти ▶</button>
+          <div class="result off" id="simRes"></div>
+        </div>
+        <p class="small" style="margin-top:16px;display:none" id="simNote"></p>
+      </div>
+      <div class="col" style="flex:1">
+        <div class="sheet" id="simSheet" style="font-size:14px"></div>
+      </div>
+    </div>
+    <div class="asks"><div class="ask"><button><i>?</i>Откуда берётся #Н/Д?</button><div class="ans">Ключа нет в первом столбце: опечатка, лишний пробел, не тот лист — или диапазон начинается не со столбца с ключом.</div></div></div>
+  </section>
+
+  <section class="slide" data-sec="3" data-id="dollar" data-title="Зачем знак $" data-steps="3" data-w="dollar" data-btn="Протянуть">
+    <h1 style="margin-bottom:12px">Зачем знак <em>$</em>?</h1>
+    <div class="row" style="gap:34px">
+      <div class="col" style="flex:1.25">
+        <div class="sheet" id="dlSheet"></div>
+      </div>
+      <div class="col" style="flex:.75">
+        <div class="ctl" style="margin-top:6px"><button class="switch" id="dlSw"></button><label id="dlLbl">Без $</label></div>
+        <div class="warn" style="margin-top:22px;font-size:22px" data-s="1">Без $: <span class="mono">A2:C19 → A3:C20 → …</span><br>→ <b style="color:var(--bad)">#Н/Д</b></div>
+        <div class="note" style="margin-top:22px;font-size:22px" data-s="2">С $: <span class="mono">$A$2:$C$19</span> — на месте<br><b>Shift+F4</b> · Excel: <b>F4</b></div>
+        <div class="card" style="margin-top:22px;display:flex;gap:16px;align-items:center" data-s="3"><div style="font-size:40px">🖱️</div><p style="font-size:22px;line-height:1.4">Двойной щелчок по уголку<br>→ <b class="counter" id="dlCnt">0</b> строк</p></div>
+      </div>
+    </div>
+    <div class="asks"><div class="ask"><button><i>?</i>Как быстро поставить $?</button><div class="ans">Выдели адрес в формуле и нажми <b>Shift+F4</b> (LibreOffice) или <b>F4</b> (Excel) — знаки $ встанут сами.</div></div></div>
+  </section>
+
+  <section class="slide" data-sec="3" data-id="vlk2" data-title="Вторая ВПР: товар" data-steps="3" data-w="vlk2">
+    <h1 style="margin-bottom:12px">Вторая ВПР: <em>товар</em></h1>
+    <div class="card" style="padding:18px 24px;display:flex;align-items:center;gap:22px">
+      <div class="formula" style="font-size:30px;gap:4px" id="v2F"></div>
+      <div class="result" id="v2Res" style="margin-left:auto"></div>
+    </div>
+    <div style="height:18px"></div>
+    <div class="sheet" id="v2Sheet"></div>
+    <div class="note" style="margin-top:18px;font-size:22px" data-s="3">Меняется <b>только номер столбца</b></div>
+    <div class="asks"><div class="ask"><button><i>?</i>А если ключ не в первом столбце?</button><div class="ans">ВПР ищет <b>только в первом столбце</b> диапазона. Поэтому диапазон начинаем со столбца с ключом: $Товар.$A:$F, где A — артикул.</div></div></div>
+  </section>
+
+  <!-- ============ 04 · ФИЛЬТРЫ ============ -->
+  <section class="slide" data-sec="4" data-id="filters" data-title="Фильтры: оставляем нужное" data-steps="5" data-w="filters" data-btn="Следующий фильтр">
+    <h1 style="font-size:46px;margin-bottom:14px" id="fHead">Фильтры: оставляем только нужное</h1>
+    <div class="sheet" id="fSheet"></div>
+    <div class="asks"><div class="ask"><button><i>?</i>Что значит «включительно»?</button><div class="ans">Границы <b>входят</b>: берём и 2, и 9 августа. Потеряешь крайнюю дату — ответ будет неверным.</div></div></div>
+  </section>
+
+  <section class="slide" data-sec="4" data-id="types" data-title="Тип операции: что считать" data-steps="3" data-w="types">
+    <div class="eyebrow">Столбец «Тип операции»</div>
+    <h1>Что считать: <span style="color:var(--ok)">поступление</span> или <span style="color:var(--t)">продажа</span>?</h1>
+    <div class="row" style="gap:40px;margin-top:20px;align-items:flex-start">
+      <div class="col" style="flex:.78"><div class="sheet bigtab" id="tyT"></div></div>
+      <div class="col" style="flex:1.22;display:grid;gap:16px">
+        <div class="tyrow" data-s="1"><div class="tq">«Сколько <b>поступило</b>?»</div><div class="tf"><span class="tag okb">Σ Поступление</span></div><div class="tv" style="color:var(--ok)" data-count="3000">0</div></div>
+        <div class="tyrow" data-s="2"><div class="tq">«Сколько <b>продали</b>?»</div><div class="tf"><span class="tag tb">Σ Продажа</span></div><div class="tv" style="color:var(--t)" data-count="911">0</div></div>
+        <div class="tyrow hot" data-s="3"><div class="tq">«На сколько <b>изменилось</b>?»</div><div class="tf"><span class="tag okb">Поступление</span> − <span class="tag tb">Продажа</span></div><div class="tv" style="color:var(--accent)" data-count="2089">0</div></div>
+      </div>
+    </div>
+    <div class="asks"><div class="ask"><button><i>?</i>А если «на сколько уменьшилось»?</button><div class="ans">Тогда наоборот: <b>продажа − поступление</b>. Смысл тот же — сравниваем, сколько ушло и сколько пришло.</div></div></div>
+  </section>
+
+  <section class="slide" data-sec="4" data-id="sumtrap" data-title="Где считать сумму" data-steps="3" data-w="sumtrap">
+    <h1>На листе с фильтром <em>не считаем</em></h1>
+    <div class="row" style="gap:30px;margin-top:18px">
+      <div class="col">
+        <div class="sheet" id="stA"></div>
+        <div class="result err off" id="stAr" style="margin-top:14px">=СУММ(E2:E4321) → … ✗</div>
+      </div>
+      <div class="col">
+        <div class="sheet" id="stB"></div>
+        <div class="result off" id="stBr" style="margin-top:14px">=СУММ(E2:E13) → 3 000 ✓</div>
+      </div>
+    </div>
+    <div class="asks"><div class="ask"><button><i>?</i>А можно посчитать прямо тут?</button><div class="ans">Можно: <span class="mono">=ПРОМЕЖУТОЧНЫЕ.ИТОГИ(9; E2:E4321)</span> складывает только видимые строки. Но копия на новый лист проще и её легко проверить глазами.</div></div></div>
+  </section>
+
+  <section class="slide" data-sec="4" data-id="answer" data-title="Ответ" data-steps="1" data-w="answer">
+    <h1>Считаем ответ</h1>
+    <div style="display:flex;align-items:center;gap:30px;margin-top:60px;font-size:72px;font-weight:650;letter-spacing:-0.05em" class="counter">
+      <span style="color:var(--ok)">3 000</span><span style="color:var(--muted)">−</span><span style="color:var(--t)">911</span><span style="color:var(--muted)">=</span>
+      <span class="big" style="font-size:150px;color:var(--accent)" id="ansN">?</span>
+    </div>
+    <div data-s="1" style="margin-top:50px"><span class="result" style="font-size:40px;padding:18px 28px">Ответ: 2089 ✓</span></div>
+    <div class="asks"><div class="ask"><button><i>?</i>Почему не 3 000?</button><div class="ans">3 000 — сколько <b>поступило</b>. А спрашивают, на сколько <b>увеличилось</b>: вычитаем проданное.</div></div></div>
+  </section>
+
+  <!-- ============ 05 · ВТОРОЙ ТИП ============ -->
+  <section class="slide" data-sec="5" data-id="kim2" data-title="Второй тип: масса (демо 2027)" data-steps="3" data-w="kim">
+    <div class="kimv"><div class="kimp" id="kimPage2">
+      <div class="kim-hd"><span>Демонстрационный вариант ЕГЭ 2027 г. · ИНФОРМАТИКА, 11 класс</span><span>Задание 3</span></div>
+      <div class="kim-task"><div class="kim-n">3</div><div class="kim-body">
+        <div class="kz kz-tables">
+          <p>Задание выполняется с использованием прилагаемого файла.</p>
+          <p>В файле приведён фрагмент базы данных «Кондитерские изделия» о поставках конфет и печенья в магазины районов города. База данных состоит из трёх таблиц.</p>
+          <p>Таблица «Движение товаров» содержит записи о поступлении товаров со склада в магазины в течение июня 2025 г., а также информацию о проданных товарах. Поле <i>Тип операции</i> содержит значение <i>Поступление</i> или <i>Продажа</i>, а в соответствующее поле <i>Количество упаковок, шт.</i> внесена информация о том, сколько упаковок товара поступило в магазин или было продано в течение дня. Заголовок таблицы имеет следующий вид.</p>
+          <table class="kt"><tr><td>ID операции</td><td>Дата</td><td>ID магазина</td><td>Артикул</td><td>Количество упаковок, шт.</td><td>Тип операции</td></tr></table>
+          <p>Таблица «Товар» содержит информацию об основных характеристиках каждого товара. Заголовок таблицы имеет следующий вид.</p>
+          <table class="kt"><tr><td>Артикул</td><td>Отдел</td><td>Наименование товара</td><td>Ед_изм</td><td>Количество в упаковке</td><td>Цена за упаковку</td></tr></table>
+          <p>Таблица «Магазин» содержит информацию о местонахождении магазинов. Заголовок таблицы имеет следующий вид.</p>
+          <table class="kt"><tr><td>ID магазина</td><td>Район</td><td>Адрес</td></tr></table>
+        </div>
+        <div class="kz kz-schema">
+          <p>На рисунке приведена схема указанной базы данных.</p>
+          <div class="ksch"></div>
+        </div>
+        <div class="kz kz-q">
+          <p><span class="kmark">Используя информацию из приведённой базы данных, определите общую массу (в кг) всех видов зефира, полученного магазинами, расположенными на Прибрежной улице, за период с 5 по 19 июня включительно.</span></p>
+          <p>В ответе запишите только число.</p>
+          <div class="kans">Ответ: <i></i>.</div>
+        </div>
+      </div></div>
+    </div></div>
+    <div class="kimcap" id="kimCap2"></div>
+    <div class="asks"><div class="ask"><button><i>?</i>Чем отличается от первого типа?</button><div class="ans">Таблицы те же, но спрашивают <b>массу в килограммах</b>. Значит, кроме адреса и названия, ВПР принесёт ещё вес упаковки.</div></div></div>
+  </section>
+
+  <section class="slide" data-sec="5" data-id="question2" data-title="Второй тип: читаем вопрос" data-steps="5" data-w="question2">
+    <div class="eyebrow">Демоверсия ЕГЭ 2027 · задание 3</div>
+    <h1>Второй тип: <em>масса</em></h1>
+    <div class="kimstrip" id="q2Text"><div class="kim-n">3</div><p>
+      Используя информацию из приведённой базы данных, определите <span class="fr" data-f="1">общую массу (в кг)</span> <span class="fr" data-f="2">всех видов зефира</span>, <span class="fr" data-f="3">полученного</span> магазинами, расположенными <span class="fr" data-f="4">на Прибрежной улице</span>, за период <span class="fr" data-f="5">с 5 по 19 июня включительно</span>. В ответе запишите только число.
+    </p></div>
+    <div class="qmap" id="q2Map">
+      <div class="qm" data-f="1"><b>Масса</b><span>упаковки × вес ÷ 1000</span></div>
+      <div class="qm" data-f="2"><b>Наименование</b><span>содержит «Зефир»</span></div>
+      <div class="qm" data-f="3"><b>Тип операции</b><span>Поступление</span></div>
+      <div class="qm" data-f="4"><b>Адрес</b><span>лист «Магазин»</span></div>
+      <div class="qm" data-f="5"><b>Дата</b><span>05.06 … 19.06</span></div>
+    </div>
+    <div class="asks"><div class="ask"><button><i>?</i>«Полученного» — это что?</button><div class="ans">Магазин <b>получает</b> товар со склада — это операция «Поступление». Продажи здесь не нужны.</div></div></div>
+  </section>
+
+  <section class="slide" data-sec="5" data-id="massdef" data-title="Масса" data-steps="2">
+    <h1><em>Масса</em></h1>
+    <div class="card" style="margin-top:40px;padding:44px 44px">
+      <div class="flow" style="font-size:34px;font-weight:650;letter-spacing:-0.02em;flex-wrap:nowrap;gap:14px">
+        <span class="tag tb" style="padding:12px 20px">Упаковок, шт.</span><span class="arrow">×</span>
+        <span class="tag nb" style="padding:12px 20px">Количество в упаковке</span><span class="arrow">=</span>
+        <span class="tag kb" style="padding:12px 20px">Масса, г</span>
+        <span class="arrow" data-s="1">÷ 1000 →</span><span class="tag" data-s="1" style="padding:12px 20px;background:var(--ink);color:#F0EEE8">кг</span>
+      </div>
+    </div>
+    <div class="card" data-s="2" style="margin-top:28px;padding:30px 44px;font-size:40px;font-weight:650;letter-spacing:-0.02em;display:flex;gap:22px;align-items:center;flex-wrap:wrap">
+      <span class="t">100</span> × <span class="n">1000 г</span> = <span class="k">100 000 г</span> = <span class="tag" style="background:var(--ink);color:#F0EEE8;padding:6px 16px">100 кг</span>
+    </div>
+    <div class="asks"><div class="ask"><button><i>?</i>А если в «Ед_изм» — штуки?</button><div class="ans">Тогда массу так не посчитать. Всегда смотри «Ед_изм»: у зефира — <b>граммы</b>, поэтому в конце делим на 1000.</div></div></div>
+  </section>
+
+  <section class="slide" data-sec="5" data-id="mass" data-title="Считаем массу" data-steps="3" data-w="mass" data-btn="Следующий шаг">
+    <h1 style="font-size:46px;margin-bottom:14px">Считаем массу</h1>
+    <div class="row" style="gap:30px">
+      <div class="col" style="flex:1.45"><div class="sheet" id="msSheet" style="font-size:14px"></div></div>
+      <div class="col" style="flex:.55;display:flex;flex-direction:column;gap:16px">
+        <div class="card"><div class="eyebrow">Формула в K2</div><div class="mono" style="font-size:26px;font-weight:600">=<span class="t">E2</span>*<span class="n">J2</span></div></div>
+        <div class="card" data-s="2"><div class="eyebrow">СУММ</div><div class="mass-sum" style="font-size:38px;font-weight:700;letter-spacing:-0.03em" id="msSum">0 г</div></div>
+        <div class="card" data-s="3" style="border-color:var(--accent)"><div class="eyebrow" style="color:var(--accent)">÷ 1000</div><div class="big" style="font-size:96px;color:var(--accent)" id="msKg">0</div></div>
+      </div>
+    </div>
+    <div class="asks"><div class="ask"><button><i>?</i>Откуда столбец J?</button><div class="ans">Третья ВПР: по артикулу из «Товара» приносим <b>«Количество в упаковке»</b> — пятый столбец диапазона $Товар.$A:$F.</div></div></div>
+  </section>
+
+  <section class="slide" data-sec="5" data-id="traps" data-title="Три ловушки" data-steps="4" data-w="traps">
+    <h1>Три ловушки</h1>
+    <div style="margin-top:26px" id="trapList">
+      <div class="trap" data-t="1"><div class="val">2 500</div><div class="why">Сложили <b>упаковки</b> — но спрашивают массу, а не штуки.</div><div class="x">✗</div></div>
+      <div class="trap" data-t="2"><div class="val">1 630 000</div><div class="why">Посчитали массу, но <b>забыли перевести граммы в кг</b>.</div><div class="x">✗</div></div>
+      <div class="trap" data-t="3"><div class="val">1 430</div><div class="why">Потеряли <b>5 и 19 июня</b> — а «включительно» значит границы берём.</div><div class="x">✗</div></div>
+    </div>
+    <div class="card" data-s="4" style="margin-top:22px;display:flex;align-items:center;gap:26px;border-color:var(--ok)"><div class="big" style="font-size:80px;color:var(--ok)">1630</div><div><h3 style="font-size:28px">Правильный ответ</h3></div></div>
+  </section>
+
+  <!-- ============ 06 · ПРОВЕРЬ СЕБЯ ============ -->
+  <section class="slide" data-sec="6" data-id="quiz" data-title="Проверь себя" data-steps="6" data-w="quiz" data-btn="Следующий вопрос">
+    <div style="display:flex;align-items:center;justify-content:space-between">
+      <div class="eyebrow" id="qzNum">Вопрос 1 из 6</div>
+      <div class="dots" id="qzDots"></div>
+    </div>
+    <div id="qzBox"></div>
+  </section>
+
+  <section class="slide" data-sec="6" data-id="cheat" data-title="Шпаргалка" data-steps="0">
+    <h1>Шпаргалка по №3</h1>
+    <div class="cs-f">
+      <span class="p">=ВПР(</span>
+      <div class="cs-a k"><b>ключ</b><small>что ищем</small></div><span class="p">;</span>
+      <div class="cs-a t"><b>$Лист.$A:$F</b><small>где · ключ в 1-м столбце</small></div><span class="p">;</span>
+      <div class="cs-a n"><b>номер</b><small>какой столбец</small></div><span class="p">;</span>
+      <div class="cs-a z"><b>0</b><small>точно</small></div><span class="p">)</span>
+    </div>
+    <div class="cs-flow">
+      <div><i>1</i>ВПР</div><span>→</span><div><i>2</i>$ и протянуть</div><span>→</span><div><i>3</i>Фильтры</div><span>→</span><div><i>4</i>Новый лист</div><span>→</span><div><i>5</i>СУММ</div>
+    </div>
+    <div class="cs-grid">
+      <div><small>«увеличилось»</small><b><span class="okc">поступление</span> − <span class="t">продажа</span></b></div>
+      <div><small>«масса, кг»</small><b>упаковки × вес ÷ 1000</b></div>
+      <div><small>«включительно»</small><b>границы берём</b></div>
+    </div>
+  </section>
+
+  <section class="slide" data-sec="6" data-id="algo" data-title="Алгоритм на экзамене" data-steps="6">
+    <div class="row" style="gap:80px;height:100%">
+      <div class="col" style="flex:1.2">
+        <div class="eyebrow">На экзамене</div>
+        <h1>Алгоритм решения</h1>
+        <ul class="check">
+          <li data-s="1"><i>1</i>Разбери вопрос по кусочкам: какие поля и из каких таблиц нужны.</li>
+          <li data-s="2"><i>2</i>ВПР подтягивает в «Движение» район / адрес и товар (и вес, если нужна масса).</li>
+          <li data-s="3"><i>3</i>Знаки $ и двойной щелчок по уголку — формула на все строки.</li>
+          <li data-s="4"><i>4</i>Фильтры по всем условиям. Даты — включительно.</li>
+          <li data-s="5"><i>5</i>Копируем на новый лист, считаем СУММ.</li>
+          <li data-s="6"><i>6</i>Поступило / продали / изменилось? Кг или штуки? — и только число в ответ.</li>
+        </ul>
+      </div>
+      <div class="col" style="flex:.8;display:flex;flex-direction:column;justify-content:center;align-items:flex-start">
+        <div class="tbadge xl"><b>№3</b></div>
+        <h2 style="font-size:44px;margin-top:26px">Вопросы?</h2>
+        <p class="lead">Дальше — практика на реальных вариантах.</p>
+        <a class="trbtn" href="trainer.html">Перейти к практикуму</a>
+      </div>
+    </div>
+  </section>
+
+  </main>
+
+  <div class="pline"><i id="pBar"></i></div>
+
+  <canvas id="ink" width="1600" height="900"></canvas>
+  <div id="spot"></div>
+  <div id="blank">Экран скрыт · нажми B</div>
+  <div class="toast" id="toast"></div>
+
+  <div class="ov" id="ovToc"><div class="panel"><button class="x" data-close>✕</button><h2 style="font-size:34px;margin-bottom:6px">План занятия</h2><div class="toc" id="tocList"></div></div></div>
+  <div class="ov" id="ovHelp"><div class="panel" style="width:1020px"><button class="x" data-close>✕</button><h2 style="font-size:34px;margin-bottom:18px">Управление</h2>
+    <div class="keys">
+      <div><kbd>→</kbd><kbd>Пробел</kbd> следующий шаг / экран</div>
+      <div><kbd>←</kbd> назад</div>
+      <div><kbd>N</kbd> пояснение к слайду</div>
+      <div><kbd>Q</kbd> вопрос на слайде</div>
+      <div><kbd>G</kbd> оглавление</div>
+      <div><kbd>F</kbd> полный экран</div>
+      <div><kbd>L</kbd> лазерная указка</div>
+      <div><kbd>D</kbd> рисовать поверх слайда</div>
+      <div><kbd>C</kbd> стереть рисунок</div>
+      <div><kbd>S</kbd> прожектор</div>
+      <div><kbd>B</kbd> скрыть экран</div>
+      <div><kbd>R</kbd> заново этот слайд</div>
+      <div><kbd>Home</kbd><kbd>End</kbd> в начало / в конец</div>
+      <div><kbd>Esc</kbd> закрыть окно / инструмент</div>
+    </div>
+  </div></div>
+</div>
+
+
+<aside class="top lesson-menu" id="lessonMenu" aria-label="Меню презентации" aria-hidden="true" inert>
+  <div class="menu-heading"><a class="home" id="homeLink" href="./">Задание №3</a><button id="menuClose" class="chrome-icon" aria-label="Закрыть меню"><svg viewBox="0 0 24 24"><path d="m6 6 12 12M18 6 6 18"/></svg></button></div>
+  <nav class="tabs" id="tabs" aria-label="Разделы урока"></nav>
+  <div class="menu-materials"><a href="notes/">Конспект</a><a href="trainer.html">Практикум</a></div>
+  <div class="menu-tools"><button id="bToc">Все слайды</button><button id="bHelp">Управление</button></div>
+</aside>
+<div class="viewer-dock" aria-label="Управление презентацией">
+  <div class="dock-left"><button id="hTop" class="dock-button" aria-controls="lessonMenu" aria-expanded="false"><svg viewBox="0 0 24 24"><path d="M4 6h16M4 12h16M4 18h16"/></svg><span>Меню</span></button></div>
+  <div class="dock-navigation"><button id="bPrev" class="chrome-icon" aria-label="Предыдущий шаг"><svg viewBox="0 0 24 24"><path d="m14 6-6 6 6 6"/></svg></button><span id="fCnt">01 / 32</span><button id="bNext" class="dock-next">Дальше</button></div>
+  <div class="dock-right"><button id="nTab" class="dock-button" aria-controls="notes" aria-expanded="false"><svg viewBox="0 0 24 24"><path d="M5 5h14v14H5zM9 5v14M12 9h4M12 13h4"/></svg><span>Пояснения</span></button><button id="bFull" class="chrome-icon" aria-label="Полный экран" aria-pressed="false" title="Полный экран (F)"><svg viewBox="0 0 24 24"><path d="M4 9V4h5M20 9V4h-5M4 15v5h5M20 15v5h-5"/></svg></button></div>
+</div>
+<aside class="notes" id="notes" aria-label="Пояснение к слайду" aria-hidden="true" inert>
+  <div class="nhd"><div><small id="nSec"></small><b id="nTitle"></b></div><button class="nx" id="nClose" aria-label="Закрыть пояснения"><svg viewBox="0 0 24 24"><path d="m6 6 12 12M18 6 6 18"/></svg></button></div>
+  <div class="nbody" id="nBody"></div>
+  <div class="nft"><button id="nPrev" title="Назад">←</button><span id="nCnt"></span><button id="nNext" title="Дальше">→</button></div>
+</aside>
+<div id="laser"></div>
+<script src="data.js"></script>
+<script src="notes.js"></script>
+<script src="app.js"></script>
+</body>
+</html>

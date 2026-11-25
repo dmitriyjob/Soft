@@ -1,0 +1,246 @@
+<!doctype html>
+<html lang="ru">
+<head>
+<meta charset="utf-8">
+<title>Конспект · Задание №3 · ion_inf</title>
+<link rel="icon" type="image/svg+xml" href="favicon.svg">
+<style>
+:root { --bg:#F5F5F7; --ink:#1D1D1F; --muted:#6E6E73; --line:#D5D5D9; --line2:#E6E6EA; --accent:#B9521D; --peach:#FFD8BE; --peach2:#FFEBDD;
+  --k:#B9521D; --k-bg:#FFE3D0; --t:#2B6CB0; --t-bg:#DCE9F8; --n:#2F855A; --n-bg:#DAF1E4; --z:#6B46C1; --z-bg:#ECE4FB; --a:#B7791F; --a-bg:#FCEFD3; --bad:#C53030; --bad-bg:#FDE2E2;
+  --sans: -apple-system, BlinkMacSystemFont, "Inter", "Helvetica Neue", Arial, sans-serif; --mono: "SF Mono", "JetBrains Mono", Menlo, Consolas, monospace; }
+* { box-sizing: border-box; }
+body { margin: 0; background: #ddd; font-family: var(--sans); color: var(--ink); -webkit-font-smoothing: antialiased; }
+.page { width: 1920px; height: 1080px; background: var(--bg); position: relative; padding: 70px 90px 60px; margin: 0 auto 30px; overflow: hidden; }
+.top { display: flex; align-items: center; justify-content: space-between; font-size: 18px; color: var(--muted); border-bottom: 1px solid var(--line); padding-bottom: 18px; margin-bottom: 36px; }
+.top b { color: var(--ink); font-size: 24px; letter-spacing: -0.04em; } .top b span { color: var(--accent); }
+.eb { font-size: 16px; font-weight: 600; letter-spacing: .1em; text-transform: uppercase; color: var(--muted); margin-bottom: 12px; }
+h1 { font-size: 76px; font-weight: 700; letter-spacing: -0.05em; line-height: 1; margin: 0 0 30px; }
+h1 em { font-style: normal; color: var(--accent); }
+h3 { font-size: 30px; letter-spacing: -0.03em; margin: 0 0 10px; }
+p { margin: 0; font-size: 25px; line-height: 1.45; }
+.mut { color: var(--muted); }
+.row { display: flex; gap: 30px; } .col { flex: 1; min-width: 0; }
+.card { background: #fff; border: 1px solid var(--line2); border-radius: 22px; padding: 30px 34px; }
+.tag { display: inline-block; padding: 3px 12px; border-radius: 9px; font-weight: 650; }
+.kb { background: var(--k-bg); color: var(--k); } .tb { background: var(--t-bg); color: var(--t); } .nb { background: var(--n-bg); color: var(--n); } .zb { background: var(--z-bg); color: var(--z); } .ab { background: var(--a-bg); color: var(--a); }
+.k { color: var(--k); } .t { color: var(--t); } .n { color: var(--n); } .z { color: var(--z); }
+.mono { font-family: var(--mono); }
+table { border-collapse: separate; border-spacing: 0; background: #fff; border: 1px solid var(--line); border-radius: 14px; overflow: hidden; font-size: 22px; width: 100%; }
+th, td { padding: 10px 14px; border-right: 1px solid var(--line2); border-bottom: 1px solid var(--line2); text-align: left; white-space: nowrap; }
+th { background: #F3F3F5; font-size: 18px; color: #4A4A4F; font-weight: 650; }
+td.num { text-align: right; font-variant-numeric: tabular-nums; }
+.key { background: var(--k-bg); color: var(--k); font-weight: 650; }
+.key2 { background: var(--t-bg); color: var(--t); font-weight: 650; }
+.formula { font-family: var(--mono); font-weight: 650; font-size: 54px; display: flex; align-items: flex-start; gap: 10px; letter-spacing: -0.02em; }
+.slot { display: flex; flex-direction: column; align-items: center; }
+.slot .v { padding: 8px 22px; border-radius: 16px; border: 3px solid var(--c); background: var(--cb); color: var(--c); }
+.slot .c { font-family: var(--sans); font-size: 20px; margin-top: 10px; color: var(--c); font-weight: 650; }
+.sep { line-height: 86px; } .p { line-height: 86px; }
+.s-k { --c: var(--k); --cb: var(--k-bg); } .s-t { --c: var(--t); --cb: var(--t-bg); } .s-n { --c: var(--n); --cb: var(--n-bg); } .s-z { --c: var(--z); --cb: var(--z-bg); }
+.chain { display: flex; align-items: center; gap: 14px; font-size: 24px; flex-wrap: wrap; }
+.chain span.c { padding: 10px 16px; border-radius: 12px; background: #fff; border: 2px solid var(--accent); font-weight: 600; }
+.chain .ar { color: var(--accent); font-size: 28px; }
+.note { border-left: 5px solid var(--accent); padding: 4px 0 4px 22px; font-size: 25px; line-height: 1.45; }
+.note b { color: var(--accent); }
+.warn { background: #FFF4D6; border-radius: 18px; padding: 22px 26px; font-size: 24px; line-height: 1.45; }
+.bad { background: var(--bad-bg); color: var(--bad); border-radius: 18px; padding: 22px 26px; font-size: 24px; line-height: 1.45; }
+.num-big { font-size: 110px; font-weight: 750; letter-spacing: -0.06em; line-height: 1; color: var(--accent); }
+.steps { list-style: none; margin: 0; padding: 0; }
+.steps li { display: flex; gap: 22px; align-items: flex-start; padding: 18px 0; border-bottom: 1px solid var(--line); font-size: 27px; line-height: 1.35; }
+.steps li i { font-style: normal; flex: none; width: 46px; height: 46px; border-radius: 13px; background: var(--accent); color: #fff; display: grid; place-items: center; font-weight: 750; font-size: 22px; }
+.q { font-size: 32px; line-height: 1.65; }
+.q .f { border-radius: 8px; padding: 2px 6px; font-weight: 600; }
+.foot { position: absolute; left: 90px; right: 90px; bottom: 34px; display: flex; justify-content: space-between; font-size: 16px; color: var(--muted); }
+.schema { position: relative; height: 420px; }
+.schema .tb2 { position: absolute; }
+.schema svg { position: absolute; inset: 0; overflow: visible; }
+.trap { display: flex; align-items: center; gap: 26px; padding: 18px 24px; border-radius: 18px; background: var(--bad-bg); margin-bottom: 14px; }
+.trap .v { font-size: 46px; font-weight: 750; letter-spacing: -0.04em; color: var(--bad); text-decoration: line-through; text-decoration-thickness: 5px; min-width: 260px; }
+.trap p { font-size: 24px; }
+</style>
+<link rel="stylesheet" href="print-dark.css" media="screen">
+</head>
+<body>
+
+<!-- 1 -->
+<section class="page">
+  <div class="top"><b>ion<span>_</span>inf</b><span>ЕГЭ · задание №3 · конспект</span><span>1 / 7</span></div>
+  <div class="eb">Основа</div>
+  <h1>База данных — это <em>связанные</em> таблицы</h1>
+  <div class="row" style="gap:40px">
+    <div class="col" style="flex:.8;display:grid;gap:18px;align-content:start">
+      <div class="card"><h3><span class="tag" style="background:var(--peach)">Запись</span> = строка</h3><p class="mut">всё об одном объекте</p></div>
+      <div class="card"><h3><span class="tag tb">Поле</span> = столбец</h3><p class="mut">одно свойство у всех объектов</p></div>
+      <div class="card"><h3><span class="tag kb">Ключ</span> = связь</h3><p class="mut">ID магазина и артикул связывают таблицы</p></div>
+    </div>
+    <div class="col" style="flex:1.2">
+      <div class="schema" id="s1" style="height:540px">
+        <div class="tb2" style="left:0;top:40px;width:470px"><table><tr><th colspan="1" style="background:#fff;font-size:20px;color:var(--ink)">Движение товаров</th></tr>
+          <tr><td>ID операции</td></tr><tr><td>Дата</td></tr><tr><td class="key" id="a1">ID магазина</td></tr><tr><td class="key2" id="a2">Артикул</td></tr><tr><td>Количество упаковок, шт.</td></tr><tr><td>Тип операции</td></tr></table></div>
+        <div class="tb2" style="left:640px;top:0;width:420px"><table><tr><th style="background:#fff;font-size:20px;color:var(--ink)">Магазин</th></tr><tr><td class="key" id="b1">ID магазина</td></tr><tr><td>Район</td></tr><tr><td>Адрес</td></tr></table></div>
+        <div class="tb2" style="left:640px;top:290px;width:420px"><table><tr><th style="background:#fff;font-size:20px;color:var(--ink)">Товар</th></tr><tr><td class="key2" id="b2">Артикул</td></tr><tr><td>Отдел · Наименование</td></tr><tr><td>Ед_изм · Количество в упаковке</td></tr><tr><td>Цена за упаковку</td></tr></table></div>
+        <svg id="s1svg"></svg>
+      </div>
+      <div class="note" style="margin-top:20px">Хранить удобно в нескольких таблицах, а <b>искать</b> — в одной. Поэтому в задании мы <b>собираем</b> нужные столбцы в «Движение товаров» функцией ВПР.</div>
+    </div>
+  </div>
+  <div class="foot"><span>Каждый факт хранится один раз → нет повторов и противоречий</span><span>ion_inf · задание №3</span></div>
+</section>
+
+<!-- 2 -->
+<section class="page">
+  <div class="top"><b>ion<span>_</span>inf</b><span>ЕГЭ · задание №3 · конспект</span><span>2 / 7</span></div>
+  <div class="eb">Шаг 0</div>
+  <h1>Читаем вопрос <em>по кусочкам</em></h1>
+  <div class="card q">Определите, <span class="f zb">на сколько увеличилось</span> <span class="f tb">количество упаковок</span> <span class="f nb">антисептика для рук</span>, имеющихся в наличии в магазинах <span class="f kb">Центрального района</span>, за период <span class="f ab">со 2 по 9 августа включительно</span>.</div>
+  <div class="row" style="margin-top:28px;gap:20px">
+    <div class="card col"><span class="tag zb">тип операции</span><p style="margin-top:12px">«увеличилось» = <b>поступление − продажа</b></p></div>
+    <div class="card col"><span class="tag tb">упаковки</span><p style="margin-top:12px">складываем столбец «Количество упаковок»</p></div>
+    <div class="card col"><span class="tag nb">товар</span><p style="margin-top:12px">в листе «Товар» → <b>ВПР по артикулу</b></p></div>
+    <div class="card col"><span class="tag kb">район</span><p style="margin-top:12px">в листе «Магазин» → <b>ВПР по ID магазина</b></p></div>
+    <div class="card col"><span class="tag ab">даты</span><p style="margin-top:12px">«включительно» — <b>границы тоже</b> берём</p></div>
+  </div>
+  <div class="warn" style="margin-top:28px">Для каждого кусочка вопроса спроси себя: <b>в каком столбце и в какой таблице</b> это лежит? Если не в «Движении товаров» — нужна ВПР.</div>
+  <div class="foot"><span>Пример из урока · ответ 2089</span><span>ion_inf · задание №3</span></div>
+</section>
+
+<!-- 3 -->
+<section class="page">
+  <div class="top"><b>ion<span>_</span>inf</b><span>ЕГЭ · задание №3 · конспект</span><span>3 / 7</span></div>
+  <div class="eb">Главная функция</div>
+  <h1>ВПР = <em>в</em>ертикальный <em>пр</em>осмотр</h1>
+  <div class="card" style="padding:36px 40px">
+    <div class="formula"><span class="p">=ВПР(</span>
+      <div class="slot s-k"><div class="v">C2</div><div class="c">что ищем (ключ)</div></div><span class="sep">;</span>
+      <div class="slot s-t"><div class="v">$Магазин.$A:$C</div><div class="c">где ищем · $ закрепляет</div></div><span class="sep">;</span>
+      <div class="slot s-n"><div class="v">2</div><div class="c">номер столбца</div></div><span class="sep">;</span>
+      <div class="slot s-z"><div class="v">0</div><div class="c">точно</div></div><span class="p">)</span>
+    </div>
+  </div>
+  <div class="eb" style="margin-top:34px">Как ищет компьютер</div>
+  <div class="chain"><span class="c">берёт ключ M1</span><span class="ar">→</span><span class="c">идёт вниз по 1-му столбцу «Магазина»</span><span class="ar">→</span><span class="c">нашёл строку M1</span><span class="ar">→</span><span class="c">шагает во 2-й столбец</span><span class="ar">→</span><span class="c" style="background:var(--n-bg);border-color:var(--n);color:var(--n)">Центральный</span></div>
+  <div class="row" style="margin-top:34px;gap:24px">
+    <div class="note col">Ключ ищется <b>только в первом столбце</b> выбранного диапазона.</div>
+    <div class="note col">Номер столбца считаем <b>с 1</b>: ID = 1, Район = 2, Адрес = 3.</div>
+    <div class="note col">Ключа нет → <b>#Н/Д</b>. Проверь лист и лишние пробелы.</div>
+  </div>
+  <div class="foot"><span>Excel: ВПР = VLOOKUP · разделитель — точка с запятой</span><span>ion_inf · задание №3</span></div>
+</section>
+
+<!-- 4 -->
+<section class="page">
+  <div class="top"><b>ion<span>_</span>inf</b><span>ЕГЭ · задание №3 · конспект</span><span>4 / 7</span></div>
+  <div class="eb">Протягиваем на все строки</div>
+  <h1>Знак <em>$</em> и вторая ВПР</h1>
+  <div class="row" style="gap:36px">
+    <div class="col">
+      <div class="bad"><b>Без $:</b> <span class="mono">Магазин.A2:C19 → A3:C20 → A4:C21…</span><br>диапазон уезжает вниз → <b>#Н/Д</b></div>
+      <div class="card" style="margin-top:16px;background:var(--n-bg);border-color:#B7E2C8"><p><b style="color:var(--n)">С $:</b> <span class="mono">$Магазин.$A$2:$C$19</span> — стоит на месте</p></div>
+      <div class="card" style="margin-top:16px"><p><b>LibreOffice:</b> Shift + F4 &nbsp;·&nbsp; <b>Excel:</b> F4</p><p style="margin-top:10px"><b>Двойной щелчок по уголку</b> ячейки — формула протянется на все строки (4320).</p></div>
+    </div>
+    <div class="col">
+      <p style="margin-bottom:14px">Вторая ВПР — по <b class="k">артикулу</b> в листе «Товар». Меняется только <b class="n">номер столбца</b>:</p>
+      <table>
+        <tr><th>A · 1</th><th>B · 2</th><th>C · 3</th><th>D · 4</th><th>E · 5</th><th>F · 6</th></tr>
+        <tr><td>Артикул</td><td>Отдел</td><td class="key2">Наименование</td><td>Ед_изм</td><td style="background:var(--n-bg);color:var(--n);font-weight:650">В упаковке</td><td>Цена</td></tr>
+      </table>
+      <p class="mono" style="font-size:30px;font-weight:650;margin-top:22px">=ВПР(<span class="k">D2</span>;<span class="t">$Товар.$A:$F</span>;<span class="n">3</span>;<span class="z">0</span>)</p>
+      <p class="mut" style="margin-top:8px">3 → название, 4 → единица измерения, 5 → количество в упаковке</p>
+    </div>
+  </div>
+  <div class="foot"><span>Номер столбца — это номер по порядку, а не буква</span><span>ion_inf · задание №3</span></div>
+</section>
+
+<!-- 5 -->
+<section class="page">
+  <div class="top"><b>ion<span>_</span>inf</b><span>ЕГЭ · задание №3 · конспект</span><span>5 / 7</span></div>
+  <div class="eb">Фильтры и подсчёт</div>
+  <h1>Фильтры → <em>новый лист</em> → СУММ</h1>
+  <div class="row" style="gap:36px">
+    <div class="col">
+      <ul class="steps">
+        <li><i>1</i><span>Выделяем столбцы по буквам → включаем автофильтр (воронка).</span></li>
+        <li><i>2</i><span>Ставим <b>все</b> условия: дата, район, товар, тип операции.</span></li>
+        <li><i>3</i><span>Даты «включительно» — <b>границы оставляем</b>.</span></li>
+        <li><i>4</i><span>Выделяем результат → копируем → <b>новый лист</b> (плюсик внизу).</span></li>
+        <li><i>5</i><span>Там считаем <b>=СУММ(…)</b>. На листе с фильтром не считаем — СУММ видит и скрытые строки.</span></li>
+      </ul>
+    </div>
+    <div class="col" style="flex:.85">
+      <div class="eb">Три типа вопросов</div>
+      <table>
+        <tr><th>Вопрос</th><th>Что считаем</th><th>Урок</th></tr>
+        <tr><td>Сколько поступило?</td><td>Тип = Поступление</td><td class="num">3 000</td></tr>
+        <tr><td>Сколько продали?</td><td>Тип = Продажа</td><td class="num">911</td></tr>
+        <tr><td><b>На сколько изменилось?</b></td><td><b>Поступление − Продажа</b></td><td class="num" style="color:var(--accent);font-weight:750">2 089</td></tr>
+      </table>
+      <div class="card" style="margin-top:22px;display:flex;align-items:center;gap:24px"><div class="num-big" style="font-size:84px">2089</div><p>ответ задачи из урока:<br><span class="mono">3000 − 911</span></p></div>
+    </div>
+  </div>
+  <div class="foot"><span>Фильтры: 4320 → 3240 → 1080 → 18 строк</span><span>ion_inf · задание №3</span></div>
+</section>
+
+<!-- 6 -->
+<section class="page">
+  <div class="top"><b>ion<span>_</span>inf</b><span>ЕГЭ · задание №3 · конспект</span><span>6 / 7</span></div>
+  <div class="eb">Демоверсия 2027 · №31500</div>
+  <h1>Если спрашивают <em>массу</em></h1>
+  <div class="card" style="display:flex;align-items:center;gap:20px;font-size:38px;font-weight:700;letter-spacing:-0.02em;padding:30px 36px">
+    <span class="tag tb" style="padding:10px 18px">упаковки, шт.</span>×<span class="tag nb" style="padding:10px 18px">количество в упаковке</span>=<span class="tag kb" style="padding:10px 18px">масса, г</span>÷ 1000 →<span class="tag" style="background:var(--ink);color:#fff;padding:10px 18px">кг</span>
+  </div>
+  <div class="row" style="margin-top:28px;gap:36px">
+    <div class="col">
+      <p style="margin-bottom:16px">Нужна <b>третья ВПР</b>: «Количество в упаковке» (5-й столбец «Товара»). Смотри <b>Ед_изм</b> — у зефира граммы.</p>
+      <table>
+        <tr><th>Зефир</th><th>В упаковке</th></tr>
+        <tr><td>в шоколаде</td><td class="num">250 г</td></tr><tr><td>ванильный</td><td class="num">800 г</td></tr><tr><td>воздушный</td><td class="num">500 г</td></tr><tr><td>лимонный</td><td class="num">1000 г</td></tr>
+      </table>
+    </div>
+    <div class="col">
+      <div class="trap"><div class="v">2 500</div><p>сложили упаковки — это не масса</p></div>
+      <div class="trap"><div class="v">1 630 000</div><p>забыли перевести граммы в кг</p></div>
+      <div class="trap"><div class="v">1 430</div><p>потеряли 5 и 19 июня</p></div>
+      <div class="card" style="display:flex;align-items:center;gap:24px;border-color:var(--n);margin-top:6px"><div class="num-big" style="font-size:84px;color:var(--n)">1630</div><p>верный ответ:<br>1 630 000 г ÷ 1000</p></div>
+    </div>
+  </div>
+  <div class="foot"><span>Прибрежная, 7 и 21 · поступление · 05.06–19.06 · 17 строк</span><span>ion_inf · задание №3</span></div>
+</section>
+
+<!-- 7 -->
+<section class="page">
+  <div class="top"><b>ion<span>_</span>inf</b><span>ЕГЭ · задание №3 · конспект</span><span>7 / 7</span></div>
+  <div class="row" style="gap:70px">
+    <div class="col" style="flex:1.3">
+      <div class="eb">На экзамене</div>
+      <h1>Алгоритм решения №3</h1>
+      <ul class="steps">
+        <li><i>1</i><span>Разбери вопрос по кусочкам: какие поля и из каких таблиц нужны.</span></li>
+        <li><i>2</i><span>ВПР подтягивает в «Движение» район / адрес и товар (и вес, если нужна масса).</span></li>
+        <li><i>3</i><span>Знаки $ и двойной щелчок по уголку — формула на все строки.</span></li>
+        <li><i>4</i><span>Фильтры по всем условиям. Даты — включительно.</span></li>
+        <li><i>5</i><span>Копируем на новый лист, считаем СУММ.</span></li>
+        <li><i>6</i><span>Поступило / продали / изменилось? Штуки или кг? В ответ — только число.</span></li>
+      </ul>
+    </div>
+    <div class="col" style="flex:.7;padding-top:40px">
+      <div class="card" style="padding:34px">
+        <div class="eb" style="color:var(--accent)">Шпаргалка ВПР</div>
+        <p class="mono" style="font-size:27px;font-weight:650;line-height:1.5">=ВПР(<span class="k">ключ</span>;<br>&nbsp;&nbsp;<span class="t">$Лист.$A:$F</span>;<br>&nbsp;&nbsp;<span class="n">№ столбца</span>;<br>&nbsp;&nbsp;<span class="z">0</span>)</p>
+      </div>
+      <div class="card" style="margin-top:20px;padding:30px">
+        <div class="eb" style="color:var(--bad)">Частые ошибки</div>
+        <p>• считали СУММ на листе с фильтром<br>• потеряли границы дат<br>• перепутали упаковки и кг<br>• номер столбца написали буквой</p>
+      </div>
+    </div>
+  </div>
+  <div class="foot"><span>Удачи на ЕГЭ!</span><span>ion_inf · задание №3</span></div>
+</section>
+
+<script>
+(function(){const box=document.getElementById('s1'),svg=document.getElementById('s1svg');
+const r=(id)=>{const a=document.getElementById(id).getBoundingClientRect(),b=box.getBoundingClientRect();return{x:a.left-b.left,y:a.top-b.top,w:a.width,h:a.height}};
+[['a1','b1','#B9521D'],['a2','b2','#2B6CB0']].forEach(([f,t,c])=>{const A=r(f),B=r(t),x1=A.x+A.w,y1=A.y+A.h/2,x2=B.x,y2=B.y+B.h/2,m=(x1+x2)/2;
+svg.insertAdjacentHTML('beforeend',`<path d="M${x1},${y1} C${m},${y1} ${m},${y2} ${x2},${y2}" stroke="${c}" stroke-width="4" fill="none" stroke-dasharray="10 8"/><circle cx="${x1}" cy="${y1}" r="7" fill="${c}"/><circle cx="${x2}" cy="${y2}" r="7" fill="${c}"/>`)})})();
+</script>
+</body>
+</html>

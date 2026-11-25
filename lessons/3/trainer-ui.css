@@ -1,0 +1,34 @@
+:root{color-scheme:light;--cell-bg:#fff;--accent:#b9521d;--peach:#fff0e5}html,body{background:#101316}button,a{cursor:pointer}button:focus-visible,a:focus-visible{outline:3px solid #eba771;outline-offset:3px}#stage{box-shadow:none;border-radius:0}.startov.mp{background:#101316}.mp-in{padding-top:88px}.mp-track{margin-top:44px}.mp-badge,.sc-badge{background:#eba771;color:#101316;box-shadow:none}.mlv{background:#191e22;border-color:#39434b;box-shadow:none}.mlv.rec{background:#22251f;border-color:#eba771;box-shadow:none}.mlv:hover{transform:translateY(-4px);box-shadow:none;border-color:#8c9aa3}.mlv-n{color:#eba771}.mlv-task,.mlv-mode{color:#f0eee8}.mp-go,.sbb.pri,.cbtn.pri,.in-b.pri,.in-steps button.cur i{background:#eba771;border-color:#eba771;color:#101316;box-shadow:none}.mp-go:hover,.sbb.pri:hover,.cbtn.pri:hover,.in-b.pri:hover{background:#f3bb8f;color:#101316}.mp-go::after{display:none}.in-b.pri.ready{animation:none}.in-page,.intro{background:#101316}.say{background:#22292f;box-shadow:none}.say::before{background:#22292f}.say-t{color:#f0eee8}.say-av{background:#eba771;box-shadow:none}.say-av i{background:#101316}.practice-panel-toggle{margin-left:auto;min-height:30px;border:1px solid #46525c;border-radius:6px;padding:3px 12px;background:#22292f;color:#f0eee8;font:13px var(--ui)}.practice-panel-toggle[aria-expanded=true]{border-color:#8b684a;color:#eba771}.practice-panel-hidden .sbtabs{display:none}.sidebar[hidden]{display:none!important}.practice-full{position:fixed;top:10px;right:12px;z-index:180;width:44px;height:44px;border:1px solid #46525c;background:#1b2025f2;color:#c4c9cc;border-radius:9px;display:grid;place-items:center;padding:0}.practice-full svg{width:22px;height:22px}.practice-full:hover{color:#eba771;border-color:#eba771}.practice-full[aria-pressed=true]{color:#eba771}.in-doc{background:#191e22;color:#f0eee8}.tvol{color:#f0eee8}.mp-back{color:#a6adb2}
+
+@media(prefers-reduced-motion:reduce){*,*::before,*::after{animation:none!important;transition:none!important}}
+
+.mlv{animation:none!important;opacity:1}.mp-in{animation:none!important}.practice-panel-toggle{font-size:15px;min-height:44px}.practice-full{top:8px}.sidebar[hidden]{display:none!important}
+
+/* Light application canvas; dark lesson surroundings. */
+#stage{top:calc(50% + 30px)}
+.wtitle{height:42px;background:#f5f5f6}.wname{color:#333;font-size:15px}
+.practice-panel-toggle{margin-right:12px;background:#fff;color:#333;border-color:#c7cbd0;min-height:32px}
+.practice-panel-toggle[aria-expanded=true]{color:#8c3c13;border-color:#c18b6d}
+.tvol{color:inherit}.intro,.startov.mp{color-scheme:dark;color:#f0eee8;--accent:#eba771;--peach:#3b2c22;--mut:#a6adb2;--line3:#39434b}
+.in-doc{background:#fff;color:#202124}.in-doc mark{color:#222;background:#ffe6ab}
+.sidebar.sp{background:#f6f7f8;color:#25282b}.sp-head,.sp-sec{border-color:#d8dde1}
+.qbox,.pg{color:#25282b}.sp-n,.pg.cur .pg-h>i,.pg li.cur>i{color:#fff}
+.ansrow input{background:#fff;color:#222}.sbb.pri,.cbtn.pri{background:#b9521d;border-color:#b9521d;color:#fff}
+/* Exam paper always stays white, including focused fragments. */
+.ik-view{background:#dfe2e5;box-shadow:none}.ik-page{background:#fff;color:#17191b;box-shadow:0 3px 20px #0002}
+.ik-page .kim-hd,.ik-page .kt td,.ik-page .kim-n,.ik-page .kans i{border-color:#888}
+.ik-page .kim-n,.ik-page .kbox{background:#fff;color:#17191b}
+.ik-page .kbox{border-color:#aeb4bb}.ik-page .kbox .kh{background:#e9ecef;border-color:#aeb4bb}
+.ik-view.find .kz:not(.kq){opacity:.55}.ik-page .ksch svg{color:#333}.ik-page .ksch svg text{fill:#333}
+.itab th{background:#30373d;color:#f0f2f3;border-color:#525b62}.itab td{border-color:#39434b}
+.itb{box-shadow:none}.itag{color:#101316}
+/* Quiet transitions: no blur, bounce or delayed button appearance. */
+.in-h span{animation:none}.in-b,.mlv,.mp-go{transform:none!important}
+.in-b.pri.ready{animation:none}.say,.say::before{box-shadow:none}
+.in-btns,.in-skip{transition:opacity .18s ease}.itb,.itab td,.itab th{transition:background-color .28s ease,box-shadow .28s ease}
+.ik-scroll{animation:none}.ik-view{scroll-behavior:auto}
+
+.practice-full{z-index:210}
+.practice-panel-toggle{margin-left:8px}#tVol{margin-left:auto;margin-right:6px}
+.startov.mp{transition:none}.startov.mp.off{visibility:hidden}
+.practice-loading *, .practice-loading *::before, .practice-loading *::after{animation:none!important;transition:none!important}

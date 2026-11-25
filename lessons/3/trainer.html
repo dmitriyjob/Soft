@@ -1,0 +1,193 @@
+<!doctype html>
+<html lang="ru">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Практикум · Задание №3 · ion_inf</title>
+<meta name="theme-color" content="#101316">
+<link rel="icon" type="image/svg+xml" href="favicon.svg">
+<link rel="stylesheet" href="trainer-boot.css">
+<link rel="preload" href="trainer.css" as="style">
+<link rel="preload" href="trainer-ui.css" as="style">
+<link rel="preload" href="data.js" as="script">
+<link rel="preload" href="voice/voice.js" as="script">
+<link rel="preload" href="trainer_voice.js" as="script">
+<link rel="preload" href="trainer.js" as="script">
+<link rel="preload" href="trainer_guide.js" as="script">
+<link rel="preload" href="trainer_intro.js" as="script">
+</head>
+<body class="practice-loading">
+<header class="practice-toolbar">
+  <a class="practice-home" href="./"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8"><path d="m14 6-6 6 6 6"/></svg>К уроку</a>
+</header>
+<div class="practice-loader" id="practiceLoader" role="status" aria-live="polite">
+  <div class="practice-spinner" aria-hidden="true"></div>
+  <h1 id="practiceLoadTitle">Загрузка практикума</h1>
+  <button id="practiceRetry" hidden>Повторить</button>
+  <noscript>Для практикума нужен JavaScript.</noscript>
+</div>
+<div id="stage" inert aria-busy="true">
+  <!-- window title -->
+  <div class="wtitle">
+    <div class="lights"><i></i><i></i><i></i></div>
+    <div class="wname"><span class="calcico"></span><span id="docName">Задание 3.ods</span> — LibreOffice Calc</div>
+    <div id="tVol"></div><button class="practice-panel-toggle" id="practicePanelToggle" aria-controls="sidebar" aria-expanded="true">Панель</button>
+  </div>
+  <!-- menu -->
+  <div class="menubar" id="menubar"></div>
+  <!-- toolbars -->
+  <div class="tbar" id="tbStd"></div>
+  <div class="tbar" id="tbFmt"></div>
+  <!-- formula bar -->
+  <div class="fbar">
+    <div class="namebox"><input id="nameBox" value="A1" spellcheck="false"><span>▾</span></div>
+    <div class="fbtns">
+      <button class="ic" id="bWizard" title="Мастер функций"><svg viewBox="0 0 20 20"><text x="3" y="15" font-family="Georgia,serif" font-style="italic" font-size="14" fill="#333">f</text><text x="9.5" y="15" font-family="Georgia,serif" font-style="italic" font-size="10" fill="#333">x</text></svg></button>
+      <button class="ic" id="bSum" title="Выбрать функцию (Сумма)"><svg viewBox="0 0 20 20"><path d="M5 4h10v2.4M5 4l5.6 6L5 16h10v-2.4" fill="none" stroke="#333" stroke-width="1.6" stroke-linejoin="round"/></svg><b class="dd">▾</b></button>
+      <button class="ic" id="bEq" title="Формула"><svg viewBox="0 0 20 20"><path d="M5 8h10M5 12h10" stroke="#333" stroke-width="1.7"/></svg></button>
+    </div>
+    <div class="fline"><input id="fInput" spellcheck="false" autocomplete="off"></div>
+    <span class="fexp">⌄</span>
+  </div>
+  <!-- body -->
+  <div class="body">
+    <div class="gridarea">
+      <div class="corner" id="corner" title="Выделить всё"></div>
+      <div class="colhdr" id="colhdr"><div class="colhdr-in" id="colhdrIn"></div></div>
+      <div class="rowhdr" id="rowhdr"><div class="rowhdr-in" id="rowhdrIn"></div></div>
+      <div class="gscroll" id="gscroll">
+        <div class="gspace" id="gspace">
+          <div class="cells" id="cells"></div>
+          <div class="refboxes" id="refboxes"></div>
+          <div class="selbox" id="selbox"></div>
+          <div class="actbox" id="actbox"><i class="fh" id="fh"></i></div>
+          <div class="filldrag" id="filldrag"></div>
+          <div class="copyant" id="copyant"></div>
+          <input class="ced" id="ced" spellcheck="false" autocomplete="off">
+          <div class="ftip" id="ftip"></div>
+        </div>
+      </div>
+    </div>
+    <!-- sidebar (trainer) -->
+    <aside class="sidebar sp" id="sidebar">
+      <div class="sp-head">
+        <b class="sp-n" id="lvTag">1</b>
+        <div class="sp-ht"><div class="sp-lvt" id="lvTitle">Уровень 1 из 4</div><div class="sp-lvs" id="lvSub"></div></div>
+        <span class="timer" id="timer">00:00</span>
+        <button class="sp-ic" id="toMap" title="Все уровни"><svg viewBox="0 0 20 20"><path d="M4 5h12M4 10h12M4 15h12" stroke="currentColor" stroke-width="1.8" stroke-linecap="round"/></svg></button>
+      </div>
+      <div class="sp-sec sp-q">
+        <div class="sp-cap"><span>Вопрос</span><button class="sp-link" id="bTask">условие целиком ↗</button></div>
+        <div class="qbox" id="qBox"></div>
+      </div>
+      <div class="sp-sec sp-plan">
+        <div class="sp-cap"><span>План решения</span><em id="planCount"></em></div>
+        <div class="plan" id="stages"></div>
+      </div>
+      <div class="sp-sec sp-ctl" id="hintCtl"></div>
+      <div class="sp-sec sp-ans">
+        <div class="ansrow"><input id="ansIn" placeholder="Ответ — число" inputmode="decimal" spellcheck="false"><button class="sbb pri" id="ansBtn">Проверить</button></div>
+        <div class="ansmsg" id="ansMsg"></div>
+      </div>
+    </aside>
+    <div class="sbtabs"><i class="on" title="Тренажёр"></i><i title="Свойства"></i><i title="Стили"></i><i title="Галерея"></i><i title="Навигатор"></i><i title="Функции"></i></div>
+  </div>
+  <!-- sheet tabs -->
+  <div class="tabsbar">
+    <div class="tnav"><button>⏮</button><button>◀</button><button>▶</button><button>⏭</button></div>
+    <button class="tadd" id="tAdd" title="Добавить лист">＋</button>
+    <div class="tabs" id="tabs"></div>
+  </div>
+  <!-- status bar -->
+  <div class="status">
+    <span id="stSheet">Лист 1 из 3</span><span class="sep"></span>
+    <span id="stRec"></span><span class="sep"></span>
+    <span>По умолчанию</span><span class="sep"></span>
+    <span>Русский</span><span class="sep"></span>
+    <span class="grow" id="stSum">Среднее: ; Сумма: 0</span>
+    <span class="zoom"><b>−</b><i><em></em></i><b>+</b></span><span>100 %</span>
+  </div>
+
+  <!-- menus, popups, dialogs -->
+  <div class="menu" id="menuPop"></div>
+  <div class="afpop" id="afPop"></div>
+  <div class="ctx" id="ctxPop"></div>
+  <div class="toast" id="toast"></div>
+  <div class="praise" id="praise" aria-live="polite"></div>
+  <textarea id="sink" aria-hidden="true" tabindex="-1" autocomplete="off" spellcheck="false" style="position:absolute;left:-200px;top:200px;width:20px;height:20px;opacity:0;pointer-events:none"></textarea>
+
+  <!-- coach layer -->
+  <div class="coach" id="coach">
+    <div class="spot" id="spot"></div>
+    <div class="colnums" id="colnums"></div>
+    <button class="cpill" id="cpill" title="Развернуть подсказку">💡 <span></span><em>развернуть</em></button>
+    <div class="ctip" id="ctip">
+      <div class="cth"><span id="ctStage"></span><span id="ctNum"></span><button id="ctMin" title="Свернуть подсказку">–</button><button id="ctClose" title="Выключить подсказки">✕</button></div>
+      <div class="ctb" id="ctBody"></div>
+      <div class="ctf"><button class="cbtn" id="ctShow">Показать ▶</button><button class="cbtn pri" id="ctNext">Дальше</button></div>
+      <i class="carr" id="carr"></i>
+      <div class="cpr" id="cpr"></div>
+    </div>
+  </div>
+  <div class="fcur" id="fcur"><svg viewBox="0 0 24 24"><path d="M5 2l14 11.2-6.3.7 3.6 7.4-2.9 1.4-3.6-7.5L5 19.6z" fill="#fff" stroke="#111" stroke-width="1.4" stroke-linejoin="round"/></svg><i></i></div>
+
+  <!-- checker banner -->
+  <div class="echk" id="echk"><div class="eic">!</div><div class="ebody"><div class="eh">Проверяющий</div><div class="emsg" id="eMsg"></div></div><div class="ebtns"><button class="cbtn" id="eOk">Понятно</button></div></div>
+  <div class="ering" id="eRing"></div>
+  <div class="nudge" id="nudge"><span id="nudgeTxt"></span><button class="cbtn pri" id="nudgeBtn">Подсказка</button><button class="cbtn" id="nudgeNo">Сам</button></div>
+
+  <!-- campaign map -->
+  <div class="startov mp" id="startOv">
+    <div class="mp-in">
+      <div class="mp-hd">
+        <div class="mp-badge">№3</div>
+        <div>
+          <h1 class="mp-h" id="mpTitle">Практикум</h1>
+        </div>
+      </div>
+      <div class="mp-track">
+        <div class="mp-lvls" id="lvls"></div>
+      </div>
+      <div class="mp-ft">
+        <button class="mp-go" id="mpGo"><span id="mpGoT">Начать с уровня 1</span></button>
+        
+      </div>
+    </div>
+  </div>
+
+  <!-- intro: task → what we look for → problem → VLOOKUP → plan -->
+  <div class="intro" id="intro">
+    <div class="in-vis" id="inVis"></div>
+    <div class="in-side">
+      <div class="in-top">
+        <button class="in-lv" id="inLevels" title="К выбору уровня">← Уровни</button>
+        <div class="in-steps" id="inSteps"></div>
+        <div id="inVol"></div>
+      </div>
+      <h2 class="in-h" id="inH"></h2>
+      <div class="say idle" id="inSay">
+        <div class="say-av" title="Диктор"><i></i><i></i><i></i><i></i></div>
+        <div class="say-t" id="inSayT"></div>
+        <button class="say-r" id="inReplay" title="Повторить">↻</button>
+      </div>
+      <div class="in-extra" id="inExtra"></div>
+      <div class="in-btns"><button class="in-b" id="inBack">← Назад</button><button class="in-b pri" id="inNext">Дальше →</button></div>
+      <button class="in-skip" id="inSkip">пропустить вступление</button>
+    </div>
+  </div>
+
+  <!-- results -->
+  <div class="resov" id="resOv">
+    <div class="rescard">
+      <div class="rstars" id="rStars"><i>★</i><i>★</i><i>★</i></div>
+      <h2 id="rTitle">Уровень пройден!</h2>
+      <p class="rsub" id="rSub"></p>
+      <div class="rstats" id="rStats"></div>
+      <div class="rbtns"><button class="sbb pri big" id="rNext">Следующий уровень →</button><button class="sbb big" id="rAgain">Ещё раз</button><button class="sbb big ghost" id="rMap">Все уровни</button></div>
+    </div>
+  </div>
+</div>
+<button class="practice-full" id="practiceFull" aria-label="Полный экран" aria-pressed="false" title="Полный экран"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.7" stroke-linecap="round"><path d="M4 9V4h5M20 9V4h-5M4 15v5h5M20 15v5h-5"/></svg></button>
+<script src="trainer-boot.js"></script>
+</body>
+</html>

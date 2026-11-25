@@ -1,0 +1,13 @@
+
+html,body{margin:0;height:100%;background:#101316;color:#f0eee8;font-family:-apple-system,BlinkMacSystemFont,"Segoe UI",Arial,sans-serif}
+.practice-loading #stage{visibility:hidden}.practice-toolbar{position:fixed;inset:0 0 auto;height:60px;z-index:200;background:#15191d;border-bottom:1px solid #333b41;display:flex;align-items:center;padding:0 14px;box-sizing:border-box}
+.practice-home{display:inline-flex;align-items:center;gap:8px;height:44px;padding:0 12px;color:#f0eee8;text-decoration:none;font-size:16px;border-radius:8px}
+.practice-home svg{width:22px;height:22px}.practice-home:hover{background:#293138}.practice-home:focus-visible{outline:2px solid #eba771}
+.practice-full{position:fixed;top:8px;right:14px;z-index:210;width:44px;height:44px;background:#1b2025;color:#d7dcdf;border:1px solid #46525c;border-radius:9px;display:grid;place-items:center;cursor:pointer}
+.practice-full svg{width:22px;height:22px}
+.practice-loader{position:fixed;inset:60px 0 0;z-index:190;background:#101316;display:flex;flex-direction:column;align-items:center;justify-content:center;gap:24px;text-align:center;padding:24px}
+.practice-loader[hidden]{display:none}.practice-loader h1{margin:0;font-size:clamp(24px,4vw,36px);line-height:1.2;letter-spacing:-.035em}
+.practice-spinner{width:36px;height:36px;border:3px solid #343b40;border-top-color:#eba771;border-radius:50%;animation:practice-spin .8s linear infinite}
+.practice-loader.failed .practice-spinner{display:none}.practice-loader button{font-family:inherit;font-size:16px;font-weight:600;color:#101316;background:#eba771;padding:12px 24px;border:0;border-radius:9px;cursor:pointer}
+@keyframes practice-spin{to{transform:rotate(360deg)}}
+@media(prefers-reduced-motion:reduce){.practice-spinner{animation:none}}
