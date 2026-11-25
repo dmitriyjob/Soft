@@ -48,16 +48,30 @@
     </div>
   </section>
 
-  <section class="slide" data-sec="1" data-id="alphabet" data-title="Мощность алфавита" data-steps="2">
+  <section class="slide" data-sec="1" data-id="alphabet" data-title="Мощность алфавита" data-steps="4">
     <div class="eyebrow">Пароль и алфавит</div>
     <h1>Какие символы <em>разрешены?</em></h1>
     <p class="lead">Алфавит — набор всех разрешённых символов. Его мощность N равна числу разных символов в этом наборе.</p>
     <div class="alphabet-grid">
-      <div class="paper"><h2>Десятичные цифры</h2><p class="sample">0 1 2 3 4 5 6 7 8 9</p><b class="value">10</b></div>
-      <div class="paper"><h2>Латинские буквы</h2><p class="sample">A…Z · a…z</p><p>Без учёта регистра A и a считаются одной буквой.</p><b class="value">26</b></div>
-      <div class="paper" data-s="1"><h2>С учётом регистра</h2><p class="sample">A ≠ a</p><p>26 прописных и 26 строчных букв получают разные коды.</p><b class="value">52</b></div>
+      <div class="paper"><h2>Десятичные цифры</h2><p class="sample">0 1 2 3 4 5 6 7 8 9</p><p>От нуля до девяти включительно.</p><b class="value">10</b></div>
+      <div class="paper" data-s="1"><h2>Латинские буквы</h2><p class="sample">A…Z · a…z</p><p>Без учёта регистра A и a считаются одной буквой: <b>26 букв</b>.</p><p data-s="2">С учётом регистра: 26 прописных и 26 строчных. Всего <b>52 буквы</b>.</p></div>
+      <div class="paper" data-s="3"><h2>Специальный алфавит</h2><p>«Символы из 963-символьного специального алфавита»</p><p>Для этой группы уже указано число разных символов.</p><b class="value">963</b></div>
     </div>
-    <p class="band" data-s="2">Если разрешены латинские буквы обоих регистров, цифры и три знака !, ?, #, то <strong>N = 52 + 10 + 3 = 65.</strong></p>
+    <p class="band" data-s="4">Если разрешены латинские буквы обоих регистров, цифры и три знака !, ?, #, то <strong>N = 52 + 10 + 3 = 65.</strong></p>
+  </section>
+
+  <section class="slide" data-sec="1" data-id="length-or-alphabet" data-title="Длина или мощность алфавита?" data-steps="2">
+    <div class="eyebrow">Читаем условие</div>
+    <h1>Длина или <em>мощность алфавита?</em></h1>
+    <div class="two trainer-layout">
+      <div class="paper"><div class="label">Сколько позиций в номере?</div>
+        <h2>«Номер, состоящий из X символов»</h2>
+        <p>Число X задаёт <b>длину номера</b>. Даже если символ повторяется, каждое его вхождение занимает отдельную позицию.</p></div>
+      <div class="paper" data-s="1"><div class="label">Сколько вариантов на одну позицию?</div>
+        <h2>«Номер, содержащий символы из N-символьного алфавита»</h2>
+        <p>Число N задаёт <b>мощность этого алфавита</b>. На каждой позиции можно выбрать любой из N символов.</p></div>
+    </div>
+    <p class="band" data-s="2">Номер <strong>007</strong> состоит из <strong>3 символов</strong>. Если разрешены все десятичные цифры, на каждой позиции есть <strong>10 вариантов</strong>.</p>
   </section>
 
   <section class="slide" data-sec="2" data-id="bits" data-title="Биты на один символ" data-steps="2">
@@ -237,6 +251,61 @@
     </div>
   </section>
 
+  <section class="slide practice" data-sec="4" data-id="serials" data-title="Практика 3 · Длина серийного номера" data-w="practice" data-steps="12">
+    <div class="condition">
+      <div class="kimv">
+        <div class="kimp">
+          <div class="kim-hd"><span>ЕГЭ · ИНФОРМАТИКА, 11 класс</span><span>Практика · задача 3</span></div>
+          <div class="kim-task"><div class="kim-n">11</div>
+            <div class="kim-body">
+                <p>На предприятии каждой изготовленной детали присваивают серийный номер, содержащий <span class="kmark" data-read="1">десятичные цифры</span>, <span class="kmark" data-read="1">52 латинские буквы (с учётом регистра)</span> и символы из <span class="kmark" data-read="1">963-символьного специального алфавита</span>.</p>
+                <p>В базе данных для хранения каждого серийного номера отведено <span class="kmark" data-read="2">одинаковое и минимально возможное число байт</span>. При этом используется посимвольное кодирование серийных номеров, все символы кодируются <span class="kmark" data-read="2">одинаковым и минимально возможным числом бит</span>.</p>
+                <p>Известно, что для хранения <span class="kmark" data-read="3">2000 серийных номеров</span> отведено <span class="kmark" data-read="3">не более 693 Кбайт памяти</span>.</p>
+                <p>Определите <span class="kmark" data-read="4">максимально возможную длину серийного номера</span>. В ответе запишите только целое число.</p>
+                <p class="kans">Ответ: <i></i></p>
+            </div>
+          </div>
+        </div>
+      </div>
+      <div class="reading-footer"><p class="reading-stage" aria-live="polite"></p>
+        <form class="try-answer" hidden><label>Твой ответ <input name="answer" type="text" inputmode="numeric" required autocomplete="off"></label><button class="btn">Проверить</button><output aria-live="polite"></output></form>
+      </div>
+    </div>
+    <div class="solution-view" hidden>
+      <div class="eyebrow">Практика · задача 3</div>
+      <h1>Решение · <em>Длина серийного номера</em></h1>
+      <div class="board-layout">
+        <ol class="timeline paper">
+          <li><small>01</small>Дано</li>
+          <li><small>02</small>Найти</li>
+          <li><small>03</small>Находим N</li>
+          <li><small>04</small>Биты на символ</li>
+          <li><small>05</small>Байты на номер</li>
+          <li><small>06</small>Биты на номер</li>
+          <li><small>07</small>Максимальная длина</li>
+          <li><small>08</small>Проверяем ещё один символ</li>
+        </ol>
+        <div class="student-board paper"><header>Доска ученика</header>
+          <div class="board-paper">
+            <div class="givens">
+              <div data-s="5"><small>Дано</small><p>10 цифр, 52 буквы,<br>963 спецсимвола<br>2000 номеров<br>Не более 693 Кбайт</p></div>
+              <div data-s="6"><small>Найти</small><p>Максимум символов в номере</p></div>
+            </div>
+            <div class="board-work"><small data-s="7">Решение</small>
+              <p class="ink-line" data-s="7">N = 10 + 52 + 963 = 1025</p>
+              <p class="ink-line" data-s="8">2¹⁰ = 1024 &lt; 1025 ≤ 2¹¹ → i = 11 бит</p>
+              <p class="ink-line" data-s="9"><math><mfrac><mrow><mn>693</mn><mo>·</mo><mn>1024</mn></mrow><mn>2000</mn></mfrac></math> = 354,816 → максимум 354 байта</p>
+              <p class="ink-line" data-s="10">354 · 8 = 2832 бита</p>
+              <p class="ink-line" data-s="11"><math><mfrac><mn>2832</mn><mn>11</mn></mfrac></math> = 257 + <math><mfrac><mn>5</mn><mn>11</mn></mfrac></math> → 257 символов</p>
+              <p class="ink-line" data-s="12">258 · 11 = 2838 бит &gt; 2832 бит</p>
+            </div>
+          </div>
+          <div class="board-answer" data-s="12">Ответ <b>257</b></div>
+        </div>
+      </div>
+    </div>
+  </section>
+
   <section class="slide" data-sec="4" data-id="summary" data-title="Шпаргалка">
     <div class="eyebrow">Задание 11 · шпаргалка</div>
     <h1>От алфавита <em>к ответу</em></h1>
@@ -285,12 +354,12 @@
 <aside class="top lesson-menu" id="lessonMenu" aria-label="Меню презентации" aria-hidden="true" inert>
   <div class="menu-heading"><a class="home" id="homeLink" href="../">Все уроки</a><button id="menuClose" class="chrome-icon" aria-label="Закрыть меню"><svg viewBox="0 0 24 24"><path d="m6 6 12 12M18 6 6 18"/></svg></button></div>
   <nav class="tabs" id="tabs" aria-label="Разделы урока"></nav>
-  <div class="menu-materials"><a href="#8">Алгоритм</a><a href="#9">Практика</a><a href="#11">Шпаргалка</a><a href="#1">С начала</a></div>
+  <div class="menu-materials"><a href="#9">Алгоритм</a><a href="#10">Практика</a><a href="#13">Шпаргалка</a><a href="#1">С начала</a></div>
   <div class="menu-tools"><button id="bToc">Все слайды</button><button id="bHelp">Управление</button></div>
 </aside>
 <div id="viewerDock" class="viewer-dock" aria-label="Управление презентацией">
   <div class="dock-left"><button id="hTop" class="dock-button" aria-controls="lessonMenu" aria-expanded="false"><svg viewBox="0 0 24 24"><path d="M4 6h16M4 12h16M4 18h16"/></svg><span>Меню</span></button><button id="bHideDock" class="chrome-icon dock-hide" aria-label="Скрыть панель" aria-controls="viewerDock" title="Скрыть панель"><svg viewBox="0 0 24 24" aria-hidden="true"><path d="m6 9 6 6 6-6"/></svg></button></div>
-  <div class="dock-navigation"><button id="bPrev" class="chrome-icon" aria-label="Предыдущий шаг"><svg viewBox="0 0 24 24"><path d="m14 6-6 6 6 6"/></svg></button><span id="fCnt">01 / 11</span><button id="bNext" class="dock-next">Дальше</button></div>
+  <div class="dock-navigation"><button id="bPrev" class="chrome-icon" aria-label="Предыдущий шаг"><svg viewBox="0 0 24 24"><path d="m14 6-6 6 6 6"/></svg></button><span id="fCnt">01 / 13</span><button id="bNext" class="dock-next">Дальше</button></div>
   <div class="dock-right"><button id="nTab" class="dock-button" aria-controls="notes" aria-expanded="false"><svg viewBox="0 0 24 24"><path d="M5 5h14v14H5zM9 5v14M12 9h4M12 13h4"/></svg><span>Пояснения</span></button><button id="bFull" class="chrome-icon" aria-label="Полный экран" aria-pressed="false" title="Полный экран (F)"><svg viewBox="0 0 24 24"><path d="M4 9V4h5M20 9V4h-5M4 15v5h5M20 15v5h-5"/></svg></button></div>
 </div>
 <button id="dockRestore" class="dock-restore" aria-controls="viewerDock" aria-expanded="false" aria-label="Показать панель" hidden><svg viewBox="0 0 24 24" aria-hidden="true"><path d="m6 15 6-6 6 6"/></svg><span>Панель</span></button>
@@ -302,7 +371,7 @@
 
 
 <div id="laser"></div>
-<script src="./passwords.js?v=c4ace6e8683b"></script>
+<script src="./passwords.js?v=e6fde7ba26e5"></script>
 <script src="../1/presentation/deck.js?v=cdc7ea35f773"></script>
 </body>
 </html>
