@@ -306,6 +306,116 @@
     </div>
   </section>
 
+  <section class="slide practice" data-sec="4" data-id="alphabet-min" data-title="Практика 4 · Минимальная мощность алфавита" data-w="practice" data-steps="12">
+    <div class="condition">
+      <div class="kimv">
+        <div class="kimp">
+          <div class="kim-hd"><span>ЕГЭ · ИНФОРМАТИКА, 11 класс</span><span>Практика · задача 4</span></div>
+          <div class="kim-task"><div class="kim-n">11</div>
+            <div class="kim-body">
+                <p>На предприятии каждой изготовленной детали присваивают серийный номер, состоящий из <span class="kmark" data-read="1">261 символа</span>.</p>
+                <p>Для его хранения отведено <span class="kmark" data-read="2">одинаковое и минимально возможное число байт</span>. При этом используется посимвольное кодирование серийных номеров, все символы кодируются <span class="kmark" data-read="2">одинаковым и минимально возможным числом бит</span>.</p>
+                <p>Известно, что для хранения <span class="kmark" data-read="3">252 500 серийных номеров</span> отведено <span class="kmark" data-read="3">более 31 Мбайт памяти</span>.</p>
+                <p>Определите <span class="kmark" data-read="4">минимально возможную мощность алфавита</span>, из которого составляются серийные номера. В ответе запишите только число.</p>
+                <p class="kans">Ответ: <i></i></p>
+            </div>
+          </div>
+        </div>
+      </div>
+      <div class="reading-footer"><p class="reading-stage" aria-live="polite"></p>
+        <form class="try-answer" hidden><label>Твой ответ <input name="answer" type="text" inputmode="numeric" required autocomplete="off"></label><button class="btn">Проверить</button><output aria-live="polite"></output></form>
+      </div>
+    </div>
+    <div class="solution-view" hidden>
+      <div class="eyebrow">Практика · задача 4</div>
+      <h1>Решение · <em>Минимальная мощность алфавита</em></h1>
+      <div class="board-layout">
+        <ol class="timeline paper">
+          <li><small>01</small>Дано</li>
+          <li><small>02</small>Найти</li>
+          <li><small>03</small>Мбайты в байты</li>
+          <li><small>04</small>Граница на один номер</li>
+          <li><small>05</small>Проверяем 3 бита</li>
+          <li><small>06</small>Проверяем 4 бита</li>
+          <li><small>07</small>Выбираем число бит</li>
+          <li><small>08</small>Находим мощность</li>
+        </ol>
+        <div class="student-board paper"><header>Доска ученика</header>
+          <div class="board-paper">
+            <div class="givens">
+              <div data-s="5"><small>Дано</small><p>261 символ в номере<br>252 500 номеров<br>Более 31 Мбайт</p></div>
+              <div data-s="6"><small>Найти</small><p>Минимальная мощность N</p></div>
+            </div>
+            <div class="board-work"><small data-s="7">Решение</small>
+              <p class="ink-line" data-s="7">31 · 1024² = 32 505 856 байт</p>
+              <p class="ink-line" data-s="8"><math><mfrac><mn>32 505 856</mn><mn>252 500</mn></mfrac></math> ≈ 128,736 → не менее 129 байт</p>
+              <p class="ink-line" data-s="9">261 · 3 = 783 бита → <math><mfrac><mn>783</mn><mn>8</mn></mfrac></math> → 98 байт</p>
+              <p class="ink-line" data-s="10">261 · 4 = 1044 бита → <math><mfrac><mn>1044</mn><mn>8</mn></mfrac></math> → 131 байт</p>
+              <p class="ink-line" data-s="11">98 &lt; 129 ≤ 131 → минимум 4 бита</p>
+              <p class="ink-line" data-s="12">2³ &lt; N ≤ 2⁴ → минимум N = 8 + 1 = 9</p>
+            </div>
+          </div>
+          <div class="board-answer" data-s="12">Ответ <b>9</b></div>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <section class="slide practice" data-sec="4" data-id="alphabet-max" data-title="Практика 5 · Максимальная мощность алфавита" data-w="practice" data-steps="12">
+    <div class="condition">
+      <div class="kimv">
+        <div class="kimp">
+          <div class="kim-hd"><span>ЕГЭ · ИНФОРМАТИКА, 11 класс</span><span>Практика · задача 5</span></div>
+          <div class="kim-task"><div class="kim-n">11</div>
+            <div class="kim-body">
+                <p>На предприятии каждой изготовленной детали присваивают серийный номер, состоящий из <span class="kmark" data-read="1">261 символа</span>.</p>
+                <p>Для его хранения отведено <span class="kmark" data-read="2">одинаковое и минимально возможное число байт</span>. При этом используется посимвольное кодирование серийных номеров, все символы кодируются <span class="kmark" data-read="2">одинаковым и минимально возможным числом бит</span>.</p>
+                <p>Известно, что для хранения <span class="kmark" data-read="3">252 500 серийных номеров</span> отведено <span class="kmark" data-read="3">не более 31 Мбайт памяти</span>.</p>
+                <p>Определите <span class="kmark" data-read="4">максимально возможную мощность алфавита</span>, из которого составляются серийные номера. В ответе запишите только число.</p>
+                <p class="kans">Ответ: <i></i></p>
+            </div>
+          </div>
+        </div>
+      </div>
+      <div class="reading-footer"><p class="reading-stage" aria-live="polite"></p>
+        <form class="try-answer" hidden><label>Твой ответ <input name="answer" type="text" inputmode="numeric" required autocomplete="off"></label><button class="btn">Проверить</button><output aria-live="polite"></output></form>
+      </div>
+    </div>
+    <div class="solution-view" hidden>
+      <div class="eyebrow">Практика · задача 5</div>
+      <h1>Решение · <em>Максимальная мощность алфавита</em></h1>
+      <div class="board-layout">
+        <ol class="timeline paper">
+          <li><small>01</small>Дано</li>
+          <li><small>02</small>Найти</li>
+          <li><small>03</small>Мбайты в байты</li>
+          <li><small>04</small>Граница на один номер</li>
+          <li><small>05</small>Проверяем 3 бита</li>
+          <li><small>06</small>Проверяем 4 бита</li>
+          <li><small>07</small>Выбираем число бит</li>
+          <li><small>08</small>Находим мощность</li>
+        </ol>
+        <div class="student-board paper"><header>Доска ученика</header>
+          <div class="board-paper">
+            <div class="givens">
+              <div data-s="5"><small>Дано</small><p>261 символ в номере<br>252 500 номеров<br>Не более 31 Мбайт</p></div>
+              <div data-s="6"><small>Найти</small><p>Максимальная мощность N</p></div>
+            </div>
+            <div class="board-work"><small data-s="7">Решение</small>
+              <p class="ink-line" data-s="7">31 · 1024² = 32 505 856 байт</p>
+              <p class="ink-line" data-s="8"><math><mfrac><mn>32 505 856</mn><mn>252 500</mn></mfrac></math> ≈ 128,736 → не более 128 байт</p>
+              <p class="ink-line" data-s="9">261 · 3 = 783 бита → <math><mfrac><mn>783</mn><mn>8</mn></mfrac></math> → 98 байт</p>
+              <p class="ink-line" data-s="10">261 · 4 = 1044 бита → <math><mfrac><mn>1044</mn><mn>8</mn></mfrac></math> → 131 байт</p>
+              <p class="ink-line" data-s="11">98 ≤ 128 &lt; 131 → максимум 3 бита</p>
+              <p class="ink-line" data-s="12">2² &lt; N ≤ 2³ → максимум N = 8</p>
+            </div>
+          </div>
+          <div class="board-answer" data-s="12">Ответ <b>8</b></div>
+        </div>
+      </div>
+    </div>
+  </section>
+
   <section class="slide" data-sec="4" data-id="summary" data-title="Шпаргалка">
     <div class="eyebrow">Задание 11 · шпаргалка</div>
     <h1>От алфавита <em>к ответу</em></h1>
@@ -354,12 +464,12 @@
 <aside class="top lesson-menu" id="lessonMenu" aria-label="Меню презентации" aria-hidden="true" inert>
   <div class="menu-heading"><a class="home" id="homeLink" href="../">Все уроки</a><button id="menuClose" class="chrome-icon" aria-label="Закрыть меню"><svg viewBox="0 0 24 24"><path d="m6 6 12 12M18 6 6 18"/></svg></button></div>
   <nav class="tabs" id="tabs" aria-label="Разделы урока"></nav>
-  <div class="menu-materials"><a href="#9">Алгоритм</a><a href="#10">Практика</a><a href="#13">Шпаргалка</a><a href="#1">С начала</a></div>
+  <div class="menu-materials"><a href="#9">Алгоритм</a><a href="#10">Практика</a><a href="#15">Шпаргалка</a><a href="#1">С начала</a></div>
   <div class="menu-tools"><button id="bToc">Все слайды</button><button id="bHelp">Управление</button></div>
 </aside>
 <div id="viewerDock" class="viewer-dock" aria-label="Управление презентацией">
   <div class="dock-left"><button id="hTop" class="dock-button" aria-controls="lessonMenu" aria-expanded="false"><svg viewBox="0 0 24 24"><path d="M4 6h16M4 12h16M4 18h16"/></svg><span>Меню</span></button><button id="bHideDock" class="chrome-icon dock-hide" aria-label="Скрыть панель" aria-controls="viewerDock" title="Скрыть панель"><svg viewBox="0 0 24 24" aria-hidden="true"><path d="m6 9 6 6 6-6"/></svg></button></div>
-  <div class="dock-navigation"><button id="bPrev" class="chrome-icon" aria-label="Предыдущий шаг"><svg viewBox="0 0 24 24"><path d="m14 6-6 6 6 6"/></svg></button><span id="fCnt">01 / 13</span><button id="bNext" class="dock-next">Дальше</button></div>
+  <div class="dock-navigation"><button id="bPrev" class="chrome-icon" aria-label="Предыдущий шаг"><svg viewBox="0 0 24 24"><path d="m14 6-6 6 6 6"/></svg></button><span id="fCnt">01 / 15</span><button id="bNext" class="dock-next">Дальше</button></div>
   <div class="dock-right"><button id="nTab" class="dock-button" aria-controls="notes" aria-expanded="false"><svg viewBox="0 0 24 24"><path d="M5 5h14v14H5zM9 5v14M12 9h4M12 13h4"/></svg><span>Пояснения</span></button><button id="bFull" class="chrome-icon" aria-label="Полный экран" aria-pressed="false" title="Полный экран (F)"><svg viewBox="0 0 24 24"><path d="M4 9V4h5M20 9V4h-5M4 15v5h5M20 15v5h-5"/></svg></button></div>
 </div>
 <button id="dockRestore" class="dock-restore" aria-controls="viewerDock" aria-expanded="false" aria-label="Показать панель" hidden><svg viewBox="0 0 24 24" aria-hidden="true"><path d="m6 15 6-6 6 6"/></svg><span>Панель</span></button>
@@ -371,7 +481,7 @@
 
 
 <div id="laser"></div>
-<script src="./passwords.js?v=e6fde7ba26e5"></script>
+<script src="./passwords.js?v=979734d2c8ab"></script>
 <script src="../1/presentation/deck.js?v=cdc7ea35f773"></script>
 </body>
 </html>
