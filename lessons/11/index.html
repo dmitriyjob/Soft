@@ -8,7 +8,7 @@
 <meta name="theme-color" content="#F5F5F7">
 <link rel="icon" href="data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 32 32'%3E%3Crect width='32' height='32' rx='8' fill='%23B9521D'/%3E%3Ctext x='16' y='23' text-anchor='middle' font-family='Arial' font-size='23' font-weight='700' fill='white'%3Ei%3C/text%3E%3C/svg%3E">
 <link rel="stylesheet" href="../1/presentation/styles.css?v=efc3f98612a9">
-<link rel="stylesheet" href="./passwords.css?v=9a5096bbcc1a">
+<link rel="stylesheet" href="./passwords.css?v=f0c92996da4b">
 <link rel="stylesheet" href="../1/presentation/viewer.css?v=00a77e6ecef2">
 </head>
 <body data-home="../">
@@ -123,12 +123,34 @@
     </div>
   </section>
 
-  <section class="slide" data-sec="3" data-id="record" data-title="Запись о пользователе" data-steps="2">
+  <section class="slide" data-sec="3" data-id="record" data-title="База данных сотрудников" data-steps="2">
     <div class="eyebrow">Запись в базе данных</div>
-    <h1>Что хранится <em>кроме пароля?</em></h1>
-    <p class="lead">В условии могут выделить место под дополнительные сведения о каждом пользователе. Их объём прибавляем к размеру одного пароля в байтах.</p>
-    <div class="record-grid"><div class="paper"><div class="label">Пароль</div><b class="value">2 байта</b></div><span>+</span><div class="paper"><div class="label">Дополнительные сведения</div><b class="value">6 байт</b></div><span>=</span><div class="paper" data-s="1"><div class="label">Один пользователь</div><b class="value">8 байт</b></div></div>
-    <p class="band" data-s="2">Для десяти пользователей понадобится <strong>10 × (2 + 6) = 80 байт.</strong></p>
+    <h1>База данных <em>сотрудников</em></h1>
+    <p class="lead">Одна строка — один сотрудник. У каждого пароль из шести символов, табельный номер и код отдела.</p>
+    <div class="employee-layout">
+      <div class="paper employee-register">
+        <table class="employee-table" aria-label="Записи четырёх сотрудников">
+          <thead>
+            <tr><th scope="col" rowspan="2">Пароль <small>5 байт</small></th><th scope="colgroup" colspan="2">Дополнительные сведения</th></tr>
+            <tr><th scope="col">Табельный номер <small>4 байта</small></th><th scope="col">Код отдела <small>2 байта</small></th></tr>
+          </thead>
+          <tbody>
+            <tr><td>byte67</td><td>1042</td><td>12</td></tr>
+            <tr><td>node42</td><td>1043</td><td>17</td></tr>
+            <tr><td>data83</td><td>1044</td><td>12</td></tr>
+            <tr><td>code15</td><td>1045</td><td>23</td></tr>
+          </tbody>
+        </table>
+      </div>
+      <div class="employee-totals">
+        <div class="paper" data-s="1"><h2>Одна строка</h2>
+          <p>5 байт на пароль и ещё 4 + 2 байта на сведения о сотруднике.</p>
+          <strong>5 + 4 + 2 = 11 байт</strong></div>
+        <div class="paper" data-s="2"><h2>Вся таблица</h2>
+          <p>Четыре сотрудника, по 11 байт на запись.</p>
+          <strong>4 × 11 = 44 байта</strong></div>
+      </div>
+    </div>
   </section>
 
   <section class="slide" data-sec="4" data-id="algorithm" data-title="Алгоритм решения" data-steps="4">
@@ -481,7 +503,7 @@
 
 
 <div id="laser"></div>
-<script src="./passwords.js?v=979734d2c8ab"></script>
+<script src="./passwords.js?v=bc98eca179c9"></script>
 <script src="../1/presentation/deck.js?v=cdc7ea35f773"></script>
 </body>
 </html>
